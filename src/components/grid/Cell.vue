@@ -1,0 +1,395 @@
+<template>
+  <section
+    :data-col-start="section.col.start"
+    :data-row-start="section.row.start"
+    :data-col-end="section.col.end"
+    :data-row-end="section.row.end"
+    :class="{
+      lastcol: section.col.end - 1 === colsNumber && section.row.start === 1,
+      lastrow: section.row.end - 1 === rowsNumber && section.col.start === 1,
+      dragging: isDraggingGrid && (dragging.colLine === section.col.start || dragging.rowLine === section.row.start),
+      overHandle,
+      grayed
+    }"
+    class="grid-section"
+    @pointerdown="$emit('down', $event)"
+    @pointermove="$emit('move', $event)"
+  >
+    <div
+      :class="{ dragging: isDraggingGrid && dragging.colLine === section.col.start && section.row.start === 1 }"
+      class="col-handle"
+      @pointerdown.stop="handleDown($event, section, { col: true })"
+      @mouseover="overHandle = true"
+      @mouseout="overHandle = false"
+    />
+
+    <div
+      :class="{ dragging: isDraggingGrid && dragging.rowLine === section.row.start && section.col.start === 1 }"
+      class="row-handle"
+      @pointerdown="handleDown($event, section, { row: true })"
+      @mouseover="overHandle = true"
+      @mouseout="overHandle = false"
+    />
+
+    <div
+      class="multi-handle"
+      @pointerdown="handleDown($event, section, { row: true, col: true })"
+      @mouseover="overHandle = true"
+      @mouseout="overHandle = false"
+    />
+
+    <slot />
+
+    <div
+      v-show="section.col.start === colsNumber && showInsideRowSize(section.row.start - 1)"
+      class="inside-row-size"
+    >{{ grid.row.sizes[section.row.start - 1] }}</div>
+
+    <div
+      v-show="section.row.start === rowsNumber && showInsideColSize(section.col.start - 1)"
+      class="inside-col-size"
+    >{{ grid.col.sizes[section.col.start - 1] }}</div>
+  </section>
+</template>
+
+<script>
+import { store, parseValueUnit, valueUnitToString } from '../../store.js'
+
+function calcValue(prev, prevComp, delta) {
+  const sizeAdd = (prev.value * delta) / prevComp.value
+
+  let value = +(prev.value + sizeAdd).toFixed(1)
+
+  if (value <= 0) {
+    value = 0.1
+  }
+
+  return { value, unit: prev.unit }
+}
+
+function resizableUnit(unit) {
+  return !(unit === 'auto' || unit === 'max-content' || unit === 'min-content' || unit === 'minmax')
+}
+
+function calcSize(size, computedSize, delta) {
+  const value = parseValueUnit(size)
+  if (resizableUnit(value.unit)) {
+    const computedValue = parseValueUnit(computedSize)
+    return valueUnitToString(calcValue(value, computedValue, delta))
+  }
+  return size
+}
+
+function resizeGridSizes(sizes, computedSizes, delta, line) {
+  const newSizes = [...sizes],
+    leftPos = line - 2,
+    rightPos = line - 1
+  newSizes[leftPos] = calcSize(sizes[leftPos], computedSizes[leftPos], delta)
+  newSizes[rightPos] = calcSize(sizes[rightPos], computedSizes[rightPos], -delta)
+  return newSizes
+}
+
+function farEnough(a, b, delta = 5) {
+  return Math.abs(a.x - b.x) > delta || Math.abs(a.y - b.y) > delta
+}
+
+export default {
+  name: 'Cell',
+  props: {
+    section: { type: Object, required: true },
+    area: { type: Object, required: true },
+    gridComputedStyles: { type: Function, required: true },
+    grayed: { type: Boolean, default: false }
+  },
+  data() {
+    return {
+      overHandle: false
+    }
+  },
+  computed: {
+    grid() {
+      return this.area.grid
+    },
+    colsNumber() {
+      return this.grid.col.sizes.length
+    },
+    rowsNumber() {
+      return this.grid.row.sizes.length
+    },
+    isDraggingGrid() {
+      const { dragging } = this
+      return dragging && dragging.grid.areas === this.grid.areas
+    },
+    dragging() {
+      return store.data.dragging
+    }
+  },
+  methods: {
+    showInsideColSize(col) {
+      const { dragging } = this
+      return this.isDraggingGrid && (col === dragging.colLine - 1 || col === dragging.colLine - 2)
+    },
+    showInsideRowSize(row) {
+      const { dragging } = store.data
+      return this.isDraggingGrid && (row === dragging.rowLine - 1 || row === dragging.rowLine - 2)
+    },
+
+    handleDown(event, section, { row, col }) {
+      event.stopPropagation() // TODO: ...
+      event.preventDefault()
+
+      if (store.data.dragging) {
+        return
+      }
+
+      store.data.currentArea = this.area
+
+      const { grid } = this
+      const initialPos = { x: event.clientX, y: event.clientY }
+      const initialTime = new Date().getTime()
+      const rowLine = row ? section.row.start : undefined
+      const colLine = col ? section.col.start : undefined
+      const computedStyles = this.gridComputedStyles()
+      const initialRowSizes = [...grid.row.sizes]
+      const initialRowComputedSizes = computedStyles.gridTemplateRows.split(/\s/g)
+      const initialColSizes = [...grid.col.sizes]
+      const initialColComputedSizes = computedStyles.gridTemplateColumns.split(/\s/g)
+
+      const handleMove = event => {
+        const pos = { x: event.clientX, y: event.clientY }
+
+        if (!store.data.dragging && (new Date().getTime() - initialTime > 500 || farEnough(initialPos, pos))) {
+          // Start dragging grid lines
+          store.data.dragging = { grid, rowLine, colLine }
+          document.body.style.cursor = col && row ? 'move' : col ? 'col-resize' : 'row-resize'
+        }
+        if (store.data.dragging.rowLine !== null) {
+          // Drag row line by updating row sizes
+          grid.row.sizes = resizeGridSizes(
+            initialRowSizes,
+            initialRowComputedSizes,
+            pos.y - initialPos.y,
+            store.data.dragging.rowLine
+          )
+        }
+        if (store.data.dragging.colLine !== undefined) {
+          // Drag col line by updating col sizes
+          grid.col.sizes = resizeGridSizes(
+            initialColSizes,
+            initialColComputedSizes,
+            pos.x - initialPos.x,
+            store.data.dragging.colLine
+          )
+        }
+      }
+
+      const handleUp = () => {
+        if (store.data.dragging) {
+          // Finish dragging grid lines
+          store.data.dragging = null
+          document.body.style.cursor = 'default'
+        } else if (new Date().getTime() - initialTime < 500) {
+          // click
+          this.$emit('togglelinename', row ? `rowLine-${rowLine}` : `colLine-${colLine}`)
+        }
+
+        window.removeEventListener('pointermove', handleMove)
+        window.removeEventListener('pointerup', handleUp)
+      }
+      window.addEventListener('pointermove', handleMove)
+      window.addEventListener('pointerup', handleUp)
+    }
+  }
+}
+</script>
+
+<style scoped lang="scss">
+.inside-col-size,
+.inside-row-size {
+  font-size: 10px;
+  color: #555;
+  position: absolute;
+  padding: 2px;
+}
+
+.inside-col-size {
+  bottom: 0;
+  right: 0;
+  left: 0;
+  text-align: center;
+}
+.inside-row-size {
+  top: 0;
+  bottom: 0;
+  right: 0;
+  display: grid;
+  align-content: center;
+}
+
+section {
+  touch-action: none;
+  background: #fff;
+  height: 100%;
+  position: relative;
+  cursor: pointer;
+  &.dragging {
+    cursor: default;
+  }
+  &:hover {
+    background: #f5f5f5;
+  }
+  &.grayed {
+    background: #dddddd;
+  }
+  .multi-handle {
+    touch-action: none;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    top: -15px;
+    left: -15px;
+    z-index: 9;
+    cursor: move;
+  }
+  .col-handle {
+    touch-action: none;
+    position: absolute;
+    width: 20px;
+    height: 100%;
+    left: -10px;
+    //z-index: 9;
+    top: 0;
+    cursor: col-resize;
+    &.dragging:after {
+      content: '';
+      width: 1px;
+      position: absolute;
+      top: 0;
+      left: 9px;
+      height: 100vh;
+      background: #27ae60;
+      z-index: 99;
+      pointer-events: none;
+    }
+  }
+  .row-handle {
+    touch-action: none;
+    position: absolute;
+    width: 100%;
+    height: 20px;
+    left: 0;
+    top: -10px;
+    cursor: row-resize;
+    //z-index: 9;
+    &.dragging:after {
+      content: '';
+      height: 1px;
+      position: absolute;
+      top: 9px;
+      left: 0;
+      width: 100vw;
+      background: #27ae60;
+      z-index: 99;
+    }
+  }
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    outline: 1px dashed #fff;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    font-size: 10px;
+    width: 14px;
+    border-radius: 3px;
+    color: #666;
+    background: #fff;
+    line-height: 15px;
+    text-align: center;
+  }
+  &.dragging:after {
+    background: #27ae60;
+    color: #fff;
+    z-index: 99999;
+  }
+  &[data-col-start='1'][data-row-start]:after {
+    content: attr(data-row-start);
+    top: -8.2px;
+    left: 0px;
+    width: 15px;
+    text-align: left;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 0;
+    padding-left: 4px;
+  }
+  &[data-row-start='1'][data-col-start]:after {
+    content: attr(data-col-start);
+    left: -7.5px;
+    top: 0px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    height: 16px;
+  }
+
+  &.lastcol:before {
+    content: attr(data-col-end);
+    position: absolute;
+    font-size: 10px;
+    width: 14px;
+    border-radius: 50%;
+    color: #666;
+    background: #fff;
+    right: 0;
+    left: initial;
+    top: 2px !important;
+    height: auto;
+    outline: 0;
+  }
+  &.lastrow::before {
+    content: attr(data-row-end);
+    position: absolute;
+    font-size: 10px;
+    width: 14px;
+    border-radius: 50%;
+    color: #666;
+    background: #fff;
+    bottom: 2px;
+    top: initial;
+    left: 0;
+    height: auto;
+    outline: 0;
+  }
+}
+
+// Hide draggable elements for grid edges
+
+[data-col-start='1'] .col-handle {
+  display: none;
+  .multi-handle {
+    display: none;
+  }
+}
+[data-row-start='1'] .row-handle {
+  display: none;
+  .multi-handle {
+    display: none;
+  }
+}
+
+.grid section section:before {
+  outline: 1px dashed #ccc;
+}
+</style>

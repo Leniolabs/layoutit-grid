@@ -1,0 +1,320 @@
+<template>
+  <div class="grid-settings-container">
+    <div class="items">
+      <h2>
+        <span style="display: inline-block;">⚀</span> Flex Container
+      </h2>
+
+      <div class="inner-items">
+        <div>
+          Flex Direction
+          <select
+            id
+            :value="flex.direction"
+            name
+            @input="flex.direction = $event.target.value"
+          >
+            <option value="row">row</option>
+            <option value="row-reverse">row-reverse</option>
+            <option value="column">column</option>
+            <option value="column-reverse">column-reverse</option>
+          </select>
+        </div>
+        <br />
+        <div>
+          Flex Wrap
+          <select id :value="flex.wrap" name @input="flex.wrap = $event.target.value">
+            <option value="nowrap">nowrap</option>
+            <option value="wrap">wrap</option>
+            <option value="wrap-reverse">wrap-reverse</option>
+          </select>
+        </div>
+      </div>
+      <br />
+      <button @click="addItem">Add</button>
+      <div class="inner-items-container">
+        <h2>
+          <span style="display: inline-block;">⚃</span> Flex Items
+        </h2>
+        <div class="inner-items">
+          <div>
+            Flex Grow
+            <input
+              :value="flex.defaultItem.grow"
+              type="number"
+              @input="flex.defaultItem.grow = +$event.target.value"
+            />
+          </div>
+          <br />
+          <div>
+            Flex Shrink
+            <input
+              :value="flex.defaultItem.shrink"
+              type="number"
+              @input="flex.defaultItem.shrink = +$event.target.value"
+            />
+          </div>
+          <br />
+          <div>
+            Flex Basis
+            <input
+              :value="flex.defaultItem.basis"
+              type="text"
+              @input="flex.defaultItem.basis = $event.target.value"
+            />
+          </div>
+        </div>
+
+        <div
+          v-for="(item, i) in selectedFlexItems"
+          :class="{ selected: i + 1 === currentItem }"
+          :key="i"
+          class="flex-item"
+        >
+          <br />
+          <h2>
+            <span style="display: inline-block;">⚃</span>
+            Flex Item {{ i + 1 }}
+          </h2>
+          <div class="inner-items">
+            <div>
+              Flex Grow
+              <input
+                :value="item.grow"
+                type="number"
+                @input="createNewItemIfDefault(item, i + 1).grow = +$event.target.value"
+              />
+            </div>
+            <br />
+            <div>
+              Flex Shrink
+              <input
+                :value="item.shrink"
+                type="number"
+                @input="createNewItemIfDefault(item, i + 1).shrink = +$event.target.value"
+              />
+            </div>
+            <br />
+            <div>
+              Flex Basis
+              <input
+                :value="item.basis"
+                type="text"
+                @input="createNewItemIfDefault(item, i + 1).basis = $event.target.value"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { createFlexItemState } from '../../store.js'
+
+import IconRemove from '../icons/icon-remove.vue'
+
+import UnitSelect from '../common/UnitSelect.vue'
+import GapInput from '../common/GapInput.vue'
+
+export default {
+  name: 'Sidebar',
+  components: {
+    IconRemove,
+    UnitSelect,
+    GapInput
+  },
+  props: {
+    flex: { type: Object, required: true },
+    currentItem: { type: Number, default: null }
+  },
+  computed: {
+    selectedFlexItems() {
+      return flex.items.filter((item, i) => i + 1 === currentItem || !flex.defaultItem === item)
+    }
+  },
+  methods: {
+    addItem() {
+      const { flex } = this
+      flex.items.push(flex.defaultItem)
+    },
+    createNewItemIfDefault(item, i) {
+      const { flex } = this
+      const { defaultItem, items } = flex
+      if (defaultItem === item) {
+        this.$set(items, i - 1, new createFlexItemState(defaultItem))
+      }
+      return items[i - 1]
+    }
+  }
+}
+</script>
+
+<style scoped lang="scss">
+h2 {
+  margin: 0 0 10px;
+  font-family: 'Alegreya Sans', 'Helvetica Neue', Arial, sans-serif;
+  margin-top: 10px;
+  margin-bottom: 0.625em;
+  font-size: 18.72px;
+  span {
+    font-weight: normal;
+  }
+}
+
+.inner-items-container {
+  max-height: 400px;
+  overflow: auto;
+}
+
+.items {
+  margin-bottom: 20px;
+
+  .inner-items {
+    max-height: 185px;
+    overflow: auto;
+    font-family: arial;
+    > div {
+      display: grid;
+      grid-template-columns: 70px auto;
+      padding-right: 10px;
+      grid-gap: 0 5px;
+      border-radius: 2px;
+      //overflow: hidden;
+      height: 30px;
+      margin-bottom: 6px;
+      input {
+        text-align: center;
+        width: 100%;
+        border: 0;
+        border-radius: 2px;
+        padding: 0.313em;
+        font-size: 14px;
+        &.dragging {
+          background: #bbe5b3;
+        }
+      }
+      button {
+        margin-bottom: 0;
+        background: #e91e63;
+        &:hover {
+          background: #c11651;
+        }
+        svg {
+          width: 100%;
+          height: 100%;
+          padding: 4px;
+        }
+      }
+      select {
+        background: #fff;
+        border: 0;
+        width: 100%;
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+.flex-item.selected {
+  background: #12906a;
+}
+
+.flex-item.selected h2:after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  margin-left: 10px;
+  border-radius: 50%;
+  background: #fdd835;
+}
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 14em;
+  padding: 0 10px;
+  color: #fff;
+  height: 100vh;
+  text-align: left;
+  font-family: 'Alegreya Sans', 'Helvetica Neue', Arial, sans-serif;
+  z-index: 9;
+  transition: transform 0.2s ease-in;
+  overflow: auto;
+  h2 {
+    margin: 0 0 10px;
+    font-size: 14px;
+    font-family: 'Alegreya Sans', 'Helvetica Neue', Arial, sans-serif;
+    margin-top: 10px;
+    margin-bottom: 0.625em;
+    font-size: 18.72px;
+    span {
+      font-weight: normal;
+    }
+  }
+  button {
+    width: calc(100% - 10px);
+    margin-bottom: 10px;
+    background: #3094b4;
+    color: #fff;
+    border: 0;
+    border-radius: 2px;
+    padding: 8px 0;
+    font-size: 1rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    height: 1.875rem;
+    margin-bottom: 0.875em;
+    padding: 0.375em;
+    &.active {
+      background: #3094b4;
+    }
+    &:hover {
+      background: #236f86;
+    }
+    svg {
+      width: 100%;
+      height: 100%;
+      padding: 1px;
+      fill: #fff;
+    }
+  }
+  .buttons {
+    margin-bottom: 12px;
+    display: grid;
+    grid-template-columns: 1fr 35px;
+    grid-template-rows: auto auto;
+    grid-gap: 0 10px;
+    button {
+      border-radius: 30px;
+      font-size: 1rem;
+      min-height: 2.188em;
+      min-width: 2.188em;
+      margin-bottom: 0.626em;
+      padding: 0.313em 9px;
+      &:first-child {
+        background: #3094b4;
+        &:hover {
+          background: #12906a;
+        }
+      }
+    }
+  }
+  @media screen and (max-width: 768px) {
+    transform: translateX(-14em);
+    background: #300748;
+    top: 40px;
+    padding-top: 20px;
+    a.brand {
+      display: none;
+    }
+    &.active {
+      transform: translateX(0);
+    }
+  }
+}
+</style>
