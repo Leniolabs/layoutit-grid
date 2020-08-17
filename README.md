@@ -51,7 +51,7 @@ Your dev server will start and be running at
 
 [Ideas](https://github.com/leniolabs/layoutit-grid/issues/new), pull requests and bug reports are welcome.
 
-## Layoutit grid uses amazing libs and tools
+## Libs and Tools used
 
 - [Vite](https://github.com/vitejs/vite)
 - [Vue 3](https://v3.vuejs.org)
