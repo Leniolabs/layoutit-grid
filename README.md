@@ -14,8 +14,29 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Clone the repo
 
+Use ssh
+
+```bash
+git clone git@github.com:Leniolabs/layoutit-grid.git
+```
+
+Or https
+
 ```bash
 git clone https://github.com/leniolabs/layoutit-grid.git
+```
+
+In the repo folder run
+
+```bash
+npm install
+npm start
+```
+
+Your dev server will start and be running at
+
+```bash
+  > Local:    http://localhost:3000/
 ```
 
 #### Commands
@@ -42,3 +63,7 @@ git clone https://github.com/leniolabs/layoutit-grid.git
 <br>
 <br>
 <a href="https://twitter.com/dan_abramov/status/1213762494428262400"><img width="398" src="./assets/layoutit-grid-rob_dodson.PNG"></a>
+
+## Creators
+
+Layoutit grid is crafted with love by [Leniolabs](https://leniolabs.com/). We build digital experiences with your ideas. [Get in touch!](https://leniolabs.com/#contact)
