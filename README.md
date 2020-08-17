@@ -62,7 +62,7 @@ Your dev server will start and be running at
 <a href="https://twitter.com/addyosmani/status/1222104530038296578"><img width="398" src="./assets/layoutit-grid-addyosmani.PNG"></a>
 <br>
 <br>
-<a href="https://twitter.com/dan_abramov/status/1213762494428262400"><img width="398" src="./assets/layoutit-grid-rob_dodson.PNG"></a>
+<a href="https://twitter.com/rob_dodson/status/1010303563514310656"><img width="398" src="./assets/layoutit-grid-rob_dodson.PNG"></a>
 
 ## Creators
 
