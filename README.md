@@ -57,7 +57,7 @@ Your dev server will start and be running at
 - [Vue 3](https://v3.vuejs.org)
 - [Prism](https://prismjs.com/)
 
-## Endorsements
+## Mentions
 
 <a href="https://twitter.com/addyosmani/status/1222104530038296578"><img width="398" src="./assets/layoutit-grid-addyosmani.PNG"></a>
 <br>
