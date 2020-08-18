@@ -1,12 +1,12 @@
 <template>
   <a href="/" class="brand-logo">
-    <img src="../../assets/ico128.png" alt />Layoutit!
+    <img src="/img/icons/icon-128x128.png" alt />Layoutit!
   </a>
 </template>
 
 <script>
 export default {
-  name: 'BrandLogo'
+  name: 'BrandLogo',
 }
 </script>
 
