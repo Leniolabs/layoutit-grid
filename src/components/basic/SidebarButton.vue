@@ -4,12 +4,6 @@
   </button>
 </template>
 
-<script>
-export default {
-  name: 'SidebarButton'
-}
-</script>
-
 <style scoped lang="scss">
 button {
   width: 100%;

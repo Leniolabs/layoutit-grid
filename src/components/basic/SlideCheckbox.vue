@@ -18,9 +18,8 @@
   </div>
 </template>
 
-<script>
+<script setup="props">
 export default {
-  name: 'SlideCheckbox',
   props: {
     modelValue: { type: Boolean, default: false },
     id: { type: String, required: true },
@@ -48,7 +47,7 @@ fieldset {
   overflow: hidden;
   display: inline-block;
   margin-bottom: 3px;
-  margin-top: 0px;
+  margin-top: 3px;
   input.input-switch {
     position: absolute;
     opacity: 0;
