@@ -1,41 +1,38 @@
 <template>
   <div class="gap-input">
     <div class="input-container">
-      <input :value="getGapValue()" type="number" min="0" @input="setGapValue($event.target.value)" />
-      <unit-select :value="getGapUnit()" @input="setGapUnit($event.target.value)" />
+      <input :value="gap.value" type="number" min="0" @input="setGapValue($event.target.value)" />
+      <unit-select :value="gap.unit" @input="setGapUnit($event.target.value)" />
     </div>
   </div>
 </template>
 
-<script>
+<script setup="props">
+import { computed } from 'vue'
 import UnitSelect from './UnitSelect.vue'
-import { parseValue, parseUnit } from '../../store.js'
+import { parseValueUnit } from '../../store.js'
 
 export default {
-  name: 'GapInput',
   components: { UnitSelect },
   props: {
     grid: { type: Object, required: true },
-    type: { type: String, required: true } // 'row' or 'col'
+    type: { type: String, required: true }, // 'row' or 'col'
   },
-  methods: {
-    getGapUnit() {
-      return parseUnit(this.grid[this.type].gap)
-    },
-    getGapValue() {
-      return parseValue(this.grid[this.type].gap)
-    },
-    setGap(value) {
-      this.grid[this.type].gap = value
-    },
-    setGapValue(value) {
-      this.setGap(value + this.getGapUnit())
-    },
-    setGapUnit(unit) {
-      // TODO: Adjust value to avoid jump
-      this.setGap(this.getGapValue() + unit)
-    }
-  }
+}
+
+export const gap = computed(() => parseValueUnit(props.grid[props.type].gap))
+
+export function setGap(g) {
+  props.grid[props.type].gap = g
+}
+
+export function setGapValue(value) {
+  setGap(value + gap.value.unit)
+}
+
+export function setGapUnit(unit) {
+  // TODO: Adjust value to avoid jump
+  setGap(gap.value.value + unit)
 }
 </script>
 

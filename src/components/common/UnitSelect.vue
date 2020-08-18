@@ -8,7 +8,9 @@
   </select>
 </template>
 
-<script>
+<script setup="props">
+import { computed } from 'vue'
+
 const units = {
   grid: ['fr', 'px', '%', 'em', 'auto', 'min-content', 'max-content', 'minmax'],
   flex: ['px', '%', 'em'],
@@ -16,17 +18,13 @@ const units = {
 }
 
 export default {
-  name: 'UnitSelect',
   props: {
     modelValue: { type: String, default: 'px' },
     type: { type: String, default: 'default' }, //  default, grid, flex
   },
-  computed: {
-    options() {
-      return units[this.type]
-    },
-  },
 }
+
+export const options = computed(() => units[props.type])
 </script>
 
 <style scoped lang="scss">
