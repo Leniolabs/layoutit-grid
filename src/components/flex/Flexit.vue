@@ -19,36 +19,29 @@
   </div>
 </template>
 
-<script>
+<script setup="props">
+import { computed } from 'vue'
 import { store } from '../../store.js'
+
 export default {
-  name: 'Flexit',
   props: {
     area: { type: Object, required: true },
     currentArea: { type: Object, required: true },
     currentItem: { type: Number, default: null },
-    parentActive: { type: Boolean, default: false }
+    parentActive: { type: Boolean, default: false },
   },
-  data() {
-    return {}
-  },
-  computed: {
-    flex() {
-      return this.area.flex
-    },
-    isActive() {
-      return this.area === this.currentArea
-    }
-  },
-  methods: {
-    toggleFlexItem(item) {
-      store.data.currentArea = this.area
-      store.data.currentItem = item === this.currentItem ? null : item
-    },
-    deselectSubGrid() {
-      store.data.currentArea = store.data.area
-    }
-  }
+}
+
+export const flex = computed(() => props.area.flex)
+export const isActive = computed(() => props.area === props.currentArea)
+
+export function toggleFlexItem(item) {
+  store.data.currentArea = props.area
+  store.data.currentItem = item === props.currentItem ? null : item
+}
+
+export function deselectArea() {
+  store.data.currentArea = store.data.area
 }
 </script>
 

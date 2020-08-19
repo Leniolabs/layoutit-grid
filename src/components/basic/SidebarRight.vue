@@ -8,7 +8,6 @@
   </div>
 </template>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .right-sidebar-container {
   flex: 0 1 auto;
