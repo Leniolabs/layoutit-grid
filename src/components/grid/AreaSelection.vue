@@ -1,18 +1,18 @@
 <template>
   <section
-    v-if="isAdding"
+    v-if="selection"
     :style="{ 'grid-area': gridArea, 'border-color': selection.color }"
     class="area-selection"
   >
     <input
-      ref="addingName"
+      ref="nameInputElement"
       v-model="gridName"
       class="area-text"
       type="text"
       placeholder="Area Name"
       @keyup.enter="selectionSave"
     />
-    <button class="btn-remove" title="Remove Selection" @click="selectionRemove">
+    <button class="btn-remove" title="Remove Selection" @click="selection = null">
       <icon-remove />
     </button>
     <button
@@ -23,11 +23,13 @@
   </section>
 </template>
 
-<script>
+<script setup="props">
 import { gridRegionToGridArea } from '../../utils.js'
 import { store, isValidAreaName } from '../../store.js'
 
 import IconRemove from '../icons/icon-remove.vue'
+
+import { ref, computed } from 'vue'
 
 function selectionDimension(type, start, end) {
   return {
@@ -49,112 +51,92 @@ function farEnough(a, b, delta = 5) {
 }
 
 export default {
-  name: 'AreaSelection',
   components: { IconRemove },
   props: {
     area: { type: Object, required: true },
   },
-  data() {
-    return {
-      selection: null,
-      gridName: '',
+}
+
+export const selection = ref(null)
+export const gridName = ref('')
+export const nameInputElement = ref(null)
+
+export const grid = computed(() => props.area.grid)
+
+export const gridArea = computed(() =>
+  selection.value ? gridRegionToGridArea(selectionArea(selection.value)) : 'initial'
+)
+
+// TODO: rework to validName
+export const invalidClassName = computed(() => {
+  const name = gridName.value
+  return (name[0] >= '0' && name[0] <= '9') || !name[0]
+})
+
+export { isValidAreaName }
+
+export function cellDown({ clientX, clientY }, section) {
+  store.data.currentArea = this.area
+
+  if (!selection.value) {
+    selection.value = {
+      start: section,
+      end: section,
+      color: store.getRandomColor(),
+      fresh: true,
     }
-  },
-  computed: {
-    grid() {
-      return this.area.grid
-    },
-    gridArea() {
-      if (this.isAdding) {
-        return gridRegionToGridArea(selectionArea(this.selection))
+  }
+
+  selection.value.dragging = {
+    initial: { x: clientX, y: clientY },
+    section,
+  }
+
+  const finishDraggingSelection = () => {
+    if (selection.value.dragging) {
+      selection.value.end = selection.value.dragging.section
+      selection.value.dragging = null
+    }
+    selection.value.fresh = false
+    window.removeEventListener('pointerup', finishDraggingSelection)
+  }
+  window.addEventListener('pointerup', finishDraggingSelection, false)
+
+  // TODO: nextTick is not working here
+  setTimeout(() => nameInputElement.value.focus(), 0)
+}
+
+export function cellMove({ clientX, clientY }, section) {
+  if (selection.value) {
+    const { dragging, fresh } = selection.value
+    if (dragging) {
+      if (fresh) {
+        selection.value.end = section
       } else {
-        return 'initial'
-      }
-    },
-    isAdding() {
-      return !!this.selection
-    },
-    invalidClassName() {
-      const { gridName } = this
-      return (gridName[0] >= '0' && gridName[0] <= '9') || !gridName[0] ? true : false
-    },
-  },
-  methods: {
-    isValidAreaName,
-
-    cellDown({ clientX, clientY }, section) {
-      store.data.currentArea = this.area
-
-      let { selection } = this
-
-      if (!selection) {
-        selection = {
-          start: section,
-          end: section,
-          color: store.getRandomColor(),
-          fresh: true,
+        if (farEnough(dragging.initial, { x: clientX, y: clientY })) {
+          selection.value.fresh = true
+          selection.value.start = section
         }
       }
+      dragging.section = section
+    }
+  }
+}
 
-      selection.dragging = {
-        initial: { x: clientX, y: clientY },
-        section,
-      }
+export function selectionSave() {
+  if (!invalidClassName.value) {
+    const { color } = selection.value
+    grid.value.areas.push({
+      gridRegion: selectionArea(selection.value),
+      color,
+      name: gridName.value,
+      grid: null,
+      flex: null,
+    })
 
-      const finishDraggingSelection = () => {
-        if (selection.dragging) {
-          selection.end = selection.dragging.section
-          selection.dragging = null
-        }
-        selection.fresh = false
-        window.removeEventListener('pointerup', finishDraggingSelection)
-      }
-      window.addEventListener('pointerup', finishDraggingSelection, false)
-
-      this.selection = selection
-
-      // nextTick$ is not working here
-      setTimeout(() => this.$refs.addingName.focus(), 1)
-    },
-
-    cellMove({ clientX, clientY }, section) {
-      const { selection } = this
-      if (selection) {
-        const { dragging } = selection
-        if (dragging) {
-          if (!selection.fresh) {
-            if (farEnough(dragging.initial, { x: clientX, y: clientY })) {
-              selection.fresh = true
-              selection.start = section
-            }
-          }
-          dragging.section = section
-          if (selection.fresh) {
-            selection.end = section
-          }
-        }
-      }
-    },
-
-    selectionRemove() {
-      this.selection = null
-    },
-
-    selectionSave() {
-      if (!this.invalidClassName) {
-        const { color } = this.selection
-        this.grid.areas.push({
-          gridRegion: selectionArea(this.selection),
-          color,
-          name: this.gridName,
-          grid: null,
-          flex: null,
-        })
-        this.gridName = ''
-        this.selectionRemove()
-      }
-    },
-  },
+    gridName.value = ''
+    selection.value = null
+  }
 }
 </script>
 
