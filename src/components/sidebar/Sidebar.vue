@@ -15,16 +15,15 @@
   </div>
 </template>
 
-<script>
+<script setup="props">
+import { computed } from 'vue'
 import Version from './Version.vue'
 import BrandLogo from './BrandLogo.vue'
 import HireUs from './HireUs.vue'
-
 import FlexOptions from './FlexOptions.vue'
 import GridOptions from './GridOptions.vue'
 
 export default {
-  name: 'Sidebar',
   components: {
     Version,
     BrandLogo,
@@ -37,15 +36,10 @@ export default {
     currentArea: { type: Object, required: true },
     currentItem: { type: Number, default: null },
   },
-  computed: {
-    currentGrid() {
-      return this.currentArea.grid
-    },
-    currentFlex() {
-      return this.currentArea.flex
-    },
-  },
 }
+
+export const currentGrid = computed(() => props.currentArea.grid)
+export const currentFlex = computed(() => props.currentArea.flex)
 </script>
 
 <style scoped lang="scss">
