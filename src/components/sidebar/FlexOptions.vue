@@ -110,7 +110,9 @@
   </div>
 </template>
 
-<script>
+<script setup="props">
+import { computed } from 'vue'
+
 import { createFlexItemState } from '../../store.js'
 
 import IconRemove from '../icons/icon-remove.vue'
@@ -119,35 +121,33 @@ import UnitSelect from '../common/UnitSelect.vue'
 import GapInput from '../common/GapInput.vue'
 
 export default {
-  name: 'Sidebar',
   components: {
     IconRemove,
     UnitSelect,
-    GapInput
+    GapInput,
   },
   props: {
     flex: { type: Object, required: true },
-    currentItem: { type: Number, default: null }
+    currentItem: { type: Number, default: null },
   },
-  computed: {
-    selectedFlexItems() {
-      return flex.items.filter((item, i) => i + 1 === currentItem || !flex.defaultItem === item)
-    }
-  },
-  methods: {
-    addItem() {
-      const { flex } = this
-      flex.items.push(flex.defaultItem)
-    },
-    createNewItemIfDefault(item, i) {
-      const { flex } = this
-      const { defaultItem, items } = flex
-      if (defaultItem === item) {
-        this.$set(items, i - 1, new createFlexItemState(defaultItem))
-      }
-      return items[i - 1]
-    }
+}
+
+export const selectedFlexItems = computed(() => {
+  return props.flex.items.filter((item, i) => {
+    return i + 1 === props.currentItem || !props.flex.defaultItem === item
+  })
+})
+
+export function addItem() {
+  props.flex.items.push(props.flex.defaultItem)
+}
+
+export function createNewItemIfDefault(item, i) {
+  const { defaultItem, items } = props.flex
+  if (defaultItem === item) {
+    items[i - 1] = createFlexItemState(defaultItem)
   }
+  return items[i - 1]
 }
 </script>
 
