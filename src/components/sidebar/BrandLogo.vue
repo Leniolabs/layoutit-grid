@@ -4,12 +4,6 @@
   </a>
 </template>
 
-<script>
-export default {
-  name: 'BrandLogo',
-}
-</script>
-
 <style scoped lang="scss">
 .brand-logo {
   font-family: 'Alegreya Sans', 'Helvetica Neue', Arial, sans-serif;

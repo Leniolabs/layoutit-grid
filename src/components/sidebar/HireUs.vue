@@ -2,12 +2,6 @@
   <a class="hire-us" target="_blank" href="https://leniolabs.com/#contact">Hire us</a>
 </template>
 
-<script>
-export default {
-  name: 'HireUs'
-}
-</script>
-
 <style scoped lang="scss">
 .hire-us {
   background: #e91e63;

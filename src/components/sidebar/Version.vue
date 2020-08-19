@@ -2,12 +2,6 @@
   <div class="version">version 1.1.0</div>
 </template>
 
-<script>
-export default {
-  name: 'Version',
-}
-</script>
-
 <style scoped lang="scss">
 .version {
   color: #888;
