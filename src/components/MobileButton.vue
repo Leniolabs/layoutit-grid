@@ -4,11 +4,10 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import IconSidebar from './icons/icon-sidebar.vue'
 
 export default {
-  name: 'MobileButton',
   components: {
     IconSidebar
   }

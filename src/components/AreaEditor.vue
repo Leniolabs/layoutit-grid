@@ -1,28 +1,24 @@
 <template>
   <section
     :class="{ grayed }"
-    :style="{ 'grid-area': gridArea, 'border-color': area.color }"
+    :style="{ 'grid-area': getGridArea(area), 'border-color': area.color }"
     class="area-editor"
-    @pointerdown="handleDown($event, area)"
+    @pointerdown="handleDown($event)"
   >
     <div
       v-if="!isMain"
       :style="{ top: 5 + toolbarStart * 32 + 'px', left: toolbarStart ? toolbarStart * 20 + 'px' : '5px' }"
       class="area-info"
     >
-      <span
-        :style="{ 'border-color': area.color }"
-        class="area-name"
-        title="Area Name"
-      >{{ area.name }}</span>
-      <button v-show="!hasDisplay" class="btn-subgrid" title="Add Sub Grid" @click="subGrid(area)">
+      <span :style="{ 'border-color': area.color }" class="area-name" title="Area Name">{{ area.name }}</span>
+      <button v-show="!hasDisplay" class="btn-subgrid" title="Add Sub Grid" @click="subGrid()">
         <icon-subgrid />
       </button>
       <!--<button v-show="!hasDisplay" class="btn-subgrid" @click="subFlex(area)"><icon-flex /></button>-->
-      <button v-show="!hasDisplay" class="btn-remove" title="Remove Area" @click="removeArea(area)">
+      <button v-show="!hasDisplay" class="btn-remove" title="Remove Area" @click="removeArea()">
         <icon-remove />
       </button>
-      <button v-show="hasDisplay" class="btn-remove" title="Clear Area" @click="clearArea(area)">
+      <button v-show="hasDisplay" class="btn-remove" title="Clear Area" @click="clearArea()">
         <icon-clear />
       </button>
     </div>
@@ -45,19 +41,19 @@
   </section>
 </template>
 
-<script>
-import { defineAsyncComponent } from 'vue'
-import { store, createGridState, createFlexState } from '../store.js'
-import { getGridArea } from '../utils.js'
-
+<script setup="props, { emit }">
 import IconRemove from './icons/icon-remove.vue'
 import IconClear from './icons/icon-clear.vue'
 import IconSubgrid from './icons/icon-subgrid.vue'
 import IconFlex from './icons/icon-flex.vue'
 import Flexit from './flex/Flexit.vue'
 
+import { defineAsyncComponent, computed } from 'vue'
+import { store, createGridState, createFlexState } from '../store.js'
+
+export { getGridArea } from '../utils.js'
+
 export default {
-  name: 'AreaEditor',
   components: {
     IconRemove,
     IconClear,
@@ -65,78 +61,73 @@ export default {
     IconFlex,
     Flexit,
     // See Circular References Between Components @ Vue docs
-    GridEditor: defineAsyncComponent(() => import('./grid/GridEditor.vue'))
+    GridEditor: defineAsyncComponent(() => import('./grid/GridEditor.vue')),
   },
   props: {
     area: { type: Object, required: true },
     currentArea: { type: Object, required: true },
     currentItem: { type: Number, default: null },
-    parentActive: { type: Boolean, default: false }
+    parentActive: { type: Boolean, default: false },
   },
-  computed: {
-    gridArea() {
-      return getGridArea(this.area)
-    },
-    isMain() {
-      return this.area.name === store.data.area.name
-    },
-    isActive() {
-      return this.area.name === this.currentArea.name
-    },
-    grayed() {
-      return !(this.isActive || this.parentActive)
-    },
-    hasDisplay() {
-      const { area } = this
-      return area.grid || area.flex
-    },
-    toolbarStart() {
-      const { area } = this
-      return area.gridRegion
-        ? area.gridRegion.col.start === 1 && area.gridRegion.row.start === 1
-          ? store.getAreaDepth(area) - 1
-          : 0
-        : 0
-    }
-  },
-  methods: {
-    clearArea(area) {
-      area.grid = null
-      area.flex = null
-      this.deselectSubGrid()
-    },
-    handleDown(event, area) {
-      if (!area.grid) {
-        event.stopPropagation()
-        event.preventDefault()
-        const parent = store.getAreaParent(area)
-        if (parent) {
-          store.data.currentArea = parent
-        }
-      }
-    },
-    removeArea(area) {
-      this.$emit('removearea', area)
-      this.deselectSubGrid()
-    },
-    subFlex(area) {
-      this.clearArea(area)
-      if (!area.flex) {
-        area.flex = createFlexState()
-      }
-      store.data.currentArea = area
-    },
-    subGrid(area) {
-      this.clearArea(area)
-      if (!area.grid) {
-        area.grid = createGridState(3, 2)
-      }
-      store.data.currentArea = area
-    },
-    deselectSubGrid() {
-      store.data.currentArea = store.data.area
+}
+
+export const isMain = computed(() => props.area.name === store.data.area.name)
+
+export const isActive = computed(() => props.area.name === props.currentArea.name)
+
+export const grayed = computed(() => !(isActive.value || props.parentActive))
+
+export const hasDisplay = computed(() => props.area.grid || props.area.flex)
+
+export const toolbarStart = computed(() => {
+  const { gridRegion } = props.area
+  return gridRegion
+    ? gridRegion.col.start === 1 && gridRegion.row.start === 1
+      ? store.getAreaDepth(props.area) - 1
+      : 0
+    : 0
+})
+
+export function clearArea() {
+  props.area.grid = null
+  props.area.flex = null
+  deselect()
+}
+
+export function handleDown(event) {
+  if (!props.area.grid) {
+    event.stopPropagation()
+    event.preventDefault()
+    const parent = store.getAreaParent(props.area)
+    if (parent) {
+      store.data.currentArea = parent
     }
   }
+}
+
+export function removeArea() {
+  emit('removearea', props.area)
+  deselect()
+}
+
+export function subFlex() {
+  clearArea()
+  if (!area.flex) {
+    props.area.flex = createFlexState()
+  }
+  store.data.currentArea = props.area
+}
+
+export function subGrid() {
+  clearArea()
+  if (!props.area.grid) {
+    props.area.grid = createGridState(2, 3)
+  }
+  store.data.currentArea = props.area
+}
+
+function deselect() {
+  store.data.currentArea = store.data.area
 }
 </script>
 

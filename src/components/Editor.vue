@@ -7,7 +7,12 @@
     :current-item="currentItem"
     :parent-active="currentArea.name === area.name"
   />
-  <sidebar v-if="activeSidebar" :area="area" :current-area="currentArea" :current-item="currentItem" />
+  <sidebar
+    v-if="activeSidebar"
+    :area="area"
+    :current-area="currentArea"
+    :current-item="currentItem"
+  />
   <SidebarRight v-if="activeSidebarRight" :save-design="saveDesign">
     <template v-slot:header>
       <h1>Live</h1>
@@ -18,19 +23,18 @@
   </SidebarRight>
 </template>
 
-<script>
-import store from '../store.js'
-
+<script setup>
 import MobileButton from './MobileButton.vue'
-
 import GridEditor from './grid/GridEditor.vue'
 import AreaEditor from './AreaEditor.vue'
 import Sidebar from './sidebar/Sidebar.vue'
 import SidebarRight from './basic/SidebarRight.vue'
 import Code from './sidebar/Code.vue'
 
+import { ref, computed } from 'vue'
+import store from '../store.js'
+
 export default {
-  name: 'Editor',
   components: {
     AreaEditor,
     GridEditor,
@@ -42,24 +46,13 @@ export default {
   props: {
     saveDesign: { type: Function, default: null },
   },
-  data: function () {
-    return {
-      activeSidebar: true,
-      activeSidebarRight: true,
-    }
-  },
-  computed: {
-    area() {
-      return store.data.area
-    },
-    currentArea() {
-      return store.data.currentArea
-    },
-    currentItem() {
-      return store.data.currentItem
-    },
-  },
 }
+
+export let area = computed(() => store.data.area)
+export let currentArea = computed(() => store.data.currentArea)
+export let currentItem = computed(() => store.data.currentItem)
+export let activeSidebar = ref(true)
+export let activeSidebarRight = ref(true)
 </script>
 
 <style lang="scss">
