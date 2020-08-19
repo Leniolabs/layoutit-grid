@@ -8,8 +8,7 @@
       lastcol: section.col.end - 1 === colsNumber && section.row.start === 1,
       lastrow: section.row.end - 1 === rowsNumber && section.col.start === 1,
       dragging: isDraggingGrid && (dragging.colLine === section.col.start || dragging.rowLine === section.row.start),
-      overHandle,
-      grayed
+      grayed,
     }"
     class="grid-section"
     @pointerdown="$emit('down', $event)"
@@ -19,40 +18,29 @@
       :class="{ dragging: isDraggingGrid && dragging.colLine === section.col.start && section.row.start === 1 }"
       class="col-handle"
       @pointerdown.stop="handleDown($event, section, { col: true })"
-      @mouseover="overHandle = true"
-      @mouseout="overHandle = false"
     />
 
     <div
       :class="{ dragging: isDraggingGrid && dragging.rowLine === section.row.start && section.col.start === 1 }"
       class="row-handle"
       @pointerdown="handleDown($event, section, { row: true })"
-      @mouseover="overHandle = true"
-      @mouseout="overHandle = false"
     />
 
-    <div
-      class="multi-handle"
-      @pointerdown="handleDown($event, section, { row: true, col: true })"
-      @mouseover="overHandle = true"
-      @mouseout="overHandle = false"
-    />
+    <div class="multi-handle" @pointerdown="handleDown($event, section, { row: true, col: true })" />
 
     <slot />
 
-    <div
-      v-show="section.col.start === colsNumber && showInsideRowSize(section.row.start - 1)"
-      class="inside-row-size"
-    >{{ grid.row.sizes[section.row.start - 1] }}</div>
+    <div v-show="section.col.start === colsNumber && showInsideRowSize(section.row.start - 1)" class="inside-row-size">
+      {{ grid.row.sizes[section.row.start - 1] }}
+    </div>
 
-    <div
-      v-show="section.row.start === rowsNumber && showInsideColSize(section.col.start - 1)"
-      class="inside-col-size"
-    >{{ grid.col.sizes[section.col.start - 1] }}</div>
+    <div v-show="section.row.start === rowsNumber && showInsideColSize(section.col.start - 1)" class="inside-col-size">
+      {{ grid.col.sizes[section.col.start - 1] }}
+    </div>
   </section>
 </template>
 
-<script>
+<script setup="props, { emit }">
 import { store, parseValueUnit, valueUnitToString } from '../../store.js'
 
 function calcValue(prev, prevComp, delta) {
@@ -94,112 +82,97 @@ function farEnough(a, b, delta = 5) {
 }
 
 export default {
-  name: 'Cell',
   props: {
     section: { type: Object, required: true },
     area: { type: Object, required: true },
     gridComputedStyles: { type: Function, required: true },
-    grayed: { type: Boolean, default: false }
+    grayed: { type: Boolean, default: false },
   },
-  data() {
-    return {
-      overHandle: false
+}
+
+import { computed } from 'vue'
+
+export const grid = computed(() => props.area.grid)
+
+export const colsNumber = computed(() => grid.value.col.sizes.length)
+export const rowsNumber = computed(() => grid.value.row.sizes.length)
+
+export const isDraggingGrid = computed(() => props.dragging && props.dragging.grid === grid.value)
+
+export const dragging = computed(() => store.data.dragging)
+
+export function showInsideColSize(col) {
+  return isDraggingGrid.value && (col === dragging.value.colLine - 1 || col === dragging.value.colLine - 2)
+}
+export function showInsideRowSize(row) {
+  return isDraggingGrid.value && (row === dragging.value.rowLine - 1 || row === dragging.value.rowLine - 2)
+}
+
+export function handleDown(event, section, { row, col }) {
+  event.stopPropagation() // TODO: ...
+  event.preventDefault()
+
+  if (store.data.dragging) {
+    return
+  }
+
+  store.data.currentArea = props.area
+
+  const initialPos = { x: event.clientX, y: event.clientY }
+  const initialTime = new Date().getTime()
+  const rowLine = row ? section.row.start : undefined
+  const colLine = col ? section.col.start : undefined
+  const computedStyles = props.gridComputedStyles()
+  const initialRowSizes = [...grid.value.row.sizes]
+  const initialRowComputedSizes = computedStyles.gridTemplateRows.split(/\s/g)
+  const initialColSizes = [...grid.value.col.sizes]
+  const initialColComputedSizes = computedStyles.gridTemplateColumns.split(/\s/g)
+
+  const handleMove = (event) => {
+    const pos = { x: event.clientX, y: event.clientY }
+
+    if (!store.data.dragging && (new Date().getTime() - initialTime > 500 || farEnough(initialPos, pos))) {
+      // Start dragging grid lines
+      store.data.dragging = { grid, rowLine, colLine }
+      document.body.style.cursor = col && row ? 'move' : col ? 'col-resize' : 'row-resize'
     }
-  },
-  computed: {
-    grid() {
-      return this.area.grid
-    },
-    colsNumber() {
-      return this.grid.col.sizes.length
-    },
-    rowsNumber() {
-      return this.grid.row.sizes.length
-    },
-    isDraggingGrid() {
-      const { dragging } = this
-      return dragging && dragging.grid.areas === this.grid.areas
-    },
-    dragging() {
-      return store.data.dragging
-    }
-  },
-  methods: {
-    showInsideColSize(col) {
-      const { dragging } = this
-      return this.isDraggingGrid && (col === dragging.colLine - 1 || col === dragging.colLine - 2)
-    },
-    showInsideRowSize(row) {
-      const { dragging } = store.data
-      return this.isDraggingGrid && (row === dragging.rowLine - 1 || row === dragging.rowLine - 2)
-    },
-
-    handleDown(event, section, { row, col }) {
-      event.stopPropagation() // TODO: ...
-      event.preventDefault()
-
-      if (store.data.dragging) {
-        return
+    if (store.data.dragging) {
+      if (store.data.dragging.rowLine !== null) {
+        // Drag row line by updating row sizes
+        grid.value.row.sizes = resizeGridSizes(
+          initialRowSizes,
+          initialRowComputedSizes,
+          pos.y - initialPos.y,
+          store.data.dragging.rowLine
+        )
       }
-
-      store.data.currentArea = this.area
-
-      const { grid } = this
-      const initialPos = { x: event.clientX, y: event.clientY }
-      const initialTime = new Date().getTime()
-      const rowLine = row ? section.row.start : undefined
-      const colLine = col ? section.col.start : undefined
-      const computedStyles = this.gridComputedStyles()
-      const initialRowSizes = [...grid.row.sizes]
-      const initialRowComputedSizes = computedStyles.gridTemplateRows.split(/\s/g)
-      const initialColSizes = [...grid.col.sizes]
-      const initialColComputedSizes = computedStyles.gridTemplateColumns.split(/\s/g)
-
-      const handleMove = event => {
-        const pos = { x: event.clientX, y: event.clientY }
-
-        if (!store.data.dragging && (new Date().getTime() - initialTime > 500 || farEnough(initialPos, pos))) {
-          // Start dragging grid lines
-          store.data.dragging = { grid, rowLine, colLine }
-          document.body.style.cursor = col && row ? 'move' : col ? 'col-resize' : 'row-resize'
-        }
-        if (store.data.dragging.rowLine !== null) {
-          // Drag row line by updating row sizes
-          grid.row.sizes = resizeGridSizes(
-            initialRowSizes,
-            initialRowComputedSizes,
-            pos.y - initialPos.y,
-            store.data.dragging.rowLine
-          )
-        }
-        if (store.data.dragging.colLine !== undefined) {
-          // Drag col line by updating col sizes
-          grid.col.sizes = resizeGridSizes(
-            initialColSizes,
-            initialColComputedSizes,
-            pos.x - initialPos.x,
-            store.data.dragging.colLine
-          )
-        }
+      if (store.data.dragging.colLine !== undefined) {
+        // Drag col line by updating col sizes
+        grid.value.col.sizes = resizeGridSizes(
+          initialColSizes,
+          initialColComputedSizes,
+          pos.x - initialPos.x,
+          store.data.dragging.colLine
+        )
       }
-
-      const handleUp = () => {
-        if (store.data.dragging) {
-          // Finish dragging grid lines
-          store.data.dragging = null
-          document.body.style.cursor = 'default'
-        } else if (new Date().getTime() - initialTime < 500) {
-          // click
-          this.$emit('togglelinename', row ? `rowLine-${rowLine}` : `colLine-${colLine}`)
-        }
-
-        window.removeEventListener('pointermove', handleMove)
-        window.removeEventListener('pointerup', handleUp)
-      }
-      window.addEventListener('pointermove', handleMove)
-      window.addEventListener('pointerup', handleUp)
     }
   }
+
+  const handleUp = () => {
+    if (store.data.dragging) {
+      // Finish dragging grid lines
+      store.data.dragging = null
+      document.body.style.cursor = 'default'
+    } else if (new Date().getTime() - initialTime < 500) {
+      // click
+      emit('togglelinename', row ? `rowLine-${rowLine}` : `colLine-${colLine}`)
+    }
+
+    window.removeEventListener('pointermove', handleMove)
+    window.removeEventListener('pointerup', handleUp)
+  }
+  window.addEventListener('pointermove', handleMove)
+  window.addEventListener('pointerup', handleUp)
 }
 </script>
 
