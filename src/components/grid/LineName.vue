@@ -1,16 +1,16 @@
 <template>
   <input
-    v-show="lineNameActive"
-    ref="input"
-    :value="lineName"
+    ref="inputElement"
+    v-show="line.active"
+    :value="line.name"
     :style="`width:${lineNameWidth}px`"
     :class="type"
-    @input="setLineName($event.target.value)"
+    @input="line.name = $event.target.value"
     @pointerdown.stop
   />
 </template>
 
-<script>
+<script setup="props">
 let textWidthCanvas = null
 function getTextWidth(text, font) {
   if (!textWidthCanvas) {
@@ -22,39 +22,26 @@ function getTextWidth(text, font) {
 }
 
 export default {
-  name: 'LineName',
   props: {
     grid: { type: Object, required: true },
     type: { type: String, required: true }, // 'col' or 'row'
-    pos: { type: Number, required: true }
+    pos: { type: Number, required: true },
   },
-  computed: {
-    lineNameState() {
-      return this.grid[this.type].lineNames[this.pos - 1]
-    },
-    lineNameActive() {
-      return this.lineNameState.active
-    },
-    lineName() {
-      return this.lineNameState.name
-    },
-    lineNameWidth() {
-      return getTextWidth(this.lineName, '14px arial') + 30
-    }
-  },
-  methods: {
-    focus() {
-      this.$refs.input.focus()
-    },
-    toggle() {
-      const { lineNameState } = this
-      if ((lineNameState.active = !lineNameState.active)) {
-        this.$nextTick(() => this.focus())
-      }
-    },
-    setLineName(value) {
-      this.lineNameState.name = value
-    }
+}
+
+import { ref, computed, nextTick } from 'vue'
+
+export const line = computed(() => props.grid[props.type].lineNames[props.pos - 1])
+export const lineNameWidth = computed(() => getTextWidth(line.value.name, '14px arial') + 30)
+
+export const inputElement = ref(null)
+export function focus() {
+  inputElement.value.focus()
+}
+
+export function toggle() {
+  if ((line.value.active = !line.value.active)) {
+    nextTick(focus)
   }
 }
 </script>
