@@ -1,4 +1,4 @@
-<template functional>
+<template>
   <svg
     id="Compass"
     xmlns="http://www.w3.org/2000/svg"
