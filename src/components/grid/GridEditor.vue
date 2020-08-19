@@ -59,15 +59,24 @@ import IconSubgrid from '../icons/icon-subgrid.vue'
 
 import Cell from './Cell.vue'
 import AreaSelection from './AreaSelection.vue'
-import AreaEditor from '../AreaEditor.vue'
 import LineName from './LineName.vue'
 
 import { store } from '../../store.js'
 
 export { gridSections } from '../../utils.js'
+import { defineAsyncComponent } from 'vue'
 
 export default {
-  components: { IconRemove, IconClear, IconSubgrid, Cell, AreaSelection, AreaEditor, LineName },
+  components: {
+    IconRemove,
+    IconClear,
+    IconSubgrid,
+    Cell,
+    AreaSelection,
+    LineName,
+    // See Circular References Between Components @ Vue docs
+    AreaEditor: defineAsyncComponent(() => import('../AreaEditor.vue')),
+  },
   props: {
     area: { type: Object, required: true },
     currentArea: { type: Object, required: true },

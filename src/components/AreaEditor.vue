@@ -51,8 +51,9 @@ import IconClear from './icons/icon-clear.vue'
 import IconSubgrid from './icons/icon-subgrid.vue'
 import IconFlex from './icons/icon-flex.vue'
 import FlexEditor from './flex/FlexEditor.vue'
+import GridEditor from './grid/GridEditor.vue'
 
-import { defineAsyncComponent, computed } from 'vue'
+import { computed } from 'vue'
 import { store, createGridState, createFlexState } from '../store.js'
 
 export { getGridArea } from '../utils.js'
@@ -64,8 +65,7 @@ export default {
     IconSubgrid,
     IconFlex,
     FlexEditor,
-    // See Circular References Between Components @ Vue docs
-    GridEditor: defineAsyncComponent(() => import('./grid/GridEditor.vue')),
+    GridEditor,
   },
   props: {
     area: { type: Object, required: true },
