@@ -1,35 +1,34 @@
 <template>
   <mobile-button @click="activeSidebar = !activeSidebar" />
-
   <grid-editor
     :area="area"
     :current-area="currentArea"
     :current-item="currentItem"
     :parent-active="currentArea.name === area.name"
   />
-  <sidebar
+  <props-sidebar
     v-if="activeSidebar"
     :area="area"
     :current-area="currentArea"
     :current-item="currentItem"
   />
-  <SidebarRight v-if="activeSidebarRight" :save-design="saveDesign">
+  <sidebar-right v-if="activeSidebarRight" :save-design="saveDesign">
     <template v-slot:header>
       <h1>Live</h1>
     </template>
     <template v-slot:body>
-      <Code :area="area" />
+      <live-code :area="area" />
     </template>
-  </SidebarRight>
+  </sidebar-right>
 </template>
 
 <script setup>
 import MobileButton from './MobileButton.vue'
 import GridEditor from './grid/GridEditor.vue'
 import AreaEditor from './AreaEditor.vue'
-import Sidebar from './sidebar/Sidebar.vue'
+import PropsSidebar from './sidebar/PropsSidebar.vue'
 import SidebarRight from './basic/SidebarRight.vue'
-import Code from './sidebar/Code.vue'
+import LiveCode from './sidebar/LiveCode.vue'
 
 import { ref, computed } from 'vue'
 import store from '../store.js'
@@ -38,9 +37,9 @@ export default {
   components: {
     AreaEditor,
     GridEditor,
-    Sidebar,
+    PropsSidebar,
     SidebarRight,
-    Code,
+    LiveCode,
     MobileButton,
   },
   props: {

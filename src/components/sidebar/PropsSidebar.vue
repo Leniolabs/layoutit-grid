@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="sidebar">
-      <version />
+      <version-label />
       <brand-logo />
 
       <div v-if="currentArea !== area" class="area-name">{{ currentArea.name }}</div>
@@ -17,7 +17,7 @@
 
 <script setup="props">
 import { computed } from 'vue'
-import Version from './Version.vue'
+import VersionLabel from './Version.vue'
 import BrandLogo from './BrandLogo.vue'
 import HireUs from './HireUs.vue'
 import FlexOptions from './FlexOptions.vue'
@@ -25,7 +25,7 @@ import GridOptions from './GridOptions.vue'
 
 export default {
   components: {
-    Version,
+    VersionLabel,
     BrandLogo,
     HireUs,
     FlexOptions,

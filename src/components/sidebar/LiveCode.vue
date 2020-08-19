@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar-outermost-container">
     <div class="right-sidebar-content-container">
-      <permalink v-show="showPermalink" :path="permalink" @close="showPermalink = false" />
+      <permalink-bar v-show="showPermalink" :path="permalink" @close="showPermalink = false" />
       <div class="buttons">
         <form
           action="https://codepen.io/pen/define"
@@ -106,14 +106,14 @@ import SlideCheckbox from '../basic/SlideCheckbox.vue'
 import IconTrash from '../icons/icon-trash.vue'
 import SidebarButton from '../basic/SidebarButton.vue'
 
-import Permalink from './Permalink.vue'
+import PermalinkBar from './PermalinkBar.vue'
 
 export default {
   components: {
     IconCodepen,
     SlideCheckbox,
     IconTrash,
-    Permalink,
+    PermalinkBar,
     SidebarButton,
   },
   props: {

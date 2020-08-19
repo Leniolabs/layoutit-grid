@@ -20,7 +20,7 @@
       @removearea="removeArea(area)"
     />
 
-    <cell
+    <grid-cell
       v-for="(section, i) in gridSections(grid)"
       :key="`section-${i}`"
       :area="area"
@@ -46,7 +46,7 @@
         :pos="section.row.start"
         type="row"
       />
-    </cell>
+    </grid-cell>
 
     <area-selection ref="selection" :area="area" />
   </section>
@@ -57,7 +57,7 @@ import IconRemove from '../icons/icon-remove.vue'
 import IconClear from '../icons/icon-clear.vue'
 import IconSubgrid from '../icons/icon-subgrid.vue'
 
-import Cell from './Cell.vue'
+import GridCell from './GridCell.vue'
 import AreaSelection from './AreaSelection.vue'
 import LineName from './LineName.vue'
 
@@ -71,7 +71,7 @@ export default {
     IconRemove,
     IconClear,
     IconSubgrid,
-    Cell,
+    GridCell,
     AreaSelection,
     LineName,
     // See Circular References Between Components @ Vue docs
