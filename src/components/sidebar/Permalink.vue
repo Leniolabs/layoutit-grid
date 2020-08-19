@@ -6,18 +6,16 @@
   </div>
 </template>
 
-<script>
+<script setup="props">
+import { computed } from 'vue'
+
 export default {
-  name: 'Permalink',
   props: {
     path: { type: String, required: true }
-  },
-  computed: {
-    fullPath() {
-      return 'https://' + this.path
-    }
   }
 }
+
+export const fullPath = computed(() => 'https://' + props.path)
 </script>
 
 <style scoped lang="scss">
