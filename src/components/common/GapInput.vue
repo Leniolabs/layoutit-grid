@@ -20,7 +20,9 @@ export default {
   },
 }
 
-export const gap = computed(() => parseValueUnit(props.grid[props.type].gap))
+export const gap = computed(() => {
+  return parseValueUnit(props.grid[props.type].gap)
+})
 
 export function setGap(g) {
   props.grid[props.type].gap = g

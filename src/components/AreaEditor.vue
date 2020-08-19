@@ -10,7 +10,11 @@
       :style="{ top: 5 + toolbarStart * 32 + 'px', left: toolbarStart ? toolbarStart * 20 + 'px' : '5px' }"
       class="area-info"
     >
-      <span :style="{ 'border-color': area.color }" class="area-name" title="Area Name">{{ area.name }}</span>
+      <span
+        :style="{ 'border-color': area.color }"
+        class="area-name"
+        title="Area Name"
+      >{{ area.name }}</span>
       <button v-show="!hasDisplay" class="btn-subgrid" title="Add Sub Grid" @click="subGrid()">
         <icon-subgrid />
       </button>
@@ -31,7 +35,7 @@
       :parent-active="isActive || parentActive"
     />
 
-    <flexit
+    <flex-editor
       v-if="area.flex"
       :area="area"
       :current-area="currentArea"
@@ -46,7 +50,7 @@ import IconRemove from './icons/icon-remove.vue'
 import IconClear from './icons/icon-clear.vue'
 import IconSubgrid from './icons/icon-subgrid.vue'
 import IconFlex from './icons/icon-flex.vue'
-import Flexit from './flex/Flexit.vue'
+import FlexEditor from './flex/FlexEditor.vue'
 
 import { defineAsyncComponent, computed } from 'vue'
 import { store, createGridState, createFlexState } from '../store.js'
@@ -59,7 +63,7 @@ export default {
     IconClear,
     IconSubgrid,
     IconFlex,
-    Flexit,
+    FlexEditor,
     // See Circular References Between Components @ Vue docs
     GridEditor: defineAsyncComponent(() => import('./grid/GridEditor.vue')),
   },
