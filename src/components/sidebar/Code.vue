@@ -2,13 +2,19 @@
   <div class="sidebar-outermost-container">
     <div class="right-sidebar-content-container">
       <permalink v-show="showPermalink" :path="permalink" @close="showPermalink = false" />
-
       <div class="buttons">
-        <form action="https://codepen.io/pen/define" style="float: left;" method="POST" target="_blank">
+        <form
+          action="https://codepen.io/pen/define"
+          style="float: left;"
+          method="POST"
+          target="_blank"
+        >
           <input id="codepenData" :value="codePenJSON" type="hidden" name="data" />
-          <button type="submit" class="button codepen-btn"><icon-codepen />Create CodePen</button>
+          <button type="submit" class="button codepen-btn">
+            <icon-codepen />Create CodePen
+          </button>
         </form>
-        <sidebar-button :disabled="!this.saveDesign" @click="getPermalink">Get permalink</sidebar-button>
+        <sidebar-button :disabled="!saveDesign" @click="getPermalink">Get permalink</sidebar-button>
         <sidebar-button class="btn-trash" @click="restart">
           <icon-trash />
         </sidebar-button>
@@ -16,72 +22,82 @@
       <div class="code-grid">
         <div class="code-container">
           <span class="header-css">CSS</span>
-          <pre><code class="css" v-html="viewCSSCode" /></pre>
+          <pre><code class="css" v-html="highlight(cssCode, 'css')" /></pre>
         </div>
         <div class="code-container">
           <span class="header-css">HTML</span>
-          <pre><code class="html" v-html="viewHTMLCode" /></pre>
+          <pre><code class="html" v-html="highlight(htmlCode, 'html')" /></pre>
         </div>
       </div>
       <div class="divider"></div>
       <div class="output-settings">
-        <slide-checkbox id="checkbox-repeat" v-model="useRepeat">
+        <slide-checkbox id="checkbox-repeat" v-model="optionRepeat">
           <label for="checkbox-repeat">
             Apply CSS
             <strong>
-              <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/repeat" target="_blank">repeat</a>
+              <a
+                href="https://developer.mozilla.org/en-US/docs/Web/CSS/repeat"
+                target="_blank"
+              >repeat</a>
             </strong>
             function.
           </label>
         </slide-checkbox>
-        <slide-checkbox id="checkbox-template-areas" v-model="useTemplateAreas">
+        <slide-checkbox id="checkbox-template-areas" v-model="optionTemplateAreas">
           <label for="checkbox-template-areas">
             Use
             <strong>
-              <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-areas" target="_blank"
-                >grid-template-areas</a
-              >
+              <a
+                href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-areas"
+                target="_blank"
+              >grid-template-areas</a>
             </strong>
-            for positioning.
+            for positioning (if disabled, numbers will be used).
           </label>
         </slide-checkbox>
-        <slide-checkbox id="checkbox-prefix" v-model="usePrefix">
+        <slide-checkbox id="checkbox-prefix" v-model="optionPrefix">
           <label for="checkbox-prefix">
             Add
-            <strong>prefixes</strong> to grid names.
-            <input v-if="usePrefix" v-model="prefix" class="input-prefix" placeholder="Enter prefix..." />
+            <strong>prefixes</strong> to grid names (to avoid potential class conflicts).
+            <input
+              v-if="optionPrefix"
+              v-model="prefixName"
+              class="input-prefix"
+              placeholder="Enter prefix..."
+            />
           </label>
         </slide-checkbox>
-        <slide-checkbox id="checkbox-old-spec" v-model="useOldSpec">
+        <slide-checkbox id="checkbox-old-spec" v-model="optionOldSpec">
           <label for="checkbox-old-spec">
             Include support for
             <strong>
               <a
                 target="_blank"
                 href="https://rachelandrew.co.uk/archives/2016/11/26/should-i-try-to-use-the-ie-implementation-of-css-grid-layout/"
-                >legacy grid spec</a
-              >
+              >legacy grid spec</a>
             </strong>
-            (IE 10+).
+            (for Internet Explorer 10/11).
           </label>
         </slide-checkbox>
-        <div v-if="useOldSpec" class="checkbox-warning">
+        <div v-if="optionOldSpec" class="checkbox-warning">
           <strong>Warning:</strong> legacy grid spec does not support
           <a
             target="_blank"
             class="auto-placement-link"
             href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Auto-placement_in_CSS_Grid_Layout"
-            >auto-placement of elements!</a
-          >
+          >auto-placement of elements!</a>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup="props">
+import { ref, computed } from 'vue'
+
 import { store, createAreaState } from '../../store.js'
-import { highlight } from '../utils/highlight.js'
+
+export { highlight } from '../utils/highlight.js'
 import { areaToCSS, areaToHTML, ie_areaToCSS } from '../../generateCode.js'
 
 import IconCodepen from '../icons/icon-codepen.vue'
@@ -93,7 +109,6 @@ import SidebarButton from '../basic/SidebarButton.vue'
 import Permalink from './Permalink.vue'
 
 export default {
-  name: 'Code',
   components: {
     IconCodepen,
     SlideCheckbox,
@@ -101,81 +116,78 @@ export default {
     Permalink,
     SidebarButton,
   },
-  directives: { highlight },
   props: {
     area: { type: Object, required: true },
     saveDesign: { type: Function, default: null },
   },
-  data() {
-    return {
-      useRepeat: false,
-      useTemplateAreas: true,
-      usePrefix: false,
-      prefix: 'lt',
-      useOldSpec: false,
-      showPermalink: false,
-      permalink: '',
-    }
-  },
-  computed: {
-    getCSSCode() {
-      const { area, useTemplateAreas, useOldSpec } = this
-      const prefix = this.usePrefix ? this.prefix : undefined
-      const repeat = this.useRepeat
-      let css = areaToCSS(area, { useTemplateAreas, prefix, repeat })
-      if (useOldSpec) {
-        css += '\n\n'
-        css += ie_areaToCSS(area, { prefix, repeat })
-      }
-      return css
-    },
-    viewCSSCode() {
-      return highlight(this.getCSSCode, 'css')
-    },
-    getHTMLCode() {
-      const prefix = this.usePrefix ? this.prefix : undefined
-      return areaToHTML(this.area, { prefix })
-    },
-    viewHTMLCode() {
-      return highlight(this.getHTMLCode, 'html')
-    },
-    codePenJSON() {
-      const prefix = this.usePrefix ? this.prefix : undefined
-      return JSON.stringify({
-        title: 'New CSS Grid!',
-        html: this.getHTMLCode,
-        css:
-          `html, body, .${prefix ? prefix + '-' : ''}grid-container { height: 100%; margin: 0; }\n\n` +
-          this.getCSSCode +
-          `\n/* For presentation only, no need to copy the code below */\n.${
-            prefix ? prefix + '-' : ''
-          }grid-container * { \n border: 1px solid red;\n position: relative;\n}\n\n.${
-            prefix ? prefix + '-' : ''
-          }grid-container *:after { \n content:attr(class);\n position: absolute;\n top: 0;\n left: 0;\n}\n\n`,
-      })
-    },
-  },
-  methods: {
-    closeModal() {
-      this.$emit('close')
-    },
-    restart() {
-      debugger
-      store.setArea(createAreaState())
-    },
-    getTheCode() {
-      // TODO: flash live code
-    },
-    getPermalink() {
-      // Permalink supports depends on the deployed editor
-      if (this.saveDesign) {
-        this.saveDesign(this.area).then((path) => {
-          this.permalink = path
-          this.showPermalink = true
-        })
-      }
-    },
-  },
+}
+
+export const optionRepeat = ref(false)
+export const optionTemplateAreas = ref(true)
+export const optionPrefix = ref(false)
+export const optionOldSpec = ref(false)
+
+export const prefixName = ref('lt')
+
+export const showPermalink = ref(false)
+export const permalink = ref('')
+
+const prefix = computed(() => (optionPrefix.value ? prefixName.value : undefined))
+
+export const cssCode = computed(() => {
+  const repeat = optionRepeat.value
+  let css = areaToCSS(props.area, { useTemplateAreas: optionTemplateAreas.value, prefix: prefix.value, repeat })
+  if (optionOldSpec.value) {
+    css += '\n\n'
+    css += ie_areaToCSS(props.area, { prefix: prefix.value, repeat })
+  }
+  return css
+})
+
+export const htmlCode = computed(() => areaToHTML(props.area, { prefix: prefix.value }))
+
+function prefixed(name) {
+  return (prefix.value ? prefix.value + '-' : '') + name
+}
+
+export function codePenJSON() {
+  const containerClass = prefixed('grid-container')
+
+  return JSON.stringify({
+    title: 'New CSS Grid!',
+    html: htmlCode.value,
+    css: `html, body, .${containerClass} { height: 100%; margin: 0; }
+
+${cssCode.value}
+
+/* For presentation only, no need to copy the code below */
+.${containerClass} * {
+  border: 1px solid red;
+  position: relative;
+  }
+
+.${containerClass} *:after {
+  content:attr(class);
+  position: absolute;
+  top: 0;
+  left: 0;
+  }
+`,
+  })
+}
+
+export function restart() {
+  store.setArea(createAreaState())
+}
+
+export function getPermalink() {
+  // Permalink supports depends on the deployed editor
+  if (saveDesign.value) {
+    saveDesign.value(area.value).then((path) => {
+      permalink.value = path
+      showPermalink.value = true
+    })
+  }
 }
 </script>
 
