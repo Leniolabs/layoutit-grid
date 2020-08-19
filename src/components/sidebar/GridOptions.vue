@@ -29,7 +29,7 @@
           </options-button>
         </div>
       </div>
-      <options-button class="add-button" @click="addCol">Add</options-button>
+      <options-button class="add-button" @click="addCol(grid, '1fr')">Add</options-button>
     </div>
     <div class="items rows">
       <h2>
@@ -60,7 +60,7 @@
           </options-button>
         </div>
       </div>
-      <options-button class="add-button" @click="addRow">Add</options-button>
+      <options-button class="add-button" @click="addRow(grid, '1fr')">Add</options-button>
     </div>
     <div class="items gaps">
       <h2>
@@ -72,31 +72,14 @@
   </div>
 </template>
 
-<script>
+<script setup="props">
 import IconRemove from '../icons/icon-remove.vue'
 
 import UnitSelect from '../common/UnitSelect.vue'
 import GapInput from '../common/GapInput.vue'
 import OptionsButton from '../basic/OptionsButton.vue'
 
-import {
-  store,
-  getRowValue,
-  getRowUnit,
-  setRowValue,
-  removeRow,
-  addRow,
-  getColValue,
-  getColUnit,
-  setColValue,
-  removeCol,
-  addCol,
-  setRowValueUnit,
-  setColValueUnit,
-} from '../../store.js'
-
 export default {
-  name: 'GridOptions',
   components: {
     IconRemove,
     UnitSelect,
@@ -106,87 +89,63 @@ export default {
   props: {
     grid: { type: Object, required: true },
   },
-  computed: {
-    rowsNumber() {
-      return this.grid.row.sizes.length
-    },
-    colsNumber() {
-      return this.grid.col.sizes.length
-    },
-    dragging() {
-      return store.data.dragging
-    },
-  },
-  methods: {
-    getRowValue,
-    getRowUnit,
-    setRowValue,
-    removeRow,
-    getColValue,
-    getColUnit,
-    setColValue,
-    removeCol,
-    addCol() {
-      addCol(this.grid, '1fr')
-    },
-    addRow() {
-      addRow(this.grid, '1fr')
-    },
-    unitHasValue(unit) {
-      return !(unit === 'auto' || unit === 'min-content' || unit === 'max-content')
-    },
-    onRowUnitInput(event, row) {
-      const unit = event
-      let value
-      if (unit === 'px') {
-        value = 300
-      } else if (unit === 'fr') {
-        value = 1
-      } else if (unit === 'em') {
-        value = 4
-      } else if (unit === '%') {
-        value = 10
-      } else if (unit === 'minmax') {
-        value = '20px, 60px'
-      } else if (unit === 'auto') {
-        value = ''
-      } else if (unit === 'min-content') {
-        value = ''
-      } else if (unit === 'max-content') {
-        value = ''
-      } else {
-        value = 1
-      }
+}
 
-      setRowValueUnit(this.grid, row, { value, unit })
-    },
+import { computed } from 'vue'
 
-    onColUnitInput(event, col) {
-      const unit = event
-      let value
-      if (unit === 'px') {
-        value = 300
-      } else if (unit === 'fr') {
-        value = 1
-      } else if (unit === 'em') {
-        value = 4
-      } else if (unit === '%') {
-        value = 10
-      } else if (unit === 'minmax') {
-        value = '20px, 60px'
-      } else if (unit === 'auto') {
-        value = ''
-      } else if (unit === 'min-content') {
-        value = ''
-      } else if (unit === 'max-content') {
-        value = ''
-      } else {
-        value = 1
-      }
+export {
+  addCol,
+  addRow,
+  getRowValue,
+  getRowUnit,
+  setRowValue,
+  removeRow,
+  getColValue,
+  getColUnit,
+  setColValue,
+  removeCol,
+} from '../../store.js'
 
-      setColValueUnit(this.grid, col, { value, unit })
-    },
-  },
+import { store, setRowValueUnit, setColValueUnit } from '../../store.js'
+
+export const rowsNumber = computed(() => props.grid.row.sizes.length)
+export const colsNumber = computed(() => props.grid.col.sizes.length)
+
+export const dragging = computed(() => store.data.dragging)
+
+export function unitHasValue(unit) {
+  return !(unit === 'auto' || unit === 'min-content' || unit === 'max-content')
+}
+
+// TODO: compute new value using previous size
+
+function defaultValueForUnit(unit) {
+  switch (unit) {
+    case 'px':
+      return 300
+    case 'fr':
+      return 1
+    case 'em':
+      return 4
+    case '%':
+      return 10
+    case 'minmax':
+      return '20px, 60px'
+    case 'auto':
+    case 'min-content':
+    case 'max-content':
+      return ''
+    default:
+      return 1
+  }
+}
+
+export function onRowUnitInput(unit, row) {
+  setRowValueUnit(props.grid, row, { value: defaultValueForUnit(unit), unit })
+}
+
+export function onColUnitInput(unit, col) {
+  setColValueUnit(props.grid, col, { value: defaultValueForUnit(unit), unit })
 }
 </script>
 
