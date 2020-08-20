@@ -73,7 +73,7 @@
 </template>
 
 <script setup="props">
-import IconRemove from '../icons/icon-remove.vue'
+import IconRemove from '../icons/IconRemove.vue'
 
 import UnitSelect from '../common/UnitSelect.vue'
 import GapInput from '../common/GapInput.vue'

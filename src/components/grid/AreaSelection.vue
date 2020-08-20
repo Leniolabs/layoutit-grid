@@ -27,7 +27,7 @@
 import { gridRegionToGridArea } from '../../utils.js'
 import { store, isValidAreaName } from '../../store.js'
 
-import IconRemove from '../icons/icon-remove.vue'
+import IconRemove from '../icons/IconRemove.vue'
 
 import { ref, computed } from 'vue'
 

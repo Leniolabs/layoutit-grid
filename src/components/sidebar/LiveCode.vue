@@ -100,10 +100,10 @@ import { store, createAreaState } from '../../store.js'
 export { highlight } from '../utils/highlight.js'
 import { areaToCSS, areaToHTML, ie_areaToCSS } from '../../generateCode.js'
 
-import IconCodepen from '../icons/icon-codepen.vue'
+import IconCodepen from '../icons/IconCodepen.vue'
 import SlideCheckbox from '../basic/SlideCheckbox.vue'
 
-import IconTrash from '../icons/icon-trash.vue'
+import IconTrash from '../icons/IconTrash.vue'
 import SidebarButton from '../basic/SidebarButton.vue'
 
 import PermalinkBar from './PermalinkBar.vue'

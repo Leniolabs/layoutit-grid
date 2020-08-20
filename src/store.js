@@ -226,7 +226,6 @@ export var store = {
     this.data.currentArea = area
   },
   setArea(area) {
-    debugger
     this.data.area = area
     this.setCurrentArea(area)
   },
