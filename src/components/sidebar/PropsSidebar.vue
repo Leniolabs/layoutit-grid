@@ -17,7 +17,7 @@
 
 <script setup="props">
 import { computed } from 'vue'
-import VersionLabel from './Version.vue'
+import VersionLabel from './VersionLabel.vue'
 import BrandLogo from './BrandLogo.vue'
 import HireUs from './HireUs.vue'
 import FlexOptions from './FlexOptions.vue'
