@@ -69,15 +69,57 @@ function deselect() {
 </script>
 
 <style scoped lang="scss">
-@import '../css/area-button.scss';
-
 button {
+  background: #3094b4;
+  border: 0;
+  height: 1.8rem;
+  line-height: 0.5rem;
+  margin-bottom: 5px;
+  color: #fff;
+  font-size: 0.875rem;
+  display: inline-block;
+  padding: 0.375em;
+  cursor: pointer;
+
   position: absolute;
   z-index: 999;
   top: 5px;
   pointer-events: all;
-  margin-bottom: 5px;
   vertical-align: top;
+
+  &.btn-save {
+    border-radius: 2px 0 0 2px;
+    &:hover {
+      background: #2fc334;
+    }
+  }
+  &.btn-subgrid {
+    background: #6b16a1;
+    padding-top: 4px;
+    &:hover {
+      background: #490c6f;
+    }
+    svg {
+      height: 1.125rem;
+      width: 1.125rem;
+      fill: #fff;
+    }
+  }
+  &.btn-remove {
+    width: 1.8rem;
+    background: #e91e63;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    &:hover {
+      background: #c11651;
+    }
+    svg {
+      height: 0.688rem;
+      width: 0.688rem;
+      fill: #fff;
+    }
+  }
+
   &.btn-save {
     right: 38px;
   }
