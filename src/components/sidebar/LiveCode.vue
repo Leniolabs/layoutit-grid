@@ -150,7 +150,7 @@ function prefixed(name) {
   return (prefix.value ? prefix.value + '-' : '') + name
 }
 
-export function codePenJSON() {
+export const codePenJSON = computed(() => {
   const containerClass = prefixed('grid-container')
 
   return JSON.stringify({
@@ -174,7 +174,7 @@ ${cssCode.value}
   }
 `,
   })
-}
+})
 
 export function restart() {
   store.setArea(createAreaState())
