@@ -17,7 +17,6 @@
       :current-area="currentArea"
       :current-item="currentItem"
       :parent-active="parentActive"
-      @removearea="removeArea(area)"
     />
 
     <grid-cell
@@ -53,10 +52,6 @@
 </template>
 
 <script setup="props, { el }">
-import IconRemove from '../icons/icon-remove.vue'
-import IconClear from '../icons/icon-clear.vue'
-import IconSubgrid from '../icons/icon-subgrid.vue'
-
 import GridCell from './GridCell.vue'
 import AreaSelection from './AreaSelection.vue'
 import LineName from './LineName.vue'
@@ -68,14 +63,11 @@ import { defineAsyncComponent } from 'vue'
 
 export default {
   components: {
-    IconRemove,
-    IconClear,
-    IconSubgrid,
     GridCell,
     AreaSelection,
     LineName,
     // See Circular References Between Components @ Vue docs
-    AreaEditor: defineAsyncComponent(() => import('../AreaEditor.vue')),
+    AreaEditor: defineAsyncComponent(() => import('../area/AreaEditor.vue')),
   },
   props: {
     area: { type: Object, required: true },
@@ -96,11 +88,6 @@ export const { dragging } = store.data
 export const sectionElement = ref(null)
 export function gridComputedStyles() {
   return window.getComputedStyle(sectionElement.value)
-}
-
-export function removeArea(area) {
-  const { areas } = grid.value
-  areas.splice(areas.indexOf(area), 1)
 }
 </script>
 
