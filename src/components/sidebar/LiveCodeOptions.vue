@@ -1,0 +1,106 @@
+<template>
+  <div class="output-settings">
+    <slide-checkbox id="checkbox-repeat" v-model="modelValue.repeat">
+      Apply CSS
+      <strong>
+        <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/repeat" target="_blank">repeat</a>
+      </strong>
+      function.
+    </slide-checkbox>
+    <slide-checkbox id="checkbox-template-areas" v-model="modelValue.templateAreas">
+      Use
+      <strong>
+        <a
+          href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-areas"
+          target="_blank"
+        >grid-template-areas</a>
+      </strong>
+      for positioning (if disabled, numbers will be used).
+    </slide-checkbox>
+    <slide-checkbox id="checkbox-prefix" v-model="modelValue.prefix">
+      Add
+      <strong>prefixes</strong> to grid names (to avoid potential class conflicts).
+      <input
+        v-if="modelValue.prefix"
+        v-model="modelValue.prefixName"
+        class="input-prefix"
+        placeholder="Enter prefix..."
+      />
+    </slide-checkbox>
+    <slide-checkbox id="checkbox-old-spec" v-model="modelValue.oldSpec">
+      Include support for
+      <strong>
+        <a
+          target="_blank"
+          href="https://rachelandrew.co.uk/archives/2016/11/26/should-i-try-to-use-the-ie-implementation-of-css-grid-layout/"
+        >legacy grid spec</a>
+      </strong>
+      (for Internet Explorer 10/11).
+    </slide-checkbox>
+    <div v-if="modelValue.oldSpec" class="checkbox-warning">
+      <strong>Warning:</strong> legacy grid spec does not support
+      <a
+        target="_blank"
+        class="auto-placement-link"
+        href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Auto-placement_in_CSS_Grid_Layout"
+      >auto-placement of elements!</a>
+    </div>
+  </div>
+</template>
+
+<script setup="props">
+import SlideCheckbox from '../basic/SlideCheckbox.vue'
+
+export default {
+  components: {
+    SlideCheckbox,
+  },
+  props: {
+    modelValue: { type: Object, required: true },
+  },
+}
+</script>
+
+<style scoped lang="scss">
+.input-prefix {
+  border-radius: 2px;
+  border: 1px solid #aaa;
+  width: 90px;
+  padding: 2px 5px;
+  margin-left: 5px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.checkbox-warning {
+  color: #333;
+  margin-bottom: 10px;
+  margin-top: 5px;
+  padding: 6px 10px;
+  border-radius: 2px;
+  background-color: #fdd835;
+  width: 100%;
+  font-size: 14px;
+  .auto-placement-link {
+    font-weight: 600;
+  }
+}
+
+.output-settings {
+  margin: 10px 0 0 0;
+  width: 100%;
+  font-size: 14px;
+  a {
+    color: #3094b4;
+  }
+  .slide-checkbox {
+    padding-bottom: 5px;
+    &:last-child {
+      padding-bottom: 0;
+    }
+  }
+  > {
+    padding-bottom: 5px;
+  }
+}
+</style>

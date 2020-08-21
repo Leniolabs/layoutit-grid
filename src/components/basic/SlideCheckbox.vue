@@ -13,7 +13,9 @@
       <span class="switch-labels" />
     </fieldset>
     <aside>
-      <slot />
+      <label for="id">
+        <slot />
+      </label>
     </aside>
   </div>
 </template>

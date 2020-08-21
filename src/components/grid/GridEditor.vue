@@ -92,8 +92,6 @@ export function gridComputedStyles() {
 </script>
 
 <style scoped lang="scss">
-@import '../css/area-button.scss';
-
 .grid {
   touch-action: none;
   height: 100%;

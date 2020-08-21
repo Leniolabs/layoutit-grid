@@ -30,64 +30,7 @@
         </div>
       </div>
       <div class="divider"></div>
-      <div class="output-settings">
-        <slide-checkbox id="checkbox-repeat" v-model="optionRepeat">
-          <label for="checkbox-repeat">
-            Apply CSS
-            <strong>
-              <a
-                href="https://developer.mozilla.org/en-US/docs/Web/CSS/repeat"
-                target="_blank"
-              >repeat</a>
-            </strong>
-            function.
-          </label>
-        </slide-checkbox>
-        <slide-checkbox id="checkbox-template-areas" v-model="optionTemplateAreas">
-          <label for="checkbox-template-areas">
-            Use
-            <strong>
-              <a
-                href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-areas"
-                target="_blank"
-              >grid-template-areas</a>
-            </strong>
-            for positioning (if disabled, numbers will be used).
-          </label>
-        </slide-checkbox>
-        <slide-checkbox id="checkbox-prefix" v-model="optionPrefix">
-          <label for="checkbox-prefix">
-            Add
-            <strong>prefixes</strong> to grid names (to avoid potential class conflicts).
-            <input
-              v-if="optionPrefix"
-              v-model="prefixName"
-              class="input-prefix"
-              placeholder="Enter prefix..."
-            />
-          </label>
-        </slide-checkbox>
-        <slide-checkbox id="checkbox-old-spec" v-model="optionOldSpec">
-          <label for="checkbox-old-spec">
-            Include support for
-            <strong>
-              <a
-                target="_blank"
-                href="https://rachelandrew.co.uk/archives/2016/11/26/should-i-try-to-use-the-ie-implementation-of-css-grid-layout/"
-              >legacy grid spec</a>
-            </strong>
-            (for Internet Explorer 10/11).
-          </label>
-        </slide-checkbox>
-        <div v-if="optionOldSpec" class="checkbox-warning">
-          <strong>Warning:</strong> legacy grid spec does not support
-          <a
-            target="_blank"
-            class="auto-placement-link"
-            href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Auto-placement_in_CSS_Grid_Layout"
-          >auto-placement of elements!</a>
-        </div>
-      </div>
+      <live-code-options v-model="options" />
     </div>
   </div>
 </template>
@@ -101,20 +44,21 @@ export { highlight } from '../utils/highlight.js'
 import { areaToCSS, areaToHTML, ie_areaToCSS } from '../../generateCode.js'
 
 import IconCodepen from '../icons/IconCodepen.vue'
-import SlideCheckbox from '../basic/SlideCheckbox.vue'
 
 import IconTrash from '../icons/IconTrash.vue'
 import SidebarButton from '../basic/SidebarButton.vue'
 
 import PermalinkBar from './PermalinkBar.vue'
 
+import LiveCodeOptions from './LiveCodeOptions.vue'
+
 export default {
   components: {
     IconCodepen,
-    SlideCheckbox,
     IconTrash,
     PermalinkBar,
     SidebarButton,
+    LiveCodeOptions,
   },
   props: {
     area: { type: Object, required: true },
@@ -122,22 +66,22 @@ export default {
   },
 }
 
-export const optionRepeat = ref(false)
-export const optionTemplateAreas = ref(true)
-export const optionPrefix = ref(false)
-export const optionOldSpec = ref(false)
-
-export const prefixName = ref('lt')
+export const options = ref({
+  templateAreas: true,
+  prefix: false,
+  prefixName: 'lt',
+  oldSpec: false,
+})
 
 export const showPermalink = ref(false)
 export const permalink = ref('')
 
-const prefix = computed(() => (optionPrefix.value ? prefixName.value : undefined))
+const prefix = computed(() => (options.value.prefix ? options.value.prefixName : undefined))
 
 export const cssCode = computed(() => {
-  const repeat = optionRepeat.value
-  let css = areaToCSS(props.area, { useTemplateAreas: optionTemplateAreas.value, prefix: prefix.value, repeat })
-  if (optionOldSpec.value) {
+  const { repeat, templateAreas, oldSpec } = options.value
+  let css = areaToCSS(props.area, { useTemplateAreas: templateAreas, prefix: prefix.value, repeat })
+  if (oldSpec) {
     css += '\n\n'
     css += ie_areaToCSS(props.area, { prefix: prefix.value, repeat })
   }
