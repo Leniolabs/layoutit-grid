@@ -3,17 +3,7 @@
     <div class="right-sidebar-content-container">
       <permalink-bar v-show="showPermalink" :path="permalink" @close="showPermalink = false" />
       <div class="buttons">
-        <form
-          action="https://codepen.io/pen/define"
-          style="float: left;"
-          method="POST"
-          target="_blank"
-        >
-          <input id="codepenData" :value="codePenJSON" type="hidden" name="data" />
-          <button type="submit" class="button codepen-btn">
-            <icon-codepen />Create CodePen
-          </button>
-        </form>
+        <codepen-button :cssCode="cssCode" :htmlCode="htmlCode" :prefix="prefix" />
         <sidebar-button :disabled="!saveDesign" @click="getPermalink">Get permalink</sidebar-button>
         <sidebar-button class="btn-trash" @click="restart">
           <icon-trash />
@@ -43,21 +33,20 @@ import { store, createAreaState } from '../../store.js'
 export { highlight } from '../utils/highlight.js'
 import { areaToCSS, areaToHTML, ie_areaToCSS } from '../../generateCode.js'
 
-import IconCodepen from '../icons/IconCodepen.vue'
-
 import IconTrash from '../icons/IconTrash.vue'
 import SidebarButton from '../basic/SidebarButton.vue'
 
+import CodepenButton from './CodepenButton.vue'
 import PermalinkBar from './PermalinkBar.vue'
 
 import LiveCodeOptions from './LiveCodeOptions.vue'
 
 export default {
   components: {
-    IconCodepen,
     IconTrash,
     PermalinkBar,
     SidebarButton,
+    CodepenButton,
     LiveCodeOptions,
   },
   props: {
@@ -73,10 +62,7 @@ export const options = ref({
   oldSpec: false,
 })
 
-export const showPermalink = ref(false)
-export const permalink = ref('')
-
-const prefix = computed(() => (options.value.prefix ? options.value.prefixName : undefined))
+export const prefix = computed(() => (options.value.prefix ? options.value.prefixName : undefined))
 
 export const cssCode = computed(() => {
   const { repeat, templateAreas, oldSpec } = options.value
@@ -88,41 +74,16 @@ export const cssCode = computed(() => {
   return css
 })
 
-export const htmlCode = computed(() => areaToHTML(props.area, { prefix: prefix.value }))
-
-function prefixed(name) {
-  return (prefix.value ? prefix.value + '-' : '') + name
-}
-
-export const codePenJSON = computed(() => {
-  const containerClass = prefixed('grid-container')
-
-  return JSON.stringify({
-    title: 'New CSS Grid!',
-    html: htmlCode.value,
-    css: `html, body, .${containerClass} { height: 100%; margin: 0; }
-
-${cssCode.value}
-
-/* For presentation only, no need to copy the code below */
-.${containerClass} * {
-  border: 1px solid red;
-  position: relative;
-  }
-
-.${containerClass} *:after {
-  content:attr(class);
-  position: absolute;
-  top: 0;
-  left: 0;
-  }
-`,
-  })
+export const htmlCode = computed(() => {
+  return areaToHTML(props.area, { prefix: prefix.value })
 })
 
 export function restart() {
   store.setArea(createAreaState())
 }
+
+export const showPermalink = ref(false)
+export const permalink = ref('')
 
 export function getPermalink() {
   // Permalink supports depends on the deployed editor
@@ -171,12 +132,6 @@ export function getPermalink() {
   }
   &.btn-default {
     background: #b4bcc8;
-  }
-  &.codepen-btn {
-    background: #333;
-    &:hover {
-      background: #444;
-    }
   }
 }
 
@@ -250,23 +205,6 @@ export function getPermalink() {
       font-size: 14px;
       padding: 10px;
     }
-  }
-}
-.output-settings {
-  margin: 10px 0 0 0;
-  width: 100%;
-  font-size: 14px;
-  a {
-    color: #3094b4;
-  }
-  .slide-checkbox {
-    padding-bottom: 5px;
-    &:last-child {
-      padding-bottom: 0;
-    }
-  }
-  > {
-    padding-bottom: 5px;
   }
 }
 
