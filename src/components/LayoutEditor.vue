@@ -55,8 +55,6 @@ export let activeSidebarRight = ref(true)
 </script>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css?family=Alegreya+Sans:400,400i,700,700i,900,900i');
-
 *,
 *:before,
 *:after {
@@ -78,7 +76,7 @@ input[type='number']::-webkit-outer-spin-button {
 p {
   margin-top: 0;
   font-size: 18px;
-  font-family: 'Alegreya Sans', 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
 .disabled,
