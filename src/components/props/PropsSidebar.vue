@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="sidebar">
-      <version-label />
       <brand-logo />
 
       <div v-if="currentArea !== area" class="area-name">{{ currentArea.name }}</div>
@@ -11,6 +10,7 @@
       <grid-options v-if="currentGrid" :grid="currentGrid" />
 
       <hire-us />
+      <version-label />
     </div>
   </div>
 </template>
@@ -85,35 +85,6 @@ export const currentFlex = computed(() => props.currentArea.flex)
   z-index: 9;
   transition: transform 0.2s ease-in;
   overflow: auto;
-
-  .buttons {
-    margin-bottom: 12px;
-    display: grid;
-    grid-template-columns: 1fr 35px;
-    grid-template-rows: auto auto;
-    grid-gap: 0 10px;
-    button {
-      width: 100%;
-      margin-bottom: 10px;
-      margin-bottom: 0.875em;
-      min-height: 2.188em;
-      min-width: 2.188em;
-      margin-bottom: 0.626em;
-      padding: 0.313em 9px;
-      svg {
-        width: 100%;
-        height: 100%;
-        padding: 1px;
-        fill: #fff;
-      }
-      &:first-child {
-        background: #27ae60;
-        &:hover {
-          background: #12906a;
-        }
-      }
-    }
-  }
 
   @media screen and (max-width: 768px) {
     transform: translateX(-14em);

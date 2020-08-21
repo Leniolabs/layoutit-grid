@@ -1,9 +1,7 @@
 <template>
   <form action="https://codepen.io/pen/define" style="float: left;" method="POST" target="_blank">
     <input id="codepenData" :value="codePenJSON" type="hidden" name="data" />
-    <button type="submit" class="button codepen-btn">
-      <icon-codepen />Create CodePen
-    </button>
+    <button type="submit" class="button codepen-btn"><icon-codepen />Create CodePen</button>
   </form>
 </template>
 

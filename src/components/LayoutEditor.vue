@@ -6,12 +6,7 @@
     :current-item="currentItem"
     :parent-active="currentArea.name === area.name"
   />
-  <props-sidebar
-    v-if="activeSidebar"
-    :area="area"
-    :current-area="currentArea"
-    :current-item="currentItem"
-  />
+  <props-sidebar v-if="activeSidebar" :area="area" :current-area="currentArea" :current-item="currentItem" />
   <sidebar-right v-if="activeSidebarRight" :save-design="saveDesign">
     <template v-slot:header>
       <h1>Live</h1>
@@ -26,9 +21,10 @@
 import MobileButton from './MobileButton.vue'
 import GridEditor from './grid/GridEditor.vue'
 import AreaEditor from './area/AreaEditor.vue'
-import PropsSidebar from './sidebar/PropsSidebar.vue'
 import SidebarRight from './basic/SidebarRight.vue'
-import LiveCode from './sidebar/LiveCode.vue'
+
+import PropsSidebar from './props/PropsSidebar.vue'
+import LiveCode from './code/LiveCode.vue'
 
 import { ref, computed } from 'vue'
 import store from '../store.js'
