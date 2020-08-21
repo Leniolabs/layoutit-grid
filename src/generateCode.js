@@ -4,7 +4,10 @@ function prefixedName(name, prefix) {
   return toCssName(`${prefix ? prefix + '-' : ''}${name}`)
 }
 
-export function areaToCSS(area, { parentGrid, useTemplateAreas = true, validTemplateAreas = true, prefix, repeat }) {
+export function areaToCSS(
+  area,
+  { parentGrid, useTemplateAreas = true, validTemplateAreas = true, prefix, repeat, oldSpec }
+) {
   const { name, grid } = area
   const singleLine = grid == null
   const pName = prefixedName(name, prefix)
@@ -24,6 +27,10 @@ export function areaToCSS(area, { parentGrid, useTemplateAreas = true, validTemp
     grid.areas.forEach((area) => {
       css += '\n' + areaToCSS(area, { parentGrid: grid, useTemplateAreas, validTemplateAreas, prefix, repeat })
     })
+  }
+
+  if (oldSpec) {
+    css += '\n' + ie_areaToCSS(area, { prefix, repeat })
   }
 
   return css
@@ -59,7 +66,7 @@ export function gridToCSS(name, grid, { useTemplateAreas = true, prefix, repeat 
 }
 
 export function ie_areaToCSS(area, options) {
-  return `@media all and (-ms-high-contrast:none) {\n${ie_areaToCSS_i(area, options)}\n}`
+  return `@media all and (-ms-high-contrast:none) {\n${ie_areaToCSS_i(area, options)}}`
 }
 
 function ie_areaToCSS_i(area, { prefix, repeat }) {
