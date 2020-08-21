@@ -61,12 +61,7 @@ export const prefix = computed(() => (options.value.prefix ? options.value.prefi
 
 export const cssCode = computed(() => {
   const { repeat, templateAreas, oldSpec } = options.value
-  let css = areaToCSS(props.area, { useTemplateAreas: templateAreas, prefix: prefix.value, repeat })
-  if (oldSpec) {
-    css += '\n\n'
-    css += ie_areaToCSS(props.area, { prefix: prefix.value, repeat })
-  }
-  return css
+  return areaToCSS(props.area, { useTemplateAreas: templateAreas, prefix: prefix.value, repeat, oldSpec })
 })
 
 export const htmlCode = computed(() => {
