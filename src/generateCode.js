@@ -49,10 +49,10 @@ export function gridToCSS(name, grid, { useTemplateAreas = true, prefix, repeat 
         })
         return newRow.join(' ')
       })
-      css += `\n grid-template-areas: ${splitTemplateAreas.join('" "')}`
+      css += `\n grid-template-areas:\n    ${splitTemplateAreas.join('"\n    "')}`
       return css
     } else if (templateAreas) {
-      css += `\n  grid-template-areas: ${templateAreas};`
+      css += `\n  grid-template-areas:\n    ${templateAreas.split('" "').join('"\n    "')};`
     }
   }
   return css
