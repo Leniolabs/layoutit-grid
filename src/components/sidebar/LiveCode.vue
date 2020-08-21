@@ -10,14 +10,8 @@
         </sidebar-button>
       </div>
       <div class="code-grid">
-        <div class="code-container">
-          <span class="header-css">CSS</span>
-          <pre><code class="css" v-html="highlight(cssCode, 'css')" /></pre>
-        </div>
-        <div class="code-container">
-          <span class="header-css">HTML</span>
-          <pre><code class="html" v-html="highlight(htmlCode, 'html')" /></pre>
-        </div>
+        <code-editor type="css" :code="cssCode" />
+        <code-editor type="html" :code="htmlCode" />
       </div>
       <div class="divider"></div>
       <live-code-options v-model="options" />
@@ -30,7 +24,6 @@ import { ref, computed } from 'vue'
 
 import { store, createAreaState } from '../../store.js'
 
-export { highlight } from '../utils/highlight.js'
 import { areaToCSS, areaToHTML, ie_areaToCSS } from '../../generateCode.js'
 
 import IconTrash from '../icons/IconTrash.vue'
@@ -40,6 +33,7 @@ import CodepenButton from './CodepenButton.vue'
 import PermalinkBar from './PermalinkBar.vue'
 
 import LiveCodeOptions from './LiveCodeOptions.vue'
+import CodeEditor from './CodeEditor.vue'
 
 export default {
   components: {
@@ -48,6 +42,7 @@ export default {
     SidebarButton,
     CodepenButton,
     LiveCodeOptions,
+    CodeEditor,
   },
   props: {
     area: { type: Object, required: true },
@@ -144,30 +139,6 @@ export function getPermalink() {
   }
 }
 
-.input-prefix {
-  border-radius: 2px;
-  border: 1px solid #aaa;
-  width: 90px;
-  padding: 2px 5px;
-  margin-left: 5px;
-  display: inline-block;
-  vertical-align: top;
-}
-
-.checkbox-warning {
-  color: #333;
-  margin-bottom: 10px;
-  margin-top: 5px;
-  padding: 6px 10px;
-  border-radius: 2px;
-  background-color: #fdd835;
-  width: 100%;
-  font-size: 14px;
-  .auto-placement-link {
-    font-weight: 600;
-  }
-}
-
 .code-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -176,35 +147,6 @@ export function getPermalink() {
   @media (max-width: 1240px) {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto;
-  }
-  .code-container {
-    background: #23241f;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-    border: solid 1px #2a2a2a;
-    height: 100%;
-    overflow: auto;
-    > span {
-      display: block;
-      background: #444;
-      color: #ccc;
-      font-weight: 700;
-      font-size: 12px;
-      padding: 3px 5px 2px;
-      border-top-left-radius: 4px;
-      border-top-right-radius: 4px;
-    }
-    pre {
-      border: 0;
-      resize: none;
-      overflow: auto;
-      white-space: pre-wrap;
-      text-align: left;
-      padding: 0;
-      margin: 0;
-      font-size: 14px;
-      padding: 10px;
-    }
   }
 }
 
