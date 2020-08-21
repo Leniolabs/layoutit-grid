@@ -5,12 +5,12 @@
 </template>
 
 <script setup>
-import IconSidebar from './icons/icon-sidebar.vue'
+import IconSidebar from './icons/IconSidebar.vue'
 
 export default {
   components: {
-    IconSidebar
-  }
+    IconSidebar,
+  },
 }
 </script>
 

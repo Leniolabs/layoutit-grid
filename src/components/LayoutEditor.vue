@@ -25,7 +25,7 @@
 <script setup>
 import MobileButton from './MobileButton.vue'
 import GridEditor from './grid/GridEditor.vue'
-import AreaEditor from './AreaEditor.vue'
+import AreaEditor from './area/AreaEditor.vue'
 import PropsSidebar from './sidebar/PropsSidebar.vue'
 import SidebarRight from './basic/SidebarRight.vue'
 import LiveCode from './sidebar/LiveCode.vue'
