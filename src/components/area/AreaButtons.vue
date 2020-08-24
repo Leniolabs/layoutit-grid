@@ -18,7 +18,7 @@ import IconSubgrid from '../icons/IconSubgrid.vue'
 import IconFlex from '../icons/IconFlex.vue'
 
 import { computed } from 'vue'
-import { store, createGridState, createFlexState } from '../../store.js'
+import { mainArea, setCurrentArea, getAreaParent, createGridState, createFlexState } from '../../store.js'
 
 export default {
   components: {
@@ -41,7 +41,7 @@ export function clearArea() {
 }
 
 export function removeArea() {
-  const parent = store.getAreaParent(props.area)
+  const parent = getAreaParent(props.area)
   const { areas } = parent.grid
   areas.splice(areas.indexOf(props.area), 1)
   deselect()
@@ -52,7 +52,7 @@ export function subFlex() {
   if (!area.flex) {
     props.area.flex = createFlexState()
   }
-  store.data.currentArea = props.area
+  setCurrentArea(props.area)
 }
 
 export function subGrid() {
@@ -60,11 +60,11 @@ export function subGrid() {
   if (!props.area.grid) {
     props.area.grid = createGridState(2, 3)
   }
-  store.data.currentArea = props.area
+  setCurrentArea(props.area)
 }
 
 function deselect() {
-  store.data.currentArea = store.data.area
+  setCurrentArea(mainArea.value)
 }
 </script>
 

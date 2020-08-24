@@ -113,7 +113,7 @@
 <script setup="props">
 import { computed } from 'vue'
 
-import { createFlexItemState } from '../../store.js'
+import { currentItem, createFlexItemState } from '../../store.js'
 
 import IconRemove from '../icons/IconRemove.vue'
 
@@ -128,13 +128,12 @@ export default {
   },
   props: {
     flex: { type: Object, required: true },
-    currentItem: { type: Number, default: null },
   },
 }
 
 export const selectedFlexItems = computed(() => {
   return props.flex.items.filter((item, i) => {
-    return i + 1 === props.currentItem || !props.flex.defaultItem === item
+    return i + 1 === currentItem.value || !props.flex.defaultItem === item
   })
 })
 

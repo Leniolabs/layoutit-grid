@@ -25,7 +25,7 @@
 
 <script setup="props">
 import { gridRegionToGridArea } from '../../utils.js'
-import { store, isValidAreaName } from '../../store.js'
+import { setCurrentArea, getRandomColor, isValidAreaName } from '../../store.js'
 
 import IconRemove from '../icons/IconRemove.vue'
 
@@ -76,13 +76,13 @@ export const invalidClassName = computed(() => {
 export { isValidAreaName }
 
 export function cellDown({ clientX, clientY }, section) {
-  store.data.currentArea = this.area
+  setCurrentArea(props.area)
 
   if (!selection.value) {
     selection.value = {
       start: section,
       end: section,
-      color: store.getRandomColor(),
+      color: getRandomColor(),
       fresh: true,
     }
   }

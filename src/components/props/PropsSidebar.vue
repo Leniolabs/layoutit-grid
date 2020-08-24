@@ -22,6 +22,7 @@ import BrandLogo from './BrandLogo.vue'
 import HireUs from './HireUs.vue'
 import FlexOptions from './FlexOptions.vue'
 import GridOptions from './GridOptions.vue'
+export { currentArea } from '../../store.js'
 
 export default {
   components: {
@@ -33,13 +34,11 @@ export default {
   },
   props: {
     area: { type: Object, required: true },
-    currentArea: { type: Object, required: true },
-    currentItem: { type: Number, default: null },
   },
 }
 
-export const currentGrid = computed(() => props.currentArea.grid)
-export const currentFlex = computed(() => props.currentArea.flex)
+export const currentGrid = computed(() => currentArea.value.grid)
+export const currentFlex = computed(() => currentArea.value.flex)
 </script>
 
 <style scoped lang="scss">

@@ -22,7 +22,7 @@
 <script setup="props">
 import { ref, computed } from 'vue'
 
-import { store, createAreaState } from '../../store.js'
+import { setMainArea, createAreaState } from '../../store.js'
 
 import { areaToCSS, areaToHTML, ie_areaToCSS } from '../../generateCode.js'
 
@@ -69,7 +69,7 @@ export const htmlCode = computed(() => {
 })
 
 export function restart() {
-  store.setArea(createAreaState())
+  setMainArea(createAreaState())
 }
 
 export const showPermalink = ref(false)

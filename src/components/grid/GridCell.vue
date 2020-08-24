@@ -30,18 +30,20 @@
 
     <slot />
 
-    <div v-show="section.col.start === colsNumber && showInsideRowSize(section.row.start - 1)" class="inside-row-size">
-      {{ grid.row.sizes[section.row.start - 1] }}
-    </div>
+    <div
+      v-show="section.col.start === colsNumber && showInsideRowSize(section.row.start - 1)"
+      class="inside-row-size"
+    >{{ grid.row.sizes[section.row.start - 1] }}</div>
 
-    <div v-show="section.row.start === rowsNumber && showInsideColSize(section.col.start - 1)" class="inside-col-size">
-      {{ grid.col.sizes[section.col.start - 1] }}
-    </div>
+    <div
+      v-show="section.row.start === rowsNumber && showInsideColSize(section.col.start - 1)"
+      class="inside-col-size"
+    >{{ grid.col.sizes[section.col.start - 1] }}</div>
   </section>
 </template>
 
 <script setup="props, { emit }">
-import { store, parseValueUnit, valueUnitToString } from '../../store.js'
+import { dragging, setCurrentArea, parseValueUnit, valueUnitToString } from '../../store.js'
 
 function calcValue(prev, prevComp, delta) {
   const sizeAdd = (prev.value * delta) / prevComp.value
@@ -99,8 +101,6 @@ export const rowsNumber = computed(() => grid.value.row.sizes.length)
 
 export const isDraggingGrid = computed(() => props.dragging && props.dragging.grid === grid.value)
 
-export const dragging = computed(() => store.data.dragging)
-
 export function showInsideColSize(col) {
   return isDraggingGrid.value && (col === dragging.value.colLine - 1 || col === dragging.value.colLine - 2)
 }
@@ -112,11 +112,11 @@ export function handleDown(event, section, { row, col }) {
   event.stopPropagation() // TODO: ...
   event.preventDefault()
 
-  if (store.data.dragging) {
+  if (dragging.value) {
     return
   }
 
-  store.data.currentArea = props.area
+  setCurrentArea(props.area)
 
   const initialPos = { x: event.clientX, y: event.clientY }
   const initialTime = new Date().getTime()
@@ -131,37 +131,37 @@ export function handleDown(event, section, { row, col }) {
   const handleMove = (event) => {
     const pos = { x: event.clientX, y: event.clientY }
 
-    if (!store.data.dragging && (new Date().getTime() - initialTime > 500 || farEnough(initialPos, pos))) {
+    if (!dragging.value && (new Date().getTime() - initialTime > 500 || farEnough(initialPos, pos))) {
       // Start dragging grid lines
-      store.data.dragging = { grid, rowLine, colLine }
+      dragging.value = { grid, rowLine, colLine }
       document.body.style.cursor = col && row ? 'move' : col ? 'col-resize' : 'row-resize'
     }
-    if (store.data.dragging) {
-      if (store.data.dragging.rowLine !== null) {
+    if (dragging.value) {
+      if (dragging.value.rowLine !== null) {
         // Drag row line by updating row sizes
         grid.value.row.sizes = resizeGridSizes(
           initialRowSizes,
           initialRowComputedSizes,
           pos.y - initialPos.y,
-          store.data.dragging.rowLine
+          dragging.value.rowLine
         )
       }
-      if (store.data.dragging.colLine !== undefined) {
+      if (dragging.value.colLine !== undefined) {
         // Drag col line by updating col sizes
         grid.value.col.sizes = resizeGridSizes(
           initialColSizes,
           initialColComputedSizes,
           pos.x - initialPos.x,
-          store.data.dragging.colLine
+          dragging.value.colLine
         )
       }
     }
   }
 
   const handleUp = () => {
-    if (store.data.dragging) {
+    if (dragging.value) {
       // Finish dragging grid lines
-      store.data.dragging = null
+      dragging.value = null
       document.body.style.cursor = 'default'
     } else if (new Date().getTime() - initialTime < 500) {
       // click

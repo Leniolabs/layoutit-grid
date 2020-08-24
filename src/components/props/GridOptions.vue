@@ -104,14 +104,13 @@ export {
   getColUnit,
   setColValue,
   removeCol,
+  dragging,
 } from '../../store.js'
 
-import { store, setRowValueUnit, setColValueUnit } from '../../store.js'
+import { setRowValueUnit, setColValueUnit } from '../../store.js'
 
 export const rowsNumber = computed(() => props.grid.row.sizes.length)
 export const colsNumber = computed(() => props.grid.col.sizes.length)
-
-export const dragging = computed(() => store.data.dragging)
 
 export function unitHasValue(unit) {
   return !(unit === 'auto' || unit === 'min-content' || unit === 'max-content')

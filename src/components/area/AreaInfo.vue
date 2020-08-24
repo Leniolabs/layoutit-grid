@@ -14,7 +14,7 @@ import AreaName from './AreaName.vue'
 import AreaButtons from './AreaButtons.vue'
 
 import { computed } from 'vue'
-import { store } from '../../store.js'
+import { mainArea, getAreaDepth } from '../../store.js'
 
 export default {
   components: {
@@ -26,15 +26,11 @@ export default {
   },
 }
 
-export const isMain = computed(() => props.area.name === store.data.area.name)
+export const isMain = computed(() => props.area.name === mainArea.value.name)
 
 export const toolbarStart = computed(() => {
   const { gridRegion } = props.area
-  return gridRegion
-    ? gridRegion.col.start === 1 && gridRegion.row.start === 1
-      ? store.getAreaDepth(props.area) - 1
-      : 0
-    : 0
+  return gridRegion ? (gridRegion.col.start === 1 && gridRegion.row.start === 1 ? getAreaDepth(props.area) - 1 : 0) : 0
 })
 </script>
 

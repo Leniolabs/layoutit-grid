@@ -7,21 +7,9 @@
   >
     <area-info :area="area" />
 
-    <grid-editor
-      v-if="area.grid"
-      :area="area"
-      :current-area="currentArea"
-      :current-item="currentItem"
-      :parent-active="isActive || parentActive"
-    />
+    <grid-editor v-if="area.grid" :area="area" :parent-active="isActive || parentActive" />
 
-    <flex-editor
-      v-if="area.flex"
-      :area="area"
-      :current-area="currentArea"
-      :current-item="currentItem"
-      :parent-active="isActive || parentActive"
-    />
+    <flex-editor v-if="area.flex" :area="area" :parent-active="isActive || parentActive" />
   </section>
 </template>
 
@@ -31,7 +19,7 @@ import FlexEditor from '../flex/FlexEditor.vue'
 import GridEditor from '../grid/GridEditor.vue'
 
 import { computed } from 'vue'
-import { store } from '../../store.js'
+import { mainArea, currentArea, setCurrentArea } from '../../store.js'
 
 export { getGridArea } from '../../utils.js'
 
@@ -43,15 +31,13 @@ export default {
   },
   props: {
     area: { type: Object, required: true },
-    currentArea: { type: Object, required: true },
-    currentItem: { type: Number, default: null },
     parentActive: { type: Boolean, default: false },
   },
 }
 
-export const isMain = computed(() => props.area.name === store.data.area.name)
+export const isMain = computed(() => props.area.name === mainArea.value.name)
 
-export const isActive = computed(() => props.area.name === props.currentArea.name)
+export const isActive = computed(() => props.area.name === currentArea.value.name)
 
 export const grayed = computed(() => !(isActive.value || props.parentActive))
 
@@ -59,9 +45,9 @@ export function handleDown(event) {
   if (!props.area.grid) {
     event.stopPropagation()
     event.preventDefault()
-    const parent = store.getAreaParent(props.area)
+    const parent = getAreaParent(props.area)
     if (parent) {
-      store.data.currentArea = parent
+      setCurrentArea(parent)
     }
   }
 }

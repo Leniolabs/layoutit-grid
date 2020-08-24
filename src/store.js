@@ -1,4 +1,4 @@
-import { reactive } from 'vue'
+import { ref } from 'vue'
 
 function createTemplateArr(number) {
   return '1fr '.repeat(number).trim().split(' ')
@@ -201,45 +201,38 @@ function findAreaParent(area, parent) {
   return p
 }
 
-const data = reactive({
-  area: createAreaState(),
-  currentArea: null,
-  currentItem: null,
-  dragging: null,
-  colors,
-})
+export const mainArea = ref(createAreaState())
+export const currentArea = ref(mainArea.value)
+export const currentItem = ref(null)
+export const dragging = ref(null)
 
-data.currentArea = data.area
-
-export function isValidAreaName(newName, area = data.area) {
+export function isValidAreaName(newName, area = mainArea.value) {
   const { name, grid } = area
   return name !== newName && !(grid && !grid.areas.every((a) => isValidAreaName(newName, a)))
 }
 
-export var store = {
-  data,
-  getRandomColor() {
-    const { colors } = this.data
-    return colors[Math.floor(Math.random() * colors.length)]
-  },
-  setCurrentArea(area) {
-    this.data.currentArea = area
-  },
-  setArea(area) {
-    this.data.area = area
-    this.setCurrentArea(area)
-  },
-  getAreaParent(area) {
-    return findAreaParent(area, this.data.area)
-  },
-  getAreaDepth(area) {
-    const parent = this.getAreaParent(area)
-    if (parent) {
-      return this.getAreaDepth(parent) + 1
-    } else {
-      return 0
-    }
-  },
+export function getRandomColor() {
+  return colors[Math.floor(Math.random() * colors.length)]
 }
 
-export default store
+export function setCurrentArea(area) {
+  currentArea.value = area
+}
+
+export function setMainArea(area) {
+  mainArea.value = area
+  setCurrentArea(area)
+}
+
+export function getAreaParent(area) {
+  return findAreaParent(area, mainArea.value)
+}
+
+export function getAreaDepth(area) {
+  const parent = getAreaParent(area)
+  if (parent) {
+    return getAreaDepth(parent) + 1
+  } else {
+    return 0
+  }
+}

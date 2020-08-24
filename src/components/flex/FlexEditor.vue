@@ -21,27 +21,27 @@
 
 <script setup="props">
 import { computed } from 'vue'
-import { store } from '../../store.js'
+import { mainArea, currentArea, currentItem } from '../../store.js'
+
+export { currentItem }
 
 export default {
   props: {
     area: { type: Object, required: true },
-    currentArea: { type: Object, required: true },
-    currentItem: { type: Number, default: null },
     parentActive: { type: Boolean, default: false },
   },
 }
 
 export const flex = computed(() => props.area.flex)
-export const isActive = computed(() => props.area === props.currentArea)
+export const isActive = computed(() => props.area === currentArea.value)
 
 export function toggleFlexItem(item) {
-  store.data.currentArea = props.area
-  store.data.currentItem = item === props.currentItem ? null : item
+  currentArea.value = props.area
+  currentItem.value = item === props.currentItem ? null : item
 }
 
 export function deselectArea() {
-  store.data.currentArea = store.data.area
+  currentArea.value = mainArea.value
 }
 </script>
 

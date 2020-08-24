@@ -14,8 +14,6 @@
       v-for="(area, i) in grid.areas"
       :key="`area-${i}`"
       :area="area"
-      :current-area="currentArea"
-      :current-item="currentItem"
       :parent-active="parentActive"
     />
 
@@ -56,7 +54,7 @@ import GridCell from './GridCell.vue'
 import AreaSelection from './AreaSelection.vue'
 import LineName from './LineName.vue'
 
-import { store } from '../../store.js'
+export { currentArea, dragging } from '../../store.js'
 
 export { gridSections } from '../../utils.js'
 import { defineAsyncComponent } from 'vue'
@@ -71,8 +69,6 @@ export default {
   },
   props: {
     area: { type: Object, required: true },
-    currentArea: { type: Object, required: true },
-    currentItem: { type: Number, default: null },
     parentActive: { type: Boolean, default: false },
   },
 }
@@ -81,9 +77,7 @@ import { ref, computed } from 'vue'
 
 export const grid = computed(() => props.area.grid)
 
-export const isActive = computed(() => props.area.name === props.currentArea.name)
-
-export const { dragging } = store.data
+export const isActive = computed(() => props.area.name === currentArea.value.name)
 
 export const sectionElement = ref(null)
 export function gridComputedStyles() {
