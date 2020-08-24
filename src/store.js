@@ -189,7 +189,7 @@ function findAreaParent(area, parent) {
   if (!grid) {
     return undefined
   }
-  if (grid.areas.find((a) => a.name === area.name)) {
+  if (grid.areas.find((a) => a === area)) {
     return parent
   }
   let p

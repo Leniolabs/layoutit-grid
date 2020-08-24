@@ -19,7 +19,7 @@ import FlexEditor from '../flex/FlexEditor.vue'
 import GridEditor from '../grid/GridEditor.vue'
 
 import { computed } from 'vue'
-import { mainArea, currentArea, setCurrentArea } from '../../store.js'
+import { mainArea, currentArea, setCurrentArea, getAreaParent } from '../../store.js'
 
 export { getGridArea } from '../../utils.js'
 
@@ -35,9 +35,9 @@ export default {
   },
 }
 
-export const isMain = computed(() => props.area.name === mainArea.value.name)
+export const isMain = computed(() => props.area === mainArea.value)
 
-export const isActive = computed(() => props.area.name === currentArea.value.name)
+export const isActive = computed(() => props.area === currentArea.value)
 
 export const grayed = computed(() => !(isActive.value || props.parentActive))
 

@@ -77,7 +77,7 @@ import { ref, computed } from 'vue'
 
 export const grid = computed(() => props.area.grid)
 
-export const isActive = computed(() => props.area.name === currentArea.value.name)
+export const isActive = computed(() => props.area === currentArea.value)
 
 export const sectionElement = ref(null)
 export function gridComputedStyles() {

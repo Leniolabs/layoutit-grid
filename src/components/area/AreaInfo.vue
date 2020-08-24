@@ -26,7 +26,7 @@ export default {
   },
 }
 
-export const isMain = computed(() => props.area.name === mainArea.value.name)
+export const isMain = computed(() => props.area === mainArea.value)
 
 export const toolbarStart = computed(() => {
   const { gridRegion } = props.area
