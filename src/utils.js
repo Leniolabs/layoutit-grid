@@ -32,7 +32,11 @@ export function gridSections(grid) {
   return sections
 }
 
-export function gridTemplateAreas(grid) {
+function prefixed(prefix, name) {
+  return (prefix ? prefix + '-' : '') + name
+}
+
+function gridTemplateAreasMatrix(grid, prefix = undefined) {
   const colsNumber = grid.col.sizes.length
   const rowsNumber = grid.row.sizes.length
 
@@ -50,12 +54,21 @@ export function gridTemplateAreas(grid) {
         if (chunkAreas[r - 1][c - 1] !== '.') {
           validTemplate = false
         }
-        chunkAreas[r - 1][c - 1] = toCssName(name)
+        chunkAreas[r - 1][c - 1] = prefixed(prefix, toCssName(name))
       }
     }
   })
 
-  return validTemplate ? chunkAreas.reduce((prev, item) => prev + `"${item.join(' ')}" `, '').trim() : undefined
+  return validTemplate ? chunkAreas : undefined
+}
+
+function matrixToTemplateAreas(matrix, separator) {
+  return matrix.reduce((prev, item) => prev + `"${item.join(' ')}"${separator}`, '').trim()
+}
+
+export function gridTemplateAreas(grid, prefix = undefined, separator = ' ') {
+  const matrix = gridTemplateAreasMatrix(grid, prefix)
+  return matrix && matrixToTemplateAreas(matrix, separator)
 }
 
 export function gridRegionToGridArea(gridRegion) {

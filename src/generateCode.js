@@ -23,7 +23,7 @@ export function areaToCSS(
   css += `${singleLine ? ' ' : '\n'}}\n`
 
   if (grid) {
-    const validTemplateAreas = gridTemplateAreas(grid) != undefined
+    const validTemplateAreas = gridTemplateAreas(grid) !== undefined
     grid.areas.forEach((area) => {
       css += '\n' + areaToCSS(area, { parentGrid: grid, useTemplateAreas, validTemplateAreas, prefix, repeat })
     })
@@ -43,23 +43,9 @@ export function gridToCSS(name, grid, { useTemplateAreas = true, prefix, repeat 
   gap: ${grid.row.gap + ' ' + grid.col.gap};` // TODO: cssGridGap(grid)
 
   if (useTemplateAreas) {
-    const templateAreas = gridTemplateAreas(grid)
-    if (templateAreas && prefix) {
-      let splitTemplateAreas = templateAreas.split('" "').map((areaRow) => {
-        let splitIntoColumns = areaRow.split(' ')
-        let testReg = /^[a-z0-9]+$/i
-        let newRow = splitIntoColumns.map((name) => {
-          if (testReg.test(name)) {
-            return prefix + '-' + name
-          }
-          return name
-        })
-        return newRow.join(' ')
-      })
-      css += `\n grid-template-areas:\n    ${splitTemplateAreas.join('"\n    "')}`
-      return css
-    } else if (templateAreas) {
-      css += `\n  grid-template-areas:\n    ${templateAreas.split('" "').join('"\n    "')};`
+    const templateAreas = gridTemplateAreas(grid, prefix, '\n    ')
+    if (templateAreas) {
+      css += `\n  grid-template-areas:\n    ${templateAreas};`
     }
   }
   return css
