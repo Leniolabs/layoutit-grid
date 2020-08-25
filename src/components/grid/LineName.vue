@@ -5,6 +5,7 @@
     :value="line.name"
     :style="`width:${lineNameWidth}px`"
     :class="type"
+    aria-label="line name"
     @input="line.name = $event.target.value"
     @pointerdown.stop
   />

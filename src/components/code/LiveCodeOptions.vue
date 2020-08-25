@@ -3,7 +3,11 @@
     <slide-checkbox id="checkbox-repeat" v-model="modelValue.repeat">
       Apply CSS
       <strong>
-        <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/repeat" target="_blank">repeat</a>
+        <a
+          href="https://developer.mozilla.org/en-US/docs/Web/CSS/repeat"
+          rel="noreferrer"
+          target="_blank"
+        >repeat</a>
       </strong>
       function.
     </slide-checkbox>
@@ -12,6 +16,7 @@
       <strong>
         <a
           href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-areas"
+          rel="noreferrer"
           target="_blank"
         >grid-template-areas</a>
       </strong>
@@ -24,6 +29,7 @@
         v-if="modelValue.prefix"
         v-model="modelValue.prefixName"
         class="input-prefix"
+        aria-label="prefix"
         placeholder="Enter prefix..."
       />
     </slide-checkbox>
@@ -32,6 +38,7 @@
       <strong>
         <a
           target="_blank"
+          rel="noreferrer"
           href="https://rachelandrew.co.uk/archives/2016/11/26/should-i-try-to-use-the-ie-implementation-of-css-grid-layout/"
         >legacy grid spec</a>
       </strong>
@@ -41,6 +48,7 @@
       <strong>Warning:</strong> legacy grid spec does not support
       <a
         target="_blank"
+        rel="noreferrer"
         class="auto-placement-link"
         href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Auto-placement_in_CSS_Grid_Layout"
       >auto-placement of elements!</a>

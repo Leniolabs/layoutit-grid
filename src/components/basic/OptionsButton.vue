@@ -19,9 +19,9 @@ button {
   padding: 0.375em;
 
   color: #fff;
-  background: #3094b4;
+  background: #107292;
   &.active {
-    background: #3094b4;
+    background: #107292;
   }
   &:hover {
     background: #236f86;

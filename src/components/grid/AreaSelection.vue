@@ -10,14 +10,21 @@
       class="area-text"
       type="text"
       placeholder="Area Name"
+      aria-label="area name"
       @keyup.enter="selectionSave"
     />
-    <button class="btn-remove" title="Remove Selection" @click="selection = null">
+    <button
+      aria-label="Remove selection"
+      class="btn-remove"
+      title="Remove Selection"
+      @click="selection = null"
+    >
       <icon-remove />
     </button>
     <button
       :disabled="gridName === '' || !isValidAreaName(gridName) || invalidClassName"
       class="btn-save"
+      aria-label="Save area"
       @click="selectionSave"
     >Save</button>
   </section>
@@ -174,7 +181,7 @@ export function selectionSave() {
     background: transparent;
   }
   button {
-    background: #3094b4;
+    background: #107292;
     border: 0;
     height: 1.8rem;
     line-height: 0.5rem;
@@ -204,7 +211,7 @@ export function selectionSave() {
     }
     &.btn-remove {
       width: 1.8rem;
-      background: #e91e63;
+      background: #b0184b;
       border-top-right-radius: 2px;
       border-bottom-right-radius: 2px;
       &:hover {

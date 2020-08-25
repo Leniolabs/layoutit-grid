@@ -11,6 +11,7 @@
             :value="getColValue(grid,column - 1)"
             :class="{ dragging: dragging && ( dragging.colLine === column || dragging.colLine === column + 1 ) }"
             :type="getColUnit(grid,column - 1) === 'minmax' ? 'text' : 'number'"
+            :aria-label="`column ${column} size`"
             min="0"
             step="0.5"
             @input="setColValue(grid, column - 1, $event.target.value)"
@@ -18,10 +19,12 @@
           <unit-select
             :value="getColUnit(grid, column - 1)"
             type="grid"
+            :aria-label="`column ${column} unit`"
             @input="onColUnitInput($event.target.value, column - 1)"
           />
           <options-button
             class="remove-button"
+            :aria-label="`remove column ${column}`"
             :disabled="grid.col.sizes.length === 1"
             @click="removeCol(grid, column - 1)"
           >
@@ -42,6 +45,7 @@
             :value="getRowValue(grid,row - 1)"
             :class="{ dragging: dragging && ( dragging.rowLine === row || dragging.rowLine === row + 1 ) }"
             :type="getRowUnit(grid,row - 1) === 'minmax' ? 'text' : 'number'"
+            :aria-label="`row ${row} size`"
             min="0"
             step="0.5"
             @input="setRowValue(grid, row - 1, $event.target.value)"
@@ -49,10 +53,12 @@
           <unit-select
             :value="getRowUnit(grid,row - 1)"
             type="grid"
+            :aria-label="`row ${row} unit`"
             @input="onRowUnitInput($event.target.value, row - 1)"
           />
           <options-button
             class="remove-button"
+            :aria-label="`remove row ${row}`"
             :disabled="grid.row.sizes.length === 1"
             @click="removeRow(grid,row - 1)"
           >
@@ -202,7 +208,7 @@ h2 {
   width: 100%;
   padding: 8px 0;
   margin-bottom: 0;
-  background: #e91e63;
+  background: #b0184b;
   &:hover {
     background: #c11651;
   }
@@ -219,7 +225,7 @@ h2 {
   min-width: 2.188em;
   margin-bottom: 0.626em;
   padding: 0.313em 9px;
-  background: #3094b4;
+  background: #107292;
   &:hover {
     background: #236f86;
   }

@@ -1,10 +1,10 @@
 <template>
-  <a class="hire-us" target="_blank" href="https://leniolabs.com/#contact">Hire us</a>
+  <a class="hire-us" target="_blank" rel="noreferrer" href="https://leniolabs.com/#contact">Hire us</a>
 </template>
 
 <style scoped lang="scss">
 .hire-us {
-  background: #e91e63;
+  background: #b0184b;
   border-radius: 30px;
   font-size: 1rem;
   height: 2.188em;

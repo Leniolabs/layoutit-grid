@@ -42,6 +42,7 @@
             <input
               :value="flex.defaultItem.grow"
               type="number"
+              aria-label="flex grow"
               @input="flex.defaultItem.grow = +$event.target.value"
             />
           </div>
@@ -51,6 +52,7 @@
             <input
               :value="flex.defaultItem.shrink"
               type="number"
+              aria-label="flex shrink"
               @input="flex.defaultItem.shrink = +$event.target.value"
             />
           </div>
@@ -60,6 +62,7 @@
             <input
               :value="flex.defaultItem.basis"
               type="text"
+              aria-label="flex basis"
               @input="flex.defaultItem.basis = $event.target.value"
             />
           </div>
@@ -82,6 +85,7 @@
               <input
                 :value="item.grow"
                 type="number"
+                :aria-label="`item ${item} flex grow`"
                 @input="createNewItemIfDefault(item, i + 1).grow = +$event.target.value"
               />
             </div>
@@ -91,6 +95,7 @@
               <input
                 :value="item.shrink"
                 type="number"
+                :aria-label="`item ${item} flex shrink`"
                 @input="createNewItemIfDefault(item, i + 1).shrink = +$event.target.value"
               />
             </div>
@@ -100,6 +105,7 @@
               <input
                 :value="item.basis"
                 type="text"
+                :aria-label="`item ${item} flex basis`"
                 @input="createNewItemIfDefault(item, i + 1).basis = $event.target.value"
               />
             </div>
@@ -196,7 +202,7 @@ h2 {
       }
       button {
         margin-bottom: 0;
-        background: #e91e63;
+        background: #b0184b;
         &:hover {
           background: #c11651;
         }
@@ -258,7 +264,7 @@ h2 {
   button {
     width: calc(100% - 10px);
     margin-bottom: 10px;
-    background: #3094b4;
+    background: #107292;
     color: #fff;
     border: 0;
     border-radius: 2px;
@@ -270,7 +276,7 @@ h2 {
     margin-bottom: 0.875em;
     padding: 0.375em;
     &.active {
-      background: #3094b4;
+      background: #107292;
     }
     &:hover {
       background: #236f86;
@@ -296,7 +302,7 @@ h2 {
       margin-bottom: 0.626em;
       padding: 0.313em 9px;
       &:first-child {
-        background: #3094b4;
+        background: #107292;
         &:hover {
           background: #12906a;
         }

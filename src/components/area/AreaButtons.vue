@@ -1,12 +1,32 @@
 <template>
-  <button v-show="!hasDisplay" class="btn-subgrid" title="Add Sub Grid" @click="subGrid()">
+  <button
+    v-show="!hasDisplay"
+    aria-label="Add sub grid"
+    class="btn-subgrid"
+    title="Add Sub Grid"
+    @click="subGrid()"
+  >
     <icon-subgrid />
   </button>
-  <!--<button v-show="!hasDisplay" class="btn-subgrid" @click="subFlex(area)"><icon-flex /></button>-->
-  <button v-show="!hasDisplay" class="btn-remove" title="Remove Area" @click="removeArea()">
+  <!--button v-show="!hasDisplay" aria-label="Add flex" class="btn-subgrid" @click="subFlex(area)">
+    <icon-flex />
+  </button-->
+  <button
+    v-show="!hasDisplay"
+    aria-label="Remove area"
+    class="btn-remove"
+    title="Remove Area"
+    @click="removeArea()"
+  >
     <icon-remove />
   </button>
-  <button v-show="hasDisplay" class="btn-remove" title="Clear Area" @click="clearArea()">
+  <button
+    v-show="hasDisplay"
+    aria-label="Clear area"
+    class="btn-remove"
+    title="Clear Area"
+    @click="clearArea()"
+  >
     <icon-clear />
   </button>
 </template>
@@ -70,7 +90,7 @@ function deselect() {
 
 <style scoped lang="scss">
 button {
-  background: #3094b4;
+  background: #107292;
   border: 0;
   height: 1.8rem;
   line-height: 0.5rem;
@@ -107,7 +127,7 @@ button {
   }
   &.btn-remove {
     width: 1.8rem;
-    background: #e91e63;
+    background: #b0184b;
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
     &:hover {

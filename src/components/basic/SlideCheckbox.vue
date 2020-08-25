@@ -8,15 +8,15 @@
         type="checkbox"
         @input="$emit('update:modelValue', $event.target.checked)"
       />
-      <label :for="id" />
+      <label />
       <span class="switch-bg" />
       <span class="switch-labels" />
     </fieldset>
-    <aside>
-      <label for="id">
+    <div>
+      <label :for="id">
         <slot />
       </label>
-    </aside>
+    </div>
   </div>
 </template>
 
@@ -30,7 +30,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-aside {
+div {
   display: inline-block;
   vertical-align: top;
   padding-left: 5px;

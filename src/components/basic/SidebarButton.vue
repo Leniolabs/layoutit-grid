@@ -18,7 +18,7 @@ button {
   padding: 0.313em 9px;
 
   color: #fff;
-  background: #3094b4;
+  background: #107292;
   &.active {
     background: #27ae60;
   }

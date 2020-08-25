@@ -1,8 +1,18 @@
 <template>
   <div class="gap-input">
     <div class="input-container">
-      <input :value="gap.value" type="number" min="0" @input="setGapValue($event.target.value)" />
-      <unit-select :value="gap.unit" @input="setGapUnit($event.target.value)" />
+      <input
+        :value="gap.value"
+        aria-label="gap value"
+        type="number"
+        min="0"
+        @input="setGapValue($event.target.value)"
+      />
+      <unit-select
+        :value="gap.unit"
+        aria-label="gap unit"
+        @input="setGapUnit($event.target.value)"
+      />
     </div>
   </div>
 </template>

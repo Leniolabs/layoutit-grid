@@ -1,7 +1,7 @@
 <template>
   <div>
     <span>Your grid has been saved!</span>
-    <a :href="fullPath" target="_blank">{{ path }}</a>
+    <a :href="fullPath" rel="noreferrer" target="_blank">{{ path }}</a>
     <button @click="$emit('close')">×</button>
   </div>
 </template>
@@ -11,8 +11,8 @@ import { computed } from 'vue'
 
 export default {
   props: {
-    path: { type: String, required: true }
-  }
+    path: { type: String, required: true },
+  },
 }
 
 export const fullPath = computed(() => 'https://' + props.path)

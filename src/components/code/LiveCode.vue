@@ -5,7 +5,7 @@
       <div class="buttons">
         <codepen-button :cssCode="cssCode" :htmlCode="htmlCode" :prefix="prefix" />
         <sidebar-button :disabled="!saveDesign" @click="getPermalink">Get permalink</sidebar-button>
-        <sidebar-button class="btn-trash" @click="restart">
+        <sidebar-button aria-label="Restart" class="btn-trash" @click="restart">
           <icon-trash />
         </sidebar-button>
       </div>
