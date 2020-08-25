@@ -11,9 +11,9 @@
     class="grid"
   >
     <area-editor
-      v-for="(area, i) in grid.areas"
+      v-for="(a, i) in grid.areas"
       :key="`area-${i}`"
-      :area="area"
+      :area="a"
       :parent-active="parentActive"
     />
 
@@ -53,19 +53,18 @@
 import GridCell from './GridCell.vue'
 import AreaSelection from './AreaSelection.vue'
 import LineName from './LineName.vue'
+import AreaEditor from '../area/AreaEditor.vue'
 
 export { currentArea, dragging } from '../../store.js'
 
 export { gridSections } from '../../utils.js'
-import { defineAsyncComponent } from 'vue'
 
 export default {
   components: {
     GridCell,
     AreaSelection,
     LineName,
-    // See Circular References Between Components @ Vue docs
-    AreaEditor: defineAsyncComponent(() => import('../area/AreaEditor.vue')),
+    AreaEditor,
   },
   props: {
     area: { type: Object, required: true },

@@ -16,9 +16,8 @@
 <script setup="props">
 import AreaInfo from './AreaInfo.vue'
 import FlexEditor from '../flex/FlexEditor.vue'
-import GridEditor from '../grid/GridEditor.vue'
 
-import { computed } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
 import { mainArea, currentArea, setCurrentArea, getAreaParent } from '../../store.js'
 
 export { getGridArea } from '../../utils.js'
@@ -27,7 +26,6 @@ export default {
   components: {
     AreaInfo,
     FlexEditor,
-    GridEditor,
   },
   props: {
     area: { type: Object, required: true },
