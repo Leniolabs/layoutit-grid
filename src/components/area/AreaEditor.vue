@@ -7,9 +7,9 @@
   >
     <area-info :area="area" />
 
-    <grid-editor v-if="area.grid" :area="area" :parent-active="isActive || parentActive" />
+    <grid-editor v-if="area.grid" :area="area" :parent-active="isCurrent || parentActive" />
 
-    <flex-editor v-if="area.flex" :area="area" :parent-active="isActive || parentActive" />
+    <flex-editor v-if="area.flex" :area="area" :parent-active="isCurrent || parentActive" />
   </section>
 </template>
 
@@ -19,6 +19,7 @@ import FlexEditor from '../flex/FlexEditor.vue'
 
 import { computed, defineAsyncComponent } from 'vue'
 import { mainArea, currentArea, setCurrentArea, getAreaParent } from '../../store.js'
+import { useIsCurrentArea, useIsMainArea } from '../../composables/area.js'
 
 export { getGridArea } from '../../utils.js'
 
@@ -33,11 +34,11 @@ export default {
   },
 }
 
-export const isMain = computed(() => props.area === mainArea.value)
+export const isMain = useIsMainArea(props.area)
 
-export const isActive = computed(() => props.area === currentArea.value)
+export const isCurrent = useIsCurrentArea(props.area)
 
-export const grayed = computed(() => !(isActive.value || props.parentActive))
+export const grayed = computed(() => !(isCurrent.value || props.parentActive))
 
 export function handleDown(event) {
   if (!props.area.grid) {

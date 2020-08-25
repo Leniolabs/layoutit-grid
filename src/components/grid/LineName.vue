@@ -12,15 +12,7 @@
 </template>
 
 <script setup="props">
-let textWidthCanvas = null
-function getTextWidth(text, font) {
-  if (!textWidthCanvas) {
-    textWidthCanvas = document.createElement('canvas')
-  }
-  const context = textWidthCanvas.getContext('2d')
-  context.font = font
-  return context.measureText(text).width
-}
+import { useLineNameWidth } from '../../composables/lineName.js'
 
 export default {
   props: {
@@ -33,10 +25,12 @@ export default {
 import { ref, computed, nextTick } from 'vue'
 
 export const line = computed(() => props.grid[props.type].lineNames[props.pos - 1])
-export const lineNameWidth = computed(() => getTextWidth(line.value.name, '14px arial') + 30)
+
+export const lineNameWidth = useLineNameWidth(line, '14px arial', 30)
 
 export const inputElement = ref(null)
-export function focus() {
+
+function focus() {
   inputElement.value.focus()
 }
 

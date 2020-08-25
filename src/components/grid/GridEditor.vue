@@ -1,7 +1,7 @@
 <template>
   <section
     ref="sectionElement"
-    :class="{ active: isActive, dragging }"
+    :class="{ active: isCurrent, dragging }"
     :style="{
       'grid-template-rows': grid.row.sizes.join(' '),
       'grid-template-columns': grid.col.sizes.join(' '),
@@ -11,8 +11,8 @@
     class="grid"
   >
     <area-editor
-      v-for="(a, i) in grid.areas"
-      :key="`area-${i}`"
+      v-for="a in grid.areas"
+      :key="`area-${a.name}`"
       :area="a"
       :parent-active="parentActive"
     />
@@ -56,6 +56,7 @@ import LineName from './LineName.vue'
 import AreaEditor from '../area/AreaEditor.vue'
 
 export { currentArea, dragging } from '../../store.js'
+import { useIsCurrentArea } from '../../composables/area.js'
 
 export { gridSections } from '../../utils.js'
 
@@ -76,7 +77,7 @@ import { ref, computed } from 'vue'
 
 export const grid = computed(() => props.area.grid)
 
-export const isActive = computed(() => props.area === currentArea.value)
+export const isCurrent = useIsCurrentArea(props.area)
 
 export const sectionElement = ref(null)
 export function gridComputedStyles() {

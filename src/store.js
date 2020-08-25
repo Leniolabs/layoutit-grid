@@ -224,6 +224,23 @@ export function setMainArea(area) {
   setCurrentArea(area)
 }
 
+export function deselectCurrentArea() {
+  setCurrentArea(mainArea.value)
+}
+
+export function clearArea(area) {
+  area.grid = null
+  area.flex = null
+  deselectCurrentArea()
+}
+
+export function removeArea(area) {
+  const parent = getAreaParent(area)
+  const { areas } = parent.grid
+  areas.splice(areas.indexOf(area), 1)
+  deselectCurrentArea()
+}
+
 export function getAreaParent(area) {
   return findAreaParent(area, mainArea.value)
 }

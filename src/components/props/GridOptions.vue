@@ -97,7 +97,7 @@ export default {
   },
 }
 
-import { computed } from 'vue'
+import { toRefs } from 'vue'
 
 export {
   addCol,
@@ -114,9 +114,11 @@ export {
 } from '../../store.js'
 
 import { setRowValueUnit, setColValueUnit } from '../../store.js'
+import { useGridDimensions } from '../../composables/area.js'
 
-export const rowsNumber = computed(() => props.grid.row.sizes.length)
-export const colsNumber = computed(() => props.grid.col.sizes.length)
+const { grid } = toRefs(props)
+
+export const { colsNumber, rowsNumber } = useGridDimensions(grid)
 
 export function unitHasValue(unit) {
   return !(unit === 'auto' || unit === 'min-content' || unit === 'max-content')

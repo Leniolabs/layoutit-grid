@@ -15,6 +15,7 @@ import AreaButtons from './AreaButtons.vue'
 
 import { computed } from 'vue'
 import { mainArea, getAreaDepth } from '../../store.js'
+import { useIsMainArea } from '../../composables/area.js'
 
 export default {
   components: {
@@ -26,7 +27,7 @@ export default {
   },
 }
 
-export const isMain = computed(() => props.area === mainArea.value)
+export const isMain = useIsMainArea(props.area)
 
 export const toolbarStart = computed(() => {
   const { gridRegion } = props.area

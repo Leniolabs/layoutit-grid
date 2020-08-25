@@ -16,7 +16,7 @@
     aria-label="Remove area"
     class="btn-remove"
     title="Remove Area"
-    @click="removeArea()"
+    @click="removeArea(area)"
   >
     <icon-remove />
   </button>
@@ -25,7 +25,7 @@
     aria-label="Clear area"
     class="btn-remove"
     title="Clear Area"
-    @click="clearArea()"
+    @click="clearArea(area)"
   >
     <icon-clear />
   </button>
@@ -39,6 +39,7 @@ import IconFlex from '../icons/IconFlex.vue'
 
 import { computed } from 'vue'
 import { mainArea, setCurrentArea, getAreaParent, createGridState, createFlexState } from '../../store.js'
+export { deselectCurrentArea, clearArea, removeArea } from '../../store.js'
 
 export default {
   components: {
@@ -54,21 +55,8 @@ export default {
 
 export const hasDisplay = computed(() => props.area.grid || props.area.flex)
 
-export function clearArea() {
-  props.area.grid = null
-  props.area.flex = null
-  deselect()
-}
-
-export function removeArea() {
-  const parent = getAreaParent(props.area)
-  const { areas } = parent.grid
-  areas.splice(areas.indexOf(props.area), 1)
-  deselect()
-}
-
 export function subFlex() {
-  clearArea()
+  clearArea(props.area)
   if (!area.flex) {
     props.area.flex = createFlexState()
   }
@@ -76,15 +64,11 @@ export function subFlex() {
 }
 
 export function subGrid() {
-  clearArea()
+  clearArea(props.area)
   if (!props.area.grid) {
     props.area.grid = createGridState(2, 3)
   }
   setCurrentArea(props.area)
-}
-
-function deselect() {
-  setCurrentArea(mainArea.value)
 }
 </script>
 

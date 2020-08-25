@@ -44,6 +44,7 @@
 
 <script setup="props, { emit }">
 import { dragging, setCurrentArea, parseValueUnit, valueUnitToString } from '../../store.js'
+import { useGridDimensions } from '../../composables/area.js'
 
 function calcValue(prev, prevComp, delta) {
   const sizeAdd = (prev.value * delta) / prevComp.value
@@ -96,8 +97,7 @@ import { computed } from 'vue'
 
 export const grid = computed(() => props.area.grid)
 
-export const colsNumber = computed(() => grid.value.col.sizes.length)
-export const rowsNumber = computed(() => grid.value.row.sizes.length)
+export const { colsNumber, rowsNumber } = useGridDimensions(grid)
 
 export const isDraggingGrid = computed(() => props.dragging && props.dragging.grid === grid.value)
 
