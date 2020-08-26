@@ -22,7 +22,7 @@
 <script setup="props">
 import { ref, computed } from 'vue'
 
-import { setMainArea, createAreaState } from '../../store.js'
+export { restart } from '../../store.js'
 
 import { areaToCSS, areaToHTML, ie_areaToCSS } from '../../generateCode.js'
 
@@ -67,10 +67,6 @@ export const cssCode = computed(() => {
 export const htmlCode = computed(() => {
   return areaToHTML(props.area, { prefix: prefix.value })
 })
-
-export function restart() {
-  setMainArea(createAreaState())
-}
 
 export const showPermalink = ref(false)
 export const permalink = ref('')

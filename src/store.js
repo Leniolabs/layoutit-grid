@@ -174,14 +174,23 @@ const colors = [
   'rgba(0, 128, 128, 0.8)',
 ]
 
-export function createAreaState() {
-  return {
+export function createAreaState({
+  name = 'area',
+  color = colors[0],
+  grid = null,
+  flex = null,
+  gridRegion = null,
+  parent = null,
+}) {
+  return { name, color, grid, flex, gridRegion, parent }
+}
+
+function createMainAreaState() {
+  return createAreaState({
     name: 'grid-container',
     color: colors[0],
     grid: createGridState(3, 4),
-    flex: null,
-    gridRegion: null,
-  }
+  })
 }
 
 function findAreaParent(area, parent) {
@@ -201,7 +210,7 @@ function findAreaParent(area, parent) {
   return p
 }
 
-export const mainArea = ref(createAreaState())
+export const mainArea = ref(createMainAreaState())
 export const currentArea = ref(mainArea.value)
 export const currentItem = ref(null)
 export const dragging = ref(null)
@@ -239,6 +248,10 @@ export function removeArea(area) {
   const { areas } = parent.grid
   areas.splice(areas.indexOf(area), 1)
   deselectCurrentArea()
+}
+
+export function restart() {
+  setMainArea(createMainAreaState())
 }
 
 export function getAreaParent(area) {

@@ -32,7 +32,7 @@
 
 <script setup="props">
 import { gridRegionToGridArea } from '../../utils.js'
-import { setCurrentArea, getRandomColor, isValidAreaName } from '../../store.js'
+import { createAreaState, setCurrentArea, getRandomColor, isValidAreaName } from '../../store.js'
 
 import IconRemove from '../icons/IconRemove.vue'
 
@@ -133,13 +133,14 @@ export function cellMove({ clientX, clientY }, section) {
 export function selectionSave() {
   if (!invalidClassName.value) {
     const { color } = selection.value
-    grid.value.areas.push({
-      gridRegion: selectionArea(selection.value),
-      color,
-      name: gridName.value,
-      grid: null,
-      flex: null,
-    })
+    grid.value.areas.push(
+      createAreaState({
+        name: gridName.value,
+        gridRegion: selectionArea(selection.value),
+        color,
+        parent: props.area,
+      })
+    )
 
     gridName.value = ''
     selection.value = null
