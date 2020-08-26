@@ -7,7 +7,7 @@
     :class="{
       lastcol: section.col.end - 1 === colsNumber && section.row.start === 1,
       lastrow: section.row.end - 1 === rowsNumber && section.col.start === 1,
-      dragging: isDraggingGrid && (dragging.colLine === section.col.start || dragging.rowLine === section.row.start),
+      dragging: isDraggingSection,
       grayed,
     }"
     class="grid-section"
@@ -15,13 +15,13 @@
     @pointermove="$emit('move', $event)"
   >
     <div
-      :class="{ dragging: isDraggingGrid && dragging.colLine === section.col.start && section.row.start === 1 }"
+      :class="{ dragging: isDraggingCol }"
       class="col-handle"
       @pointerdown.stop="handleDown($event, section, { col: true })"
     />
 
     <div
-      :class="{ dragging: isDraggingGrid && dragging.rowLine === section.row.start && section.col.start === 1 }"
+      :class="{ dragging: isDraggingRow }"
       class="row-handle"
       @pointerdown="handleDown($event, section, { row: true })"
     />
@@ -99,7 +99,21 @@ export const grid = computed(() => props.area.grid)
 
 export const { colsNumber, rowsNumber } = useGridDimensions(grid)
 
-export const isDraggingGrid = computed(() => props.dragging && props.dragging.grid === grid.value)
+export const isDraggingGrid = computed(() => dragging.value && dragging.value.grid === grid.value)
+
+export const isDraggingSection = computed(
+  () =>
+    isDraggingGrid.value &&
+    (dragging.value.colLine === props.section.col.start || dragging.value.rowLine === props.section.row.start)
+)
+
+export const isDraggingCol = computed(
+  () => isDraggingGrid.value && dragging.value.colLine === props.section.col.start && props.section.row.start === 1
+)
+
+export const isDraggingRow = computed(
+  () => isDraggingGrid.value && dragging.value.rowLine === props.section.row.start && props.section.col.start === 1
+)
 
 export function showInsideColSize(col) {
   return isDraggingGrid.value && (col === dragging.value.colLine - 1 || col === dragging.value.colLine - 2)
@@ -133,7 +147,7 @@ export function handleDown(event, section, { row, col }) {
 
     if (!dragging.value && (new Date().getTime() - initialTime > 500 || farEnough(initialPos, pos))) {
       // Start dragging grid lines
-      dragging.value = { grid, rowLine, colLine }
+      dragging.value = { grid: grid.value, rowLine, colLine }
       document.body.style.cursor = col && row ? 'move' : col ? 'col-resize' : 'row-resize'
     }
     if (dragging.value) {
