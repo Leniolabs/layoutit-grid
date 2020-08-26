@@ -1,6 +1,6 @@
 <template>
   <mobile-button @click="activeSidebar = !activeSidebar" />
-  <grid-editor :area="mainArea" :parent-active="currentArea === mainArea" />
+  <grid-editor :area="mainArea" />
   <props-sidebar v-if="activeSidebar" :area="mainArea" />
   <sidebar-right v-if="activeSidebarRight" :save-design="saveDesign">
     <template v-slot:header>

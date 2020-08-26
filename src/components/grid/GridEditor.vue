@@ -10,12 +10,7 @@
     }"
     class="grid"
   >
-    <area-editor
-      v-for="a in grid.areas"
-      :key="`area-${a.name}`"
-      :area="a"
-      :parent-active="parentActive"
-    />
+    <area-editor v-for="a in grid.areas" :key="`area-${a.name}`" :area="a" />
 
     <grid-cell
       v-for="(section, i) in gridSections(grid)"
@@ -23,7 +18,7 @@
       :area="area"
       :section="section"
       :grid-computed-styles="gridComputedStyles"
-      :grayed="!parentActive"
+      :grayed="!isActive"
       @down="$refs.selection.cellDown($event, section)"
       @move="$refs.selection.cellMove($event, section)"
       @togglelinename="$refs[$event].toggle()"
@@ -56,7 +51,7 @@ import LineName from './LineName.vue'
 import AreaEditor from '../area/AreaEditor.vue'
 
 export { currentArea, dragging } from '../../store.js'
-import { useIsCurrentArea } from '../../composables/area.js'
+import { useIsCurrentArea, useIsActiveArea } from '../../composables/area.js'
 
 export { gridSections } from '../../utils.js'
 
@@ -69,7 +64,6 @@ export default {
   },
   props: {
     area: { type: Object, required: true },
-    parentActive: { type: Boolean, default: false },
   },
 }
 
@@ -78,6 +72,7 @@ import { ref, computed } from 'vue'
 export const grid = computed(() => props.area.grid)
 
 export const isCurrent = useIsCurrentArea(props.area)
+export const isActive = useIsActiveArea(props.area)
 
 export const sectionElement = ref(null)
 export function gridComputedStyles() {

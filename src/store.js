@@ -193,23 +193,6 @@ function createMainAreaState() {
   })
 }
 
-function findAreaParent(area, parent) {
-  const { grid } = parent
-  if (!grid) {
-    return undefined
-  }
-  if (grid.areas.find((a) => a === area)) {
-    return parent
-  }
-  let p
-  grid.areas.forEach((ap) => {
-    if (!p) {
-      p = findAreaParent(area, ap)
-    }
-  })
-  return p
-}
-
 export const mainArea = ref(createMainAreaState())
 export const currentArea = ref(mainArea.value)
 export const currentItem = ref(null)
@@ -244,8 +227,7 @@ export function clearArea(area) {
 }
 
 export function removeArea(area) {
-  const parent = getAreaParent(area)
-  const { areas } = parent.grid
+  const { areas } = area.parent.grid
   areas.splice(areas.indexOf(area), 1)
   deselectCurrentArea()
 }
@@ -254,12 +236,8 @@ export function restart() {
   setMainArea(createMainAreaState())
 }
 
-export function getAreaParent(area) {
-  return findAreaParent(area, mainArea.value)
-}
-
 export function getAreaDepth(area) {
-  const parent = getAreaParent(area)
+  const parent = area.parent
   if (parent) {
     return getAreaDepth(parent) + 1
   } else {

@@ -38,7 +38,7 @@ import IconSubgrid from '../icons/IconSubgrid.vue'
 import IconFlex from '../icons/IconFlex.vue'
 
 import { computed } from 'vue'
-import { mainArea, setCurrentArea, getAreaParent, createGridState, createFlexState } from '../../store.js'
+import { mainArea, setCurrentArea, createGridState, createFlexState } from '../../store.js'
 export { deselectCurrentArea, clearArea, removeArea } from '../../store.js'
 
 export default {

@@ -1,12 +1,20 @@
 import { computed } from 'vue'
 import { mainArea, currentArea } from '../store.js'
 
+export function useIsMainArea(area) {
+  return computed(() => area === mainArea.value)
+}
+
 export function useIsCurrentArea(area) {
   return computed(() => area === currentArea.value)
 }
 
-export function useIsMainArea(area) {
-  return computed(() => area === mainArea.value)
+function isActiveArea(area) {
+  return area === currentArea.value || (area.parent ? isActiveArea(area.parent) : false)
+}
+
+export function useIsActiveArea(area) {
+  return computed(() => isActiveArea(area))
 }
 
 export function useGridDimensions(gridRef) {

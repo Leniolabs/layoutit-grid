@@ -7,7 +7,7 @@
       <div
         v-for="(item, i) in flex.items"
         :key="`section-${i}`"
-        :class="{ selected: i + 1 === currentItem, grayed: !parentActive }"
+        :class="{ selected: i + 1 === currentItem, grayed: !isActive }"
         :style="{
           'flex-grow': item.grow,
           'flex-shrink': item.shrink,
@@ -23,19 +23,18 @@
 import { computed } from 'vue'
 import { mainArea, currentArea, currentItem } from '../../store.js'
 export { deselectCurrentArea } from '../../store.js'
-import { useIsCurrentArea } from '../../composables/area.js'
+import { useIsActiveArea } from '../../composables/area.js'
 
 export { currentItem }
 
 export default {
   props: {
     area: { type: Object, required: true },
-    parentActive: { type: Boolean, default: false },
   },
 }
 
 export const flex = computed(() => props.area.flex)
-export const isCurrent = useIsCurrentArea(props.area)
+export const isActive = useIsActiveArea(props.area)
 
 export function toggleFlexItem(item) {
   currentArea.value = props.area
