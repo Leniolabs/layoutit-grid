@@ -6,7 +6,7 @@
       'grid-template-rows': grid.row.sizes.join(' '),
       'grid-template-columns': grid.col.sizes.join(' '),
       'grid-gap': grid.row.gap + ' ' + grid.col.gap,
-      display: 'grid',
+      display: 'grid'
     }"
     class="grid"
   >
@@ -67,12 +67,13 @@ export default {
   },
 }
 
-import { ref, computed } from 'vue'
+import { ref, computed, toRefs } from 'vue'
 
 export const grid = computed(() => props.area.grid)
 
-export const isCurrent = useIsCurrentArea(props.area)
-export const isActive = useIsActiveArea(props.area)
+const { area } = toRefs(props)
+export const isCurrent = useIsCurrentArea(area)
+export const isActive = useIsActiveArea(area)
 
 export const sectionElement = ref(null)
 export function gridComputedStyles() {

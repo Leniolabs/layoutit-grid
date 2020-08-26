@@ -20,7 +20,7 @@
 </template>
 
 <script setup="props">
-import { computed } from 'vue'
+import { computed, toRefs } from 'vue'
 import { mainArea, currentArea, currentItem } from '../../store.js'
 export { deselectCurrentArea } from '../../store.js'
 import { useIsActiveArea } from '../../composables/area.js'
@@ -34,7 +34,9 @@ export default {
 }
 
 export const flex = computed(() => props.area.flex)
-export const isActive = useIsActiveArea(props.area)
+
+const { area } = toRefs(props)
+export const isActive = useIsActiveArea(area)
 
 export function toggleFlexItem(item) {
   currentArea.value = props.area

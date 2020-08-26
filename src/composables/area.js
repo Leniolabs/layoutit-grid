@@ -2,11 +2,11 @@ import { computed } from 'vue'
 import { mainArea, currentArea } from '../store.js'
 
 export function useIsMainArea(area) {
-  return computed(() => area === mainArea.value)
+  return computed(() => area.value === mainArea.value)
 }
 
 export function useIsCurrentArea(area) {
-  return computed(() => area === currentArea.value)
+  return computed(() => area.value === currentArea.value)
 }
 
 function isActiveArea(area) {
@@ -14,12 +14,12 @@ function isActiveArea(area) {
 }
 
 export function useIsActiveArea(area) {
-  return computed(() => isActiveArea(area))
+  return computed(() => isActiveArea(area.value))
 }
 
-export function useGridDimensions(gridRef) {
+export function useGridDimensions(grid) {
   return {
-    colsNumber: computed(() => gridRef.value.col.sizes.length),
-    rowsNumber: computed(() => gridRef.value.row.sizes.length),
+    colsNumber: computed(() => grid.value.col.sizes.length),
+    rowsNumber: computed(() => grid.value.row.sizes.length),
   }
 }

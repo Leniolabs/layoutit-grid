@@ -17,7 +17,7 @@
 import AreaInfo from './AreaInfo.vue'
 import FlexEditor from '../flex/FlexEditor.vue'
 
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, toRefs } from 'vue'
 import { mainArea, currentArea, setCurrentArea } from '../../store.js'
 import { useIsActiveArea } from '../../composables/area.js'
 
@@ -33,7 +33,8 @@ export default {
   },
 }
 
-export const isActive = useIsActiveArea(props.area)
+const { area } = toRefs(props)
+export const isActive = useIsActiveArea(area)
 
 export function handleDown(event) {
   if (!props.area.grid) {
