@@ -3,9 +3,6 @@
   <grid-editor :area="mainArea" />
   <props-sidebar v-if="activeSidebar" :area="mainArea" />
   <sidebar-right v-if="activeSidebarRight" :save-design="saveDesign">
-    <template v-slot:header>
-      <h1>Live</h1>
-    </template>
     <template v-slot:body>
       <live-code :area="mainArea" />
     </template>

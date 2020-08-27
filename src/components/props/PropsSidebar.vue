@@ -1,17 +1,15 @@
 <template>
-  <div>
-    <div class="sidebar">
-      <brand-logo />
+  <div class="sidebar">
+    <brand-logo />
 
-      <div v-if="currentArea !== area" class="area-name">{{ currentArea.name }}</div>
+    <div v-if="currentArea !== area" class="area-name">{{ currentArea.name }}</div>
 
-      <flex-options v-if="currentFlex" :flex="currentFlex" :current-item="currentItem" />
+    <flex-options v-if="currentFlex" :flex="currentFlex" :current-item="currentItem" />
 
-      <grid-options v-if="currentGrid" :grid="currentGrid" />
+    <grid-options v-if="currentGrid" :grid="currentGrid" />
 
-      <hire-us />
-      <version-label />
-    </div>
+    <hire-us />
+    <version-label />
   </div>
 </template>
 

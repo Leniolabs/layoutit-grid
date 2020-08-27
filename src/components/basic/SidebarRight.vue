@@ -43,61 +43,6 @@
     background: transparent;
     border-radius: 0px;
     transition: 1s width;
-    .button {
-      background: #6b16a1;
-      border: 0;
-      border-radius: 50px;
-      color: #fff;
-      cursor: pointer;
-      display: inline-block;
-      font-family: inherit;
-      font-size: 1em;
-      text-align: center;
-      padding: 0.625em 1em;
-      margin: 0 auto;
-      &.btn-close {
-        float: right;
-        &:hover {
-          background: #444;
-        }
-      }
-      &.btn-default {
-        background: #b4bcc8;
-      }
-      &.codepen-btn {
-        background: #333;
-        &:hover {
-          background: #444;
-        }
-      }
-    }
-    .right-sidebar-header {
-      position: relative;
-      padding: 15px 20px;
-      border-bottom: 1px dashed #aaa;
-      h1 {
-        margin: 0;
-        font-size: 27px;
-        font-weight: 500;
-      }
-      .right-sidebar-close {
-        position: absolute;
-        border: 0;
-        background: 0;
-        top: 10px;
-        right: 10px;
-        font-size: 24px;
-        color: #aaa;
-        display: none;
-        cursor: pointer;
-        &:hover {
-          color: #000;
-        }
-        @media (max-width: 769px) {
-          display: block;
-        }
-      }
-    }
     .right-sidebar-body {
       padding: 0px 5px 0px 5px;
       height: 100%;
