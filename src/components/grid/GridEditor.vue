@@ -10,7 +10,12 @@
     }"
     class="grid"
   >
-    <area-editor v-for="a in grid.areas" :key="`area-${a.name}`" :area="a" />
+    <area-editor
+      v-for="a in areasToShow"
+      :key="`area-${a.name}`"
+      :area="a"
+      @edit="$refs.selection.editArea(a)"
+    />
 
     <grid-cell
       v-for="(section, i) in gridSections(grid)"
@@ -40,7 +45,12 @@
       />
     </grid-cell>
 
-    <area-selection ref="selection" :area="area" />
+    <area-selection
+      ref="selection"
+      :area="area"
+      @editstart="a => editingArea = a"
+      @editend="editingArea = null"
+    />
   </section>
 </template>
 
@@ -70,6 +80,9 @@ export default {
 import { ref, computed, toRefs } from 'vue'
 
 export const grid = computed(() => props.area.grid)
+
+export const editingArea = ref(null)
+export const areasToShow = computed(() => grid.value.areas.filter((a) => a !== editingArea.value))
 
 const { area } = toRefs(props)
 export const isCurrent = useIsCurrentArea(area)

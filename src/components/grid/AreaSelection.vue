@@ -17,21 +17,21 @@
       aria-label="Remove selection"
       class="btn-remove"
       title="Remove Selection"
-      @click="selection = null"
+      @click="closeSelection"
     >
       <icon-remove />
     </button>
     <button
-      :disabled="gridName === '' || !isValidAreaName(gridName) || invalidClassName"
+      :disabled="!saveEnabled"
       class="btn-save"
       aria-label="Save area"
-      @click="selectionSave"
+      @click="saveSelection"
     >Save</button>
   </section>
 </template>
 
-<script setup="props">
-import { gridRegionToGridArea } from '../../utils.js'
+<script setup="props, { emit }">
+import { gridRegionToGridArea, createSection } from '../../utils.js'
 import { createAreaState, setCurrentArea, getRandomColor, isValidAreaName } from '../../store.js'
 
 import IconRemove from '../icons/IconRemove.vue'
@@ -74,10 +74,30 @@ export const gridArea = computed(() =>
   selection.value ? gridRegionToGridArea(selectionArea(selection.value)) : 'initial'
 )
 
-// TODO: rework to validName
-export const invalidClassName = computed(() => {
+export function editArea(area) {
+  emit('editstart', area)
+
+  gridName.value = area.name
+
+  const { gridRegion } = area
+  selection.value = {
+    start: createSection({ col: gridRegion.col.start, row: gridRegion.row.start }),
+    end: createSection({ col: gridRegion.col.end - 1, row: gridRegion.row.end - 1 }),
+    color: area.color,
+    fresh: false,
+    area,
+  }
+
+  setTimeout(() => nameInputElement.value.focus(), 0)
+}
+
+function validGridName(name) {
+  return name !== '' && !(name[0] >= '0' && name[0] <= '9')
+}
+
+export const saveEnabled = computed(() => {
   const name = gridName.value
-  return (name[0] >= '0' && name[0] <= '9') || !name[0]
+  return validGridName(name) && (isValidAreaName(name) || (selection.value.area && selection.value.area.name === name))
 })
 
 export { isValidAreaName }
@@ -130,21 +150,35 @@ export function cellMove({ clientX, clientY }, section) {
   }
 }
 
-export function selectionSave() {
-  if (!invalidClassName.value) {
+export function saveSelection() {
+  if (saveEnabled.value) {
     const { color } = selection.value
-    grid.value.areas.push(
-      createAreaState({
-        name: gridName.value,
-        gridRegion: selectionArea(selection.value),
-        color,
-        parent: props.area,
-      })
-    )
+    const sa = selection.value.area
+    if (sa) {
+      sa.name = gridName.value
+      sa.gridRegion = selectionArea(selection.value)
+      emit('editend', sa)
+    } else {
+      grid.value.areas.push(
+        createAreaState({
+          name: gridName.value,
+          gridRegion: selectionArea(selection.value),
+          color,
+          parent: props.area,
+        })
+      )
+    }
 
     gridName.value = ''
     selection.value = null
   }
+}
+
+export function closeSelection() {
+  if (selection.value.area) {
+    emit('editend', selection.value.area)
+  }
+  selection.value = null
 }
 </script>
 

@@ -14,6 +14,13 @@ export function namedTemplateColumns(grid, repeat) {
   return generateNamedTemplate(grid.col.sizes, grid.col.lineNames, true, repeat)
 }
 
+export function createSection({ col, row }) {
+  return {
+    col: { start: col, end: col + 1 },
+    row: { start: row, end: row + 1 },
+  }
+}
+
 export function gridSections(grid) {
   const colsNumber = grid.col.sizes.length
   const rowsNumber = grid.row.sizes.length
@@ -23,10 +30,7 @@ export function gridSections(grid) {
   for (let i = 0; i < sectionsNumber; ++i) {
     const colStart = (i % colsNumber) + 1
     const rowStart = Math.floor(i / colsNumber) + 1
-    sections.push({
-      col: { start: colStart, end: colStart + 1 },
-      row: { start: rowStart, end: rowStart + 1 },
-    })
+    sections.push(createSection({ col: colStart, row: rowStart }))
   }
 
   return sections

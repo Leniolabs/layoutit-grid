@@ -1,5 +1,10 @@
 <template>
-  <span :style="{ 'border-color': area.color }" class="area-name" title="Area Name">{{ area.name }}</span>
+  <span
+    @click="$emit('edit')"
+    :style="{ 'border-color': area.color }"
+    class="area-name"
+    title="Area Name"
+  >{{ area.name }}</span>
 </template>
 
 <script setup>
@@ -21,6 +26,10 @@ export default {
   float: left;
   font-family: 'Alegreya Sans', 'Helvetica Neue', Arial, sans-serif;
   margin-right: 5px;
-  pointer-events: none;
+  pointer-events: all;
+}
+
+.area-name:hover {
+  cursor: text;
 }
 </style>

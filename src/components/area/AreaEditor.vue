@@ -5,7 +5,7 @@
     class="area-editor"
     @pointerdown="handleDown($event)"
   >
-    <area-info :area="area" />
+    <area-info :area="area" @edit="$emit('edit')" />
 
     <grid-editor v-if="area.grid" :area="area" />
 
