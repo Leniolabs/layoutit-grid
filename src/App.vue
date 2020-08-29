@@ -1,11 +1,14 @@
 <template>
+  <!-- 
+    When deployed, you can use <layout-editor :saveDesign="..."/> 
+    to get a path for the current area
+  -->
   <layout-editor />
 </template>
 
 <script setup>
 import LayoutEditor from './components/LayoutEditor.vue'
 
-// When deployed, you can use <Editor :saveDesign="..."/> to get a path for the current area
 export default {
   components: {
     LayoutEditor,

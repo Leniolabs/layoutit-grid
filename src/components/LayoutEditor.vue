@@ -2,9 +2,9 @@
   <mobile-button @click="activeSidebar = !activeSidebar" />
   <grid-editor :area="mainArea" />
   <props-sidebar v-if="activeSidebar" :area="mainArea" />
-  <sidebar-right v-if="activeSidebarRight" :save-design="saveDesign">
+  <sidebar-right v-if="activeSidebarRight">
     <template v-slot:body>
-      <live-code :area="mainArea" />
+      <live-code :area="mainArea" :save-design="saveDesign" />
     </template>
   </sidebar-right>
 </template>
