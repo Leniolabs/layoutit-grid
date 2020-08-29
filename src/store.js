@@ -197,6 +197,7 @@ export const mainArea = ref(createMainAreaState())
 export const currentArea = ref(mainArea.value)
 export const currentItem = ref(null)
 export const dragging = ref(null)
+export const darkmode = ref(false)
 
 export function isValidAreaName(newName, area = mainArea.value) {
   const { name, grid } = area

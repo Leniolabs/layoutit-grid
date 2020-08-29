@@ -10,6 +10,9 @@
 
     <hire-us />
     <version-label />
+    <button :class="[ 'btn-dark', { active: darkmode } ]" @click="darkmode = !darkmode">
+      <icon-dark />
+    </button>
   </div>
 </template>
 
@@ -18,15 +21,17 @@ import { computed } from 'vue'
 import VersionLabel from './VersionLabel.vue'
 import BrandLogo from './BrandLogo.vue'
 import HireUs from './HireUs.vue'
+import IconDark from '../icons/IconDark.vue'
 import FlexOptions from './FlexOptions.vue'
 import GridOptions from './GridOptions.vue'
-export { currentArea } from '../../store.js'
+export { currentArea, darkmode } from '../../store.js'
 
 export default {
   components: {
     VersionLabel,
     BrandLogo,
     HireUs,
+    IconDark,
     FlexOptions,
     GridOptions,
   },
@@ -95,17 +100,38 @@ export const currentFlex = computed(() => currentArea.value.flex)
       transform: translateX(0);
     }
   }
+
+  button.btn-dark {
+    margin-bottom: 10px;
+    background: #3094b4;
+    color: #fff;
+    border: 0;
+    border-radius: 25px;
+    cursor: pointer;
+    height: 35px;
+    width: 35px;
+    padding: 10px;
+    &.active {
+      background: #27ae60;
+    }
+  }
 }
 
 .hire-us {
   position: fixed;
-  bottom: 5px;
-  left: 10px;
+  bottom: 15px;
+  left: 60px;
 }
 
 .version {
   position: fixed;
+  bottom: 15px;
+  left: 130px;
+}
+
+.btn-dark {
+  position: fixed;
   bottom: 5px;
-  left: 80px;
+  left: 15px;
 }
 </style>

@@ -18,8 +18,8 @@ import SidebarRight from './basic/SidebarRight.vue'
 import PropsSidebar from './props/PropsSidebar.vue'
 import LiveCode from './code/LiveCode.vue'
 
-import { ref, computed } from 'vue'
-export { mainArea, currentArea } from '../store.js'
+import { watch, ref, computed } from 'vue'
+export { darkmode, mainArea, currentArea } from '../store.js'
 
 export default {
   components: {
@@ -37,6 +37,10 @@ export default {
 
 export let activeSidebar = ref(true)
 export let activeSidebarRight = ref(true)
+
+watch(darkmode, () => {
+  document.getElementById('app').classList[darkmode.value ? 'add' : 'remove']('darkmode')
+})
 </script>
 
 <style lang="scss">
@@ -96,6 +100,44 @@ p {
   }
   @media screen and (max-width: 768px) {
     padding: 45px 0 0;
+  }
+  &.darkmode {
+    .grid {
+      outline: 1px dashed #fff;
+      box-shadow: none;
+    }
+    .inside-row-size,
+    .inside-col-size {
+      color: #fff;
+    }
+    section {
+      background: #300548;
+      &:after,
+      &:before {
+        background: #300548;
+        color: #fff;
+      }
+      &.grid-saved,
+      &.grid-add {
+        background: #fff;
+      }
+      &.grayed {
+        background: #032c06;
+      }
+    }
+
+    .grid-section.grayed {
+      &:before {
+        background: #032c06;
+      }
+      background: #032c06;
+    }
+
+    .area-selection {
+      input {
+        color: #a8a8a2;
+      }
+    }
   }
 }
 
