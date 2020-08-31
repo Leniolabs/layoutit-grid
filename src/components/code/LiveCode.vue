@@ -26,6 +26,8 @@ export { restart } from '../../store.js'
 
 import { areaToCSS, areaToHTML, ie_areaToCSS } from '../../generateCode.js'
 
+import { mainArea } from '../../store.js'
+
 import IconTrash from '../icons/IconTrash.vue'
 import SidebarButton from '../basic/SidebarButton.vue'
 
@@ -73,8 +75,8 @@ export const permalink = ref('')
 
 export function getPermalink() {
   // Permalink supports depends on the deployed editor
-  if (saveDesign.value) {
-    saveDesign.value(area.value).then((path) => {
+  if (props.saveDesign) {
+    props.saveDesign(mainArea.value).then((path) => {
       permalink.value = path
       showPermalink.value = true
     })

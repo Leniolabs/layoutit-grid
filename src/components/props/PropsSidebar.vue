@@ -10,7 +10,11 @@
 
     <hire-us />
     <version-label />
-    <button :class="[ 'btn-dark', { active: darkmode } ]" @click="darkmode = !darkmode">
+    <button
+      aria-label="Toggle dark mode"
+      :class="[ 'btn-dark', { active: darkmode } ]"
+      @click="darkmode = !darkmode"
+    >
       <icon-dark />
     </button>
   </div>
