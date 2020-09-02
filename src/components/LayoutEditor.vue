@@ -44,6 +44,17 @@ watch(darkmode, () => {
 </script>
 
 <style lang="scss">
+:root {
+  --color-add: #01579b;
+  --color-add-active: #4f83cc;
+  --color-remove: #c2185b;
+  --color-remove-active: #fa5788;
+  --color-hire-us: var(--color-remove);
+  --color-hire-us-active: var(--color-remove-active);
+  --color-darkmode: var(--color-add);
+  --color-darkmode-active: #27ae60;
+}
+
 *,
 *:before,
 *:after {

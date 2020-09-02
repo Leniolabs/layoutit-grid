@@ -210,9 +210,9 @@ h2 {
   width: 100%;
   padding: 8px 0;
   margin-bottom: 0;
-  background: #b0184b;
+  background: var(--color-remove);
   &:hover {
-    background: #c11651;
+    background: var(--color-remove-active);
   }
   svg {
     padding: 1.2px;
@@ -227,9 +227,9 @@ h2 {
   min-width: 2.188em;
   margin-bottom: 0.626em;
   padding: 0.313em 9px;
-  background: #107292;
+  background: var(--color-add);
   &:hover {
-    background: #236f86;
+    background: var(--color-add-active);
   }
 }
 </style>

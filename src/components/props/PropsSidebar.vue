@@ -107,7 +107,7 @@ export const currentFlex = computed(() => currentArea.value.flex)
 
   button.btn-dark {
     margin-bottom: 10px;
-    background: #3094b4;
+    background: var(--color-darkmode);
     color: #fff;
     border: 0;
     border-radius: 25px;
@@ -116,7 +116,7 @@ export const currentFlex = computed(() => currentArea.value.flex)
     width: 35px;
     padding: 10px;
     &.active {
-      background: #27ae60;
+      background: var(--color-darkmode-active);
     }
   }
 }

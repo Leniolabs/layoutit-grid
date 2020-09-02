@@ -216,7 +216,7 @@ export function closeSelection() {
     background: transparent;
   }
   button {
-    background: #107292;
+    background: var(--color-add);
     border: 0;
     height: 1.8rem;
     line-height: 0.5rem;
@@ -229,7 +229,7 @@ export function closeSelection() {
     &.btn-save {
       border-radius: 2px 0 0 2px;
       &:hover {
-        background: #2fc334;
+        background: var(--color-add-active);
       }
     }
     &.btn-subgrid {
@@ -246,11 +246,11 @@ export function closeSelection() {
     }
     &.btn-remove {
       width: 1.8rem;
-      background: #b0184b;
+      background: var(--color-remove);
       border-top-right-radius: 2px;
       border-bottom-right-radius: 2px;
       &:hover {
-        background: #c11651;
+        background: var(--color-remove-active);
       }
       svg {
         height: 0.688rem;

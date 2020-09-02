@@ -4,7 +4,7 @@
 
 <style scoped lang="scss">
 .hire-us {
-  background: #b0184b;
+  background: var(--color-hire-us);
   border-radius: 30px;
   font-size: 1rem;
   height: 2.188em;
@@ -13,7 +13,7 @@
   display: block;
   color: #fff;
   &:hover {
-    background: #c11651;
+    background: var(--color-hire-us-active);
   }
 }
 </style>

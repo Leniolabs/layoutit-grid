@@ -18,12 +18,12 @@ button {
   padding: 0.313em 9px;
 
   color: #fff;
-  background: #107292;
+  background: var(--color-add);
   &.active {
     background: #27ae60;
   }
   &:hover {
-    background: #236f86;
+    background: var(--color-add-active);
   }
 }
 </style>
