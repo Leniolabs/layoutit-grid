@@ -1,17 +1,11 @@
 <template>
   <div class="mobile-button" @click="$emit('click')">
-    <icon-sidebar />
+    <IconSidebar />
   </div>
 </template>
 
 <script setup>
-import IconSidebar from './icons/IconSidebar.vue'
-
-export default {
-  components: {
-    IconSidebar,
-  },
-}
+export { default as IconSidebar } from './icons/IconSidebar.vue'
 </script>
 
 <style scoped lang="scss">

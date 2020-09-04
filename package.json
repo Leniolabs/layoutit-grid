@@ -9,11 +9,11 @@
   },
   "dependencies": {
     "prismjs": "1.21.0",
-    "vue": "^3.0.0-rc.6"
+    "vue": "^v3.0.0-rc.10"
   },
   "devDependencies": {
     "vite": "^v1.0.0-rc.4",
-    "@vue/compiler-sfc": "^3.0.0-rc.6",
+    "@vue/compiler-sfc": "^v3.0.0-rc.10",
     "sass": "1.26.10"
   },
   "bugs": {

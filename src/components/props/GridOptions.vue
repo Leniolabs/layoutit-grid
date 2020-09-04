@@ -16,23 +16,23 @@
             step="0.5"
             @input="setColValue(grid, column - 1, $event.target.value)"
           />
-          <unit-select
+          <UnitSelect
             :value="getColUnit(grid, column - 1)"
             type="grid"
             :aria-label="`column ${column} unit`"
             @input="onColUnitInput($event.target.value, column - 1)"
           />
-          <options-button
+          <OptionsButton
             class="remove-button"
             :aria-label="`remove column ${column}`"
             :disabled="grid.col.sizes.length === 1"
             @click="removeCol(grid, column - 1)"
           >
-            <icon-remove />
-          </options-button>
+            <IconRemove />
+          </OptionsButton>
         </div>
       </div>
-      <options-button class="add-button" @click="addCol(grid, '1fr')">Add</options-button>
+      <OptionsButton class="add-button" @click="addCol(grid, '1fr')">Add</OptionsButton>
     </div>
     <div class="items rows">
       <h2>
@@ -50,48 +50,41 @@
             step="0.5"
             @input="setRowValue(grid, row - 1, $event.target.value)"
           />
-          <unit-select
+          <UnitSelect
             :value="getRowUnit(grid,row - 1)"
             type="grid"
             :aria-label="`row ${row} unit`"
             @input="onRowUnitInput($event.target.value, row - 1)"
           />
-          <options-button
+          <OptionsButton
             class="remove-button"
             :aria-label="`remove row ${row}`"
             :disabled="grid.row.sizes.length === 1"
             @click="removeRow(grid,row - 1)"
           >
-            <icon-remove />
-          </options-button>
+            <IconRemove />
+          </OptionsButton>
         </div>
       </div>
-      <options-button class="add-button" @click="addRow(grid, '1fr')">Add</options-button>
+      <OptionsButton class="add-button" @click="addRow(grid, '1fr')">Add</OptionsButton>
     </div>
     <div class="items gaps">
       <h2>
         <span>⊞</span> Grid Gap
       </h2>
-      <gap-input :grid="grid" type="row" />
-      <gap-input :grid="grid" type="col" />
+      <GapInput :grid="grid" type="row" />
+      <GapInput :grid="grid" type="col" />
     </div>
   </div>
 </template>
 
 <script setup="props">
-import IconRemove from '../icons/IconRemove.vue'
-
-import UnitSelect from '../common/UnitSelect.vue'
-import GapInput from '../common/GapInput.vue'
-import OptionsButton from '../basic/OptionsButton.vue'
+export { default as IconRemove } from '../icons/IconRemove.vue'
+export { default as UnitSelect } from '../common/UnitSelect.vue'
+export { default as GapInput } from '../common/GapInput.vue'
+export { default as OptionsButton } from '../basic/OptionsButton.vue'
 
 export default {
-  components: {
-    IconRemove,
-    UnitSelect,
-    GapInput,
-    OptionsButton,
-  },
   props: {
     grid: { type: Object, required: true },
   },

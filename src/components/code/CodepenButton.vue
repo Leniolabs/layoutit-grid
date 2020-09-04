@@ -1,19 +1,18 @@
 <template>
   <form action="https://codepen.io/pen/define" style="float: left;" method="POST" target="_blank">
     <input id="codepenData" :value="codePenJSON" type="hidden" name="data" />
-    <button type="submit" class="button codepen-btn"><icon-codepen />Create CodePen</button>
+    <button type="submit" class="button codepen-btn">
+      <IconCodepen />Create CodePen
+    </button>
   </form>
 </template>
 
 <script setup="props">
+export { default as IconCodepen } from '../icons/IconCodepen.vue'
+
 import { computed } from 'vue'
 
-import IconCodepen from '../icons/IconCodepen.vue'
-
 export default {
-  components: {
-    IconCodepen,
-  },
   props: {
     cssCode: { type: String, required: true },
     htmlCode: { type: String, required: true },

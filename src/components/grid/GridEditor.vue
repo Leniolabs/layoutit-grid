@@ -10,14 +10,14 @@
     }"
     class="grid"
   >
-    <area-editor
+    <AreaEditor
       v-for="a in areasToShow"
       :key="`area-${a.name}`"
       :area="a"
       @edit="$refs.selection.editArea(a)"
     />
 
-    <grid-cell
+    <GridCell
       v-for="(section, i) in gridSections(grid)"
       :key="`section-${i}`"
       :area="area"
@@ -28,7 +28,7 @@
       @move="$refs.selection.cellMove($event, section)"
       @togglelinename="$refs[$event].toggle()"
     >
-      <line-name
+      <LineName
         v-if="grid && section.row.start === grid.row.sizes.length"
         :ref="`colLine-${section.col.start}`"
         :grid="grid"
@@ -36,16 +36,16 @@
         type="col"
       />
 
-      <line-name
+      <LineName
         v-if="grid && section.col.start === grid.col.sizes.length"
         :ref="`rowLine-${section.row.start}`"
         :grid="grid"
         :pos="section.row.start"
         type="row"
       />
-    </grid-cell>
+    </GridCell>
 
-    <area-selection
+    <AreaSelection
       ref="selection"
       :area="area"
       @editstart="a => editingArea = a"
@@ -55,10 +55,11 @@
 </template>
 
 <script setup="props, { el }">
-import GridCell from './GridCell.vue'
-import AreaSelection from './AreaSelection.vue'
-import LineName from './LineName.vue'
-import AreaEditor from '../area/AreaEditor.vue'
+export { default as GridCell } from './GridCell.vue'
+export { default as AreaSelection } from './AreaSelection.vue'
+export { default as LineName } from './LineName.vue'
+export { default as AreaEditor } from '../area/AreaEditor.vue'
+// AreaEditor exposes globally because of circular reference with GridEditor
 
 export { currentArea, dragging } from '../../store.js'
 import { useIsCurrentArea, useIsActiveArea } from '../../composables/area.js'
@@ -66,12 +67,6 @@ import { useIsCurrentArea, useIsActiveArea } from '../../composables/area.js'
 export { gridSections } from '../../utils.js'
 
 export default {
-  components: {
-    GridCell,
-    AreaSelection,
-    LineName,
-    AreaEditor,
-  },
   props: {
     area: { type: Object, required: true },
   },

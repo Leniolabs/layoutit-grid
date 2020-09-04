@@ -3,7 +3,7 @@
     <span class="header">{{ type.toUpperCase() }}</span>
     <suspense>
       <template #default>
-        <code-view :code="code" :type="type" />
+        <CodeView :code="code" :type="type" />
       </template>
       <template #fallback>
         <pre>{{code}}</pre>

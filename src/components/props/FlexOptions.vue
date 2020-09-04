@@ -121,17 +121,7 @@ import { computed } from 'vue'
 
 import { currentItem, createFlexItemState } from '../../store.js'
 
-import IconRemove from '../icons/IconRemove.vue'
-
-import UnitSelect from '../common/UnitSelect.vue'
-import GapInput from '../common/GapInput.vue'
-
 export default {
-  components: {
-    IconRemove,
-    UnitSelect,
-    GapInput,
-  },
   props: {
     flex: { type: Object, required: true },
   },

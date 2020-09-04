@@ -1,19 +1,13 @@
 <template>
   <!-- 
-    When deployed, you can use <layout-editor :saveDesign="..."/> 
+    When deployed, you can use <LayoutEditor :saveDesign="..."/> 
     to get a path for the current area
   -->
-  <layout-editor />
+  <LayoutEditor />
 </template>
 
 <script setup>
-import LayoutEditor from './components/LayoutEditor.vue'
-
-export default {
-  components: {
-    LayoutEditor,
-  },
-}
+export { default as LayoutEditor } from './components/LayoutEditor.vue'
 </script>
 
 <style lang="scss">

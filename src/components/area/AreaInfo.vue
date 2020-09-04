@@ -4,24 +4,20 @@
     :style="{ top: 5 + toolbarStart * 32 + 'px', left: toolbarStart ? toolbarStart * 20 + 'px' : '5px' }"
     class="area-info"
   >
-    <area-name :area="area" @edit="$emit('edit')" />
-    <area-buttons :area="area" />
+    <AreaName :area="area" @edit="$emit('edit')" />
+    <AreaButtons :area="area" />
   </div>
 </template>
 
 <script setup="props">
-import AreaName from './AreaName.vue'
-import AreaButtons from './AreaButtons.vue'
+export { default as AreaName } from './AreaName.vue'
+export { default as AreaButtons } from './AreaButtons.vue'
 
 import { computed, toRefs } from 'vue'
 import { getAreaDepth } from '../../store.js'
 import { useIsMainArea } from '../../composables/area.js'
 
 export default {
-  components: {
-    AreaName,
-    AreaButtons,
-  },
   props: {
     area: { type: Object, required: true },
   },

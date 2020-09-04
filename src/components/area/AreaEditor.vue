@@ -5,17 +5,18 @@
     class="area-editor"
     @pointerdown="handleDown($event)"
   >
-    <area-info :area="area" @edit="$emit('edit')" />
+    <AreaInfo :area="area" @edit="$emit('edit')" />
 
-    <grid-editor v-if="area.grid" :area="area" />
+    <GridEditor v-if="area.grid" :area="area" />
 
-    <flex-editor v-if="area.flex" :area="area" />
+    <FlexEditor v-if="area.flex" :area="area" />
   </section>
 </template>
 
 <script setup="props">
-import AreaInfo from './AreaInfo.vue'
-import FlexEditor from '../flex/FlexEditor.vue'
+export { default as AreaInfo } from './AreaInfo.vue'
+export { default as FlexEditor } from '../flex/FlexEditor.vue'
+// GridEditor imported globally due to circular reference with AreaEditor
 
 import { computed, defineAsyncComponent, toRefs } from 'vue'
 import { mainArea, currentArea, setCurrentArea } from '../../store.js'
@@ -24,10 +25,6 @@ import { useIsActiveArea } from '../../composables/area.js'
 export { getGridArea } from '../../utils.js'
 
 export default {
-  components: {
-    AreaInfo,
-    FlexEditor,
-  },
   props: {
     area: { type: Object, required: true },
   },

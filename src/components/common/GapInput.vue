@@ -8,22 +8,18 @@
         min="0"
         @input="setGapValue($event.target.value)"
       />
-      <unit-select
-        :value="gap.unit"
-        aria-label="gap unit"
-        @input="setGapUnit($event.target.value)"
-      />
+      <UnitSelect :value="gap.unit" aria-label="gap unit" @input="setGapUnit($event.target.value)" />
     </div>
   </div>
 </template>
 
 <script setup="props">
+export { default as UnitSelect } from './UnitSelect.vue'
+
 import { computed } from 'vue'
-import UnitSelect from './UnitSelect.vue'
 import { parseValueUnit } from '../../store.js'
 
 export default {
-  components: { UnitSelect },
   props: {
     grid: { type: Object, required: true },
     type: { type: String, required: true }, // 'row' or 'col'

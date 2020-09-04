@@ -6,10 +6,10 @@
     title="Add Sub Grid"
     @click="subGrid()"
   >
-    <icon-subgrid />
+    <IconSubgrid />
   </button>
   <!--button v-show="!hasDisplay" aria-label="Add flex" class="btn-subgrid" @click="subFlex(area)">
-    <icon-flex />
+    <IconFlex />
   </button-->
   <button
     v-show="!hasDisplay"
@@ -18,7 +18,7 @@
     title="Remove Area"
     @click="removeArea(area)"
   >
-    <icon-remove />
+    <IconRemove />
   </button>
   <button
     v-show="hasDisplay"
@@ -27,27 +27,21 @@
     title="Clear Area"
     @click="clearArea(area)"
   >
-    <icon-clear />
+    <IconClear />
   </button>
 </template>
 
 <script setup="props, { emit }">
-import IconRemove from '../icons/IconRemove.vue'
-import IconClear from '../icons/IconClear.vue'
-import IconSubgrid from '../icons/IconSubgrid.vue'
-import IconFlex from '../icons/IconFlex.vue'
+export { default as IconRemove } from '../icons/IconRemove.vue'
+export { default as IconClear } from '../icons/IconClear.vue'
+export { default as IconSubgrid } from '../icons/IconSubgrid.vue'
+export { default as IconFlex } from '../icons/IconFlex.vue'
 
 import { computed } from 'vue'
 import { mainArea, setCurrentArea, createGridState, createFlexState } from '../../store.js'
 export { deselectCurrentArea, clearArea, removeArea } from '../../store.js'
 
 export default {
-  components: {
-    IconRemove,
-    IconClear,
-    IconSubgrid,
-    IconFlex,
-  },
   props: {
     area: { type: Object, required: true },
   },

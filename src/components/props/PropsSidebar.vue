@@ -1,44 +1,36 @@
 <template>
   <div class="sidebar">
-    <brand-logo />
+    <BrandLogo />
 
     <div v-if="currentArea !== area" class="area-name">{{ currentArea.name }}</div>
 
-    <flex-options v-if="currentFlex" :flex="currentFlex" :current-item="currentItem" />
+    <FlexOptions v-if="currentFlex" :flex="currentFlex" />
+    <GridOptions v-if="currentGrid" :grid="currentGrid" />
 
-    <grid-options v-if="currentGrid" :grid="currentGrid" />
-
-    <hire-us />
-    <version-label />
+    <HireUs />
+    <VersionLabel />
     <button
       aria-label="Toggle dark mode"
       :class="[ 'btn-dark', { active: darkmode } ]"
       @click="darkmode = !darkmode"
     >
-      <icon-dark />
+      <IconDark />
     </button>
   </div>
 </template>
 
 <script setup="props">
+export { default as VersionLabel } from './VersionLabel.vue'
+export { default as BrandLogo } from './BrandLogo.vue'
+export { default as HireUs } from './HireUs.vue'
+export { default as IconDark } from '../icons/IconDark.vue'
+export { default as FlexOptions } from './FlexOptions.vue'
+export { default as GridOptions } from './GridOptions.vue'
+
 import { computed } from 'vue'
-import VersionLabel from './VersionLabel.vue'
-import BrandLogo from './BrandLogo.vue'
-import HireUs from './HireUs.vue'
-import IconDark from '../icons/IconDark.vue'
-import FlexOptions from './FlexOptions.vue'
-import GridOptions from './GridOptions.vue'
 export { currentArea, darkmode } from '../../store.js'
 
 export default {
-  components: {
-    VersionLabel,
-    BrandLogo,
-    HireUs,
-    IconDark,
-    FlexOptions,
-    GridOptions,
-  },
   props: {
     area: { type: Object, required: true },
   },

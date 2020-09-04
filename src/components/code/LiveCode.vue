@@ -1,25 +1,32 @@
 <template>
   <div class="sidebar-outermost-container">
     <div class="right-sidebar-content-container">
-      <permalink-bar v-show="showPermalink" :path="permalink" @close="showPermalink = false" />
+      <PermalinkBar v-show="showPermalink" :path="permalink" @close="showPermalink = false" />
       <div class="buttons">
-        <codepen-button :cssCode="cssCode" :htmlCode="htmlCode" :prefix="prefix" />
-        <sidebar-button :disabled="!saveDesign" @click="getPermalink">Get permalink</sidebar-button>
-        <sidebar-button aria-label="Restart" class="btn-trash" @click="restart">
-          <icon-trash />
-        </sidebar-button>
+        <CodepenButton :cssCode="cssCode" :htmlCode="htmlCode" :prefix="prefix" />
+        <SidebarButton :disabled="!saveDesign" @click="getPermalink">Get permalink</SidebarButton>
+        <SidebarButton aria-label="Restart" class="btn-trash" @click="restart">
+          <IconTrash />
+        </SidebarButton>
       </div>
       <div class="code-grid">
-        <code-editor type="css" :code="cssCode" />
-        <code-editor type="html" :code="htmlCode" />
+        <CodeEditor type="css" :code="cssCode" />
+        <CodeEditor type="html" :code="htmlCode" />
       </div>
       <div class="divider"></div>
-      <live-code-options v-model="options" />
+      <LiveCodeOptions v-model="options" />
     </div>
   </div>
 </template>
 
 <script setup="props">
+export { default as IconTrash } from '../icons/IconTrash.vue'
+export { default as SidebarButton } from '../basic/SidebarButton.vue'
+export { default as CodepenButton } from './CodepenButton.vue'
+export { default as PermalinkBar } from './PermalinkBar.vue'
+export { default as LiveCodeOptions } from './LiveCodeOptions.vue'
+export { default as CodeEditor } from './CodeEditor.vue'
+
 import { ref, computed } from 'vue'
 
 export { restart } from '../../store.js'
@@ -28,24 +35,7 @@ import { areaToCSS, areaToHTML, ie_areaToCSS } from '../../generateCode.js'
 
 import { mainArea } from '../../store.js'
 
-import IconTrash from '../icons/IconTrash.vue'
-import SidebarButton from '../basic/SidebarButton.vue'
-
-import CodepenButton from './CodepenButton.vue'
-import PermalinkBar from './PermalinkBar.vue'
-
-import LiveCodeOptions from './LiveCodeOptions.vue'
-import CodeEditor from './CodeEditor.vue'
-
 export default {
-  components: {
-    IconTrash,
-    PermalinkBar,
-    SidebarButton,
-    CodepenButton,
-    LiveCodeOptions,
-    CodeEditor,
-  },
   props: {
     area: { type: Object, required: true },
     saveDesign: { type: Function, default: null },

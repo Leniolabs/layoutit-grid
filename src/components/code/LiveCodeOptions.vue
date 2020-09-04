@@ -1,6 +1,6 @@
 <template>
   <div class="output-settings">
-    <slide-checkbox id="checkbox-repeat" v-model="modelValue.repeat">
+    <SlideCheckbox id="checkbox-repeat" v-model="modelValue.repeat">
       Apply CSS
       <strong>
         <a
@@ -10,8 +10,8 @@
         >repeat</a>
       </strong>
       function.
-    </slide-checkbox>
-    <slide-checkbox id="checkbox-template-areas" v-model="modelValue.templateAreas">
+    </SlideCheckbox>
+    <SlideCheckbox id="checkbox-template-areas" v-model="modelValue.templateAreas">
       Use
       <strong>
         <a
@@ -21,8 +21,8 @@
         >grid-template-areas</a>
       </strong>
       for positioning (if disabled, numbers will be used).
-    </slide-checkbox>
-    <slide-checkbox id="checkbox-prefix" v-model="modelValue.prefix">
+    </SlideCheckbox>
+    <SlideCheckbox id="checkbox-prefix" v-model="modelValue.prefix">
       Add
       <strong>prefixes</strong> to grid names (to avoid potential class conflicts).
       <input
@@ -32,8 +32,8 @@
         aria-label="prefix"
         placeholder="Enter prefix..."
       />
-    </slide-checkbox>
-    <slide-checkbox id="checkbox-old-spec" v-model="modelValue.oldSpec">
+    </SlideCheckbox>
+    <SlideCheckbox id="checkbox-old-spec" v-model="modelValue.oldSpec">
       Include support for
       <strong>
         <a
@@ -43,7 +43,7 @@
         >legacy grid spec</a>
       </strong>
       (for Internet Explorer 10/11).
-    </slide-checkbox>
+    </SlideCheckbox>
     <div v-if="modelValue.oldSpec" class="checkbox-warning">
       <strong>Warning:</strong> legacy grid spec does not support
       <a
@@ -57,12 +57,9 @@
 </template>
 
 <script setup="props">
-import SlideCheckbox from '../basic/SlideCheckbox.vue'
+export { default as SlideCheckbox } from '../basic/SlideCheckbox.vue'
 
 export default {
-  components: {
-    SlideCheckbox,
-  },
   props: {
     modelValue: { type: Object, required: true },
   },

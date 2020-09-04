@@ -19,7 +19,7 @@
       title="Remove Selection"
       @click="closeSelection"
     >
-      <icon-remove />
+      <IconRemove />
     </button>
     <button
       :disabled="!saveEnabled"
@@ -31,10 +31,10 @@
 </template>
 
 <script setup="props, { emit }">
+export { default as IconRemove } from '../icons/IconRemove.vue'
+
 import { gridRegionToGridArea, createSection } from '../../utils.js'
 import { createAreaState, setCurrentArea, getRandomColor, isValidAreaName } from '../../store.js'
-
-import IconRemove from '../icons/IconRemove.vue'
 
 import { ref, computed } from 'vue'
 
@@ -58,7 +58,6 @@ function farEnough(a, b, delta = 5) {
 }
 
 export default {
-  components: { IconRemove },
   props: {
     area: { type: Object, required: true },
   },

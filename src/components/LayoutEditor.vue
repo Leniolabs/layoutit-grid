@@ -1,35 +1,26 @@
 <template>
-  <mobile-button @click="activeSidebar = !activeSidebar" />
-  <grid-editor :area="mainArea" />
-  <props-sidebar v-if="activeSidebar" :area="mainArea" />
-  <sidebar-right v-if="activeSidebarRight">
+  <MobileButton @click="activeSidebar = !activeSidebar" />
+  <GridEditor :area="mainArea" />
+  <PropsSidebar v-if="activeSidebar" :area="mainArea" />
+  <SidebarRight v-if="activeSidebarRight">
     <template v-slot:body>
-      <live-code :area="mainArea" :save-design="saveDesign" />
+      <LiveCode :area="mainArea" :save-design="saveDesign" />
     </template>
-  </sidebar-right>
+  </SidebarRight>
 </template>
 
 <script setup>
-import MobileButton from './MobileButton.vue'
-import GridEditor from './grid/GridEditor.vue'
-import AreaEditor from './area/AreaEditor.vue'
-import SidebarRight from './basic/SidebarRight.vue'
-
-import PropsSidebar from './props/PropsSidebar.vue'
-import LiveCode from './code/LiveCode.vue'
+export { default as MobileButton } from './MobileButton.vue'
+export { default as GridEditor } from './grid/GridEditor.vue'
+export { default as AreaEditor } from './area/AreaEditor.vue'
+export { default as SidebarRight } from './basic/SidebarRight.vue'
+export { default as PropsSidebar } from './props/PropsSidebar.vue'
+export { default as LiveCode } from './code/LiveCode.vue'
 
 import { watch, ref, computed } from 'vue'
 export { darkmode, mainArea, currentArea } from '../store.js'
 
 export default {
-  components: {
-    AreaEditor,
-    GridEditor,
-    PropsSidebar,
-    SidebarRight,
-    LiveCode,
-    MobileButton,
-  },
   props: {
     saveDesign: { type: Function, default: null },
   },
