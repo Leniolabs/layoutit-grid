@@ -6,16 +6,11 @@
       'grid-template-rows': grid.row.sizes.join(' '),
       'grid-template-columns': grid.col.sizes.join(' '),
       'grid-gap': grid.row.gap + ' ' + grid.col.gap,
-      display: 'grid'
+      display: 'grid',
     }"
     class="grid"
   >
-    <AreaEditor
-      v-for="a in areasToShow"
-      :key="`area-${a.name}`"
-      :area="a"
-      @edit="$refs.selection.editArea(a)"
-    />
+    <AreaEditor v-for="a in areasToShow" :key="`area-${a.name}`" :area="a" @edit="$refs.selection.editArea(a)" />
 
     <GridCell
       v-for="(section, i) in gridSections(grid)"
@@ -29,28 +24,37 @@
       @togglelinename="$refs[$event].toggle()"
     >
       <LineName
-        v-if="grid && section.row.start === grid.row.sizes.length"
+        v-if="section.row.start === grid.row.sizes.length"
         :ref="`colLine-${section.col.start}`"
         :grid="grid"
         :pos="section.col.start"
         type="col"
       />
 
+      <TrackSize
+        v-if="isCurrent && section.row.start === grid.row.sizes.length"
+        :grid="grid"
+        type="col"
+        :track="section.col.start"
+      />
+
       <LineName
-        v-if="grid && section.col.start === grid.col.sizes.length"
+        v-if="section.col.start === grid.col.sizes.length"
         :ref="`rowLine-${section.row.start}`"
         :grid="grid"
         :pos="section.row.start"
         type="row"
       />
+
+      <TrackSize
+        v-if="isCurrent && section.col.start === grid.col.sizes.length"
+        :grid="grid"
+        type="row"
+        :track="section.row.start"
+      />
     </GridCell>
 
-    <AreaSelection
-      ref="selection"
-      :area="area"
-      @editstart="a => editingArea = a"
-      @editend="editingArea = null"
-    />
+    <AreaSelection ref="selection" :area="area" @editstart="(a) => (editingArea = a)" @editend="editingArea = null" />
   </section>
 </template>
 
@@ -58,8 +62,8 @@
 export { default as GridCell } from './GridCell.vue'
 export { default as AreaSelection } from './AreaSelection.vue'
 export { default as LineName } from './LineName.vue'
+export { default as TrackSize } from './TrackSize.vue'
 export { default as AreaEditor } from '../area/AreaEditor.vue'
-// AreaEditor exposes globally because of circular reference with GridEditor
 
 export { currentArea, dragging } from '../../store.js'
 import { useIsCurrentArea, useIsActiveArea } from '../../composables/area.js'
@@ -77,6 +81,7 @@ import { ref, computed, toRefs } from 'vue'
 export const grid = computed(() => props.area.grid)
 
 export const editingArea = ref(null)
+
 export const areasToShow = computed(() => grid.value.areas.filter((a) => a !== editingArea.value))
 
 const { area } = toRefs(props)

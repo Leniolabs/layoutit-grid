@@ -29,16 +29,6 @@
     <div class="multi-handle" @pointerdown="handleDown($event, section, { row: true, col: true })" />
 
     <slot />
-
-    <div
-      v-show="section.col.start === colsNumber && showInsideRowSize(section.row.start - 1)"
-      class="inside-row-size"
-    >{{ grid.row.sizes[section.row.start - 1] }}</div>
-
-    <div
-      v-show="section.row.start === rowsNumber && showInsideColSize(section.col.start - 1)"
-      class="inside-col-size"
-    >{{ grid.col.sizes[section.col.start - 1] }}</div>
   </section>
 </template>
 
@@ -191,28 +181,6 @@ export function handleDown(event, section, { row, col }) {
 </script>
 
 <style scoped lang="scss">
-.inside-col-size,
-.inside-row-size {
-  font-size: 10px;
-  color: #555;
-  position: absolute;
-  padding: 2px;
-}
-
-.inside-col-size {
-  bottom: 0;
-  right: 0;
-  left: 0;
-  text-align: center;
-}
-.inside-row-size {
-  top: 0;
-  bottom: 0;
-  right: 0;
-  display: grid;
-  align-content: center;
-}
-
 section {
   touch-action: none;
   background: #fff;
