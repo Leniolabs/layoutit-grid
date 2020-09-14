@@ -8,6 +8,7 @@
     "build": "vite build"
   },
   "dependencies": {
+    "lodash-es": "4.17.15",
     "prismjs": "1.21.0",
     "vue": "^v3.0.0-rc.10"
   },

@@ -1,18 +1,15 @@
 <template>
-  <select
-    :value="modelValue"
-    class="unit-select"
-    @input="$emit('update:modelValue', $event.target.value)"
-  >
+  <select :value="modelValue" class="unit-select" @input="$emit('update:modelValue', $event.target.value)">
     <option v-for="option in options" :value="option" :key="option">{{ option }}</option>
   </select>
 </template>
 
 <script setup="props">
 import { computed } from 'vue'
+import { validGridUnits } from '../../store.js'
 
 const units = {
-  grid: ['fr', 'px', '%', 'em', 'auto', 'min-content', 'max-content', 'minmax'],
+  grid: validGridUnits,
   flex: ['px', '%', 'em'],
   default: ['px', '%', 'em'],
 }

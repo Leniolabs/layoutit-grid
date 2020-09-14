@@ -9,6 +9,7 @@
       lastrow: section.row.end - 1 === rowsNumber && section.col.start === 1,
       dragging: isDraggingSection,
       grayed,
+      focused,
     }"
     class="grid-section"
     @pointerdown="$emit('down', $event)"
@@ -80,6 +81,7 @@ export default {
     area: { type: Object, required: true },
     gridComputedStyles: { type: Function, required: true },
     grayed: { type: Boolean, default: false },
+    focused: { type: Boolean, default: false },
   },
 }
 
@@ -195,6 +197,9 @@ section {
   }
   &.grayed {
     background: #dddddd;
+  }
+  &.focused {
+    background: #e4f5e4;
   }
   .multi-handle {
     touch-action: none;

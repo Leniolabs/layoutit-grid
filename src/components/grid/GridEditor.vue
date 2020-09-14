@@ -19,6 +19,11 @@
       :section="section"
       :grid-computed-styles="gridComputedStyles"
       :grayed="!isActive"
+      :focused="
+        trackFocus &&
+        ((trackFocus.type == 'row' && trackFocus.n === section.row.start) ||
+          (trackFocus.type == 'col' && trackFocus.n === section.col.start))
+      "
       @down="$refs.selection.cellDown($event, section)"
       @move="$refs.selection.cellMove($event, section)"
       @togglelinename="$refs[$event].toggle()"
@@ -36,6 +41,8 @@
         :grid="grid"
         type="col"
         :track="section.col.start"
+        @focused="trackFocus = { type: 'col', n: section.col.start }"
+        @blurred="trackFocus = null"
       />
 
       <LineName
@@ -51,6 +58,8 @@
         :grid="grid"
         type="row"
         :track="section.row.start"
+        @focused="trackFocus = { type: 'row', n: section.row.start }"
+        @blurred="trackFocus = null"
       />
     </GridCell>
 
@@ -83,6 +92,8 @@ export const grid = computed(() => props.area.grid)
 export const editingArea = ref(null)
 
 export const areasToShow = computed(() => grid.value.areas.filter((a) => a !== editingArea.value))
+
+export const trackFocus = ref(null)
 
 const { area } = toRefs(props)
 export const isCurrent = useIsCurrentArea(area)

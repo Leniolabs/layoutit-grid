@@ -1,12 +1,21 @@
 <template>
-  <div :class="[type, { active: isDraggingTrackLine }]">
-    {{ grid[type].sizes[track - 1] }}
+  <div
+    role="textbox"
+    contenteditable
+    :class="['input', type, { active: isDraggingTrackLine }]"
+    @pointerdown.stop
+    @input="trackSizeChanged"
+    @focus="$emit('focused')"
+    @blur="$emit('blurred')"
+  >
+    {{ trackSize }}
   </div>
 </template>
 
 <script setup="props, { emit }">
-import { dragging, parseValueUnit, valueUnitToString } from '../../store.js'
+import { dragging, isValidTrackSize } from '../../store.js'
 import { computed } from 'vue'
+import { debounce } from 'lodash-es'
 
 export default {
   props: {
@@ -15,6 +24,19 @@ export default {
     track: { type: Number, required: true },
   },
 }
+
+export const trackSize = computed({
+  get: () => props.grid[props.type].sizes[props.track - 1],
+  set: (value) => (props.grid[props.type].sizes[props.track - 1] = value),
+})
+
+export const trackSizeChanged = debounce((value) => {
+  const textNode = value.target.childNodes[0]
+  const text = textNode && textNode.data
+  if (isValidTrackSize(text)) {
+    trackSize.value = text
+  }
+}, 700)
 
 export const isDraggingGrid = computed(() => dragging.value && dragging.value.grid === props.grid)
 
@@ -28,12 +50,18 @@ export const isDraggingTrackLine = computed(
 <style scoped lang="scss">
 .col,
 .row {
-  font-size: 12px;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  font-size: 14px;
   color: #888;
   position: absolute;
+
   padding: 2px;
   &.active {
     color: #27ae60;
+  }
+  &:focus {
+    font-weight: 700;
+    color: black;
   }
 }
 

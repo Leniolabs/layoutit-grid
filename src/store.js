@@ -8,12 +8,23 @@ export function gridTemplateToArr(str) {
   return str.split(/(?!\(.*)\s(?![^(]*?\))/g)
 }
 
+// TODO: review if default parsed value is needed
+
+function internalParseValue(str) {
+  return str.startsWith('minmax') ? str.slice(7, -1) : parseFloat(str, 10)
+}
 export function parseValue(str) {
-  return str ? (str.startsWith('minmax') ? str.slice(7, -1) : parseFloat(str, 10)) : 0
+  return str ? internalParseValue(str) : 0
 }
 
+function internalParseUnit(str) {
+  return str.startsWith('minmax') ? 'minmax' : str.match(/[\d.\-+]*\s*(.*)/)[1] || ''
+}
+
+export const validGridUnits = ['fr', 'px', '%', 'em', 'auto', 'min-content', 'max-content', 'minmax']
+
 export function parseUnit(str) {
-  return str ? (str.startsWith('minmax') ? 'minmax' : str.match(/[\d.\-+]*\s*(.*)/)[1] || '') : 'fr'
+  return str ? internalParseUnit(str) : 'fr'
 }
 
 export function parseValueUnit(str) {
@@ -22,6 +33,12 @@ export function parseValueUnit(str) {
     unit: parseUnit(str),
   }
 }
+
+export function isValidTrackSize(str) {
+  const unit = internalParseUnit(str)
+  return validGridUnits.includes(unit) && (unit === 'minmax' || str.replace(unit, '').match(/^[-+]?[0-9]*\.?[0-9]+$/))
+}
+
 export function valueUnitToString({ value, unit }) {
   return unit === 'minmax' ? `minmax(${value})` : `${value}${unit}`
 }
