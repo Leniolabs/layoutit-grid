@@ -10,8 +10,8 @@
         </SidebarButton>
       </div>
       <div class="code-grid">
-        <CodeEditor type="css" :code="cssCode" />
-        <CodeEditor type="html" :code="htmlCode" />
+        <CssCodeEditor :area="area" :options="options" />
+        <HtmlCodeEditor :area="area" :options="options" />
       </div>
       <div class="divider"></div>
       <LiveCodeOptions v-model="options" />
@@ -25,13 +25,14 @@ export { default as SidebarButton } from '../basic/SidebarButton.vue'
 export { default as CodepenButton } from './CodepenButton.vue'
 export { default as PermalinkBar } from './PermalinkBar.vue'
 export { default as LiveCodeOptions } from './LiveCodeOptions.vue'
-export { default as CodeEditor } from './CodeEditor.vue'
+export { default as HtmlCodeEditor } from './HtmlCodeEditor.vue'
+export { default as CssCodeEditor } from './CssCodeEditor.vue'
 
 import { ref, computed } from 'vue'
 
 export { restart } from '../../store.js'
 
-import { areaToCSS, areaToHTML, ie_areaToCSS } from '../../generateCode.js'
+import { areaToCSS, areaToHTML } from '../../generateCode.js'
 
 import { mainArea } from '../../store.js'
 

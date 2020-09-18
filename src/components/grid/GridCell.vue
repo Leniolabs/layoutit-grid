@@ -117,6 +117,7 @@ export function showInsideRowSize(row) {
 export function handleDown(event, section, { row, col }) {
   event.stopPropagation() // TODO: ...
   event.preventDefault()
+  document.activeElement.blur()
 
   if (dragging.value) {
     return

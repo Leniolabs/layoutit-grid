@@ -1,16 +1,17 @@
 <template>
   <div class="grid-settings-container">
     <div class="items columns">
-      <h2>
-        <span style="transform: rotate(90deg);display: inline-block;">≑</span> Grid Columns
-      </h2>
+      <h2><span style="transform: rotate(90deg); display: inline-block">≑</span> Grid Columns</h2>
       <div class="inner-items">
         <div v-for="column in colsNumber" :key="column" :data-col="column">
           <input
-            v-if="unitHasValue(getColUnit(grid,column - 1))"
-            :value="getColValue(grid,column - 1)"
-            :class="{ dragging: dragging && ( dragging.colLine === column || dragging.colLine === column + 1 ) }"
-            :type="getColUnit(grid,column - 1) === 'minmax' ? 'text' : 'number'"
+            v-if="unitHasValue(getColUnit(grid, column - 1))"
+            :value="getColValue(grid, column - 1)"
+            :class="{
+              active: isFocused('col', column),
+              dragging: dragging && (dragging.colLine === column || dragging.colLine === column + 1),
+            }"
+            :type="getColUnit(grid, column - 1) === 'minmax' ? 'text' : 'number'"
             :aria-label="`column ${column} size`"
             min="0"
             step="0.5"
@@ -35,23 +36,24 @@
       <OptionsButton class="add-button" @click="addCol(grid, '1fr')">Add</OptionsButton>
     </div>
     <div class="items rows">
-      <h2>
-        <span>≑</span> Grid Rows
-      </h2>
+      <h2><span>≑</span> Grid Rows</h2>
       <div class="inner-items">
         <div v-for="row in rowsNumber" :key="row" :data-row="row">
           <input
-            v-if="unitHasValue(getRowUnit(grid,row - 1))"
-            :value="getRowValue(grid,row - 1)"
-            :class="{ dragging: dragging && ( dragging.rowLine === row || dragging.rowLine === row + 1 ) }"
-            :type="getRowUnit(grid,row - 1) === 'minmax' ? 'text' : 'number'"
+            v-if="unitHasValue(getRowUnit(grid, row - 1))"
+            :value="getRowValue(grid, row - 1)"
+            :class="{
+              active: isFocused('row', row),
+              dragging: dragging && (dragging.rowLine === row || dragging.rowLine === row + 1),
+            }"
+            :type="getRowUnit(grid, row - 1) === 'minmax' ? 'text' : 'number'"
             :aria-label="`row ${row} size`"
             min="0"
             step="0.5"
             @input="setRowValue(grid, row - 1, $event.target.value)"
           />
           <UnitSelect
-            :value="getRowUnit(grid,row - 1)"
+            :value="getRowUnit(grid, row - 1)"
             type="grid"
             :aria-label="`row ${row} unit`"
             @input="onRowUnitInput($event.target.value, row - 1)"
@@ -60,7 +62,7 @@
             class="remove-button"
             :aria-label="`remove row ${row}`"
             :disabled="grid.row.sizes.length === 1"
-            @click="removeRow(grid,row - 1)"
+            @click="removeRow(grid, row - 1)"
           >
             <IconRemove />
           </OptionsButton>
@@ -69,9 +71,7 @@
       <OptionsButton class="add-button" @click="addRow(grid, '1fr')">Add</OptionsButton>
     </div>
     <div class="items gaps">
-      <h2>
-        <span>⊞</span> Grid Gap
-      </h2>
+      <h2><span>⊞</span> Grid Gap</h2>
       <GapInput :grid="grid" type="row" />
       <GapInput :grid="grid" type="col" />
     </div>
@@ -106,7 +106,7 @@ export {
   dragging,
 } from '../../store.js'
 
-import { setRowValueUnit, setColValueUnit } from '../../store.js'
+import { setRowValueUnit, setColValueUnit, trackFocus } from '../../store.js'
 import { useGridDimensions } from '../../composables/area.js'
 
 const { grid } = toRefs(props)
@@ -147,6 +147,11 @@ export function onRowUnitInput(unit, row) {
 export function onColUnitInput(unit, col) {
   setColValueUnit(props.grid, col, { value: defaultValueForUnit(unit), unit })
 }
+
+export function isFocused(type, track) {
+  const tf = trackFocus.value
+  return tf && tf.grid === grid.value && tf.type === type && tf.track === track
+}
 </script>
 
 <style scoped lang="scss">
@@ -184,6 +189,9 @@ h2 {
         background: #fff;
         color: #333;
         &.dragging {
+          background: #bbe5b3;
+        }
+        &.active {
           background: #bbe5b3;
         }
       }

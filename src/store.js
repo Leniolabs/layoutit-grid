@@ -39,6 +39,10 @@ export function isValidTrackSize(str) {
   return validGridUnits.includes(unit) && (unit === 'minmax' || str.replace(unit, '').match(/^[-+]?[0-9]*\.?[0-9]+$/))
 }
 
+export function isValidLineName(str) {
+  return true
+}
+
 export function valueUnitToString({ value, unit }) {
   return unit === 'minmax' ? `minmax(${value})` : `${value}${unit}`
 }
@@ -214,6 +218,8 @@ export const mainArea = ref(createMainAreaState())
 export const currentArea = ref(mainArea.value)
 export const currentItem = ref(null)
 export const dragging = ref(null)
+export const trackFocus = ref(null)
+export const lineNameFocus = ref(null)
 export const darkmode = ref(false)
 
 export function isValidAreaName(newName, area = mainArea.value) {

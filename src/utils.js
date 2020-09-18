@@ -214,3 +214,56 @@ export function parseGridTemplate(templateStr) {
 
   return [templateArr, lineNames]
 }
+
+export function onCodeInputKeydown(event) {
+  if (event.code === 'Space') {
+    event.preventDefault()
+    return
+  }
+  if (event.code === 'Enter' || event.code === 'NumpadEnter') {
+    event.preventDefault()
+    emit('move', { action: 'right' })
+    return
+  }
+  if (event.code === 'ArrowRight') {
+    if (getCaretCharacterOffsetWithin(event.target) === textFrom(event).length) {
+      emit('move', { action: 'right' })
+      return
+    }
+  }
+  if (event.code === 'ArrowLeft') {
+    if (getCaretCharacterOffsetWithin(event.target) === 0) {
+      emit('move', { action: 'left' })
+      return
+    }
+  }
+}
+
+function textFrom(event) {
+  const textNode = event.target.childNodes[0]
+  return textNode && textNode.data
+}
+
+function getCaretCharacterOffsetWithin(element) {
+  var caretOffset = 0
+  var doc = element.ownerDocument || element.document
+  var win = doc.defaultView || doc.parentWindow
+  var sel
+  if (typeof win.getSelection != 'undefined') {
+    sel = win.getSelection()
+    if (sel.rangeCount > 0) {
+      var range = win.getSelection().getRangeAt(0)
+      var preCaretRange = range.cloneRange()
+      preCaretRange.selectNodeContents(element)
+      preCaretRange.setEnd(range.endContainer, range.endOffset)
+      caretOffset = preCaretRange.toString().length
+    }
+  } else if ((sel = doc.selection) && sel.type != 'Control') {
+    var textRange = sel.createRange()
+    var preCaretTextRange = doc.body.createTextRange()
+    preCaretTextRange.moveToElementText(element)
+    preCaretTextRange.setEndPoint('EndToEnd', textRange)
+    caretOffset = preCaretTextRange.text.length
+  }
+  return caretOffset
+}

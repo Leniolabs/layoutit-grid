@@ -1,6 +1,6 @@
 import { getGridArea, toCssName, gridTemplateAreas, namedTemplateColumns, namedTemplateRows } from './utils.js'
 
-function prefixedName(name, prefix) {
+export function prefixedName(name, prefix) {
   return toCssName(`${prefix ? prefix + '-' : ''}${name}`)
 }
 
@@ -90,7 +90,7 @@ export function ie_gridToCSS(grid, repeat) {
   return css
 }
 
-function identString(ident) {
+export function identString(ident) {
   return '  '.repeat(ident)
 }
 

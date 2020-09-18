@@ -1,41 +1,52 @@
 <template>
-  <div
+  <span
+    :ref="el"
     role="textbox"
     contenteditable
+    spellcheck="false"
     :class="['input', type, { active: isDraggingTrackLine }]"
-    @pointerdown.stop
-    @input="trackSizeChanged"
+    @keydown="onCodeInputKeydown"
+    @input="onInput"
     @focus="trackFocus = { grid, type, track }"
     @blur="trackFocus = null"
+    >{{ trackSize }}</span
   >
-    {{ trackSize }}
-  </div>
 </template>
 
 <script setup="props, { emit }">
 import { dragging, trackFocus, isValidTrackSize } from '../../store.js'
-
 import { computed } from 'vue'
 import { debounce } from 'lodash-es'
+
+import { namedTemplateColumns, namedTemplateRows, parseGridTemplate, onCodeInputKeydown } from '../../utils.js'
 
 export default {
   props: {
     grid: { type: Object, required: true },
     type: { type: String, required: true },
     track: { type: Number, required: true },
+    el: { type: Object, required: true },
   },
 }
 
-export { trackFocus }
+export { trackFocus, onCodeInputKeydown }
 
 export const trackSize = computed({
   get: () => props.grid[props.type].sizes[props.track - 1],
   set: (value) => (props.grid[props.type].sizes[props.track - 1] = value),
 })
 
-export const trackSizeChanged = debounce((value) => {
-  const textNode = value.target.childNodes[0]
-  const text = textNode && textNode.data
+function textFrom(event) {
+  const textNode = event.target.childNodes[0]
+  return textNode && textNode.data
+}
+
+export function onInput(event) {
+  trackSizeChanged(event)
+}
+
+export const trackSizeChanged = debounce((event) => {
+  const text = textFrom(event)
   if (isValidTrackSize(text)) {
     trackSize.value = text
   }
@@ -53,32 +64,15 @@ export const isDraggingTrackLine = computed(
 <style scoped lang="scss">
 .col,
 .row {
-  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-  font-size: 14px;
-  color: #888;
-  position: absolute;
-
-  padding: 2px;
-  &.active {
-    color: #27ae60;
+  &:hover {
+    color: white;
   }
   &:focus {
+    color: white;
     font-weight: 700;
-    color: black;
   }
-}
-
-.col {
-  bottom: 0;
-  right: 0;
-  left: 0;
-  text-align: center;
-}
-.row {
-  top: 0;
-  bottom: 0;
-  right: 0;
-  display: grid;
-  align-content: center;
+  &.active {
+    color: white;
+  }
 }
 </style>
