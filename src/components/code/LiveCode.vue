@@ -3,7 +3,7 @@
     <div class="right-sidebar-content-container">
       <PermalinkBar v-show="showPermalink" :path="permalink" @close="showPermalink = false" />
       <div class="buttons">
-        <CodepenButton :cssCode="cssCode" :htmlCode="htmlCode" :prefix="prefix" />
+        <CodepenButton :cssCode="cssCode" :htmlCode="htmlCode" />
         <SidebarButton :disabled="!saveDesign" @click="getPermalink">Get permalink</SidebarButton>
         <SidebarButton aria-label="Restart" class="btn-trash" @click="restart">
           <IconTrash />
@@ -45,20 +45,17 @@ export default {
 
 export const options = ref({
   templateAreas: true,
-  prefix: false,
-  prefixName: 'lt',
   oldSpec: false,
+  repeat: false,
 })
-
-export const prefix = computed(() => (options.value.prefix ? options.value.prefixName : undefined))
 
 export const cssCode = computed(() => {
   const { repeat, templateAreas, oldSpec } = options.value
-  return areaToCSS(props.area, { useTemplateAreas: templateAreas, prefix: prefix.value, repeat, oldSpec })
+  return areaToCSS(props.area, { useTemplateAreas: templateAreas, repeat, oldSpec })
 })
 
 export const htmlCode = computed(() => {
-  return areaToHTML(props.area, { prefix: prefix.value })
+  return areaToHTML(props.area)
 })
 
 export const showPermalink = ref(false)

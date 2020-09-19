@@ -6,7 +6,6 @@
 import { dragging, currentArea, isValidAreaName } from '../../store.js'
 import { computed } from 'vue'
 import { gridTemplateAreas } from '../../utils.js'
-import { prefixedName } from '../../generateCode.js'
 
 export default {
   props: {
@@ -17,12 +16,10 @@ export default {
 
 export { currentArea }
 
-export const prefix = computed(() => (props.options.prefix ? props.options.prefixName : undefined))
-
-export const cssAreaName = computed(() => prefixedName(props.area.name, prefix.value))
+export const cssAreaName = computed(() => props.area.name)
 
 function getGridTemplateAreas(grid) {
-  return grid ? gridTemplateAreas(grid, prefix.value, '\n    ') : undefined
+  return grid ? gridTemplateAreas(grid, '\n    ') : undefined
 }
 
 export const templateAreas = computed(() => getGridTemplateAreas(props.area.grid))

@@ -17,7 +17,6 @@ export { default as CssCodeGridArea } from './CssCodeGridArea.vue'
 export { default as CssCodeTemplateAreas } from './CssCodeTemplateAreas.vue'
 
 import { computed } from 'vue'
-import { prefixedName } from '../../generateCode.js'
 export { namedTemplateColumns, namedTemplateRows, getGridArea, gridTemplateAreas } from '../../utils.js'
 
 export default {
@@ -28,12 +27,10 @@ export default {
   },
 }
 
-export const prefix = computed(() => (props.options.prefix ? props.options.prefixName : undefined))
-
-export const cssAreaName = computed(() => prefixedName(props.area.name, prefix.value))
+export const cssAreaName = computed(() => props.area.name)
 
 function getGridTemplateAreas(grid) {
-  return grid ? gridTemplateAreas(grid, prefix.value, '\n    ') : undefined
+  return grid ? gridTemplateAreas(grid, '\n    ') : undefined
 }
 
 export const templateAreas = computed(() => getGridTemplateAreas(props.area.grid))

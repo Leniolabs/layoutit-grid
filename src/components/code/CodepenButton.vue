@@ -16,16 +16,11 @@ export default {
   props: {
     cssCode: { type: String, required: true },
     htmlCode: { type: String, required: true },
-    prefix: { type: String, default: '' },
   },
 }
 
-function prefixed(name) {
-  return (props.prefix ? props.prefix + '-' : '') + name
-}
-
 export const codePenJSON = computed(() => {
-  const containerClass = prefixed('grid-container')
+  const containerClass = 'grid-container'
 
   return JSON.stringify({
     title: 'New CSS Grid!',

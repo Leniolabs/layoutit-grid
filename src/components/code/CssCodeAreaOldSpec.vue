@@ -13,7 +13,6 @@ v-if="area.gridRegion"><span class="token property">-ms-grid-row</span>: <span c
 
 <script setup="props">
 import { computed } from 'vue'
-import { prefixedName } from '../../generateCode.js'
 export { namedTemplateColumns, namedTemplateRows } from '../../utils.js'
 
 export default {
@@ -24,9 +23,7 @@ export default {
   },
 }
 
-export const prefix = computed(() => (props.options.prefix ? props.options.prefixName : undefined))
-
-export const cssAreaName = computed(() => prefixedName(props.area.name, prefix.value))
+export const cssAreaName = computed(() => props.area.name)
 
 export const gridAreas = computed(() => (props.area.grid ? props.area.grid.areas : []))
 </script>

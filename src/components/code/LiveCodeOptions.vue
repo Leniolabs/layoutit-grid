@@ -22,17 +22,6 @@
       </strong>
       for positioning (if disabled, numbers will be used).
     </SlideCheckbox>
-    <SlideCheckbox id="checkbox-prefix" v-model="modelValue.prefix">
-      Add
-      <strong>prefixes</strong> to grid names (to avoid potential class conflicts).
-      <input
-        v-if="modelValue.prefix"
-        v-model="modelValue.prefixName"
-        class="input-prefix"
-        aria-label="prefix"
-        placeholder="Enter prefix..."
-      />
-    </SlideCheckbox>
     <SlideCheckbox id="checkbox-old-spec" v-model="modelValue.oldSpec">
       Include support for
       <strong>
@@ -67,16 +56,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.input-prefix {
-  border-radius: 2px;
-  border: 1px solid #aaa;
-  width: 90px;
-  padding: 2px 5px;
-  margin-left: 5px;
-  display: inline-block;
-  vertical-align: top;
-}
-
 .checkbox-warning {
   color: #333;
   margin-bottom: 10px;
