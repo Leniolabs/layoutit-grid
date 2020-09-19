@@ -11,7 +11,7 @@ export function areaToCSS(area, { parentGrid, useTemplateAreas = true, validTemp
 
   const gridArea = getGridArea(area, parentGrid)
   if (gridArea) {
-    css += `${singleLine ? ' ' : '\n  '}grid-area: ${useTemplateAreas && validTemplateAreas ? pName : gridArea};`
+    css += `${singleLine ? ' ' : '\n  '}grid-area: ${useTemplateAreas && validTemplateAreas ? cssName : gridArea};`
   }
   css += `${singleLine ? ' ' : '\n'}}\n`
 
