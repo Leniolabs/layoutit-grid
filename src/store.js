@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, computed, watch } from 'vue'
 
 function createTemplateArr(number) {
   return '1fr '.repeat(number).trim().split(' ')
@@ -222,6 +222,32 @@ export const trackFocus = ref(null)
 export const lineNameFocus = ref(null)
 export const darkmode = ref(false)
 
+function parentify(area, parent = null) {
+  area.parent = parent
+  if (area.grid) {
+    area.grid.areas.forEach((child) => parentify(child, area))
+  }
+  return area
+}
+
+const parentRemover = (key, value) => (key === 'parent' ? null : value)
+
+function serializeArea(area) {
+  return JSON.stringify({ area: area, version: 1 }, parentRemover)
+}
+function parseArea(area) {
+  return parentify(JSON.parse(area).area)
+}
+
+import { useRefHistory } from './composables/useRefHistory.js'
+
+export const { undo, redo, clear, canUndo, canRedo, startAtomicChange, endAtomicChange } = useRefHistory(mainArea, {
+  capacity: 20,
+  parse: parseArea,
+  serialize: serializeArea,
+  restore: setMainArea,
+})
+
 export function isValidAreaName(newName, area = mainArea.value) {
   const { name, grid } = area
   return name !== newName && !(grid && !grid.areas.every((a) => isValidAreaName(newName, a)))
@@ -258,6 +284,7 @@ export function removeArea(area) {
 
 export function restart() {
   setMainArea(createMainAreaState())
+  clear()
 }
 
 export function getAreaDepth(area) {

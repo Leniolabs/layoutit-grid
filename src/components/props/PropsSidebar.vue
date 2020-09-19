@@ -9,13 +9,11 @@
 
     <HireUs />
     <VersionLabel />
-    <button
-      aria-label="Toggle dark mode"
-      :class="[ 'btn-dark', { active: darkmode } ]"
-      @click="darkmode = !darkmode"
-    >
+    <button aria-label="Toggle dark mode" :class="['btn-dark', { active: darkmode }]" @click="darkmode = !darkmode">
       <IconDark />
     </button>
+    <button :disabled="!canUndo" aria-label="Undo" :class="['btn-undo']" @click="undo">Undo</button>
+    <button :disabled="!canRedo" aria-label="Redo" :class="['btn-redo']" @click="redo">Redo</button>
   </div>
 </template>
 
@@ -28,7 +26,7 @@ export { default as FlexOptions } from './FlexOptions.vue'
 export { default as GridOptions } from './GridOptions.vue'
 
 import { computed } from 'vue'
-export { currentArea, darkmode } from '../../store.js'
+export { currentArea, darkmode, undo, redo, canUndo, canRedo } from '../../store.js'
 
 export default {
   props: {
@@ -129,5 +127,30 @@ export const currentFlex = computed(() => currentArea.value.flex)
   position: fixed;
   bottom: 5px;
   left: 15px;
+}
+
+.btn-undo,
+.btn-redo {
+  margin-bottom: 10px;
+  background: var(--color-darkmode);
+  color: #fff;
+  border: 0;
+  border-radius: 25px;
+  cursor: pointer;
+  height: 35px;
+  width: 35px;
+  padding: 10px;
+}
+.btn-undo {
+  position: fixed;
+  width: 50px;
+  bottom: 55px;
+  left: 15px;
+}
+.btn-redo {
+  position: fixed;
+  width: 50px;
+  bottom: 55px;
+  left: 75px;
 }
 </style>
