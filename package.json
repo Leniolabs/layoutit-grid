@@ -9,11 +9,11 @@
   },
   "dependencies": {
     "lodash-es": "4.17.15",
-    "vue": "^v3.0.0-rc.10"
+    "vue": "^v3.0.0"
   },
   "devDependencies": {
     "vite": "^v1.0.0-rc.4",
-    "@vue/compiler-sfc": "^v3.0.0-rc.10",
+    "@vue/compiler-sfc": "^v3.0.0",
     "sass": "1.26.10"
   },
   "bugs": {
