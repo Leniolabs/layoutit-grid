@@ -70,14 +70,18 @@ export function onMove(event, i) {
       if (i + 1 < trackSizesAndLineNames.value.length) {
         trackSizesAndLineNames.value[i + 1].el.value.focus()
       } else {
-        document.activeElement.blur()
+        if (document.activeElement) {
+          document.activeElement.blur()
+        }
       }
       break
     case 'left':
       if (i - 1 >= 0) {
         trackSizesAndLineNames.value[i - 1].el.value.focus()
       } else {
-        document.activeElement.blur()
+        if (document.activeElement) {
+          document.activeElement.blur()
+        }
       }
       break
   }

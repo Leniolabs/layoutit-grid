@@ -1,5 +1,6 @@
 <template>
   <span
+    aria-label="area name"
     role="textbox"
     contenteditable
     spellcheck="false"

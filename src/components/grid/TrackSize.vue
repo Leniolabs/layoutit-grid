@@ -1,19 +1,20 @@
 <template>
   <div
     role="textbox"
+    :aria-label="`${type} track ${track} size`"
     contenteditable
-    :class="['input', type, { active: isDraggingTrackLine }]"
+    :class="['input', type, { active: isDraggingTrackLine, focused: isFocused }]"
     @pointerdown.stop
     @input="trackSizeChanged"
-    @focus="trackFocus = { grid, type, track }"
-    @blur="trackFocus = null"
+    @focus="currentFocus = { on: 'track', grid, type, track }"
+    @blur="currentFocus = null"
   >
     {{ trackSize }}
   </div>
 </template>
 
 <script setup="props, { emit }">
-import { dragging, trackFocus, isValidTrackSize } from '../../store.js'
+import { dragging, currentFocus, isValidTrackSize } from '../../store.js'
 
 import { computed } from 'vue'
 import { debounce } from 'lodash-es'
@@ -26,7 +27,12 @@ export default {
   },
 }
 
-export { trackFocus }
+export { currentFocus }
+
+export const isFocused = computed(() => {
+  const cf = currentFocus.value
+  return cf && cf.on === 'track' && cf.grid === props.grid && cf.type === props.type && cf.track === props.track
+})
 
 export const trackSize = computed({
   get: () => props.grid[props.type].sizes[props.track - 1],
@@ -55,7 +61,7 @@ export const isDraggingTrackLine = computed(
 .row {
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   font-size: 14px;
-  color: #888;
+  color: #666;
   position: absolute;
 
   padding: 2px;
@@ -63,7 +69,9 @@ export const isDraggingTrackLine = computed(
     color: #27ae60;
   }
   &:focus {
-    font-weight: 700;
+    color: black;
+  }
+  &.focused {
     color: black;
   }
 }

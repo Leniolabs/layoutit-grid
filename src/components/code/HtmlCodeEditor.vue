@@ -16,7 +16,7 @@ export default {
 
 <style scoped>
 ::v-deep(span) {
-  color: grey;
+  color: #d4d4d4;
 }
 
 ::v-deep(.token.punctuation) {

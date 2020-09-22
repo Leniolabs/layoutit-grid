@@ -2,19 +2,22 @@
   <span
     >[<span
       :ref="el"
+      :aria-label="`${type} line ${pos} name`"
       role="textbox"
       contenteditable
       spellcheck="false"
       :class="['input', type, { active: false }]"
       @keydown="onCodeInputKeydown"
       @input="onInput"
+      @focus="currentFocus = { on: 'line', grid, type, pos }"
+      @blur="currentFocus = null"
       >{{ lineName }}</span
     >]</span
   >
 </template>
 
 <script setup="props, { emit }">
-import { dragging, lineNameFocus, isValidLineName } from '../../store.js'
+import { dragging, currentFocus, isValidLineName } from '../../store.js'
 import { computed } from 'vue'
 
 import { namedTemplateColumns, namedTemplateRows, parseGridTemplate, onCodeInputKeydown } from '../../utils.js'
@@ -28,7 +31,7 @@ export default {
   },
 }
 
-export { lineNameFocus, onCodeInputKeydown }
+export { currentFocus, onCodeInputKeydown }
 
 const line = computed(() => props.grid[props.type].lineNames[props.pos])
 export const lineName = computed({

@@ -1,5 +1,9 @@
 <template>
-  <select :value="modelValue" class="unit-select" @input="$emit('update:modelValue', $event.target.value)">
+  <select
+    :value="modelValue"
+    :class="['unit-select', { focused }]"
+    @input="$emit('update:modelValue', $event.target.value)"
+  >
     <option v-for="option in options" :value="option" :key="option">{{ option }}</option>
   </select>
 </template>
@@ -18,6 +22,7 @@ export default {
   props: {
     modelValue: { type: String, default: 'px' },
     type: { type: String, default: 'default' }, //  default, grid, flex
+    focused: { type: Boolean, default: false },
   },
 }
 
@@ -30,5 +35,8 @@ export const options = computed(() => units[props.type])
   border: 0;
   width: 100%;
   font-size: 14px;
+}
+.unit-select.focused {
+  background: #bbe5b3;
 }
 </style>

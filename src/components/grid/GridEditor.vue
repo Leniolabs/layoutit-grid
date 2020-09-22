@@ -66,7 +66,7 @@ export { default as LineName } from './LineName.vue'
 export { default as TrackSize } from './TrackSize.vue'
 export { default as AreaEditor } from '../area/AreaEditor.vue'
 
-export { currentArea, dragging, trackFocus } from '../../store.js'
+export { currentArea, dragging, currentFocus } from '../../store.js'
 import { useIsCurrentArea, useIsActiveArea } from '../../composables/area.js'
 
 export { gridSections } from '../../utils.js'
@@ -95,9 +95,10 @@ export function gridComputedStyles() {
 }
 
 export function isFocused(section) {
-  const tf = trackFocus.value
+  const tf = currentFocus.value
   return (
     tf &&
+    tf.on === 'track' &&
     tf.grid === grid.value &&
     ((tf.type === 'row' && tf.track === section.row.start) || (tf.type === 'col' && tf.track === section.col.start))
   )

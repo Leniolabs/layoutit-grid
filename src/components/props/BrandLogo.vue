@@ -20,7 +20,7 @@
   vertical-align: top;
   img {
     margin: 0.1em 0.5em 0.1em 0;
-    max-height: 1em;
+    height: 1em;
     display: inline-block;
     vertical-align: top;
   }

@@ -15,11 +15,14 @@
             :aria-label="`column ${column} size`"
             min="0"
             step="0.5"
+            @focus="currentFocus = { on: 'track', grid, type: 'col', track: column }"
+            @blur="currentFocus = null"
             @input="setColValue(grid, column - 1, $event.target.value)"
           />
           <UnitSelect
             :value="getColUnit(grid, column - 1)"
             type="grid"
+            :focused="isFocused('col', column)"
             :aria-label="`column ${column} unit`"
             @input="onColUnitInput($event.target.value, column - 1)"
           />
@@ -50,11 +53,14 @@
             :aria-label="`row ${row} size`"
             min="0"
             step="0.5"
+            @focus="currentFocus = { on: 'track', grid, type: 'row', track: row }"
+            @blur="currentFocus = null"
             @input="setRowValue(grid, row - 1, $event.target.value)"
           />
           <UnitSelect
             :value="getRowUnit(grid, row - 1)"
             type="grid"
+            :focused="isFocused('row', row)"
             :aria-label="`row ${row} unit`"
             @input="onRowUnitInput($event.target.value, row - 1)"
           />
@@ -106,8 +112,9 @@ export {
   dragging,
 } from '../../store.js'
 
-import { setRowValueUnit, setColValueUnit, trackFocus } from '../../store.js'
+import { setRowValueUnit, setColValueUnit, currentFocus } from '../../store.js'
 import { useGridDimensions } from '../../composables/area.js'
+export { currentFocus }
 
 const { grid } = toRefs(props)
 
@@ -149,8 +156,8 @@ export function onColUnitInput(unit, col) {
 }
 
 export function isFocused(type, track) {
-  const tf = trackFocus.value
-  return tf && tf.grid === grid.value && tf.type === type && tf.track === track
+  const tf = currentFocus.value
+  return tf && tf.on === 'track' && tf.grid === grid.value && tf.type === type && tf.track === track
 }
 </script>
 
@@ -194,14 +201,6 @@ h2 {
         &.active {
           background: #bbe5b3;
         }
-      }
-
-      select {
-        background: #fff;
-        border: 0;
-        width: 100%;
-        font-size: 14px;
-        color: #333;
       }
     }
   }
