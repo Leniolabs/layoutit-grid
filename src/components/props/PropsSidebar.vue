@@ -9,9 +9,7 @@
 
     <HireUs />
     <VersionLabel />
-    <button aria-label="Toggle dark mode" :class="['btn-dark', { active: darkmode }]" @click="darkmode = !darkmode">
-      <IconDark />
-    </button>
+    <DarkModeButton />
     <button :disabled="!canUndo" aria-label="Undo" :class="['btn-undo']" @click="undo">Undo</button>
     <button :disabled="!canRedo" aria-label="Redo" :class="['btn-redo']" @click="redo">Redo</button>
   </div>
@@ -24,9 +22,10 @@ export { default as HireUs } from './HireUs.vue'
 export { default as IconDark } from '../icons/IconDark.vue'
 export { default as FlexOptions } from './FlexOptions.vue'
 export { default as GridOptions } from './GridOptions.vue'
+export { default as DarkModeButton } from './DarkModeButton.vue'
 
 import { computed } from 'vue'
-export { currentArea, darkmode, undo, redo, canUndo, canRedo } from '../../store.js'
+export { currentArea, undo, redo, canUndo, canRedo } from '../../store.js'
 
 export default {
   props: {
@@ -88,21 +87,6 @@ export const currentFlex = computed(() => currentArea.value.flex)
       transform: translateX(0);
     }
   }
-
-  button.btn-dark {
-    margin-bottom: 10px;
-    background: var(--color-darkmode);
-    color: #fff;
-    border: 0;
-    border-radius: 25px;
-    cursor: pointer;
-    height: 35px;
-    width: 35px;
-    padding: 10px;
-    &.active {
-      background: var(--color-darkmode-active);
-    }
-  }
 }
 
 .hire-us {
@@ -115,12 +99,6 @@ export const currentFlex = computed(() => currentArea.value.flex)
   position: fixed;
   bottom: 15px;
   left: 130px;
-}
-
-.btn-dark {
-  position: fixed;
-  bottom: 5px;
-  left: 15px;
 }
 
 .btn-undo,
