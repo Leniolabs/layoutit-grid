@@ -1,9 +1,7 @@
 <template>
-  <form action="https://codepen.io/pen/define" style="float: left;" method="POST" target="_blank">
+  <form action="https://codepen.io/pen/define" style="float: left" method="POST" target="_blank">
     <input id="codepenData" :value="codePenJSON" type="hidden" name="data" />
-    <button type="submit" class="button codepen-btn">
-      <IconCodepen />Create CodePen
-    </button>
+    <button type="submit" class="button codepen-btn"><IconCodepen />Create CodePen</button>
   </form>
 </template>
 
@@ -33,14 +31,14 @@ ${props.cssCode}
 .${containerClass} * {
   border: 1px solid red;
   position: relative;
-  }
+}
 
 .${containerClass} *:after {
   content:attr(class);
   position: absolute;
   top: 0;
   left: 0;
-  }
+}
 `,
   })
 })
