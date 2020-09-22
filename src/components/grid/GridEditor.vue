@@ -112,10 +112,7 @@ export function isFocused(section) {
   position: relative;
   background: #300548;
   overflow: hidden;
-  border-radius: 2px;
   user-select: none;
-  padding-right: 0px;
-  padding-bottom: 0px;
   &.dragging section:hover {
     background: #fff;
   }

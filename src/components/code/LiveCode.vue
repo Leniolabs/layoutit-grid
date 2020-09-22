@@ -1,22 +1,18 @@
 <template>
-  <div class="sidebar-outermost-container">
-    <div class="right-sidebar-content-container">
-      <PermalinkBar v-show="showPermalink" :path="permalink" @close="showPermalink = false" />
-      <div class="buttons">
-        <CodepenButton :cssCode="cssCode" :htmlCode="htmlCode" />
-        <SidebarButton :disabled="!saveDesign" @click="getPermalink">Get permalink</SidebarButton>
-        <SidebarButton aria-label="Restart" class="btn-trash" @click="restart">
-          <IconTrash />
-        </SidebarButton>
-      </div>
-      <div class="code-grid">
-        <CssCodeEditor :area="area" :options="options" />
-        <HtmlCodeEditor :area="area" :options="options" />
-      </div>
-      <div class="divider"></div>
-      <LiveCodeOptions v-model="options" />
-    </div>
+  <PermalinkBar v-show="showPermalink" :path="permalink" @close="showPermalink = false" />
+  <div class="buttons">
+    <CodepenButton :cssCode="cssCode" :htmlCode="htmlCode" />
+    <SidebarButton :disabled="!saveDesign" @click="getPermalink">Get permalink</SidebarButton>
+    <SidebarButton aria-label="Restart" class="btn-trash" @click="restart">
+      <IconTrash />
+    </SidebarButton>
   </div>
+  <div class="code-grid">
+    <CssCodeEditor :area="area" :options="options" />
+    <HtmlCodeEditor :area="area" :options="options" />
+  </div>
+  <div class="divider"></div>
+  <LiveCodeOptions v-model="options" />
 </template>
 
 <script setup="props">
@@ -111,14 +107,6 @@ export function getPermalink() {
   }
 }
 
-.sidebar-outermost-container {
-  height: 100%;
-  .right-sidebar-content-container {
-    display: flex;
-    flex-flow: column nowrap;
-    height: 100%;
-  }
-}
 
 .code-grid {
   display: grid;

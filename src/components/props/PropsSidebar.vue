@@ -68,22 +68,15 @@ export const currentFlex = computed(() => currentArea.value.flex)
 }
 
 .sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 14em;
   padding: 0 10px;
   color: #fff;
-  height: 100vh;
   text-align: left;
-  font-family: 'Alegreya Sans', 'Helvetica Neue', Arial, sans-serif;
   z-index: 9;
   transition: transform 0.2s ease-in;
   overflow: auto;
-
   @media screen and (max-width: 768px) {
-    transform: translateX(-14em);
+    transform: translateX(-15em);
+    position: fixed;
     background: #300748;
     top: 40px;
     padding-top: 20px;

@@ -1,7 +1,7 @@
 <template>
   <MobileButton @click="activeSidebar = !activeSidebar" />
-  <GridEditor :area="mainArea" />
   <PropsSidebar v-if="activeSidebar" :area="mainArea" />
+  <GridEditor :area="mainArea" />
   <SidebarRight v-if="activeSidebarRight">
     <template v-slot:body>
       <LiveCode :area="mainArea" :save-design="saveDesign" />
@@ -82,26 +82,16 @@ p {
 }
 
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
-  text-align: center;
   color: #2c3e50;
-  margin-top: 0px;
-  padding-left: calc(14em + 15px);
-  padding-right: 10px;
-  padding-top: 10px;
-  padding-bottom: 10px;
   background: linear-gradient(#1d032d, #300748);
   height: 100%;
-  display: flex;
-  flex-flow: row;
-  flex-wrap: nowrap;
-  flex-wrap: nowrap;
-  > section {
-    flex: 1 0 auto;
-  }
+  display: grid;
+  grid-template-columns: 220px 1fr 400px;  
+  grid-column-gap: 15px;
   @media screen and (max-width: 768px) {
-    padding: 45px 0 0;
+    display: block;
   }
   &.darkmode {
     .grid {
