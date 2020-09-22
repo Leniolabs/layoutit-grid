@@ -11,7 +11,7 @@
       type="text"
       placeholder="Area Name"
       aria-label="area name"
-      @keyup.enter="selectionSave"
+      @keyup.enter="saveSelection"
     />
     <button
       aria-label="Remove selection"
