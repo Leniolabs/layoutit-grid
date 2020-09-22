@@ -196,10 +196,10 @@ h2 {
         background: #fff;
         color: #333;
         &.dragging {
-          background: #bbe5b3;
+          background: #e4f5e4;
         }
         &.active {
-          background: #bbe5b3;
+          background: #e4f5e4;
         }
       }
     }

@@ -57,6 +57,7 @@ ${props.cssCode}
   padding: 0.625em 1em;
   margin: 0 auto;
   background: #333;
+  user-select: none;
   &:hover {
     background: #444;
   }

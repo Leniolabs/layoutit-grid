@@ -37,6 +37,6 @@ export const options = computed(() => units[props.type])
   font-size: 14px;
 }
 .unit-select.focused {
-  background: #bbe5b3;
+  background: #e4f5e4;
 }
 </style>

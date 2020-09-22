@@ -60,11 +60,11 @@ export const isDraggingTrackLine = computed(
 .col,
 .row {
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-  font-size: 14px;
+  font-size: 13px;
   color: #666;
   position: absolute;
-
   padding: 2px;
+    user-select: none;
   &.active {
     color: #27ae60;
   }
@@ -75,6 +75,7 @@ export const isDraggingTrackLine = computed(
     color: black;
   }
 }
+
 
 .col {
   bottom: 0;

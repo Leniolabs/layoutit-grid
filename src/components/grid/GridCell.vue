@@ -204,14 +204,12 @@ section {
   &.dragging {
     cursor: default;
   }
-  &:hover {
-    background: #f5f5f5;
-  }
   &.grayed {
     background: #dddddd;
   }
+  &:hover,
   &.focused {
-    background: #e4f5e4;
+    background: #ecf8ec;
   }
   .multi-handle {
     touch-action: none;

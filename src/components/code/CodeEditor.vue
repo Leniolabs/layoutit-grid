@@ -16,22 +16,21 @@ export default {
 <style scoped lang="scss">
 .code-container {
   background: #23241f;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
   border: solid 1px #2a2a2a;
-  height: 100%;
+  height: max-content;
   overflow: auto;
+  margin-bottom: 10px;
 }
 
 .header {
   display: block;
-  background: #444;
-  color: #ccc;
+  color: #888;
   font-weight: 700;
   font-size: 12px;
   padding: 3px 5px 2px;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
+  //border-top-left-radius: 4px;
+  //border-top-right-radius: 4px;
+  user-select: none;
 }
 
 pre,
@@ -70,7 +69,7 @@ code::selection {
 }
 
 pre {
-  padding: 1em;
+  padding: 0.5em 1em 1em;
   overflow: auto;
 }
 
@@ -80,4 +79,8 @@ pre {
   color: #db4c69;
   background: #f9f2f4;
 }
+
+
+
+
 </style>

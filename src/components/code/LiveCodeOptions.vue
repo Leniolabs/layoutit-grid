@@ -20,7 +20,7 @@
           target="_blank"
         >grid-template-areas</a>
       </strong>
-      for positioning (if disabled, numbers will be used).
+      for positioning.
     </SlideCheckbox>
     <SlideCheckbox id="checkbox-old-spec" v-model="modelValue.oldSpec">
       Include support for
@@ -31,10 +31,10 @@
           href="https://rachelandrew.co.uk/archives/2016/11/26/should-i-try-to-use-the-ie-implementation-of-css-grid-layout/"
         >legacy grid spec</a>
       </strong>
-      (for Internet Explorer 10/11).
+      (for IE 10/11).
     </SlideCheckbox>
     <div v-if="modelValue.oldSpec" class="checkbox-warning">
-      <strong>Warning:</strong> legacy grid spec does not support
+      <strong>Warning:</strong> the legacy grid specification does not support
       <a
         target="_blank"
         rel="noreferrer"
@@ -71,9 +71,10 @@ export default {
 }
 
 .output-settings {
-  margin: 10px 0 0 0;
+  margin: auto 0 0 0;
   width: 100%;
   font-size: 14px;
+  user-select: none;
   a {
     color: #3094b4;
   }

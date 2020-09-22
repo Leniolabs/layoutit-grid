@@ -18,4 +18,12 @@
   }
 }
 
+.code-sidebar {
+    display: flex;
+    flex-direction: column;
+      > div {
+    flex: 1;
+  }
+}
+
 </style>

@@ -59,6 +59,8 @@ export function toggle() {
   font: 14px arial;
   z-index: 999;
   opacity: 1;
+    user-select: none;
+
 }
 
 .col {

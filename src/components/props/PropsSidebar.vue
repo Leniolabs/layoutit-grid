@@ -74,6 +74,7 @@ export const currentFlex = computed(() => currentArea.value.flex)
   z-index: 9;
   transition: transform 0.2s ease-in;
   overflow: auto;
+  user-select: none;
   @media screen and (max-width: 768px) {
     transform: translateX(-15em);
     position: fixed;

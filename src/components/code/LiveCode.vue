@@ -11,7 +11,6 @@
     <CssCodeEditor :area="area" :options="options" />
     <HtmlCodeEditor :area="area" :options="options" />
   </div>
-  <div class="divider"></div>
   <LiveCodeOptions v-model="options" />
 </template>
 
@@ -71,6 +70,7 @@ export function getPermalink() {
 <style scoped lang="scss">
 .buttons {
   display: flex;
+  user-select: none;
   > button {
     max-width: max-content;
     margin-left: 10px;
@@ -107,19 +107,11 @@ export function getPermalink() {
   }
 }
 
-
 .code-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-gap: 10px;
-  max-height: calc(100% - 285px);
-  @media (max-width: 1240px) {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-  }
+  display: flex;
+  flex-direction: column;
+
 }
 
-.divider {
-  flex-grow: 1;
-}
+
 </style>
