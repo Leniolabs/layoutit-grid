@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "lodash-es": "4.17.15",
-    "vue": "^v3.0.0"
+    "vue": "^v3.0.0",
+    "vue-composable": "^1.0.0-beta.10"
   },
   "devDependencies": {
     "vite": "^v1.0.0-rc.4",

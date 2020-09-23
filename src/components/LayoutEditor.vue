@@ -17,8 +17,8 @@ export { default as SidebarRight } from './basic/SidebarRight.vue'
 export { default as PropsSidebar } from './props/PropsSidebar.vue'
 export { default as LiveCode } from './code/LiveCode.vue'
 
-import { watch, ref, computed } from 'vue'
-export { darkmode, mainArea, currentArea } from '../store.js'
+import { ref, computed } from 'vue'
+export { mainArea, currentArea } from '../store.js'
 
 export default {
   props: {
@@ -28,10 +28,6 @@ export default {
 
 export let activeSidebar = ref(true)
 export let activeSidebarRight = ref(true)
-
-watch(darkmode, () => {
-  document.getElementById('app').classList[darkmode.value ? 'add' : 'remove']('darkmode')
-})
 </script>
 
 <style lang="scss">
@@ -88,7 +84,7 @@ p {
   background: linear-gradient(#1d032d, #300748);
   height: 100%;
   display: grid;
-  grid-template-columns: 220px 1fr 400px;  
+  grid-template-columns: 220px 1fr 400px;
   grid-column-gap: 15px;
   @media screen and (max-width: 768px) {
     display: block;
