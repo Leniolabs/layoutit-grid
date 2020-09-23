@@ -1,5 +1,10 @@
 <template>
-  <button aria-label="Toggle dark mode" :class="['btn-dark', { active: darkmode }]" @click="darkmode = !darkmode">
+  <button
+    aria-label="Toggle dark mode"
+    :class="['btn-dark', { active: darkmode }]"
+    @click.left="toggleDarkmode"
+    @click.prevent.right="switchToSystemTheme"
+  >
     <IconDark />
   </button>
 </template>
@@ -10,22 +15,30 @@ import { useLocalStorage } from 'vue-composable'
 export { default as IconDark } from '../icons/IconDark.vue'
 export { darkmode } from '../../store'
 
-const { storage: darkmodeStorage } = useLocalStorage('dark-mode', null)
+const { storage: themeStorage } = useLocalStorage('theme', null)
+
+export function toggleDarkmode() {
+  darkmode.value = !darkmode.value
+  themeStorage.value = darkmode.value ? 'dark' : 'light'
+}
+
+export function switchToSystemTheme() {
+  darkmode.value = getSystemTheme() === 'dark'
+  themeStorage.value = null
+}
 
 onMounted(() => {
-  if (darkmodeStorage.value !== null) {
-    return (darkmode.value = darkmodeStorage.value)
-  }
-  const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-  if (darkModeMediaQuery.media !== 'not all') {
-    darkmode.value = darkModeMediaQuery.matches
-  }
+  darkmode.value = (themeStorage.value || getSystemTheme()) === 'dark'
 })
 
 watch(darkmode, () => {
-  darkmodeStorage.value = darkmode.value
   document.getElementById('app').classList[darkmode.value ? 'add' : 'remove']('darkmode')
 })
+
+function getSystemTheme() {
+  const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+  return darkModeMediaQuery.media !== 'not all' && darkModeMediaQuery.matches ? 'dark' : 'light'
+}
 </script>
 
 <style scoped lang="scss">
