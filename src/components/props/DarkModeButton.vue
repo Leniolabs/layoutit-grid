@@ -36,8 +36,13 @@ watch(darkmode, () => {
 })
 
 function getSystemTheme() {
+  return 'light'
+  /* For the moment, we are going to use light by default ignoring the system preference until
+     the dark mode in the app is more polished
+     
   const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
   return darkModeMediaQuery.media !== 'not all' && darkModeMediaQuery.matches ? 'dark' : 'light'
+  */
 }
 </script>
 
