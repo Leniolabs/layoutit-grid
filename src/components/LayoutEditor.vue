@@ -86,6 +86,8 @@ p {
   display: grid;
   grid-template-columns: 220px 1fr 400px;
   grid-column-gap: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   @media screen and (max-width: 768px) {
     display: block;
   }

@@ -24,7 +24,7 @@ export default {
 
 .header {
   display: block;
-  color: #888;
+  color: #bbb;
   font-weight: 700;
   font-size: 12px;
   padding: 3px 5px 2px;
@@ -79,8 +79,4 @@ pre {
   color: #db4c69;
   background: #f9f2f4;
 }
-
-
-
-
 </style>
