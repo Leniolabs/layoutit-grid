@@ -43,7 +43,7 @@ export function onInput(event) {
 
 const areaNameChanged = (event) => {
   const text = textFrom(event)
-  if (isValidAreaName(text)) {
+  if (text && isValidAreaName(text)) {
     areaName.value = text
   }
 }
