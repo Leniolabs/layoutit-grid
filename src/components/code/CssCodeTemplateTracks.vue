@@ -1,22 +1,27 @@
 <template>
-  <span class="token string" v-for="(item, i) in trackSizesAndLineNames" :key="item.type + (item.pos || item.track)"
-    >{{ separatorBeforeItem(i)
-    }}<CssCodeTrackSize
-      v-if="item.type === 'size'"
-      :grid="grid"
-      :type="type"
-      :track="item.track"
-      @move="onMove($event, i)"
-      :el="item.el"
-    /><CssCodeLineName
-      v-if="item.type === 'line'"
-      :grid="grid"
-      :type="type"
-      :pos="item.pos"
-      @move="onMove($event, i)"
-      :el="item.el"
-    />{{ separatorAfterItem(i) }}
-  </span>
+  <template v-if="isInteractive">
+    <span class="token string" v-for="(item, i) in trackSizesAndLineNames" :key="item.type + (item.pos || item.track)"
+      >{{ separatorBeforeItem(i)
+      }}<CssCodeTrackSize
+        v-if="item.type === 'size'"
+        :grid="grid"
+        :type="type"
+        :track="item.track"
+        @move="onMove($event, i)"
+        :el="item.el"
+      /><CssCodeLineName
+        v-if="item.type === 'line'"
+        :grid="grid"
+        :type="type"
+        :pos="item.pos"
+        @move="onMove($event, i)"
+        :el="item.el"
+      />{{ separatorAfterItem(i) }}
+    </span>
+  </template>
+  <span v-if="!isInteractive" class="token string">{{
+    type === 'col' ? namedTemplateColumns(grid, repeat) : namedTemplateRows(grid, repeat)
+  }}</span>
 </template>
 
 <script setup="props, { emit }">
@@ -26,7 +31,7 @@ import { isValidTrackSize } from '../../store.js'
 import { ref, computed } from 'vue'
 import { debounce } from 'lodash-es'
 
-import { namedTemplateColumns, namedTemplateRows, parseGridTemplate } from '../../utils.js'
+export { namedTemplateColumns, namedTemplateRows, parseGridTemplate } from '../../utils.js'
 
 export default {
   props: {
@@ -35,6 +40,11 @@ export default {
     repeat: { type: Boolean, default: false },
   },
 }
+
+export const isInteractive = computed(() => {
+  console.log(!(props.repeat && props.grid[props.type].lineNames.every((l) => !l.active)))
+  return !(props.repeat && props.grid[props.type].lineNames.every((l) => !l.active))
+})
 
 export const multiline = computed(() => {
   const { lineNames } = props.grid[props.type]

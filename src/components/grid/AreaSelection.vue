@@ -1,9 +1,5 @@
 <template>
-  <section
-    v-if="selection"
-    :style="{ 'grid-area': gridArea, 'border-color': selection.color }"
-    class="area-selection"
-  >
+  <section v-if="selection" :style="{ 'grid-area': gridArea, 'border-color': selection.color }" class="area-selection">
     <input
       ref="nameInputElement"
       v-model="gridName"
@@ -12,21 +8,12 @@
       placeholder="Area Name"
       aria-label="area name"
       @keyup.enter="saveSelection"
+      @pointerdown.stop
     />
-    <button
-      aria-label="Remove selection"
-      class="btn-remove"
-      title="Remove Selection"
-      @click="closeSelection"
-    >
+    <button aria-label="Remove selection" class="btn-remove" title="Remove Selection" @click="closeSelection">
       <IconRemove />
     </button>
-    <button
-      :disabled="!saveEnabled"
-      class="btn-save"
-      aria-label="Save area"
-      @click="saveSelection"
-    >Save</button>
+    <button :disabled="!saveEnabled" class="btn-save" aria-label="Save area" @click="saveSelection">Save</button>
   </section>
 </template>
 
@@ -101,51 +88,71 @@ export const saveEnabled = computed(() => {
 
 export { isValidAreaName }
 
-export function cellDown({ clientX, clientY }, section) {
-  setCurrentArea(props.area)
-
-  if (!selection.value) {
-    selection.value = {
-      start: section,
-      end: section,
-      color: getRandomColor(),
-      fresh: true,
+function sectionFromEvent() {
+  const el = document.elementFromPoint(event.clientX, event.clientY)
+  if (el) {
+    const { colStart, rowStart } = el.dataset
+    if (colStart !== undefined && rowStart !== undefined) {
+      return createSection({ col: +colStart, row: +rowStart })
     }
   }
-
-  selection.value.dragging = {
-    initial: { x: clientX, y: clientY },
-    section,
-  }
-
-  const finishDraggingSelection = () => {
-    if (selection.value.dragging) {
-      selection.value.end = selection.value.dragging.section
-      selection.value.dragging = null
-    }
-    selection.value.fresh = false
-    window.removeEventListener('pointerup', finishDraggingSelection)
-  }
-  window.addEventListener('pointerup', finishDraggingSelection, false)
-
-  // TODO: nextTick is not working here
-  setTimeout(() => nameInputElement.value.focus(), 0)
+  return undefined
 }
 
-export function cellMove({ clientX, clientY }, section) {
-  if (selection.value) {
-    const { dragging, fresh } = selection.value
-    if (dragging) {
-      if (fresh) {
-        selection.value.end = section
-      } else {
-        if (farEnough(dragging.initial, { x: clientX, y: clientY })) {
-          selection.value.fresh = true
-          selection.value.start = section
+export function cellDown(event) {
+  event.stopPropagation()
+  event.preventDefault()
+
+  const section = sectionFromEvent(event)
+  if (section) {
+    setCurrentArea(props.area)
+
+    if (!selection.value) {
+      selection.value = {
+        start: section,
+        end: section,
+        color: getRandomColor(),
+        fresh: true,
+      }
+    }
+
+    selection.value.dragging = {
+      initial: { x: event.clientX, y: event.clientY },
+      section,
+    }
+
+    const onPointerMove = (event) => {
+      const sectionOver = sectionFromEvent(event)
+      if (sectionOver) {
+        const { dragging, fresh } = selection.value
+        if (dragging) {
+          if (fresh) {
+            selection.value.end = sectionOver
+          } else {
+            if (farEnough(dragging.initial, { x: event.clientX, y: event.clientY })) {
+              selection.value.fresh = true
+              selection.value.start = section
+            }
+          }
+          dragging.section = sectionOver
         }
       }
-      dragging.section = section
     }
+
+    const onPointerUp = () => {
+      if (selection.value.dragging) {
+        selection.value.end = selection.value.dragging.section
+        selection.value.dragging = null
+      }
+      selection.value.fresh = false
+      window.removeEventListener('pointermove', onPointerMove)
+      window.removeEventListener('pointerup', onPointerUp)
+
+      // TODO: nextTick is not working here
+      setTimeout(() => nameInputElement.value.focus(), 100)
+    }
+    window.addEventListener('pointermove', onPointerMove, false)
+    window.addEventListener('pointerup', onPointerUp, false)
   }
 }
 

@@ -3,22 +3,16 @@
     <SlideCheckbox id="checkbox-repeat" v-model="modelValue.repeat">
       Apply CSS
       <strong>
-        <a
-          href="https://developer.mozilla.org/en-US/docs/Web/CSS/repeat"
-          rel="noreferrer"
-          target="_blank"
-        >repeat</a>
+        <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/repeat" rel="noreferrer" target="_blank">repeat</a>
       </strong>
       function.
     </SlideCheckbox>
     <SlideCheckbox id="checkbox-template-areas" v-model="modelValue.templateAreas">
       Use
       <strong>
-        <a
-          href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-areas"
-          rel="noreferrer"
-          target="_blank"
-        >grid-template-areas</a>
+        <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-areas" rel="noreferrer" target="_blank"
+          >grid-template-areas</a
+        >
       </strong>
       for positioning.
     </SlideCheckbox>
@@ -29,7 +23,8 @@
           target="_blank"
           rel="noreferrer"
           href="https://rachelandrew.co.uk/archives/2016/11/26/should-i-try-to-use-the-ie-implementation-of-css-grid-layout/"
-        >legacy grid spec</a>
+          >legacy grid spec</a
+        >
       </strong>
       (for IE 10/11).
     </SlideCheckbox>
@@ -40,7 +35,8 @@
         rel="noreferrer"
         class="auto-placement-link"
         href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Auto-placement_in_CSS_Grid_Layout"
-      >auto-placement of elements!</a>
+        >auto-placement of elements!</a
+      >
     </div>
   </div>
 </template>
@@ -86,6 +82,9 @@ export default {
   }
   > {
     padding-bottom: 5px;
+  }
+  @media screen and (max-width: 768px) {
+    visibility: hidden;
   }
 }
 </style>

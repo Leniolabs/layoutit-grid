@@ -1,8 +1,8 @@
 <template>
-  <MobileButton @click="activeSidebar = !activeSidebar" />
-  <PropsSidebar v-if="activeSidebar" :area="mainArea" />
+  <MobileButton @click="toggleView" />
+  <PropsSidebar :area="mainArea" />
   <GridEditor :area="mainArea" />
-  <SidebarRight v-if="activeSidebarRight">
+  <SidebarRight>
     <template v-slot:body>
       <LiveCode :area="mainArea" :save-design="saveDesign" />
     </template>
@@ -18,7 +18,7 @@ export { default as PropsSidebar } from './props/PropsSidebar.vue'
 export { default as LiveCode } from './code/LiveCode.vue'
 
 import { ref, computed } from 'vue'
-export { mainArea, currentArea } from '../store.js'
+export { mainArea, currentArea, currentView } from '../store.js'
 
 export default {
   props: {
@@ -26,8 +26,19 @@ export default {
   },
 }
 
-export let activeSidebar = ref(true)
-export let activeSidebarRight = ref(true)
+function nextView(view) {
+  switch (view) {
+    case 'editor':
+      return 'code'
+    case 'code':
+      return 'props'
+    default:
+      return 'editor'
+  }
+}
+export function toggleView() {
+  currentView.value = nextView(currentView.value)
+}
 </script>
 
 <style lang="scss">

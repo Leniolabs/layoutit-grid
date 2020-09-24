@@ -57,10 +57,9 @@ export function toggle() {
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
   font: 14px arial;
-  z-index: 999;
+  z-index: 199;
   opacity: 1;
-    user-select: none;
-
+  user-select: none;
 }
 
 .col {

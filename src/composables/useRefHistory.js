@@ -17,14 +17,12 @@ export function useRefHistory(
   function undo() {
     if (canUndo.value) {
       position.value--
-      console.log('undo ' + position.value)
       restore(actualValue())
     }
   }
   function redo() {
     if (canRedo.value) {
       position.value++
-      console.log('redo ' + position.value)
       restore(actualValue())
     }
   }
@@ -38,27 +36,21 @@ export function useRefHistory(
   }
 
   function updateHistory(newValue) {
-    console.log(newValue)
     const str = serialize(newValue)
-    console.log(str)
     if (history.value[position.value] === str) {
       return
     }
     if (canRedo.value) {
-      console.log('drop history after ' + position.value)
       history.value.splice(position.value + 1)
     }
 
     if (history.value.length > capacity) {
-      console.log('drop old history')
       history.value.shift()
       position.value--
     }
 
     history.value.push(str)
     position.value++
-    console.log('add history, pos is now ' + position.value)
-    console.log(history.value.length)
   }
 
   watch(

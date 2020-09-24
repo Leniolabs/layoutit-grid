@@ -220,7 +220,7 @@ export const currentItem = ref(null)
 export const dragging = ref(null)
 export const currentFocus = ref(null)
 export const currentHover = ref(null)
-
+export const currentView = ref('editor')
 export const darkmode = ref(false)
 
 function parentify(area, parent = null) {

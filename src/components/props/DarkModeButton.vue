@@ -60,6 +60,9 @@ button.btn-dark {
   &.active {
     background: var(--color-darkmode-active);
   }
+  @media screen and (max-width: 768px) {
+    visibility: hidden;
+  }
 }
 
 .btn-dark {

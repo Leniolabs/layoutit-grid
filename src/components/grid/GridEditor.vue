@@ -9,6 +9,7 @@
       display: 'grid',
     }"
     class="grid"
+    @pointerdown="$refs.selection.cellDown($event)"
   >
     <AreaEditor v-for="a in areasToShow" :key="`area-${a.name}`" :area="a" @edit="$refs.selection.editArea(a)" />
 
@@ -20,8 +21,6 @@
       :grid-computed-styles="gridComputedStyles"
       :grayed="!isActive"
       :focused="isFocused(section)"
-      @down="$refs.selection.cellDown($event, section)"
-      @move="$refs.selection.cellMove($event, section)"
       @togglelinename="$refs[$event].toggle()"
     >
       <LineName

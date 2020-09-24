@@ -12,8 +12,6 @@
       focused,
     }"
     class="grid-section"
-    @pointerdown="$emit('down', $event)"
-    @pointermove="$emit('move', $event)"
   >
     <div
       :class="{ dragging: isDraggingCol }"

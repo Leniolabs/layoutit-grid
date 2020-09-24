@@ -1,5 +1,5 @@
 <template>
-  <div class="version">version 1.1.0</div>
+  <div class="version">version 1.2.0</div>
 </template>
 
 <style scoped lang="scss">

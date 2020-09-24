@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar">
+  <div :class="['sidebar', { active: currentView === 'props' }]">
     <BrandLogo />
 
     <div v-if="currentArea !== area" class="area-name">{{ currentArea.name }}</div>
@@ -25,7 +25,7 @@ export { default as GridOptions } from './GridOptions.vue'
 export { default as DarkModeButton } from './DarkModeButton.vue'
 
 import { computed } from 'vue'
-export { currentArea, undo, redo, canUndo, canRedo } from '../../store.js'
+export { currentArea, undo, redo, canUndo, canRedo, currentView } from '../../store.js'
 
 export default {
   props: {
@@ -77,15 +77,24 @@ export const currentFlex = computed(() => currentArea.value.flex)
   @media screen and (max-width: 768px) {
     transform: translateX(-15em);
     position: fixed;
+    bottom: 0;
+    top: 0;
     background: #300748;
-    top: 40px;
-    padding-top: 20px;
     a.brand {
       display: none;
     }
     &.active {
       transform: translateX(0);
     }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .hire-us,
+  .version,
+  .btn-undo,
+  .btn-redo {
+    visibility: hidden;
   }
 }
 

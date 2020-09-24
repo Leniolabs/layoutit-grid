@@ -10,7 +10,7 @@ export { default as IconSidebar } from './icons/IconSidebar.vue'
 
 <style scoped lang="scss">
 .mobile-button {
-  background-color: #300548;
+  background-color: var(--color-add);
   border-radius: 50%;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   cursor: pointer;
@@ -23,7 +23,8 @@ export { default as IconSidebar } from './icons/IconSidebar.vue'
   svg {
     fill: #fff;
     height: 2rem;
-    margin-top: 11px;
+    margin-top: 12px;
+    margin-left: 12px;
     width: 2rem;
   }
   @media screen and (max-width: 768px) {

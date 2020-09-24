@@ -1,6 +1,6 @@
 {
   "name": "layoutit-grid",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
@@ -8,6 +8,7 @@
     "build": "vite build"
   },
   "dependencies": {
+    "pepjs": "0.5.2",
     "lodash-es": "4.17.15",
     "vue": "^v3.0.0",
     "vue-composable": "^1.0.0-beta.10"
