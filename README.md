@@ -4,6 +4,8 @@ _CSS Grids layouts made easy!_
 
 _Layoutit grid_ is a CSS Grid layout generator. Quickly draw down web pages layouts with our clean editor, and get HTML and CSS code to quickstart your next project.
 
+**Read about the process of [Open Sourcing Layoutit Grid](https://medium.com/@patak_js/open-sourcing-layoutit-grid-3a78300bc022)** :heart:
+
 ## Use the tool
 
 Go to https://grid.layoutit.com/ and start playing :dart:
