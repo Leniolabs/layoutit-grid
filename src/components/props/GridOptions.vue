@@ -1,7 +1,12 @@
 <template>
   <div class="grid-settings-container">
     <div class="items columns">
-      <h2><span style="transform: rotate(90deg); display: inline-block">≑</span> Grid Columns</h2>
+      <div class="items-header">
+        <h2><span style="transform: rotate(90deg); display: inline-block">≑</span> Grid Columns</h2>
+        <OptionsButton class="add-button" @click="addCol(grid, '1fr')">
+          <IconAdd />
+        </OptionsButton>
+      </div>
       <div class="inner-items">
         <div v-for="column in colsNumber" :key="column" :data-col="column">
           <input
@@ -36,10 +41,14 @@
           </OptionsButton>
         </div>
       </div>
-      <OptionsButton class="add-button" @click="addCol(grid, '1fr')">Add</OptionsButton>
     </div>
     <div class="items rows">
-      <h2><span>≑</span> Grid Rows</h2>
+      <div class="items-header">
+        <h2><span>≑</span> Grid Rows</h2>
+        <OptionsButton class="add-button" @click="addRow(grid, '1fr')">
+          <IconAdd />
+        </OptionsButton>
+      </div>
       <div class="inner-items">
         <div v-for="row in rowsNumber" :key="row" :data-row="row">
           <input
@@ -74,7 +83,6 @@
           </OptionsButton>
         </div>
       </div>
-      <OptionsButton class="add-button" @click="addRow(grid, '1fr')">Add</OptionsButton>
     </div>
     <div class="items gaps">
       <h2><span>⊞</span> Grid Gap</h2>
@@ -86,6 +94,7 @@
 
 <script setup="props">
 export { default as IconRemove } from '../icons/IconRemove.vue'
+export { default as IconAdd } from '../icons/IconAdd.vue'
 export { default as UnitSelect } from '../common/UnitSelect.vue'
 export { default as GapInput } from '../common/GapInput.vue'
 export { default as OptionsButton } from '../basic/OptionsButton.vue'
@@ -175,6 +184,11 @@ h2 {
 
 .items {
   margin-bottom: 20px;
+  .items-header {
+    display: grid;
+    grid-template-columns: auto 30px;
+    align-items: center;
+  }
   .inner-items {
     max-height: 195px;
     overflow: auto;
@@ -206,14 +220,11 @@ h2 {
   }
 }
 
-.remove-button {
+.remove-button,
+.add-button {
   width: 100%;
   padding: 8px 0;
   margin-bottom: 0;
-  background: var(--color-remove);
-  &:hover {
-    background: var(--color-remove-active);
-  }
   svg {
     padding: 1.2px;
     width: 100%;
@@ -222,11 +233,14 @@ h2 {
   }
 }
 
+.remove-button {
+  background: var(--color-remove);
+  &:hover {
+    background: var(--color-remove-active);
+  }
+}
+
 .add-button {
-  min-height: 2.188em;
-  min-width: 2.188em;
-  margin-bottom: 0.626em;
-  padding: 0.313em 9px;
   background: var(--color-add);
   &:hover {
     background: var(--color-add-active);
