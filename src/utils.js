@@ -113,7 +113,7 @@ function parseLineName(item) {
 }
 
 export function toCssName(name) {
-  return CSS.escape(name.replace(' ', '-'))
+  return CSS.escape(name.replace(/\s/g, '-'))
 }
 
 export function generateNamedTemplate(templateArr, lineNames, css = true, repeat) {

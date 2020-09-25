@@ -5,7 +5,7 @@
 <script setup="props, { emit }">
 import { dragging, currentArea, isValidAreaName } from '../../store.js'
 import { computed } from 'vue'
-import { getGridArea, gridTemplateAreas } from '../../utils.js'
+import { getGridArea, gridTemplateAreas, toCssName } from '../../utils.js'
 
 export default {
   props: {
@@ -16,7 +16,7 @@ export default {
 
 export { currentArea }
 
-export const cssAreaName = computed(() => props.area.name)
+export const cssAreaName = computed(() => toCssName(props.area.name))
 
 function getGridTemplateAreas(grid) {
   return grid ? gridTemplateAreas(grid, '\n    ') : undefined

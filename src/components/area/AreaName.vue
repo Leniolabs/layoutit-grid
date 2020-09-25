@@ -1,10 +1,7 @@
 <template>
-  <span
-    @click="$emit('edit')"
-    :style="{ 'border-color': area.color }"
-    class="area-name"
-    title="Area Name"
-  >{{ area.name }}</span>
+  <span @click="$emit('edit')" :style="{ 'border-color': area.color }" class="area-name" title="Area Name">{{
+    area.name
+  }}</span>
 </template>
 
 <script setup>

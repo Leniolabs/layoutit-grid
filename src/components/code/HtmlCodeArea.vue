@@ -5,6 +5,7 @@ v-for="a in gridAreas" :key="a.name">{{ '\n' }}<HtmlCodeArea :area="a" :options=
 
 <script setup="props">
 import { computed } from 'vue'
+import { toCssName } from '../../utils.js'
 
 export default {
   name: 'HtmlCodeArea',
@@ -15,7 +16,7 @@ export default {
   },
 }
 
-export const cssAreaName = computed(() => props.area.name)
+export const cssAreaName = computed(() => toCssName(props.area.name))
 
 export const gridAreas = computed(() => (props.area.grid ? props.area.grid.areas : []))
 </script>

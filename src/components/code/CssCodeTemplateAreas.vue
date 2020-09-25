@@ -16,8 +16,6 @@ export default {
 
 export { currentArea }
 
-export const cssAreaName = computed(() => props.area.name)
-
 function getGridTemplateAreas(grid) {
   return grid ? gridTemplateAreas(grid, '\n    ') : undefined
 }

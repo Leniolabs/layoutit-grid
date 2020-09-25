@@ -13,7 +13,7 @@ v-if="area.gridRegion"><span class="token property">-ms-grid-row</span>: <span c
 
 <script setup="props">
 import { computed } from 'vue'
-export { namedTemplateColumns, namedTemplateRows } from '../../utils.js'
+export { namedTemplateColumns, namedTemplateRows, toCssName } from '../../utils.js'
 
 export default {
   name: 'CssCodeAreaOldSpec',
@@ -23,7 +23,7 @@ export default {
   },
 }
 
-export const cssAreaName = computed(() => props.area.name)
+export const cssAreaName = computed(() => toCssName(props.area.name))
 
 export const gridAreas = computed(() => (props.area.grid ? props.area.grid.areas : []))
 </script>

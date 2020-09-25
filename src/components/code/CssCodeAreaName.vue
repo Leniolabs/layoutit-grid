@@ -16,7 +16,7 @@
 <script setup="props, { emit }">
 import { dragging, currentArea, isValidAreaName } from '../../store.js'
 import { computed, nextTick } from 'vue'
-export { onCodeInputKeydown } from '../../utils.js'
+export { onCodeInputKeydown, toCssName } from '../../utils.js'
 export { startAtomicChange, endAtomicChange } from '../../store.js'
 
 export default {
@@ -28,7 +28,7 @@ export default {
 export { currentArea }
 
 export const areaName = computed({
-  get: () => props.area.name,
+  get: () => toCssName(props.area.name),
   set: (str) => (props.area.name = str),
 })
 
