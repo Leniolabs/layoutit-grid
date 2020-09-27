@@ -30,10 +30,12 @@ export function areaToCSS(area, { parentGrid, useTemplateAreas = true, validTemp
 }
 
 export function gridToCSS(name, grid, { useTemplateAreas = true, repeat }) {
-  let css = `  display: grid;
-  grid-template-columns: ${namedTemplateColumns(grid, repeat)};
-  grid-template-rows: ${namedTemplateRows(grid, repeat)};
-  gap: ${grid.row.gap + ' ' + grid.col.gap};` // TODO: cssGridGap(grid)
+  let css = `
+    display: grid;
+    grid-template-columns: ${namedTemplateColumns(grid, repeat)};
+    grid-template-rows: ${namedTemplateRows(grid, repeat)};
+    gap: ${grid.row.gap} ${grid.col.gap};
+  ` // TODO: cssGridGap(grid)
 
   if (useTemplateAreas) {
     const templateAreas = gridTemplateAreas(grid, '\n    ')
