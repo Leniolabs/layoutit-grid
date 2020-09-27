@@ -7,8 +7,12 @@
         type="number"
         min="0"
         @input="setGapValue($event.target.value)"
+      >
+      <UnitSelect
+        :value="gap.unit"
+        aria-label="gap unit"
+        @input="setGapUnit($event.target.value)"
       />
-      <UnitSelect :value="gap.unit" aria-label="gap unit" @input="setGapUnit($event.target.value)" />
     </div>
   </div>
 </template>

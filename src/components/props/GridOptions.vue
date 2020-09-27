@@ -3,12 +3,19 @@
     <div class="items columns">
       <div class="items-header">
         <h2><span style="transform: rotate(90deg); display: inline-block">≑</span> Grid Columns</h2>
-        <OptionsButton class="add-button" @click="addCol(grid, '1fr')">
+        <OptionsButton
+          class="add-button"
+          @click="addCol(grid, '1fr')"
+        >
           <IconAdd />
         </OptionsButton>
       </div>
       <div class="inner-items">
-        <div v-for="column in colsNumber" :key="column" :data-col="column">
+        <div
+          v-for="column in colsNumber"
+          :key="column"
+          :data-col="column"
+        >
           <input
             v-if="unitHasValue(getColUnit(grid, column - 1))"
             :value="getColValue(grid, column - 1)"
@@ -23,7 +30,7 @@
             @focus="currentFocus = { on: 'track', grid, type: 'col', track: column }"
             @blur="currentFocus = null"
             @input="setColValue(grid, column - 1, $event.target.value)"
-          />
+          >
           <UnitSelect
             :value="getColUnit(grid, column - 1)"
             type="grid"
@@ -45,12 +52,19 @@
     <div class="items rows">
       <div class="items-header">
         <h2><span>≑</span> Grid Rows</h2>
-        <OptionsButton class="add-button" @click="addRow(grid, '1fr')">
+        <OptionsButton
+          class="add-button"
+          @click="addRow(grid, '1fr')"
+        >
           <IconAdd />
         </OptionsButton>
       </div>
       <div class="inner-items">
-        <div v-for="row in rowsNumber" :key="row" :data-row="row">
+        <div
+          v-for="row in rowsNumber"
+          :key="row"
+          :data-row="row"
+        >
           <input
             v-if="unitHasValue(getRowUnit(grid, row - 1))"
             :value="getRowValue(grid, row - 1)"
@@ -65,7 +79,7 @@
             @focus="currentFocus = { on: 'track', grid, type: 'row', track: row }"
             @blur="currentFocus = null"
             @input="setRowValue(grid, row - 1, $event.target.value)"
-          />
+          >
           <UnitSelect
             :value="getRowUnit(grid, row - 1)"
             type="grid"
@@ -86,8 +100,14 @@
     </div>
     <div class="items gaps">
       <h2><span>⊞</span> Grid Gap</h2>
-      <GapInput :grid="grid" type="row" />
-      <GapInput :grid="grid" type="col" />
+      <GapInput
+        :grid="grid"
+        type="row"
+      />
+      <GapInput
+        :grid="grid"
+        type="col"
+      />
     </div>
   </div>
 </template>

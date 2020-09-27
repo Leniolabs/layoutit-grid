@@ -25,7 +25,10 @@
       @pointerdown="handleDown($event, section, { row: true })"
     />
 
-    <div class="multi-handle" @pointerdown="handleDown($event, section, { row: true, col: true })" />
+    <div
+      class="multi-handle"
+      @pointerdown="handleDown($event, section, { row: true, col: true })"
+    />
 
     <slot />
   </section>

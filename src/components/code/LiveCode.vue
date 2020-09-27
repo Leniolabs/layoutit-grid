@@ -1,15 +1,37 @@
 <template>
-  <PermalinkBar v-show="showPermalink" :path="permalink" @close="showPermalink = false" />
+  <PermalinkBar
+    v-show="showPermalink"
+    :path="permalink"
+    @close="showPermalink = false"
+  />
   <div class="buttons">
-    <CodepenButton :cssCode="cssCode" :htmlCode="htmlCode" />
-    <SidebarButton :disabled="!saveDesign" @click="getPermalink">Get permalink</SidebarButton>
-    <SidebarButton aria-label="Restart" class="btn-trash" @click="restart">
+    <CodepenButton
+      :css-code="cssCode"
+      :html-code="htmlCode"
+    />
+    <SidebarButton
+      :disabled="!saveDesign"
+      @click="getPermalink"
+    >
+      Get permalink
+    </SidebarButton>
+    <SidebarButton
+      aria-label="Restart"
+      class="btn-trash"
+      @click="restart"
+    >
       <IconTrash />
     </SidebarButton>
   </div>
   <div class="code-grid">
-    <CssCodeEditor :area="area" :options="options" />
-    <HtmlCodeEditor :area="area" :options="options" />
+    <CssCodeEditor
+      :area="area"
+      :options="options"
+    />
+    <HtmlCodeEditor
+      :area="area"
+      :options="options"
+    />
   </div>
   <LiveCodeOptions v-model="options" />
 </template>

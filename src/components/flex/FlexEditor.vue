@@ -14,7 +14,9 @@
           'flex-basis': item.basis
         }"
         @pointerdown.stop="toggleFlexItem(i + 1)"
-      >{{ i + 1 }}</div>
+      >
+        {{ i + 1 }}
+      </div>
     </section>
   </div>
 </template>

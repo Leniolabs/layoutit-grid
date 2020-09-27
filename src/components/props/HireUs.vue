@@ -1,5 +1,10 @@
 <template>
-  <a class="hire-us" target="_blank" rel="noreferrer" href="https://leniolabs.com/#contact">Hire us</a>
+  <a
+    class="hire-us"
+    target="_blank"
+    rel="noreferrer"
+    href="https://leniolabs.com/#contact"
+  >Hire us</a>
 </template>
 
 <style scoped lang="scss">

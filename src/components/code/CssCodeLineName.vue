@@ -1,19 +1,16 @@
 <template>
-  <span
-    >[<span
-      :ref="el"
-      :aria-label="`${type} line ${pos} name`"
-      role="textbox"
-      contenteditable
-      spellcheck="false"
-      :class="['input', type, { active: false }]"
-      @keydown="onCodeInputKeydown"
-      @input="onInput"
-      @focus="currentFocus = { on: 'line', grid, type, pos }"
-      @blur="currentFocus = null"
-      >{{ lineName }}</span
-    >]</span
-  >
+  <span>[<span
+    :ref="el"
+    :aria-label="`${type} line ${pos} name`"
+    role="textbox"
+    contenteditable
+    spellcheck="false"
+    :class="['input', type, { active: false }]"
+    @keydown="onCodeInputKeydown"
+    @input="onInput"
+    @focus="currentFocus = { on: 'line', grid, type, pos }"
+    @blur="currentFocus = null"
+  >{{ lineName }}</span>]</span>
 </template>
 
 <script setup="props, { emit }">

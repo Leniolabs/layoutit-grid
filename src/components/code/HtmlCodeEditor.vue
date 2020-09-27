@@ -1,5 +1,10 @@
 <template>
-  <CodeEditor type="html"><HtmlCodeArea :area="area" :options="options" /></CodeEditor>
+  <CodeEditor type="html">
+    <HtmlCodeArea
+      :area="area"
+      :options="options"
+    />
+  </CodeEditor>
 </template>
 
 <script setup>

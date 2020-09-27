@@ -1,14 +1,14 @@
 <template>
   <input
-    ref="inputElement"
     v-show="line.active"
+    ref="inputElement"
     :value="line.name"
     :style="`width:${lineNameWidth}px`"
     :class="type"
     aria-label="line name"
     @input="line.name = $event.target.value"
     @pointerdown.stop
-  />
+  >
 </template>
 
 <script setup="props">

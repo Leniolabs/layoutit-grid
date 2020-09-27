@@ -1,5 +1,9 @@
 <template>
-  <section v-if="selection" :style="{ 'grid-area': gridArea, 'border-color': selection.color }" class="area-selection">
+  <section
+    v-if="selection"
+    :style="{ 'grid-area': gridArea, 'border-color': selection.color }"
+    class="area-selection"
+  >
     <input
       ref="nameInputElement"
       v-model="gridName"
@@ -9,11 +13,23 @@
       aria-label="area name"
       @keyup.enter="saveSelection"
       @pointerdown.stop
-    />
-    <button aria-label="Remove selection" class="btn-remove" title="Remove Selection" @click="closeSelection">
+    >
+    <button
+      aria-label="Remove selection"
+      class="btn-remove"
+      title="Remove Selection"
+      @click="closeSelection"
+    >
       <IconRemove />
     </button>
-    <button :disabled="!saveEnabled" class="btn-save" aria-label="Save area" @click="saveSelection">Save</button>
+    <button
+      :disabled="!saveEnabled"
+      class="btn-save"
+      aria-label="Save area"
+      @click="saveSelection"
+    >
+      Save
+    </button>
   </section>
 </template>
 

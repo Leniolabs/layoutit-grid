@@ -1,11 +1,21 @@
 <template>
-  <CodeEditor type="css"
-    ><CssCodeArea :area="area" :options="options" /><template v-if="options.oldSpec"
-      >{{ '\n\n@media all and (-ms-high-contrast:none) {\n\n' }}<CssCodeAreaOldSpec :area="area" :options="options" />{{
-        '\n\n}'
-      }}</template
-    ></CodeEditor
+  <CodeEditor
+    type="css"
   >
+    <CssCodeArea
+      :area="area"
+      :options="options"
+    /><template
+      v-if="options.oldSpec"
+    >
+      {{ '\n\n@media all and (-ms-high-contrast:none) {\n\n' }}<CssCodeAreaOldSpec
+        :area="area"
+        :options="options"
+      />{{
+        '\n\n}'
+      }}
+    </template>
+  </CodeEditor>
 </template>
 
 <script setup>

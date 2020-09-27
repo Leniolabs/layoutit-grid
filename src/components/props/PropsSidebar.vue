@@ -2,16 +2,41 @@
   <div :class="['sidebar', { active: currentView === 'props' }]">
     <BrandLogo />
 
-    <div v-if="currentArea !== area" class="area-name">{{ currentArea.name }}</div>
+    <div
+      v-if="currentArea !== area"
+      class="area-name"
+    >
+      {{ currentArea.name }}
+    </div>
 
-    <FlexOptions v-if="currentFlex" :flex="currentFlex" />
-    <GridOptions v-if="currentGrid" :grid="currentGrid" />
+    <FlexOptions
+      v-if="currentFlex"
+      :flex="currentFlex"
+    />
+    <GridOptions
+      v-if="currentGrid"
+      :grid="currentGrid"
+    />
 
     <HireUs />
     <VersionLabel />
     <DarkModeButton />
-    <button :disabled="!canUndo" aria-label="Undo" :class="['btn-undo']" @click="undo">Undo</button>
-    <button :disabled="!canRedo" aria-label="Redo" :class="['btn-redo']" @click="redo">Redo</button>
+    <button
+      :disabled="!canUndo"
+      aria-label="Undo"
+      :class="['btn-undo']"
+      @click="undo"
+    >
+      Undo
+    </button>
+    <button
+      :disabled="!canRedo"
+      aria-label="Redo"
+      :class="['btn-redo']"
+      @click="redo"
+    >
+      Redo
+    </button>
   </div>
 </template>
 

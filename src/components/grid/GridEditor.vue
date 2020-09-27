@@ -11,7 +11,12 @@
     class="grid"
     @pointerdown="$refs.selection.cellDown($event)"
   >
-    <AreaEditor v-for="a in areasToShow" :key="`area-${a.name}`" :area="a" @edit="$refs.selection.editArea(a)" />
+    <AreaEditor
+      v-for="a in areasToShow"
+      :key="`area-${a.name}`"
+      :area="a"
+      @edit="$refs.selection.editArea(a)"
+    />
 
     <GridCell
       v-for="(section, i) in gridSections(grid)"
@@ -54,7 +59,12 @@
       />
     </GridCell>
 
-    <AreaSelection ref="selection" :area="area" @editstart="(a) => (editingArea = a)" @editend="editingArea = null" />
+    <AreaSelection
+      ref="selection"
+      :area="area"
+      @editstart="(a) => (editingArea = a)"
+      @editend="editingArea = null"
+    />
   </section>
 </template>
 

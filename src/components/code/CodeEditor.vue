@@ -1,7 +1,7 @@
 <template>
   <div class="code-container">
     <span class="header">{{ type.toUpperCase() }}</span>
-    <pre><code><slot/></code></pre>
+    <pre><code><slot /></code></pre>
   </div>
 </template>
 
@@ -9,7 +9,7 @@
 export default {
   props: {
     type: { type: String, required: true },
-  },
+  },   
 }
 </script>
 

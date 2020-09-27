@@ -9,8 +9,7 @@
     @input="onInput"
     @focus="startAtomicChange"
     @blur="endAtomicChange"
-    >{{ areaName }}</span
-  >
+  >{{ areaName }}</span>
 </template>
 
 <script setup="props, { emit }">

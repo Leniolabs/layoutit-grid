@@ -4,7 +4,10 @@
     :style="{ top: 5 + toolbarStart * 32 + 'px', left: toolbarStart ? toolbarStart * 20 + 'px' : '5px' }"
     class="area-info"
   >
-    <AreaName :area="area" @edit="$emit('edit')" />
+    <AreaName
+      :area="area"
+      @edit="$emit('edit')"
+    />
     <AreaButtons :area="area" />
   </div>
 </template>

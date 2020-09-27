@@ -1,42 +1,58 @@
 <template>
   <div class="output-settings">
-    <SlideCheckbox id="checkbox-repeat" v-model="modelValue.repeat">
+    <SlideCheckbox
+      id="checkbox-repeat"
+      v-model="modelValue.repeat"
+    >
       Apply CSS
       <strong>
-        <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/repeat" rel="noreferrer" target="_blank">repeat</a>
+        <a
+          href="https://developer.mozilla.org/en-US/docs/Web/CSS/repeat"
+          rel="noreferrer"
+          target="_blank"
+        >repeat</a>
       </strong>
       function.
     </SlideCheckbox>
-    <SlideCheckbox id="checkbox-template-areas" v-model="modelValue.templateAreas">
+    <SlideCheckbox
+      id="checkbox-template-areas"
+      v-model="modelValue.templateAreas"
+    >
       Use
       <strong>
-        <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-areas" rel="noreferrer" target="_blank"
-          >grid-template-areas</a
-        >
+        <a
+          href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-areas"
+          rel="noreferrer"
+          target="_blank"
+        >grid-template-areas</a>
       </strong>
       for positioning.
     </SlideCheckbox>
-    <SlideCheckbox id="checkbox-old-spec" v-model="modelValue.oldSpec">
+    <SlideCheckbox
+      id="checkbox-old-spec"
+      v-model="modelValue.oldSpec"
+    >
       Include support for
       <strong>
         <a
           target="_blank"
           rel="noreferrer"
           href="https://rachelandrew.co.uk/archives/2016/11/26/should-i-try-to-use-the-ie-implementation-of-css-grid-layout/"
-          >legacy grid spec</a
-        >
+        >legacy grid spec</a>
       </strong>
       (for IE 10/11).
     </SlideCheckbox>
-    <div v-if="modelValue.oldSpec" class="checkbox-warning">
+    <div
+      v-if="modelValue.oldSpec"
+      class="checkbox-warning"
+    >
       <strong>Warning:</strong> the legacy grid specification does not support
       <a
         target="_blank"
         rel="noreferrer"
         class="auto-placement-link"
         href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Auto-placement_in_CSS_Grid_Layout"
-        >auto-placement of elements!</a
-      >
+      >auto-placement of elements!</a>
     </div>
   </div>
 </template>

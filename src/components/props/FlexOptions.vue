@@ -14,24 +14,45 @@
             name
             @input="flex.direction = $event.target.value"
           >
-            <option value="row">row</option>
-            <option value="row-reverse">row-reverse</option>
-            <option value="column">column</option>
-            <option value="column-reverse">column-reverse</option>
+            <option value="row">
+              row
+            </option>
+            <option value="row-reverse">
+              row-reverse
+            </option>
+            <option value="column">
+              column
+            </option>
+            <option value="column-reverse">
+              column-reverse
+            </option>
           </select>
         </div>
-        <br />
+        <br>
         <div>
           Flex Wrap
-          <select id :value="flex.wrap" name @input="flex.wrap = $event.target.value">
-            <option value="nowrap">nowrap</option>
-            <option value="wrap">wrap</option>
-            <option value="wrap-reverse">wrap-reverse</option>
+          <select
+            id
+            :value="flex.wrap"
+            name
+            @input="flex.wrap = $event.target.value"
+          >
+            <option value="nowrap">
+              nowrap
+            </option>
+            <option value="wrap">
+              wrap
+            </option>
+            <option value="wrap-reverse">
+              wrap-reverse
+            </option>
           </select>
         </div>
       </div>
-      <br />
-      <button @click="addItem">Add</button>
+      <br>
+      <button @click="addItem">
+        Add
+      </button>
       <div class="inner-items-container">
         <h2>
           <span style="display: inline-block;">⚃</span> Flex Items
@@ -44,9 +65,9 @@
               type="number"
               aria-label="flex grow"
               @input="flex.defaultItem.grow = +$event.target.value"
-            />
+            >
           </div>
-          <br />
+          <br>
           <div>
             Flex Shrink
             <input
@@ -54,9 +75,9 @@
               type="number"
               aria-label="flex shrink"
               @input="flex.defaultItem.shrink = +$event.target.value"
-            />
+            >
           </div>
-          <br />
+          <br>
           <div>
             Flex Basis
             <input
@@ -64,17 +85,17 @@
               type="text"
               aria-label="flex basis"
               @input="flex.defaultItem.basis = $event.target.value"
-            />
+            >
           </div>
         </div>
 
         <div
           v-for="(item, i) in selectedFlexItems"
-          :class="{ selected: i + 1 === currentItem }"
           :key="i"
+          :class="{ selected: i + 1 === currentItem }"
           class="flex-item"
         >
-          <br />
+          <br>
           <h2>
             <span style="display: inline-block;">⚃</span>
             Flex Item {{ i + 1 }}
@@ -87,9 +108,9 @@
                 type="number"
                 :aria-label="`item ${item} flex grow`"
                 @input="createNewItemIfDefault(item, i + 1).grow = +$event.target.value"
-              />
+              >
             </div>
-            <br />
+            <br>
             <div>
               Flex Shrink
               <input
@@ -97,9 +118,9 @@
                 type="number"
                 :aria-label="`item ${item} flex shrink`"
                 @input="createNewItemIfDefault(item, i + 1).shrink = +$event.target.value"
-              />
+              >
             </div>
-            <br />
+            <br>
             <div>
               Flex Basis
               <input
@@ -107,7 +128,7 @@
                 type="text"
                 :aria-label="`item ${item} flex basis`"
                 @input="createNewItemIfDefault(item, i + 1).basis = $event.target.value"
-              />
+              >
             </div>
           </div>
         </div>

@@ -3,8 +3,11 @@
   <PropsSidebar :area="mainArea" />
   <GridEditor :area="mainArea" />
   <SidebarRight>
-    <template v-slot:body>
-      <LiveCode :area="mainArea" :save-design="saveDesign" />
+    <template #body>
+      <LiveCode
+        :area="mainArea"
+        :save-design="saveDesign"
+      />
     </template>
   </SidebarRight>
 </template>

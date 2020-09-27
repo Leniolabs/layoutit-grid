@@ -1,5 +1,8 @@
 <template>
-  <div class="mobile-button" @click="$emit('click')">
+  <div
+    class="mobile-button"
+    @click="$emit('click')"
+  >
     <IconSidebar />
   </div>
 </template>

@@ -1,4 +1,7 @@
 module.exports = {
+  extends: [
+    'plugin:vue/vue3-recommended'
+  ],
   root: true,
   env: {
     node: true
@@ -7,16 +10,7 @@ module.exports = {
   rules: {
     'no-console': 'off',
     'no-debugger': 'off',
-    /* 'vue/max-attributes-per-line': [
-      2,
-      {
-        singleline: 6,
-        multiline: {
-          max: 1,
-          allowFirstLine: false
-        }
-      }
-    ]*/
+    'vue/no-mutating-props': 0
   },
   parserOptions: {
     parser: 'babel-eslint'

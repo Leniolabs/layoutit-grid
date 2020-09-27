@@ -4,7 +4,13 @@
     :class="['unit-select', { focused }]"
     @input="$emit('update:modelValue', $event.target.value)"
   >
-    <option v-for="option in options" :value="option" :key="option">{{ option }}</option>
+    <option
+      v-for="option in options"
+      :key="option"
+      :value="option"
+    >
+      {{ option }}
+    </option>
   </select>
 </template>
 

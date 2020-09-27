@@ -5,11 +5,20 @@
     class="area-editor"
     @pointerdown="handleDown($event)"
   >
-    <AreaInfo :area="area" @edit="$emit('edit')" />
+    <AreaInfo
+      :area="area"
+      @edit="$emit('edit')"
+    />
 
-    <GridEditor v-if="area.grid" :area="area" />
+    <GridEditor
+      v-if="area.grid"
+      :area="area"
+    />
 
-    <FlexEditor v-if="area.flex" :area="area" />
+    <FlexEditor
+      v-if="area.flex"
+      :area="area"
+    />
   </section>
 </template>
 

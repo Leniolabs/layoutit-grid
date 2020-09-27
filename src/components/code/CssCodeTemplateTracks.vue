@@ -1,25 +1,31 @@
 <template>
   <template v-if="isInteractive">
-    <span class="token string" v-for="(item, i) in trackSizesAndLineNames" :key="item.type + (item.pos || item.track)"
-      >{{ separatorBeforeItem(i)
-      }}<CssCodeTrackSize
-        v-if="item.type === 'size'"
-        :grid="grid"
-        :type="type"
-        :track="item.track"
-        @move="onMove($event, i)"
-        :el="item.el"
-      /><CssCodeLineName
-        v-if="item.type === 'line'"
-        :grid="grid"
-        :type="type"
-        :pos="item.pos"
-        @move="onMove($event, i)"
-        :el="item.el"
-      />{{ separatorAfterItem(i) }}
+    <span
+      v-for="(item, i) in trackSizesAndLineNames"
+      :key="item.type + (item.pos || item.track)"
+      class="token string"
+    >{{ separatorBeforeItem(i)
+    }}<CssCodeTrackSize
+      v-if="item.type === 'size'"
+      :grid="grid"
+      :type="type"
+      :track="item.track"
+      :el="item.el"
+      @move="onMove($event, i)"
+    /><CssCodeLineName
+      v-if="item.type === 'line'"
+      :grid="grid"
+      :type="type"
+      :pos="item.pos"
+      :el="item.el"
+      @move="onMove($event, i)"
+    />{{ separatorAfterItem(i) }}
     </span>
   </template>
-  <span v-if="!isInteractive" class="token string">{{
+  <span
+    v-if="!isInteractive"
+    class="token string"
+  >{{
     type === 'col' ? namedTemplateColumns(grid, repeat) : namedTemplateRows(grid, repeat)
   }}</span>
 </template>

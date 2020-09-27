@@ -10,8 +10,7 @@
     @input="onInput"
     @focus="currentFocus = { on: 'track', grid, type, track }"
     @blur="currentFocus = null"
-    >{{ trackSize }}</span
-  >
+  >{{ trackSize }}</span>
 </template>
 
 <script setup="props, { emit }">
