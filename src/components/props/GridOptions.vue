@@ -123,7 +123,7 @@ export {
 
 import { setRowValueUnit, setColValueUnit, currentFocus } from '../../store.js'
 import { useGridDimensions } from '../../composables/area.js'
-import { unitMeasureMap } from '../utils/constants.js'
+import { unitMeasureMap } from '../../utils.js'
 export { currentFocus }
 
 const { grid } = toRefs(props)
