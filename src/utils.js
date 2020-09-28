@@ -1,3 +1,19 @@
+export const unitMeasureMap = {
+  'px': 300,
+  'fr': 1,
+  'em': 4,
+  '%': 10,
+  'minmax': '20px, 60px',
+  'auto': '',
+  'min-content': '',
+  'max-content': '',
+}
+
+export const nextViewMap = {
+  editor: 'code',
+  code: 'props',
+}
+
 export function templateRows(grid) {
   return grid.row.sizes.length.join(' ')
 }
@@ -136,7 +152,7 @@ export function generateNamedTemplate(templateArr, lineNames, css = true, repeat
 }
 
 function repeatify(tokens) {
-  for (;;) {
+  for (; ;) {
     const longestSequence = findRepeatingSequnce(tokens)
     if (!longestSequence) {
       break

@@ -123,6 +123,7 @@ export {
 
 import { setRowValueUnit, setColValueUnit, currentFocus } from '../../store.js'
 import { useGridDimensions } from '../../composables/area.js'
+import { unitMeasureMap } from '../../utils.js'
 export { currentFocus }
 
 const { grid } = toRefs(props)
@@ -136,24 +137,7 @@ export function unitHasValue(unit) {
 // TODO: compute new value using previous size
 
 function defaultValueForUnit(unit) {
-  switch (unit) {
-    case 'px':
-      return 300
-    case 'fr':
-      return 1
-    case 'em':
-      return 4
-    case '%':
-      return 10
-    case 'minmax':
-      return '20px, 60px'
-    case 'auto':
-    case 'min-content':
-    case 'max-content':
-      return ''
-    default:
-      return 1
-  }
+  return unitMeasureMap[unit] || 1
 }
 
 export function onRowUnitInput(unit, row) {

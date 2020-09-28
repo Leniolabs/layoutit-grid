@@ -18,6 +18,7 @@ export { default as PropsSidebar } from './props/PropsSidebar.vue'
 export { default as LiveCode } from './code/LiveCode.vue'
 
 import { ref, computed } from 'vue'
+import { nextViewMap } from '../utils.js'
 export { mainArea, currentArea, currentView } from '../store.js'
 
 export default {
@@ -26,16 +27,8 @@ export default {
   },
 }
 
-function nextView(view) {
-  switch (view) {
-    case 'editor':
-      return 'code'
-    case 'code':
-      return 'props'
-    default:
-      return 'editor'
-  }
-}
+const nextView = (view) => nextViewMap[view] || 'editor'
+
 export function toggleView() {
   currentView.value = nextView(currentView.value)
 }
