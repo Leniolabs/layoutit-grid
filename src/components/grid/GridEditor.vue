@@ -77,7 +77,7 @@ export default {
 }
 
 import { ref, computed, toRefs } from 'vue'
-import { getLengthValue } from '../../utils';
+import { parseValue } from '../../store';
 
 export const grid = computed(() => props.area.grid)
 
@@ -94,21 +94,14 @@ export function gridComputedStyles() {
   return window.getComputedStyle(sectionElement.value)
 }
 
-export const gridGap = computed(() => {
+function toViewGap(gap) {
   // Defaults to 1px so grid gap doesn't disappear
-  let gap = ''
-  if (Number(getLengthValue(grid.value.row.gap))) {
-    gap = `${gap} ${grid.value.row.gap} `
-  } else {
-    gap = `${gap} 1px `
-  }
-  if (Number(getLengthValue(grid.value.col.gap))) {
-    gap = `${gap} ${grid.value.col.gap}`
-  } else {
-    gap = `${gap} 1px`
-  }
-  return gap
-});
+  return parseValue(gap) === 0 ? '1px' : gap
+}
+
+export const gridGap = computed(() => {
+  return `${toViewGap(grid.value.row.gap)} ${toViewGap(grid.value.col.gap)}`
+})
 
 export function isFocused(section) {
   const tf = currentFocus.value
