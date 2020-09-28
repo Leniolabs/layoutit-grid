@@ -5,7 +5,7 @@
     :style="{
       gridTemplateRows: grid.row.sizes.join(' '),
       gridTemplateColumns: grid.col.sizes.join(' '),
-      gridGap: gridGap,
+      gridGap,
       display: 'grid',
     }"
     class="grid"
