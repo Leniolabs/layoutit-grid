@@ -136,24 +136,17 @@ export function unitHasValue(unit) {
 // TODO: compute new value using previous size
 
 function defaultValueForUnit(unit) {
-  switch (unit) {
-    case 'px':
-      return 300
-    case 'fr':
-      return 1
-    case 'em':
-      return 4
-    case '%':
-      return 10
-    case 'minmax':
-      return '20px, 60px'
-    case 'auto':
-    case 'min-content':
-    case 'max-content':
-      return ''
-    default:
-      return 1
+  const unitMeasure = {
+    'px': 300,
+    'fr': 1,
+    'em': 4,
+    '%': 10,
+    'minmax': '20px, 60px',
+    'auto': ''
+    'min-content': '',
+    'max-content': '',
   }
+  return unitMeasure[unit] || 1
 }
 
 export function onRowUnitInput(unit, row) {

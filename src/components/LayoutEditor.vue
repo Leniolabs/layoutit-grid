@@ -27,15 +27,13 @@ export default {
 }
 
 function nextView(view) {
-  switch (view) {
-    case 'editor':
-      return 'code'
-    case 'code':
-      return 'props'
-    default:
-      return 'editor'
+  const viewTypes = {
+  editor: 'code',
+  code: 'props',
   }
+  return viewTypes[view] || 'editor'
 }
+
 export function toggleView() {
   currentView.value = nextView(currentView.value)
 }
