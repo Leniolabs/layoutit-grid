@@ -3,9 +3,9 @@
     ref="sectionElement"
     :class="{ active: isCurrent, dragging }"
     :style="{
-      'grid-template-rows': grid.row.sizes.join(' '),
-      'grid-template-columns': grid.col.sizes.join(' '),
-      'grid-gap': grid.row.gap + ' ' + grid.col.gap,
+      gridTemplateRows: grid.row.sizes.join(' '),
+      gridTemplateColumns: grid.col.sizes.join(' '),
+      gridGap,
       display: 'grid',
     }"
     class="grid"
@@ -77,6 +77,7 @@ export default {
 }
 
 import { ref, computed, toRefs } from 'vue'
+import { parseValue } from '../../store';
 
 export const grid = computed(() => props.area.grid)
 
@@ -92,6 +93,15 @@ export const sectionElement = ref(null)
 export function gridComputedStyles() {
   return window.getComputedStyle(sectionElement.value)
 }
+
+function toViewGap(gap) {
+  // Defaults to 1px so grid gap doesn't disappear
+  return parseValue(gap) === 0 ? '1px' : gap
+}
+
+export const gridGap = computed(() => {
+  return `${toViewGap(grid.value.row.gap)} ${toViewGap(grid.value.col.gap)}`
+})
 
 export function isFocused(section) {
   const tf = currentFocus.value
