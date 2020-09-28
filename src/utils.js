@@ -263,19 +263,3 @@ function getCaretCharacterOffsetWithin(element) {
   }
   return caretOffset
 }
-
-export function getLengthValue(size) {
-  if (typeof size !== 'string') throw Error('Size should be string')
-
-  const match = size.match(/^\d+/)
-  if (!match) throw Error('No length value matched')
-  return match[0]
-}
-
-export function getLengthUnit(size) {
-  if (typeof size !== 'string') throw Error('Size should be string')
-
-  const match = size.match(/[^0-9,.]+/)
-  if (!match) throw Error('No length unit matched')
-  return match[0]
-}
