@@ -48,18 +48,20 @@ ${props.cssCode}
 .button {
   border: 0;
   border-radius: 50px;
-  color: #fff;
+  color: #eee;
   cursor: pointer;
-  display: inline-block;
   font-family: inherit;
   font-size: 1em;
   text-align: center;
-  padding: 0.625em 1em;
   margin: 0 auto;
-  background: #333;
+  background: #23241f;
   user-select: none;
+  border: solid 1px #2a2a2a;
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;  
   &:hover {
-    background: #444;
+    background: #333;
   }
 }
 </style>

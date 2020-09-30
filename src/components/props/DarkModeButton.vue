@@ -49,25 +49,17 @@ function getSystemTheme() {
 <style scoped lang="scss">
 button.btn-dark {
   margin-bottom: 10px;
-  background: var(--color-darkmode);
-  color: #fff;
-  border: 0;
+  background: #23241f;
+  border: solid 1px #2a2a2a;  
+  color: #eee;
   border-radius: 25px;
   cursor: pointer;
-  height: 35px;
-  width: 35px;
-  padding: 10px;
+  width: 42px;
+  padding: 0px;
+  svg { width: 100%; }
   &.active {
     background: var(--color-darkmode-active);
   }
-  @media screen and (max-width: 768px) {
-    visibility: hidden;
-  }
 }
-
-.btn-dark {
-  position: fixed;
-  bottom: 5px;
-  left: 15px;
-}
+.buttons button.btn-dark { padding: 10px; }
 </style>

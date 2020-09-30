@@ -88,7 +88,7 @@ p {
   background: linear-gradient(#1d032d, #300748);
   height: 100%;
   display: grid;
-  grid-template-columns: 220px 1fr 400px;
+  grid-template-columns: 220px 1fr 360px;
   grid-column-gap: 15px;
   padding-top: 5px;
   padding-bottom: 5px;

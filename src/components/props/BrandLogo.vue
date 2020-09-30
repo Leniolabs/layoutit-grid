@@ -7,7 +7,7 @@
 <style scoped lang="scss">
 .brand-logo {
   font-family: 'Alegreya Sans', 'Helvetica Neue', Arial, sans-serif;
-  font-size: 1.625rem;
+  font-size: 24px;
   font-style: italic;
   font-weight: 700;
   letter-spacing: 0.02em;
