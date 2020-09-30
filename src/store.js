@@ -285,7 +285,8 @@ export function removeArea(area) {
 
 export function restart() {
   setMainArea(createMainAreaState())
-  clear()
+  // Commented, preserve history after a restart
+  // clear()
 }
 
 export function getAreaDepth(area) {
