@@ -1,16 +1,34 @@
 <template>
   <div class="code-container">
-    <span class="header">{{ type.toUpperCase() }}</span>
+    <span class="header">{{ type.toUpperCase() }}
+      <button @click="copyToClipBoard" class="copy-button" v-bind:id="type + 'SaveButton'">Copy</button>
+    </span>
     <pre><code><slot/></code></pre>
   </div>
 </template>
 
-<script setup>
+<script setup="props">
+
+import { useClipboard } from '@vueuse/core'
+
+const { copy } = useClipboard()
+
 export default {
   props: {
     type: { type: String, required: true },
+    code: { type: String, required: true },
   },
 }
+
+export function copyToClipBoard(){
+  document.getElementById(props.type + 'SaveButton').innerText="Copied!"
+  copy(props.code)
+  setTimeout(function(){
+    document.getElementById(props.type + 'SaveButton').innerText="Copy"
+  }, 2000);
+}
+
+export let codeCopied = false 
 </script>
 
 <style scoped lang="scss">
@@ -31,6 +49,22 @@ export default {
   //border-top-left-radius: 4px;
   //border-top-right-radius: 4px;
   user-select: none;
+}
+
+.copy-button{
+  color: #bbb;
+  background-color: Transparent;
+  background-repeat:no-repeat;
+  float: right;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 3px 0 2px 5px;
+  border: none;
+  cursor:pointer;
+  overflow: hidden;
+  outline:none;
+
+
 }
 
 pre,
