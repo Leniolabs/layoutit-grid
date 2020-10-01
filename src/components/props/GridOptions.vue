@@ -4,7 +4,7 @@
       <div class="items-header">
         <h2><span style="transform: rotate(90deg); display: inline-block">≑</span> Grid Columns</h2>
         <OptionsButton class="add-button" @click="addCol(grid, '1fr')">
-          <IconAdd />
+          Add
         </OptionsButton>
       </div>
       <div class="inner-items">
@@ -46,7 +46,7 @@
       <div class="items-header">
         <h2><span>≑</span> Grid Rows</h2>
         <OptionsButton class="add-button" @click="addRow(grid, '1fr')">
-          <IconAdd />
+          Add
         </OptionsButton>
       </div>
       <div class="inner-items">
@@ -160,7 +160,7 @@ h2 {
   font-family: 'Alegreya Sans', 'Helvetica Neue', Arial, sans-serif;
   margin-top: 10px;
   margin-bottom: 0.625em;
-  font-size: 18.72px;
+  font-size: 16px;
   span {
     font-weight: normal;
   }
@@ -170,7 +170,7 @@ h2 {
   margin-bottom: 20px;
   .items-header {
     display: grid;
-    grid-template-columns: auto 30px;
+    grid-template-columns: auto 55px;
     align-items: center;
   }
   .inner-items {

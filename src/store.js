@@ -80,7 +80,7 @@ export function createGridDimension(n) {
   return {
     sizes: new Array(n).fill('1fr'),
     lineNames: newLineNames(n + 1),
-    gap: '1px',
+    gap: '0px',
   }
 }
 
@@ -285,7 +285,8 @@ export function removeArea(area) {
 
 export function restart() {
   setMainArea(createMainAreaState())
-  clear()
+  // Commented, preserve history after a restart
+  // clear()
 }
 
 export function getAreaDepth(area) {

@@ -152,7 +152,7 @@ h2 {
   font-family: 'Alegreya Sans', 'Helvetica Neue', Arial, sans-serif;
   margin-top: 10px;
   margin-bottom: 0.625em;
-  font-size: 18.72px;
+  font-size: 16px;
   span {
     font-weight: normal;
   }

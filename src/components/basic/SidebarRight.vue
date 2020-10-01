@@ -10,11 +10,9 @@ export { currentView } from '../../store.js'
 
 <style scoped lang="scss">
 .code-sidebar {
-  position: relative;
   overflow: auto;
   text-align: left;
   color: #e9e9e9;
-  z-index: 280;
   padding: 10px 10px 10px 0;
   transition: transform 0.2s ease-in;
   @media (max-width: 769px) {

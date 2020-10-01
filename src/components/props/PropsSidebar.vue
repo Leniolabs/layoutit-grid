@@ -6,12 +6,11 @@
 
     <FlexOptions v-if="currentFlex" :flex="currentFlex" />
     <GridOptions v-if="currentGrid" :grid="currentGrid" />
-
+    <a class="btn-github" target="_blank" aria-label="View source on GitHub" href="https://github.com/Leniolabs/layoutit-grid">
+      <IconGithub/>
+    </a>
     <HireUs />
     <VersionLabel />
-    <DarkModeButton />
-    <button :disabled="!canUndo" aria-label="Undo" :class="['btn-undo']" @click="undo">Undo</button>
-    <button :disabled="!canRedo" aria-label="Redo" :class="['btn-redo']" @click="redo">Redo</button>
   </div>
 </template>
 
@@ -19,13 +18,12 @@
 export { default as VersionLabel } from './VersionLabel.vue'
 export { default as BrandLogo } from './BrandLogo.vue'
 export { default as HireUs } from './HireUs.vue'
-export { default as IconDark } from '../icons/IconDark.vue'
+export { default as IconGithub } from '../icons/IconGithub.vue'
 export { default as FlexOptions } from './FlexOptions.vue'
 export { default as GridOptions } from './GridOptions.vue'
-export { default as DarkModeButton } from './DarkModeButton.vue'
 
 import { computed } from 'vue'
-export { currentArea, undo, redo, canUndo, canRedo, currentView } from '../../store.js'
+export { currentArea, currentView } from '../../store.js'
 
 export default {
   props: {
@@ -94,44 +92,32 @@ export const currentFlex = computed(() => currentArea.value.flex)
   .version,
   .btn-undo,
   .btn-redo {
-    visibility: hidden;
+    display: none;
   }
 }
 
 .hire-us {
   position: fixed;
-  bottom: 15px;
-  left: 60px;
+  bottom: 10px;
+  left: 10px;
 }
 
 .version {
   position: fixed;
-  bottom: 15px;
-  left: 130px;
+  bottom: 10px;
+  left: 85px;
 }
 
-.btn-undo,
-.btn-redo {
-  margin-bottom: 10px;
-  background: var(--color-darkmode);
-  color: #fff;
-  border: 0;
-  border-radius: 25px;
-  cursor: pointer;
-  height: 35px;
-  width: 35px;
-  padding: 10px;
-}
-.btn-undo {
+.btn-github {
   position: fixed;
-  width: 50px;
-  bottom: 55px;
-  left: 15px;
+  top: 0;
+  right: 0;
+  z-index: 9;
+  opacity: 0.8;
+  transition: opacity 0.1s linear;
+  &:hover {
+    opacity: 0.9;
+  }
 }
-.btn-redo {
-  position: fixed;
-  width: 50px;
-  bottom: 55px;
-  left: 75px;
-}
+
 </style>
