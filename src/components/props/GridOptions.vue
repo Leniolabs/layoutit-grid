@@ -27,7 +27,7 @@
           <UnitSelect
             :value="getColUnit(grid, column - 1)"
             type="grid"
-            :focused="isFocused('col', column)"
+            :focused="isFocused('col', column) || (  dragging && (dragging.colLine === column || dragging.colLine === column + 1))"
             :aria-label="`column ${column} unit`"
             @input="onColUnitInput($event.target.value, column - 1)"
           />
@@ -69,7 +69,7 @@
           <UnitSelect
             :value="getRowUnit(grid, row - 1)"
             type="grid"
-            :focused="isFocused('row', row)"
+            :focused="isFocused('row',row) || (  dragging && (dragging.rowLine === row || dragging.rowLine === row + 1))"
             :aria-label="`row ${row} unit`"
             @input="onRowUnitInput($event.target.value, row - 1)"
           />
