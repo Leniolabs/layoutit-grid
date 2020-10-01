@@ -8,13 +8,13 @@
 1. Run `npm install` to install dependencies
 1. Create a branch for your PR with `git checkout -b your-branch-name`
 
-> To keep `master` branch pointing to remote repository and make
+> To keep `main` branch pointing to remote repository and make
 > pull requests from branches on your fork. To do this, run:
 >
 > ```sh
 > git remote add upstream https://github.com/Leniolabs/layoutit-grid.git
 > git fetch upstream
-> git branch --set-upstream-to=upstream/master master
+> git branch --set-upstream-to=upstream/main main
 > ```
 
 ### Option 2 - CodeSandbox
