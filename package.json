@@ -8,8 +8,9 @@
     "build": "vite build"
   },
   "dependencies": {
-    "pepjs": "0.5.2",
+    "@vueuse/core": "^4.0.0-beta.16",
     "lodash-es": "4.17.15",
+    "pepjs": "0.5.2",
     "vue": "^v3.0.0",
     "vue-composable": "^1.0.0-beta.10"
   },
