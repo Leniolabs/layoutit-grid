@@ -1,5 +1,5 @@
 <!-- prettier-ignore -->
-<template><span class="token selector">.<CssCodeAreaName :area="area"/></span><span> {</span>{{ area.grid ? '\n  ' : ' ' 
+<template><span class="token selector">.<CodeAreaName :area="area"/></span><span> {</span>{{ area.grid ? '\n  ' : ' ' 
 }}<template v-if="area.grid"><span class="token property">display</span>: <span class="token string">grid</span>;{{ '\n  ' 
 }}<span class="token property">grid-template-columns</span>: <CssCodeTemplateTracks :grid="area.grid" type="col" :repeat="options.repeat"/>;{{ '\n  ' 
 }}<span class="token property">grid-template-rows</span>: <CssCodeTemplateTracks :grid="area.grid" type="row" :repeat="options.repeat"/>;{{ '\n  ' 
@@ -12,7 +12,7 @@ v-if="gridArea">{{ area.grid ? '\n  ' : '' }}<span class="token property">grid-a
 
 <script setup="props">
 export { default as CssCodeTemplateTracks } from './CssCodeTemplateTracks.vue'
-export { default as CssCodeAreaName } from './CssCodeAreaName.vue'
+export { default as CodeAreaName } from './CodeAreaName.vue'
 export { default as CssCodeGridArea } from './CssCodeGridArea.vue'
 export { default as CssCodeTemplateAreas } from './CssCodeTemplateAreas.vue'
 
