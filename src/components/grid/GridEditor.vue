@@ -3,8 +3,8 @@
     ref="sectionElement"
     :class="{ active: isCurrent, dragging }"
     :style="{
-      gridTemplateRows: grid.row.sizes.join(' '),
-      gridTemplateColumns: grid.col.sizes.join(' '),
+      gridTemplateRows,
+      gridTemplateColumns,
       gridGap,
       display: 'grid',
     }"
@@ -77,13 +77,34 @@ export default {
 }
 
 import { ref, computed, toRefs } from 'vue'
-import { parseValue } from '../../store';
+import { parseValue, parseUnit, parseValueUnit } from '../../store'
 
 export const grid = computed(() => props.area.grid)
 
 export const editingArea = ref(null)
 
 export const areasToShow = computed(() => grid.value.areas.filter((a) => a !== editingArea.value))
+
+function gridSizesForView(type) {
+  return grid.value[type].sizes
+    .map((size) => {
+      const unit = parseUnit(size)
+      switch (unit) {
+        case 'auto':
+          return '200px'
+        case 'min-content':
+          return '100px'
+        case 'max-content':
+          return '300px'
+        default:
+          return size
+      }
+    })
+    .join(' ')
+}
+
+export const gridTemplateRows = computed(() => gridSizesForView('row'))
+export const gridTemplateColumns = computed(() => gridSizesForView('col'))
 
 const { area } = toRefs(props)
 export const isCurrent = useIsCurrentArea(area)

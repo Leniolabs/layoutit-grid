@@ -44,7 +44,16 @@ export function isValidLineName(str) {
 }
 
 export function valueUnitToString({ value, unit }) {
-  return unit === 'minmax' ? `minmax(${value})` : `${value}${unit}`
+  switch (unit) {
+    case 'minmax':
+      return `minmax(${value})`
+    case 'min-content':
+    case 'max-content':
+    case 'auto':
+      return unit
+    default:
+      return `${value}${unit}`
+  }
 }
 
 function newLineNames(n) {

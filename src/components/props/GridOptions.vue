@@ -3,14 +3,12 @@
     <div class="items columns">
       <div class="items-header">
         <h2><span style="transform: rotate(90deg); display: inline-block">≑</span> Grid Columns</h2>
-        <OptionsButton class="add-button" @click="addCol(grid, '1fr')">
-          Add
-        </OptionsButton>
+        <OptionsButton class="add-button" @click="addCol(grid, '1fr')"> Add </OptionsButton>
       </div>
       <div class="inner-items">
         <div v-for="column in colsNumber" :key="column" :data-col="column">
           <input
-            v-if="unitHasValue(getColUnit(grid, column - 1))"
+            :style="{ visibility: unitHasValue(getColUnit(grid, column - 1)) ? 'visible' : 'hidden' }"
             :value="getColValue(grid, column - 1)"
             :class="{
               active: isFocused('col', column),
@@ -27,7 +25,9 @@
           <UnitSelect
             :value="getColUnit(grid, column - 1)"
             type="grid"
-            :focused="isFocused('col', column) || (  dragging && (dragging.colLine === column || dragging.colLine === column + 1))"
+            :focused="
+              isFocused('col', column) || (dragging && (dragging.colLine === column || dragging.colLine === column + 1))
+            "
             :aria-label="`column ${column} unit`"
             @input="onColUnitInput($event.target.value, column - 1)"
           />
@@ -45,14 +45,12 @@
     <div class="items rows">
       <div class="items-header">
         <h2><span>≑</span> Grid Rows</h2>
-        <OptionsButton class="add-button" @click="addRow(grid, '1fr')">
-          Add
-        </OptionsButton>
+        <OptionsButton class="add-button" @click="addRow(grid, '1fr')"> Add </OptionsButton>
       </div>
       <div class="inner-items">
         <div v-for="row in rowsNumber" :key="row" :data-row="row">
           <input
-            v-if="unitHasValue(getRowUnit(grid, row - 1))"
+            :style="{ visibility: unitHasValue(getRowUnit(grid, row - 1)) ? 'visible' : 'hidden' }"
             :value="getRowValue(grid, row - 1)"
             :class="{
               active: isFocused('row', row),
@@ -69,7 +67,7 @@
           <UnitSelect
             :value="getRowUnit(grid, row - 1)"
             type="grid"
-            :focused="isFocused('row',row) || (  dragging && (dragging.rowLine === row || dragging.rowLine === row + 1))"
+            :focused="isFocused('row', row) || (dragging && (dragging.rowLine === row || dragging.rowLine === row + 1))"
             :aria-label="`row ${row} unit`"
             @input="onRowUnitInput($event.target.value, row - 1)"
           />
