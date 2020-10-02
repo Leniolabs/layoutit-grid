@@ -1,5 +1,5 @@
 <template>
-  <CodeEditor type="css"
+  <CodeEditor type="css" :code="code"
     ><CssCodeArea :area="area" :options="options" /><template v-if="options.oldSpec"
       >{{ '\n\n@media all and (-ms-high-contrast:none) {\n\n' }}<CssCodeAreaOldSpec :area="area" :options="options" />{{
         '\n\n}'
@@ -17,6 +17,7 @@ export default {
   props: {
     area: { type: Object, default: null },
     options: { type: Object, default: null },
+    code: { type: String, required: true },
   },
 }
 </script>

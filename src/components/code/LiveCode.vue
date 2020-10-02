@@ -19,8 +19,8 @@
     </SidebarButton>
   </div>
   <div class="code-grid">
-    <CssCodeEditor :area="area" :options="options" />
-    <HtmlCodeEditor :area="area" :options="options" />
+    <CssCodeEditor  :area="area" :options="options" :code="cssCode" />
+    <HtmlCodeEditor :area="area" :options="options" :code="htmlCode"/>
   </div>
   <LiveCodeOptions v-model="options" />
 </template>
