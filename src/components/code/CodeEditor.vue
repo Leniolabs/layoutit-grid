@@ -1,13 +1,15 @@
 <template>
   <div class="code-container">
     <span class="header">{{ type.toUpperCase() }}
-      <button @click="copyToClipBoard" class="copy-button" v-bind:id="type + 'SaveButton'">Copy</button>
+      <button @click="copyToClipBoard" class="copy-button">{{copied === 0 ? "Copy" : "Copied!"}}</button>
     </span>
     <pre><code><slot/></code></pre>
   </div>
 </template>
 
 <script setup="props">
+
+import { ref } from 'vue'
 
 import { useClipboard } from '@vueuse/core'
 
@@ -20,12 +22,14 @@ export default {
   },
 }
 
+export const copied = ref(0)
+
 export function copyToClipBoard(){
-  document.getElementById(props.type + 'SaveButton').innerText="Copied!"
   copy(props.code)
-  setTimeout(function(){
-    document.getElementById(props.type + 'SaveButton').innerText="Copy"
-  }, 2000);
+  copied.value++
+  setTimeout(()=>{
+    copied.value--
+  }, 2000)
 }
 
 export let codeCopied = false 
