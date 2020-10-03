@@ -3,7 +3,7 @@
 }}<template v-if="area.grid"><span class="token property">display</span>: <span class="token string">grid</span>;{{ '\n  ' 
 }}<span class="token property">grid-template-columns</span>: <CssCodeTemplateTracks :grid="area.grid" type="col" :repeat="options.repeat"/>;{{ '\n  ' 
 }}<span class="token property">grid-template-rows</span>: <CssCodeTemplateTracks :grid="area.grid" type="row" :repeat="options.repeat"/>;{{ '\n  ' 
-}}<span class="token property">gap</span>: <span class="token string">{{ area.grid.row.gap + ' ' + area.grid.col.gap }}</span>;</template><span 
+}}<span class="token property">gap</span>: <span class="token string"><CssCodeGap :grid="area.grid" type="row" /> <CssCodeGap :grid="area.grid" type="col" /></span>;</template><span 
 v-if="includeTemplateAreas">{{ '\n  ' }}<span class="token property">grid-template-areas</span>:{{ '\n    '
 }}<CssCodeTemplateAreas :area="area" :options="options"/>;</span><template
 v-if="gridArea">{{ area.grid ? '\n  ' : '' }}<span class="token property">grid-area</span>: <CssCodeGridArea :area="area" :options="options"/></template>{{ (area.grid ? '\n' : ' ' ) + '}' 
@@ -15,6 +15,7 @@ export { default as CssCodeTemplateTracks } from './CssCodeTemplateTracks.vue'
 export { default as CssCodeAreaName } from './CssCodeAreaName.vue'
 export { default as CssCodeGridArea } from './CssCodeGridArea.vue'
 export { default as CssCodeTemplateAreas } from './CssCodeTemplateAreas.vue'
+export { default as CssCodeGap } from './CssCodeGap.vue'
 
 import { computed } from 'vue'
 export { namedTemplateColumns, namedTemplateRows, getGridArea, gridTemplateAreas } from '../../utils.js'
