@@ -1,7 +1,7 @@
 <template>
   <input
-    ref="inputElement"
     v-show="line.active"
+    ref="inputElement"
     :value="line.name"
     :style="`width:${lineNameWidth}px`"
     :class="type"

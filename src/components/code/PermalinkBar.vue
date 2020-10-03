@@ -13,6 +13,7 @@ export default {
   props: {
     path: { type: String, required: true },
   },
+  emits: ['close'],
 }
 
 export const fullPath = computed(() => 'https://' + props.path)

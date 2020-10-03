@@ -1,26 +1,24 @@
 <template>
   <PermalinkBar v-show="showPermalink" :path="permalink" @close="showPermalink = false" />
-   <div class="buttons">
+  <div class="buttons">
     <SidebarButton :disabled="!canUndo" class="btn-history" aria-label="Undo" @click="undo">
       <IconUndo />
-    </SidebarButton>  
+    </SidebarButton>
     <SidebarButton :disabled="!canRedo" class="btn-history" aria-label="Redo" @click="redo">
       <IconRedo />
-    </SidebarButton> 
+    </SidebarButton>
     <SidebarButton aria-label="Restart" class="btn-trash" @click="restart">
       <IconTrash />
-    </SidebarButton>      
-    <DarkModeButton />
-  </div>  
-  <div class="buttons">
-    <CodepenButton :cssCode="cssCode" :htmlCode="htmlCode" />
-    <SidebarButton :disabled="!saveDesign" class="btn-link" @click="getPermalink">
-      Get Permalink
     </SidebarButton>
+    <DarkModeButton />
+  </div>
+  <div class="buttons">
+    <CodepenButton :css-code="cssCode" :html-code="htmlCode" />
+    <SidebarButton :disabled="!saveDesign" class="btn-link" @click="getPermalink"> Get Permalink </SidebarButton>
   </div>
   <div class="code-grid">
-    <CssCodeEditor  :area="area" :options="options" :code="cssCode" />
-    <HtmlCodeEditor :area="area" :options="options" :code="htmlCode"/>
+    <CssCodeEditor :area="area" :options="options" :code="cssCode" />
+    <HtmlCodeEditor :area="area" :options="options" :code="htmlCode" />
   </div>
   <LiveCodeOptions v-model="options" />
 </template>
@@ -99,15 +97,15 @@ export function getPermalink() {
   }
   .btn-link {
     background: #23241f;
-    border: solid 1px #2a2a2a;    
+    border: solid 1px #2a2a2a;
   }
   .btn-history {
     padding: 10px;
     max-width: 42px;
     background: #23241f;
-    border: solid 1px #2a2a2a;   
+    border: solid 1px #2a2a2a;
     &:first-child {
-      margin-left: 0
+      margin-left: 0;
     }
   }
 }
@@ -139,8 +137,5 @@ export function getPermalink() {
 .code-grid {
   display: flex;
   flex-direction: column;
-
 }
-
-
 </style>

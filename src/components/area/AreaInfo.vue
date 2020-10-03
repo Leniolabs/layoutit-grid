@@ -21,6 +21,7 @@ export default {
   props: {
     area: { type: Object, required: true },
   },
+  emits: ['edit'],
 }
 
 const { area } = toRefs(props)
