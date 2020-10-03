@@ -7,7 +7,8 @@
     }}<span class="token property">grid-template-rows</span>:
     <CssCodeTemplateTracks :grid="area.grid" type="row" :repeat="options.repeat" />;{{ '\n  '
     }}<span class="token property">gap</span>:
-    <span class="token string">{{ area.grid.row.gap + ' ' + area.grid.col.gap }}</span
+    <span class="token string"
+      ><CssCodeGap :grid="area.grid" type="row" /> <CssCodeGap :grid="area.grid" type="col" /></span
     >;</template
   ><span v-if="includeTemplateAreas"
     >{{ '\n  ' }}<span class="token property">grid-template-areas</span>:{{ '\n    '
@@ -24,6 +25,7 @@ export { default as CssCodeTemplateTracks } from './CssCodeTemplateTracks.vue'
 export { default as CssCodeAreaName } from './CssCodeAreaName.vue'
 export { default as CssCodeGridArea } from './CssCodeGridArea.vue'
 export { default as CssCodeTemplateAreas } from './CssCodeTemplateAreas.vue'
+export { default as CssCodeGap } from './CssCodeGap.vue'
 
 import { computed } from 'vue'
 export { namedTemplateColumns, namedTemplateRows, getGridArea, gridTemplateAreas } from '../../utils.js'
