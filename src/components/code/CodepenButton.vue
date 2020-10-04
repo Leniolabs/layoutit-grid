@@ -59,7 +59,7 @@ ${props.cssCode}
   border: solid 1px #2a2a2a;
   display: flex;
   align-items: center;
-  padding: 10px 20px;  
+  padding: 10px 20px;
   &:hover {
     background: #333;
   }

@@ -1,19 +1,12 @@
 <template>
   <div class="grid-settings-container">
     <div class="items">
-      <h2>
-        <span style="display: inline-block;">⚀</span> Flex Container
-      </h2>
+      <h2><span style="display: inline-block">⚀</span> Flex Container</h2>
 
       <div class="inner-items">
         <div>
           Flex Direction
-          <select
-            id
-            :value="flex.direction"
-            name
-            @input="flex.direction = $event.target.value"
-          >
+          <select id :value="flex.direction" name @input="flex.direction = $event.target.value">
             <option value="row">row</option>
             <option value="row-reverse">row-reverse</option>
             <option value="column">column</option>
@@ -33,9 +26,7 @@
       <br />
       <button @click="addItem">Add</button>
       <div class="inner-items-container">
-        <h2>
-          <span style="display: inline-block;">⚃</span> Flex Items
-        </h2>
+        <h2><span style="display: inline-block">⚃</span> Flex Items</h2>
         <div class="inner-items">
           <div>
             Flex Grow
@@ -70,13 +61,13 @@
 
         <div
           v-for="(item, i) in selectedFlexItems"
-          :class="{ selected: i + 1 === currentItem }"
           :key="i"
+          :class="{ selected: i + 1 === currentItem }"
           class="flex-item"
         >
           <br />
           <h2>
-            <span style="display: inline-block;">⚃</span>
+            <span style="display: inline-block">⚃</span>
             Flex Item {{ i + 1 }}
           </h2>
           <div class="inner-items">
@@ -225,5 +216,4 @@ h2 {
   border-radius: 50%;
   background: #fdd835;
 }
-
 </style>

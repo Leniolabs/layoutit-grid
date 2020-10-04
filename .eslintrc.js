@@ -3,22 +3,19 @@ module.exports = {
   env: {
     node: true
   },
-  // extends: ['plugin:vue/recommended', '@vue/prettier'],
+  extends: [
+    // add more generic rulesets here, such as:
+    // 'eslint:recommended',
+    "plugin:vue/vue3-recommended",
+    "prettier",
+    "prettier/vue",
+  ],
   rules: {
     'no-console': 'off',
     'no-debugger': 'off',
-    /* 'vue/max-attributes-per-line': [
-      2,
-      {
-        singleline: 6,
-        multiline: {
-          max: 1,
-          allowFirstLine: false
-        }
-      }
-    ]*/
+    'vue/no-mutating-props': 0
   },
   parserOptions: {
-    parser: 'babel-eslint'
-  }
+    parser: "babel-eslint"
+  },
 }

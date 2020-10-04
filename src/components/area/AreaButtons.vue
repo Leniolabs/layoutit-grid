@@ -1,11 +1,5 @@
 <template>
-  <button
-    v-show="!hasDisplay"
-    aria-label="Add sub grid"
-    class="btn-subgrid"
-    title="Add Sub Grid"
-    @click="subGrid()"
-  >
+  <button v-show="!hasDisplay" aria-label="Add sub grid" class="btn-subgrid" title="Add Sub Grid" @click="subGrid()">
     <IconSubgrid />
   </button>
   <!--button v-show="!hasDisplay" aria-label="Add flex" class="btn-subgrid" @click="subFlex(area)">
@@ -20,13 +14,7 @@
   >
     <IconRemove />
   </button>
-  <button
-    v-show="hasDisplay"
-    aria-label="Clear area"
-    class="btn-remove"
-    title="Clear Area"
-    @click="clearArea(area)"
-  >
+  <button v-show="hasDisplay" aria-label="Clear area" class="btn-remove" title="Clear Area" @click="clearArea(area)">
     <IconClear />
   </button>
 </template>

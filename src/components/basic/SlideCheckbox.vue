@@ -19,6 +19,6 @@ export default {
     modelValue: { type: Boolean, default: false },
     id: { type: String, required: true },
   },
+  emits: ['update:modelValue'],
 }
 </script>
-
