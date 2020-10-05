@@ -14,8 +14,8 @@
     >
       <IconGithub />
     </a>
-    <HireUs />
     <VersionLabel />
+    <HireUs />
   </div>
 </template>
 
