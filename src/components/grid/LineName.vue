@@ -44,30 +44,30 @@ export function toggle() {
 <style scoped lang="scss">
 .row,
 .col {
-  touch-action: none;
-  position: absolute;
   background: #bbe5b3;
-  z-index: 9;
-  top: -12px;
-  right: 0;
-  padding: 2px 10px;
-  height: max-content;
   border: 1px solid green;
-  border-right: 0;
-  border-top-left-radius: 6px;
-  border-bottom-left-radius: 6px;
-  font: 14px arial;
-  z-index: 199;
+  font: 0.85rem arial;
+  height: max-content;
   opacity: 1;
+  padding: 2px 10px;
+  position: absolute;
+  right: 0;
+  top: -12px;
+  touch-action: none;
   user-select: none;
+  z-index: 199;
 }
-
+.row {
+  border-right: 0;
+  border-radius: 6px 0 0 6px;
+}
 .col {
+  border-left: 0;
+  border-radius: 0 6px 6px 0;
+  bottom: 0;
   right: initial;
   top: initial;
-  left: -1px;
-  bottom: 2px;
-  transform: translateY(12px) rotate(90deg) translateX(-100%);
+  transform: translateY(10px) rotate(-90deg);
   transform-origin: 0 12px;
 }
 </style>
