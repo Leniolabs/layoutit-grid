@@ -4,14 +4,13 @@
 
 <style scoped lang="scss">
 .version {
-  color: #888;
-  z-index: 99;
+  color: #ccc;
+  cursor: pointer;
   font-size: 10px;
   font-family: monospace;
-  width: 60px;
-  text-align: center;
   padding: 6px 0;
-  cursor: pointer;
+  text-align: center;
+  z-index: 99;
   &:hover {
     color: #fff;
   }
