@@ -1,5 +1,7 @@
 <template>
-  <a class="hire-us" target="_blank" rel="noreferrer" href="https://leniolabs.com/#contact">with ♥ by Leniolabs</a>
+  <a class="hire-us" target="_blank" rel="noreferrer" href="https://leniolabs.com/#contact"
+    >Crafted with ♥ by Leniolabs</a
+  >
 </template>
 
 <style scoped lang="scss">
@@ -9,6 +11,7 @@
   color: #fff;
   display: block;
   font-size: 0.9rem;
+  margin-bottom: 1rem;
   padding: 8px 10px;
   text-decoration: none;
   text-align: center;
