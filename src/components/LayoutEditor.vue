@@ -1,5 +1,5 @@
 <template>
-  <MobileButton @click="toggleView" />
+  <MobileButtons @toggle-props="toggleView('props')" @toggle-code="toggleView('code')" />
   <PropsSidebar :area="mainArea" />
   <GridEditor :area="mainArea" />
   <SidebarRight>
@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-export { default as MobileButton } from './MobileButton.vue'
+export { default as MobileButtons } from './MobileButtons.vue'
 export { default as GridEditor } from './grid/GridEditor.vue'
 export { default as AreaEditor } from './area/AreaEditor.vue'
 export { default as SidebarRight } from './basic/SidebarRight.vue'
@@ -18,7 +18,6 @@ export { default as PropsSidebar } from './props/PropsSidebar.vue'
 export { default as LiveCode } from './code/LiveCode.vue'
 
 import { ref, computed } from 'vue'
-import { nextViewMap } from '../utils.js'
 export { mainArea, currentArea, currentView } from '../store.js'
 
 export default {
@@ -27,10 +26,8 @@ export default {
   },
 }
 
-const nextView = (view) => nextViewMap[view] || 'editor'
-
-export function toggleView() {
-  currentView.value = nextView(currentView.value)
+export function toggleView(view) {
+  currentView.value = currentView.value === view ? 'editor' : view
 }
 </script>
 
@@ -135,9 +132,8 @@ p {
   }
 }
 
-.mobile-button {
+.mobile-buttons {
   position: fixed;
   bottom: 1em;
-  right: 1em;
 }
 </style>

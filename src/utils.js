@@ -9,11 +9,6 @@ export const unitMeasureMap = {
   'max-content': '',
 }
 
-export const nextViewMap = {
-  editor: 'code',
-  code: 'props',
-}
-
 export function templateRows(grid) {
   return grid.row.sizes.length.join(' ')
 }
