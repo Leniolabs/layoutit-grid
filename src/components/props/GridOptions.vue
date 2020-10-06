@@ -172,7 +172,6 @@ h2 {
     align-items: center;
   }
   .inner-items {
-    max-height: 195px;
     overflow: auto;
     font-family: arial;
     > div {

@@ -6,11 +6,16 @@
 
     <FlexOptions v-if="currentFlex" :flex="currentFlex" />
     <GridOptions v-if="currentGrid" :grid="currentGrid" />
-    <a class="btn-github" target="_blank" aria-label="View source on GitHub" href="https://github.com/Leniolabs/layoutit-grid">
-      <IconGithub/>
+    <a
+      class="btn-github"
+      target="_blank"
+      aria-label="View source on GitHub"
+      href="https://github.com/Leniolabs/layoutit-grid"
+    >
+      <IconGithub />
     </a>
-    <HireUs />
     <VersionLabel />
+    <HireUs />
   </div>
 </template>
 
@@ -65,13 +70,15 @@ export const currentFlex = computed(() => currentArea.value.flex)
 }
 
 .sidebar {
-  padding: 0 10px;
   color: #fff;
-  text-align: left;
-  z-index: 9;
-  transition: transform 0.2s ease-in;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
   overflow: auto;
+  padding: 0 10px;
+  text-align: left;
+  transition: transform 0.2s ease-in;
   user-select: none;
+  z-index: 9;
   @media screen and (max-width: 768px) {
     transform: translateX(-15em);
     position: fixed;
@@ -96,18 +103,6 @@ export const currentFlex = computed(() => currentArea.value.flex)
   }
 }
 
-.hire-us {
-  position: fixed;
-  bottom: 10px;
-  left: 10px;
-}
-
-.version {
-  position: fixed;
-  bottom: 10px;
-  left: 85px;
-}
-
 .btn-github {
   position: fixed;
   top: 0;
@@ -119,5 +114,4 @@ export const currentFlex = computed(() => currentArea.value.flex)
     opacity: 0.9;
   }
 }
-
 </style>

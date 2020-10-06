@@ -1,19 +1,32 @@
 <template>
-  <div class="version">version 1.2.3</div>
+  <div class="version">
+    <span><a target="_blank" rel="noreferrer" href="https://leniolabs.com">Hire us!</a></span>
+    <span class="version-text">v1.2.3</span>
+  </div>
 </template>
 
 <style scoped lang="scss">
 .version {
-  color: #888;
-  z-index: 99;
-  font-size: 10px;
+  align-items: flex-end;
+  color: #ccc;
+  display: flex;
+  justify-content: space-between;
   font-family: monospace;
-  width: 60px;
+  padding: 6px 14px;
   text-align: center;
-  padding: 6px 0;
-  cursor: pointer;
-  &:hover {
-    color: #fff;
+  z-index: 99;
+  a {
+    color: #ccc;
+    font-size: 0.9rem;
+    &:hover {
+      color: #fff;
+    }
+  }
+  .version-text {
+    font-size: 0.7rem;
+    &:hover {
+      color: #fff;
+    }
   }
 }
 </style>

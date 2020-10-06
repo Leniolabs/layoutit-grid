@@ -51,8 +51,6 @@ export function toggle() {
   opacity: 1;
   padding: 2px 10px;
   position: absolute;
-  right: 0;
-  top: -12px;
   touch-action: none;
   user-select: none;
   z-index: 199;
@@ -60,13 +58,13 @@ export function toggle() {
 .row {
   border-right: 0;
   border-radius: 6px 0 0 6px;
+  right: 0;
+  top: -12px;
 }
 .col {
   border-left: 0;
   border-radius: 0 6px 6px 0;
   bottom: 0;
-  right: initial;
-  top: initial;
   transform: translateY(10px) rotate(-90deg);
   transform-origin: 0 12px;
 }
