@@ -104,13 +104,9 @@ export const isDraggingSection = computed(
     (dragging.value.colLine === props.section.col.start || dragging.value.rowLine === props.section.row.start)
 )
 
-export const isDraggingCol = computed(
-  () => isDraggingGrid.value && dragging.value.colLine === props.section.col.start && props.section.row.start === 1
-)
+export const isDraggingCol = computed(() => isDraggingGrid.value && dragging.value.colLine === props.section.col.start)
 
-export const isDraggingRow = computed(
-  () => isDraggingGrid.value && dragging.value.rowLine === props.section.row.start && props.section.col.start === 1
-)
+export const isDraggingRow = computed(() => isDraggingGrid.value && dragging.value.rowLine === props.section.row.start)
 
 export function showInsideColSize(col) {
   return isDraggingGrid.value && (col === dragging.value.colLine - 1 || col === dragging.value.colLine - 2)
@@ -229,6 +225,7 @@ section {
     //z-index: 9;
     top: 0;
     cursor: col-resize;
+    overflow: hidden;
     &.dragging:after {
       content: '';
       width: 1px;
@@ -250,6 +247,7 @@ section {
     top: -10px;
     cursor: row-resize;
     //z-index: 9;
+    overflow: hidden;
     &.dragging:after {
       content: '';
       height: 1px;
