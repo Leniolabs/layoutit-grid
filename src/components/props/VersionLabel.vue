@@ -16,6 +16,7 @@
   text-align: center;
   z-index: 99;
   a {
+    text-decoration: none;
     color: #ccc;
     font-size: 0.9rem;
     &:hover {

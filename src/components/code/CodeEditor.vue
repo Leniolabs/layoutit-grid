@@ -45,6 +45,7 @@ export let codeCopied = false
 }
 
 .header {
+  position: relative;
   display: block;
   color: #bbb;
   font-weight: 700;
@@ -56,10 +57,12 @@ export let codeCopied = false
 }
 
 .copy-button {
+  top: 5px;
+  right: 10px;
+  position: absolute;
   color: #bbb;
   background-color: Transparent;
   background-repeat: no-repeat;
-  float: right;
   font-weight: 700;
   font-size: 12px;
   padding: 3px 0 2px 5px;
