@@ -1,7 +1,7 @@
 <template>
   <div class="version">
     <span><a target="_blank" rel="noreferrer" href="https://leniolabs.com">Hire us!</a></span>
-    <span class="version-text">v1.2.3</span>
+    <span class="version-text">v1.2.4</span>
   </div>
 </template>
 
