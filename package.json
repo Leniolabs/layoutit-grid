@@ -12,6 +12,7 @@
   "dependencies": {
     "@vueuse/core": "^4.0.0-beta.21",
     "lodash-es": "4.17.15",
+    "lz-string": "^1.4.4",
     "pepjs": "0.5.2",
     "vue": "^v3.0.0"
   },
