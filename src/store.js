@@ -255,7 +255,6 @@ export const { undo, redo, clear, canUndo, canRedo, startAtomicChange, endAtomic
   capacity: 20,
   parse: parseArea,
   serialize: serializeArea,
-  restore: setMainArea,
 })
 
 export function isValidAreaName(newName, area = mainArea.value) {
@@ -273,8 +272,9 @@ export function setCurrentArea(area) {
 
 export function setMainArea(area) {
   mainArea.value = area
-  setCurrentArea(area)
 }
+
+watch(mainArea, (area) => setCurrentArea(area))
 
 export function deselectCurrentArea() {
   setCurrentArea(mainArea.value)
