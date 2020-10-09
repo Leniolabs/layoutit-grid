@@ -1,10 +1,10 @@
 <template>
   <PermalinkBar v-show="showPermalink" :path="permalink" @close="showPermalink = false" />
   <div class="buttons">
-    <SidebarButton :disabled="!canUndo" class="btn-history" aria-label="Undo" @click="undo">
+    <SidebarButton :disabled="!undoStack.length" class="btn-history" aria-label="Undo" @click="undo">
       <IconUndo />
     </SidebarButton>
-    <SidebarButton :disabled="!canRedo" class="btn-history" aria-label="Redo" @click="redo">
+    <SidebarButton :disabled="!redoStack.length" class="btn-history" aria-label="Redo" @click="redo">
       <IconRedo />
     </SidebarButton>
     <SidebarButton aria-label="Restart" class="btn-trash" @click="restart">
@@ -42,7 +42,7 @@ export { restart } from '../../store.js'
 
 import { areaToCSS, areaToHTML } from '../../generateCode.js'
 
-export { undo, redo, canUndo, canRedo, mainArea } from '../../store.js'
+export { undo, redo, undoStack, redoStack, mainArea } from '../../store.js'
 
 export default {
   props: {

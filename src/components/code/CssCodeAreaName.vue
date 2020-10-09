@@ -7,8 +7,8 @@
     :class="['input', { active: false }]"
     @keydown="onCodeInputKeydown"
     @input="onInput"
-    @focus="startAtomicChange"
-    @blur="endAtomicChange"
+    @focus="pause"
+    @blur="resume(true)"
     >{{ areaName }}</span
   >
 </template>
@@ -17,7 +17,7 @@
 import { dragging, currentArea, isValidAreaName } from '../../store.js'
 import { computed, nextTick } from 'vue'
 export { onCodeInputKeydown, toCssName } from '../../utils.js'
-export { startAtomicChange, endAtomicChange } from '../../store.js'
+export { pause, resume } from '../../store.js'
 
 export default {
   props: {

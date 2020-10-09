@@ -21,7 +21,7 @@
 export { default as IconRemove } from '../icons/IconRemove.vue'
 
 import { gridRegionToGridArea, createSection, toCssName } from '../../utils.js'
-import { createAreaState, setCurrentArea, getRandomColor, isValidAreaName } from '../../store.js'
+import { createAreaState, setCurrentArea, getRandomColor, isValidAreaName, batch } from '../../store.js'
 
 import { ref, computed } from 'vue'
 
@@ -161,8 +161,10 @@ export function saveSelection() {
     const { color } = selection.value
     const sa = selection.value.area
     if (sa) {
-      sa.name = toCssName(gridName.value)
-      sa.gridRegion = selectionArea(selection.value)
+      batch(() => {
+        sa.name = toCssName(gridName.value)
+        sa.gridRegion = selectionArea(selection.value)
+      })
       emit('editend', sa)
     } else {
       grid.value.areas.push(

@@ -10,7 +10,7 @@
     "lint:fix": "eslint --ext .js,.vue src --fix"
   },
   "dependencies": {
-    "@vueuse/core": "^4.0.0-beta.16",
+    "@vueuse/core": "^4.0.0-beta.21",
     "lodash-es": "4.17.15",
     "pepjs": "0.5.2",
     "vue": "^v3.0.0",

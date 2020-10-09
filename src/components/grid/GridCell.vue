@@ -32,14 +32,7 @@
 </template>
 
 <script setup="props, { emit }">
-import {
-  dragging,
-  setCurrentArea,
-  parseValueUnit,
-  valueUnitToString,
-  startAtomicChange,
-  endAtomicChange,
-} from '../../store.js'
+import { dragging, setCurrentArea, parseValueUnit, valueUnitToString, pause, resume } from '../../store.js'
 import { useGridDimensions } from '../../composables/area.js'
 
 function calcValue(prev, prevComp, delta) {
@@ -145,7 +138,7 @@ export function handleDown(event, section, { row, col }) {
       // Start dragging grid lines
       dragging.value = { grid: grid.value, rowLine, colLine }
       document.body.style.cursor = col && row ? 'move' : col ? 'col-resize' : 'row-resize'
-      startAtomicChange()
+      pause()
     }
     if (dragging.value) {
       if (dragging.value.rowLine !== null) {
@@ -174,7 +167,7 @@ export function handleDown(event, section, { row, col }) {
       // Finish dragging grid lines
       dragging.value = null
       document.body.style.cursor = 'default'
-      endAtomicChange()
+      resume(true)
     } else if (new Date().getTime() - initialTime < 500) {
       // click
       emit('togglelinename', row ? `rowLine-${rowLine}` : `colLine-${colLine}`)

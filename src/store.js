@@ -134,8 +134,10 @@ export function setColValue(grid, n, value) {
 }
 
 export function addToDimension(dimension, val) {
-  dimension.sizes.push(val)
-  dimension.lineNames.push({ active: false, name: '' })
+  batch(() => {
+    dimension.sizes.push(val)
+    dimension.lineNames.push({ active: false, name: '' })
+  })
 }
 
 export function addCol(grid, colStr) {
@@ -163,8 +165,10 @@ export function removeFromDimension(grid, type, n) {
       ++i
     }
   }
-  grid[type].sizes.splice(n, 1)
-  grid[type].lineNames.splice(n, 1)
+  batch(() => {
+    grid[type].sizes.splice(n, 1)
+    grid[type].lineNames.splice(n, 1)
+  })
 }
 
 export function removeCol(grid, n) {
@@ -249,12 +253,13 @@ function parseArea(area) {
   return parentify(JSON.parse(area).area)
 }
 
-import { useRefHistory } from './composables/useRefHistory.js'
+import { useRefHistory } from '@vueuse/core'
 
-export const { undo, redo, clear, canUndo, canRedo, startAtomicChange, endAtomicChange } = useRefHistory(mainArea, {
+export const { undo, redo, undoStack, redoStack, pause, resume, batch } = useRefHistory(mainArea, {
   capacity: 20,
   parse: parseArea,
-  serialize: serializeArea,
+  dump: serializeArea,
+  deep: true,
 })
 
 export function isValidAreaName(newName, area = mainArea.value) {
