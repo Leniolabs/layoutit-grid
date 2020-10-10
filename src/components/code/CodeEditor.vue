@@ -57,15 +57,14 @@ export let codeCopied = false
 }
 
 .copy-button {
-  top: 5px;
-  right: 10px;
+  top: 3px;
+  right: 2px;
   position: absolute;
   color: #bbb;
   background-color: Transparent;
   background-repeat: no-repeat;
   font-weight: 700;
   font-size: 12px;
-  padding: 3px 0 2px 5px;
   border: none;
   cursor: pointer;
   overflow: hidden;

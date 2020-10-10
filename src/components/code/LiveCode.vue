@@ -14,7 +14,9 @@
   </div>
   <div class="buttons">
     <CodepenButton :css-code="cssCode" :html-code="htmlCode" />
-    <SidebarButton :disabled="!saveDesign" class="btn-link" @click="getPermalink"> Get Permalink </SidebarButton>
+    <SidebarButton :disabled="!saveDesign" class="btn-link" aria-label="Get Shareable Link" @click="getPermalink"
+      ><IconLink
+    /></SidebarButton>
   </div>
   <div class="code-grid">
     <CssCodeEditor :area="area" :options="options" :code="cssCode" />
@@ -96,6 +98,7 @@ export function getPermalink() {
     border: solid 1px #2a2a2a;
   }
   .btn-link {
+    padding: 10px;
     background: #23241f;
     border: solid 1px #2a2a2a;
   }
