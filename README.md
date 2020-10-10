@@ -4,7 +4,7 @@ _CSS Grids layouts made easy!_
 
 _Layoutit grid_ is a CSS Grid layout generator. Quickly draw down web pages layouts with our clean editor, and get HTML and CSS code to quickstart your next project.
 
-**Read about the process of [Open Sourcing Layoutit Grid, and why we are using Vue 3 and Vite](https://medium.com/@patak_js/open-sourcing-layoutit-grid-3a78300bc022)** :heart:
+**Read about the process of [Open Sourcing Layoutit Grid, and why we are using Vue 3 and Vite](https://leniolabs.com/software/development/2020/09/23/open-source-layoutit.html)** :heart:
 
 ## Use the tool
 
@@ -59,7 +59,7 @@ Your dev server will start and be running at
 
 - [Vite](https://github.com/vitejs/vite)
 - [Vue 3](https://v3.vuejs.org)
-- [Prism](https://prismjs.com/)
+- [Vueuse](https://vueuse.js.org/)
 
 ## Mentions
 
@@ -70,4 +70,4 @@ Your dev server will start and be running at
 
 ## Creators
 
-Layoutit grid is crafted with love by [Leniolabs](https://leniolabs.com/). We build digital experiences with your ideas. [Get in touch!](https://leniolabs.com/#contact)
+Layoutit grid is crafted with love by [Leniolabs](https://leniolabs.com/) and a growing community of contributors. We build digital experiences with your ideas. [Get in touch!](https://leniolabs.com/#contact)
