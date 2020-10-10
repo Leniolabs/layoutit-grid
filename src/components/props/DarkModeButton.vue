@@ -11,11 +11,11 @@
 
 <script setup>
 import { onMounted, watch } from 'vue'
-import { useLocalStorage } from 'vue-composable'
+import { useLocalStorage } from '@vueuse/core'
 export { default as IconDark } from '../icons/IconDark.vue'
 export { darkmode } from '../../store'
 
-const { storage: themeStorage } = useLocalStorage('theme', null)
+const themeStorage = useLocalStorage('theme', null)
 
 export function toggleDarkmode() {
   darkmode.value = !darkmode.value
@@ -50,16 +50,20 @@ function getSystemTheme() {
 button.btn-dark {
   margin-bottom: 10px;
   background: #23241f;
-  border: solid 1px #2a2a2a;  
+  border: solid 1px #2a2a2a;
   color: #eee;
   border-radius: 25px;
   cursor: pointer;
   width: 42px;
   padding: 0px;
-  svg { width: 100%; }
+  svg {
+    width: 100%;
+  }
   &.active {
     background: var(--color-darkmode-active);
   }
 }
-.buttons button.btn-dark { padding: 10px; }
+.buttons button.btn-dark {
+  padding: 10px;
+}
 </style>

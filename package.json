@@ -13,8 +13,7 @@
     "@vueuse/core": "^4.0.0-beta.21",
     "lodash-es": "4.17.15",
     "pepjs": "0.5.2",
-    "vue": "^v3.0.0",
-    "vue-composable": "^1.0.0-beta.10"
+    "vue": "^v3.0.0"
   },
   "devDependencies": {
     "@vue/compiler-sfc": "^v3.0.0",
