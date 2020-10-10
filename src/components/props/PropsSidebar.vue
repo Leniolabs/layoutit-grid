@@ -3,6 +3,7 @@
     <BrandLogo />
 
     <div v-if="currentArea !== area" class="area-name">{{ currentArea.name }}</div>
+    <div v-else></div>
 
     <FlexOptions v-if="currentFlex" :flex="currentFlex" />
     <GridOptions v-if="currentGrid" :grid="currentGrid" />
@@ -45,6 +46,7 @@ export const currentFlex = computed(() => currentArea.value.flex)
   background: #fdd835;
   color: #333;
   padding: 8px 10px;
+  margin-bottom: 20px;
   top: 0;
   left: 0;
   width: 100%;
@@ -72,7 +74,7 @@ export const currentFlex = computed(() => currentArea.value.flex)
 .sidebar {
   color: #fff;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto auto 1fr auto;
   overflow: auto;
   padding: 0 10px;
   text-align: left;
