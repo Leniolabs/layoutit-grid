@@ -47,31 +47,8 @@ export function handleDown(event) {
 </script>
 
 <style scoped lang="scss">
-.current-grid-backdrop {
-  display: none;
-  position: fixed;
-  top: 10px;
-  left: calc(14em + 15px);
-  right: 10px;
-  bottom: 10px;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: -1;
-  &.reactive {
-    display: block;
-    z-index: 1;
-  }
-  &.active {
-    display: block;
-  }
-  @media screen and (max-width: 768px) {
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 45px;
-  }
-}
-
 .area-editor {
+  pointer-events: none;
   touch-action: none;
   background: #fff;
   height: 100%;
@@ -86,7 +63,6 @@ export function handleDown(event) {
   &.grayed {
     background: #dddddd;
   }
-  z-index: 1;
   &:before {
     display: none;
   }

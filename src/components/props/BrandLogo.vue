@@ -13,7 +13,7 @@
   letter-spacing: 0.02em;
   margin-bottom: 15px;
   margin-left: 5px;
-  margin-top: 5px;
+  margin-top: 10px;
   color: #fff;
   text-decoration: none;
   display: inline-block;

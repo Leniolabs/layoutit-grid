@@ -39,7 +39,7 @@ export const toolbarStart = computed(() => {
   top: 5px;
   left: 5px;
   width: auto;
-  z-index: 9;
+  z-index: 999;
   &:after {
     display: table;
     content: '';

@@ -256,7 +256,7 @@ function parseArea(area) {
 import { useRefHistory } from '@vueuse/core'
 
 export const { undo, redo, undoStack, redoStack, pause, resume, batch } = useRefHistory(mainArea, {
-  capacity: 20,
+  capacity: 100,
   parse: parseArea,
   dump: serializeArea,
   deep: true,

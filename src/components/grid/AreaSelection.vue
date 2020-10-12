@@ -192,11 +192,11 @@ export function closeSelection() {
 
 <style scoped lang="scss">
 .area-selection {
+  pointer-events: initial;
   touch-action: none;
   background: #fff;
   height: 100%;
   cursor: pointer;
-  pointer-events: none;
   position: absolute;
   top: 0;
   left: 0;
@@ -204,7 +204,6 @@ export function closeSelection() {
   right: 0;
   border: 2px solid;
   background: rgba(255, 255, 255, 0.7);
-  z-index: 1;
   &:before {
     display: none;
   }
@@ -269,7 +268,6 @@ export function closeSelection() {
   }
   button {
     position: absolute;
-    z-index: 999;
     top: 5px;
     pointer-events: all;
     vertical-align: top;

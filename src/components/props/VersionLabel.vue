@@ -14,7 +14,6 @@
   font-family: monospace;
   padding: 6px 14px;
   text-align: center;
-  z-index: 99;
   a {
     text-decoration: none;
     color: #ccc;

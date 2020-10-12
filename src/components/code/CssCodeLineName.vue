@@ -33,7 +33,7 @@ export default {
 
 export { currentFocus, onCodeInputKeydown }
 
-const line = computed(() => props.grid[props.type].lineNames[props.pos])
+const line = computed(() => props.grid[props.type].lineNames[props.pos - 1])
 export const lineName = computed({
   get: () => line.value.name,
   set: (str) => (line.value.name = str),

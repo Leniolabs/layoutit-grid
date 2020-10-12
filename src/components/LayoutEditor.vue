@@ -78,6 +78,12 @@ p {
   outline: none;
 }
 
+/* TODO: Try to remove this
+   The right border produces a jump when active without this */
+#app.darkmode > .grid {
+  padding-right: 1px;
+}
+
 #app {
   font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -87,21 +93,19 @@ p {
   display: grid;
   grid-template-columns: 220px 1fr 360px;
   grid-column-gap: 15px;
-  padding-top: 5px;
-  padding-bottom: 5px;
   @media screen and (max-width: 768px) {
     display: block;
   }
+
   &.darkmode {
     .grid {
-      outline: 1px dashed #fff;
-      box-shadow: none;
+      background: repeating-linear-gradient(45deg, transparent, transparent 9px, #1d032d 9px, #1d032d 14px);
     }
     .inside-row-size,
     .inside-col-size {
       color: #fff;
     }
-    section {
+    .grid-section {
       background: #300548;
       &:after,
       &:before {
@@ -115,6 +119,33 @@ p {
       &.grayed {
         background: #032c06;
       }
+    }
+
+    .area-editor,
+    .area-selection {
+      background: #30054899;
+    }
+
+    .line-number {
+      color: #888;
+      background: #300548;
+      &.dragging,
+      &.focused {
+        background: #27ae60;
+        color: #fff;
+        z-index: 99999;
+      }
+    }
+
+    .row .line-number {
+      left: 1px;
+    }
+
+    .col.first .line-number {
+      left: 1px;
+    }
+    .col.last .line-number {
+      right: 1px;
     }
 
     .grid-section.grayed {

@@ -17,7 +17,7 @@
       for positioning.
     </SlideCheckbox>
     <SlideCheckbox id="checkbox-old-spec" v-model="modelValue.oldSpec">
-      Include support for
+      Add support for
       <strong>
         <a
           target="_blank"

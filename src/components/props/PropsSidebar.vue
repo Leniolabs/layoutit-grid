@@ -76,11 +76,10 @@ export const currentFlex = computed(() => currentArea.value.flex)
   display: grid;
   grid-template-rows: auto auto 1fr auto;
   overflow: auto;
-  padding: 0 10px;
+  padding: 0px 0px 0px 12px;
   text-align: left;
   transition: transform 0.2s ease-in;
   user-select: none;
-  z-index: 9;
   @media screen and (max-width: 768px) {
     transform: translateX(-15em);
     position: fixed;
@@ -109,7 +108,6 @@ export const currentFlex = computed(() => currentArea.value.flex)
   position: fixed;
   top: 0;
   right: 0;
-  z-index: 9;
   opacity: 0.8;
   transition: opacity 0.1s linear;
   &:hover {

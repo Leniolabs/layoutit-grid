@@ -59,12 +59,13 @@ export const isDraggingTrackLine = computed(
 <style scoped lang="scss">
 .col,
 .row {
+  pointer-events: initial;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   font-size: 13px;
   color: #888;
   position: absolute;
   padding: 2px;
-    user-select: none;
+  user-select: none;
   &.active {
     color: #27ae60;
   }
@@ -76,7 +77,6 @@ export const isDraggingTrackLine = computed(
   }
 }
 
-
 .col {
   bottom: 0;
   right: 0;
@@ -86,7 +86,7 @@ export const isDraggingTrackLine = computed(
 .row {
   top: 0;
   bottom: 0;
-  right: 0;
+  right: 2px;
   display: grid;
   align-content: center;
 }

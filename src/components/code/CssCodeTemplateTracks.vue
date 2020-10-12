@@ -42,7 +42,6 @@ export default {
 }
 
 export const isInteractive = computed(() => {
-  console.log(!(props.repeat && props.grid[props.type].lineNames.every((l) => !l.active)))
   return !(props.repeat && props.grid[props.type].lineNames.every((l) => !l.active))
 })
 
@@ -65,7 +64,7 @@ export const trackSizesAndLineNames = computed(() => {
   for (var i = 0; i < lineNames.length; i++) {
     const { active, name } = lineNames[i]
     if (active && name) {
-      items.push({ type: 'line', pos: i, el: ref(null) })
+      items.push({ type: 'line', pos: i + 1, el: ref(null) })
     }
     if (i < sizes.length) {
       items.push({ type: 'size', track: i + 1, el: ref(null) })
