@@ -18,6 +18,7 @@
         'focused-prev': isLineFocusedPrev,
         'focused-next': isLineFocusedNext,
         focused: isTrackFocused || isTrackHover,
+        'focused-track-next': isNextTrackFocused || isNextTrackHover,
         'remove-action': isTrackHover && currentHover.action === 'remove',
       },
     ]"
@@ -49,22 +50,22 @@ export const isCurrent = useIsCurrentArea(toRefs(props).area)
 
 export const isDraggingGrid = computed(() => dragging.value && dragging.value.grid === grid.value)
 
-export const isTrackHover = computed(() => {
+function isHover(pos) {
   const f = currentHover.value
   return (
-    !currentFocus.value &&
-    f &&
-    f.on === 'track' &&
-    f.grid === grid.value &&
-    f.type === props.type &&
-    f.track === props.pos
+    !currentFocus.value && f && f.on === 'track' && f.grid === grid.value && f.type === props.type && f.track === pos
   )
-})
+}
+export const isTrackHover = computed(() => isHover(props.pos))
+export const isNextTrackHover = computed(() => isHover(props.pos + 1))
 
-export const isTrackFocused = computed(() => {
+function isFocused(pos) {
   const f = currentFocus.value
-  return f && f.on === 'track' && f.grid === grid.value && f.type === props.type && f.track === props.pos
-})
+  return f && f.on === 'track' && f.grid === grid.value && f.type === props.type && f.track === pos
+}
+
+export const isTrackFocused = computed(() => isFocused(props.pos))
+export const isNextTrackFocused = computed(() => isFocused(props.pos + 1))
 
 export function isLineFocused(pos) {
   const f = currentFocus.value
@@ -116,6 +117,7 @@ section {
     border-top: 1px solid #27ae60;
   }
   &.row.focused,
+  &.row-no-gap.row.focused-track-next,
   &.row.dragging-next,
   &.row.focused-next {
     border-bottom: 1px solid #27ae60;
@@ -127,16 +129,17 @@ section {
     border-left: 1px solid #27ae60;
   }
   &.col.focused,
+  &.col-no-gap.col.focused-track-next,
   &.col.dragging-next,
   &.col.focused-next {
     border-right: 1px solid #27ae60;
   }
 
-  &:not(.row.focused).row {
+  &.row {
     border-left: initial;
     border-right: initial;
   }
-  &:not(.col.focused).col {
+  &.col {
     border-top: initial;
     border-bottom: initial;
   }

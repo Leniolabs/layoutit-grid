@@ -56,7 +56,13 @@
         <OptionsButton class="add-button" @click="addRow(grid, '1fr')"> Add </OptionsButton>
       </div>
       <div class="inner-items">
-        <div v-for="row in rowsNumber" :key="row" :data-row="row">
+        <div
+          v-for="row in rowsNumber"
+          :key="row"
+          :data-row="row"
+          @mouseover="currentHover = { on: 'track', grid, type: 'row', track: row }"
+          @mouseleave="currentHover = null"
+        >
           <input
             :style="{ visibility: unitHasValue(getRowUnit(grid, row - 1)) ? 'visible' : 'hidden' }"
             :value="getRowValue(grid, row - 1)"
@@ -71,8 +77,6 @@
             @focus="currentFocus = { on: 'track', grid, type: 'row', track: row }"
             @blur="currentFocus = null"
             @input="setRowValue(grid, row - 1, $event.target.value)"
-            @mouseover="currentHover = { on: 'track', grid, type: 'row', track: row }"
-            @mouseleave="currentHover = null"
           />
           <UnitSelect
             :value="getRowUnit(grid, row - 1)"
@@ -86,7 +90,7 @@
             :aria-label="`remove row ${row}`"
             :disabled="grid.row.sizes.length === 1"
             @click="removeRow(grid, row - 1)"
-            @mouseover="currentHover = { on: 'track', grid, type: 'row', track: row, action: 'remove' }"
+            @mouseover.stop="currentHover = { on: 'track', grid, type: 'row', track: row, action: 'remove' }"
             @mouseleave="currentHover = null"
           >
             <IconRemove />
