@@ -13,10 +13,12 @@
         'col-last': type === 'col' && pos === grid.col.sizes.length,
         'row-no-gap': type === 'row' && parseValue(grid.row.gap) === 0,
         'col-no-gap': type === 'col' && parseValue(grid.col.gap) === 0,
-        'dragging-prev': isDraggingPrev,
-        'dragging-next': isDraggingNext,
-        'focused-prev': isFocusedPrev,
-        'focused-next': isFocusedNext,
+        'dragging-prev': isLineDraggingPrev,
+        'dragging-next': isLineDraggingNext,
+        'focused-prev': isLineFocusedPrev,
+        'focused-next': isLineFocusedNext,
+        focused: isTrackFocused || isTrackHover,
+        'remove-action': isTrackHover && currentHover.action === 'remove',
       },
     ]"
     :style="{
@@ -30,7 +32,7 @@
 <script setup="props, { emit }">
 export { default as TrackSize } from './TrackSize.vue'
 import { useIsCurrentArea, useGridDimensions } from '../../composables/area.js'
-export { dragging, currentFocus, darkmode, parseValue } from '../../store.js'
+export { dragging, currentFocus, currentHover, darkmode, parseValue } from '../../store.js'
 import { computed, toRefs } from 'vue'
 
 export default {
@@ -47,17 +49,40 @@ export const isCurrent = useIsCurrentArea(toRefs(props).area)
 
 export const isDraggingGrid = computed(() => dragging.value && dragging.value.grid === grid.value)
 
-export function isFocused(pos) {
-  const tf = currentFocus.value
-  return tf && tf.on === 'line' && tf.grid === grid.value && tf.type === props.type && tf.pos === pos
+export const isTrackHover = computed(() => {
+  const f = currentHover.value
+  return (
+    !currentFocus.value &&
+    f &&
+    f.on === 'track' &&
+    f.grid === grid.value &&
+    f.type === props.type &&
+    f.track === props.pos
+  )
+})
+
+export const isTrackFocused = computed(() => {
+  const f = currentFocus.value
+  return f && f.on === 'track' && f.grid === grid.value && f.type === props.type && f.track === props.pos
+})
+
+export function isLineFocused(pos) {
+  const f = currentFocus.value
+  return f && f.on === 'line' && f.grid === grid.value && f.type === props.type && f.pos === pos
+}
+export function isLineHover(pos) {
+  const f = currentHover.value
+  return !currentFocus.value && f && f.on === 'line' && f.grid === grid.value && f.type === props.type && f.pos === pos
 }
 
-export const isDraggingPrev = computed(() => isDraggingGrid.value && dragging.value[props.type + 'Line'] === props.pos)
-export const isFocusedPrev = computed(() => isFocused(props.pos))
-export const isDraggingNext = computed(
+export const isLineDraggingPrev = computed(
+  () => isDraggingGrid.value && dragging.value[props.type + 'Line'] === props.pos
+)
+export const isLineFocusedPrev = computed(() => isLineFocused(props.pos))
+export const isLineDraggingNext = computed(
   () => isDraggingGrid.value && dragging.value[props.type + 'Line'] === props.pos + 1
 )
-export const isFocusedNext = computed(() => isFocused(props.pos + 1))
+export const isLineFocusedNext = computed(() => isLineFocused(props.pos + 1))
 
 export const gridArea = computed(() => {
   const { pos } = props
@@ -74,32 +99,44 @@ section {
   border: 1px dashed #888; // #2c3e50;
   overflow: hidden;
 
+  &.focused {
+    background: #27ae6011;
+  }
+  &.remove-action {
+    background: #ac1e3d11;
+  }
+
   &.darkmode {
     border: 1px dashed #888;
   }
 
+  &.row.focused,
   &.row.dragging-prev,
   &.row.focused-prev {
     border-top: 1px solid #27ae60;
   }
+  &.row.focused,
   &.row.dragging-next,
   &.row.focused-next {
     border-bottom: 1px solid #27ae60;
   }
+
+  &.col.focused,
   &.col.dragging-prev,
   &.col.focused-prev {
     border-left: 1px solid #27ae60;
   }
+  &.col.focused,
   &.col.dragging-next,
   &.col.focused-next {
     border-right: 1px solid #27ae60;
   }
 
-  &.row {
+  &:not(.row.focused).row {
     border-left: initial;
     border-right: initial;
   }
-  &.col {
+  &:not(.col.focused).col {
     border-top: initial;
     border-bottom: initial;
   }

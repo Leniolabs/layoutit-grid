@@ -6,7 +6,13 @@
         <OptionsButton class="add-button" @click="addCol(grid, '1fr')"> Add </OptionsButton>
       </div>
       <div class="inner-items">
-        <div v-for="column in colsNumber" :key="column" :data-col="column">
+        <div
+          v-for="column in colsNumber"
+          :key="column"
+          :data-col="column"
+          @mouseover="currentHover = { on: 'track', grid, type: 'col', track: column }"
+          @mouseleave="currentHover = null"
+        >
           <input
             :style="{ visibility: unitHasValue(getColUnit(grid, column - 1)) ? 'visible' : 'hidden' }"
             :value="getColValue(grid, column - 1)"
@@ -36,6 +42,8 @@
             :aria-label="`remove column ${column}`"
             :disabled="grid.col.sizes.length === 1"
             @click="removeCol(grid, column - 1)"
+            @mouseover.stop="currentHover = { on: 'track', grid, type: 'col', track: column, action: 'remove' }"
+            @mouseleave="currentHover = null"
           >
             <IconRemove />
           </OptionsButton>
@@ -63,6 +71,8 @@
             @focus="currentFocus = { on: 'track', grid, type: 'row', track: row }"
             @blur="currentFocus = null"
             @input="setRowValue(grid, row - 1, $event.target.value)"
+            @mouseover="currentHover = { on: 'track', grid, type: 'row', track: row }"
+            @mouseleave="currentHover = null"
           />
           <UnitSelect
             :value="getRowUnit(grid, row - 1)"
@@ -76,6 +86,8 @@
             :aria-label="`remove row ${row}`"
             :disabled="grid.row.sizes.length === 1"
             @click="removeRow(grid, row - 1)"
+            @mouseover="currentHover = { on: 'track', grid, type: 'row', track: row, action: 'remove' }"
+            @mouseleave="currentHover = null"
           >
             <IconRemove />
           </OptionsButton>
@@ -119,10 +131,10 @@ export {
   dragging,
 } from '../../store.js'
 
-import { setRowValueUnit, setColValueUnit, currentFocus } from '../../store.js'
+import { setRowValueUnit, setColValueUnit } from '../../store.js'
 import { useGridDimensions } from '../../composables/area.js'
 import { unitMeasureMap } from '../../utils.js'
-export { currentFocus }
+export { currentFocus, currentHover } from '../../store.js'
 
 const { grid } = toRefs(props)
 

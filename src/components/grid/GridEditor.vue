@@ -70,7 +70,16 @@ export { default as GridIntersection } from './GridIntersection.vue'
 export { default as AreaSelection } from './AreaSelection.vue'
 export { default as AreaEditor } from '../area/AreaEditor.vue'
 
-export { currentArea, setCurrentArea, valueUnitToString, pause, resume, dragging, currentFocus } from '../../store.js'
+export {
+  currentArea,
+  setCurrentArea,
+  valueUnitToString,
+  pause,
+  resume,
+  dragging,
+  currentFocus,
+  currentHover,
+} from '../../store.js'
 import { parseValue, parseUnit, parseValueUnit } from '../../store'
 import { useIsCurrentArea, useIsActiveArea } from '../../composables/area.js'
 
@@ -192,13 +201,8 @@ export const gridGap = computed(() => {
 })
 
 export function isFocused(section) {
-  const tf = currentFocus.value
-  return (
-    tf &&
-    tf.on === 'track' &&
-    tf.grid === grid.value &&
-    ((tf.type === 'row' && tf.track === section.row.start) || (tf.type === 'col' && tf.track === section.col.start))
-  )
+  const c = currentHover.value
+  return c && c.on === 'cell' && c.grid === grid.value && c.row === section.row.start && c.col === section.col.start
 }
 
 function calcValue(prev, prevComp, delta) {

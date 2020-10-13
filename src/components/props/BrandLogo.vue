@@ -1,5 +1,5 @@
 <template>
-  <a href="/" rel="noreferrer" target="_blank" class="brand-logo">
+  <a href="https://layoutit.com/" rel="noreferrer" target="_blank" class="brand-logo">
     <img src="/img/icons/icon-128x128.png" alt />Layoutit!
   </a>
 </template>

@@ -1,10 +1,10 @@
 export const unitMeasureMap = {
-  'px': 300,
-  'fr': 1,
-  'em': 4,
+  px: 300,
+  fr: 1,
+  em: 4,
   '%': 10,
-  'minmax': '20px, 60px',
-  'auto': '',
+  minmax: '20px, 60px',
+  auto: '',
   'min-content': '',
   'max-content': '',
 }
@@ -47,7 +47,7 @@ export function gridSections(grid) {
   return sections
 }
 
-function gridTemplateAreasMatrix(grid) {
+export function gridTemplateAreasMatrix(grid) {
   const colsNumber = grid.col.sizes.length
   const rowsNumber = grid.row.sizes.length
 
@@ -147,7 +147,7 @@ export function generateNamedTemplate(templateArr, lineNames, css = true, repeat
 }
 
 function repeatify(tokens) {
-  for (; ;) {
+  for (;;) {
     const longestSequence = findRepeatingSequnce(tokens)
     if (!longestSequence) {
       break

@@ -10,12 +10,14 @@
     @input="onInput"
     @focus="currentFocus = { on: 'track', grid, type, track }"
     @blur="currentFocus = null"
+    @mouseover="currentHover = { on: 'track', grid, type, track }"
+    @mouseleave="currentHover = null"
     >{{ trackSize }}</span
   >
 </template>
 
 <script setup="props, { emit }">
-import { dragging, currentFocus, isValidTrackSize } from '../../store.js'
+import { dragging, currentFocus, currentHover, isValidTrackSize } from '../../store.js'
 import { computed } from 'vue'
 import { debounce } from 'lodash-es'
 
@@ -30,7 +32,7 @@ export default {
   },
 }
 
-export { currentFocus, onCodeInputKeydown }
+export { currentFocus, currentHover, onCodeInputKeydown }
 
 export const trackSize = computed({
   get: () => props.grid[props.type].sizes[props.track - 1],
