@@ -9,7 +9,7 @@
         @mouseover="currentHover = { on: 'cell', grid: area.grid, col: c + 1, row: r + 1 }"
         @mouseleave="currentHover = null"
         >{{ (c > 0 ? ' ' : '') + cell }}</span
-      >{{ c === row.length - 1 ? '"' : '"\n    ' }}</template
+      >{{ r === templateAreas.length - 1 ? '"' : '"\n    ' }}</template
     ></span
   >
 </template>
