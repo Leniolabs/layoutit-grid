@@ -51,6 +51,8 @@
       :area="area"
       :row="intersection.row"
       :col="intersection.col"
+      :colgap="computedGap.col"
+      :rowgap="computedGap.row"
       @down="handleLineDown"
     />
 
