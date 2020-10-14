@@ -9,10 +9,13 @@
   color: #fff;
   display: block;
   font-size: 0.9rem;
+  letter-spacing:0.2px;
   margin-bottom: 1rem;
   padding: 8px 10px;
   text-decoration: none;
   text-align: center;
+  transition: all 0.2s ease-in-out;
+  text-shadow:rgba(0,0,0,0.3) 0 1px 1px;
   &:hover {
     background: var(--color-hire-us-active);
   }

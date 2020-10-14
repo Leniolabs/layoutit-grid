@@ -2,7 +2,11 @@
   <div class="code-container">
     <span class="header"
       >{{ type.toUpperCase() }}
-      <button class="copy-button" @click="copyToClipBoard">{{ copied === 0 ? 'Copy' : 'Copied!' }}</button>
+      <button class="copy-button" @click="copyToClipBoard">
+        <!--{{ copied === 0 ? 'Copy' : 'Copied!' }}-->
+        <svg fill='none' stroke='#fff' stroke-width='10' stroke-dashoffset='0' stroke-dasharray='0' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points="30,30 30,10 90,10 90,70 70,70 70,30 30,30"/>
+<rect x="10" y="30" width="60" height="60"/></svg>
+      </button>
     </span>
     <pre><code><slot/></code></pre>
   </div>
@@ -57,8 +61,8 @@ export let codeCopied = false
 }
 
 .copy-button {
-  top: 3px;
-  right: 2px;
+  top: 6px;
+  right: 0;
   position: absolute;
   color: #bbb;
   background-color: Transparent;
@@ -69,6 +73,16 @@ export let codeCopied = false
   cursor: pointer;
   overflow: hidden;
   outline: none;
+  svg{
+    height:20px;width:20px;
+    opacity:0.7;
+    transition: all 0.2s ease-in-out;
+  }
+  &:hover{
+    svg{
+      opacity:1;
+    }
+  }
 }
 
 pre,

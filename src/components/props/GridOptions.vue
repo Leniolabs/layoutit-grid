@@ -186,6 +186,7 @@ h2 {
     display: grid;
     grid-template-columns: auto 55px;
     align-items: center;
+    padding: 0 0 0.5rem;
   }
   .inner-items {
     overflow: auto;
@@ -232,8 +233,10 @@ h2 {
 
 .remove-button {
   background: var(--color-remove);
+  opacity:0.85;
   &:hover {
     background: var(--color-remove-active);
+    opacity:1;
   }
 }
 

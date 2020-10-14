@@ -91,6 +91,10 @@ export function getPermalink() {
     margin-left: 10px;
     padding: 0.625em 1em;
     height: 42px;
+    transition: all 0.2s ease-in-out;
+    &:hover {
+      background: #444;
+    }
   }
   .btn-trash {
     padding: 12px;
@@ -99,8 +103,11 @@ export function getPermalink() {
   }
   .btn-link {
     padding: 10px;
-    background: #23241f;
-    border: solid 1px #2a2a2a;
+    background: var(--color-add);
+    //border: solid 1px #2a2a2a;
+    &:hover {
+      background: var(--color-add-active);
+    }
   }
   .btn-history {
     padding: 10px;
