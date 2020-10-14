@@ -141,6 +141,13 @@ p {
       left: 1px;
     }
 
+    .editor-track-size {
+      &.row,
+      &.col {
+        color: #888;
+      }
+    }
+
     .col.first .line-number {
       left: 1px;
     }

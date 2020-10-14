@@ -116,7 +116,7 @@ section {
   }
 
   &.col .line-number {
-    right: calc(-7px - 0.5 * var(--gap));
+    right: calc(-6.5px - 0.5 * var(--gap));
     top: 0px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;

@@ -9,6 +9,7 @@
     <GridOptions v-if="currentGrid" :grid="currentGrid" />
     <a
       class="btn-github"
+      rel="noreferrer"
       target="_blank"
       aria-label="View source on GitHub"
       href="https://github.com/Leniolabs/layoutit-grid"
