@@ -1,7 +1,7 @@
 <template>
   <form action="https://codesandbox.io/api/v1/sandboxes/define" method="POST" target="_blank">
     <input type="hidden" name="parameters" :value="codesanboxJSON" />
-    <button type="submit" class="button"><IconCodesandbox />Create CodeSanbox</button>
+    <button type="submit" class="button" title="Create CodeSandbox"><IconCodesandbox />CodeSanbox</button>
   </form>
 </template>
 

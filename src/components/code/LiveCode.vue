@@ -12,16 +12,12 @@
     </SidebarButton>
     <DarkModeButton />
   </div>
-  <div class="buttons column">
-    <div class="buttons__create">
-      <CodepenButton :css-code="cssCode" :html-code="htmlCode" />
-      <CodeSanboxButton :css-code="cssCode" :html-code="htmlCode" />
-    </div>
-    <div class="buttons__link">
-      <SidebarButton :disabled="!saveDesign" class="btn-link" aria-label="Get Shareable Link" @click="getPermalink"
-      ><IconLink
-    /></SidebarButton>
-    </div>
+  <div class="buttons">
+    <CodepenButton :css-code="cssCode" :html-code="htmlCode" />
+    <CodeSanboxButton :css-code="cssCode" :html-code="htmlCode" />
+    <SidebarButton :disabled="!saveDesign" class="btn-link" aria-label="Get Shareable Link" @click="getPermalink">
+      <IconLink />
+    </SidebarButton>
   </div>
   <div class="code-grid">
     <CssCodeEditor :area="area" :options="options" :code="cssCode" />
@@ -92,9 +88,6 @@ export function getPermalink() {
 .buttons {
   display: flex;
   user-select: none;
-  &.column {
-    flex-direction: column;
-  }
   > button {
     max-width: max-content;
     margin-left: 10px;
@@ -119,13 +112,6 @@ export function getPermalink() {
     &:first-child {
       margin-left: 0;
     }
-  }
-  &__create {
-    display: flex;
-    flex-direction: row;
-  }
-  &__link {
-    margin-top: 8px;
   }
 }
 

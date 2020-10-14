@@ -2,7 +2,12 @@
   <svg
     width="20"
     height="20"
-    style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg)"
+    style="
+      -ms-transform: rotate(360deg);
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+      margin-right: 10px;
+    "
     viewBox="0 0 256 296"
   >
     <path
