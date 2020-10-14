@@ -1,7 +1,7 @@
 <template>
   <div>
-    <span>Your grid has been saved!</span>
-    <a :href="fullPath" rel="noreferrer" target="_blank">{{ path }}</a>
+    <span>Your grid has been saved! </span>
+    <a :href="fullPath" rel="noreferrer" target="_blank">{{ 'test' + path }}</a>
     <button @click="$emit('close')">×</button>
   </div>
 </template>
@@ -22,25 +22,20 @@ export const fullPath = computed(() => 'https://' + props.path)
 <style scoped lang="scss">
 div {
   position: fixed;
-  top: 10px;
+  top: 0px;
   background: #fdd835;
-  left: calc(14em + 15px);
-  right: 10px;
-  padding: 12px 30px 10px;
+  left: 0;
+  right: 0px;
+  padding: 12px 20px 10px;
   color: #333;
   border-bottom: 1px solid #ccc;
-  z-index: 999;
+  z-index: 30000;
   word-break: break-all;
-  @media screen and (max-width: 768px) {
-    left: 0;
-    right: 0;
-    top: 45px;
-  }
   button {
     position: absolute;
     border: 0;
     background: none;
-    right: 0;
+    right: 8px;
     font-size: 20px;
     top: 8px;
     color: #666;
@@ -52,11 +47,11 @@ div {
       content: '';
       background: rgba(0, 0, 0, 0.4);
       position: fixed;
-      left: 239px;
-      z-index: 9;
-      right: 10px;
-      top: 51px;
-      bottom: 10px;
+      left: 0px;
+      z-index: 100000;
+      right: 0px;
+      top: 40px;
+      bottom: 0px;
     }
   }
 }

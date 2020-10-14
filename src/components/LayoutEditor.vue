@@ -133,7 +133,6 @@ p {
       &.focused {
         background: #27ae60;
         color: #fff;
-        z-index: 99999;
       }
     }
 

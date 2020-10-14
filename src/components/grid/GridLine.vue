@@ -90,7 +90,7 @@ section {
     &.focused {
       background: #27ae60;
       color: #fff;
-      z-index: 99999;
+      z-index: 10000;
     }
   }
 

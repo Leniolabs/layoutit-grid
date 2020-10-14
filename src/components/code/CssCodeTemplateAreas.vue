@@ -40,6 +40,7 @@ export const templateAreas = computed(() => getGridTemplateAreas(props.area.grid
 span {
   &:hover {
     color: white;
+    cursor: crosshair;
   }
   &:focus {
     color: white;

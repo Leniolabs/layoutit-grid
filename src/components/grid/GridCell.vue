@@ -103,7 +103,9 @@ section {
   &.grayed {
     background: #dddddd;
   }
-  &:not(.dragging):hover,
+  &:not(.dragging):hover {
+    background: #f4faf4;
+  }
   &.focused {
     background: #ecf8ec;
   }

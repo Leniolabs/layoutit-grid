@@ -73,6 +73,7 @@ export const currentFlex = computed(() => currentArea.value.flex)
 }
 
 .sidebar {
+  z-index: 20000;
   color: #fff;
   display: grid;
   grid-template-rows: auto auto 1fr auto;
@@ -84,6 +85,7 @@ export const currentFlex = computed(() => currentArea.value.flex)
   @media screen and (max-width: 768px) {
     transform: translateX(-15em);
     position: fixed;
+    padding: 0px 12px;
     bottom: 0;
     top: 0;
     background: #300748;
@@ -100,7 +102,8 @@ export const currentFlex = computed(() => currentArea.value.flex)
   .hire-us,
   .version,
   .btn-undo,
-  .btn-redo {
+  .btn-redo,
+  .btn-github {
     display: none;
   }
 }

@@ -68,7 +68,6 @@ button {
   cursor: pointer;
 
   position: absolute;
-  z-index: 999;
   top: 5px;
   pointer-events: all;
   vertical-align: top;
