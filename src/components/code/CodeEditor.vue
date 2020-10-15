@@ -74,8 +74,8 @@ export let codeCopied = false
   overflow: hidden;
   outline: none;
   svg{
-    height:20px;width:20px;
-    opacity:0.7;
+    height:18px;width:18px;
+    opacity:0.5;
     transition: all 0.2s ease-in-out;
   }
   &:hover{

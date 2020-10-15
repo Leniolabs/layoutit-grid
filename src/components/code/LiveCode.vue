@@ -103,10 +103,10 @@ export function getPermalink() {
   }
   .btn-link {
     padding: 10px;
-    background: var(--color-add);
-    //border: solid 1px #2a2a2a;
+    background: #23241f;
+    border: solid 1px transparent;
     &:hover {
-      background: var(--color-add-active);
+      background: #000;
     }
   }
   .btn-history {

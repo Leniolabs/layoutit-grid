@@ -170,13 +170,17 @@ export function isFocused(type, track) {
 
 <style scoped lang="scss">
 h2 {
-  margin: 0 0 10px;
   font-family: 'Alegreya Sans', 'Helvetica Neue', Arial, sans-serif;
-  margin-top: 10px;
-  margin-bottom: 0.625em;
+  margin: 0;
   font-size: 16px;
+  padding: 0;
+  line-height: 30px;
+  display: flex;
+  align-items: center;
   span {
     font-weight: normal;
+    margin-right: 6px;
+    height: 34px;
   }
 }
 
@@ -194,10 +198,10 @@ h2 {
     > div {
       display: grid;
       grid-template-columns: 70px auto 30px;
-      grid-gap: 0 5px;
+      grid-gap: 0 8px;
       border-radius: 2px;
       height: 30px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       input {
         text-align: center;
         width: 100%;
@@ -224,7 +228,7 @@ h2 {
   padding: 8px 0;
   margin-bottom: 0;
   svg {
-    padding: 1.2px;
+    padding: 0;
     width: 100%;
     height: 100%;
     fill: #fff;
@@ -233,9 +237,14 @@ h2 {
 
 .remove-button {
   background: var(--color-remove);
-  opacity:0.85;
+  //background:transparent;
+  border-radius:4px;
+  opacity:0.5;
+  padding:8px 0;
+  //max-width:18px;
   &:hover {
     background: var(--color-remove-active);
+    //background:transparent;
     opacity:1;
   }
 }
