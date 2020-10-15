@@ -1,5 +1,5 @@
 <template>
-  <a class="hire-us" target="_blank" rel="noreferrer" href="https://leniolabs.com">Crafted with ♥ by Leniolabs</a>
+  <a class="hire-us" target="_blank" rel="noopener" href="https://leniolabs.com">Crafted with ♥ by Leniolabs</a>
 </template>
 
 <style scoped lang="scss">

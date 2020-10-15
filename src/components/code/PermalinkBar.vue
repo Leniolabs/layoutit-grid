@@ -1,7 +1,7 @@
 <template>
   <div>
     <span>Your grid has been saved! </span>
-    <a :href="fullPath" rel="noreferrer" target="_blank">{{ 'test' + path }}</a>
+    <a :href="fullPath" rel="noopener" target="_blank">{{ path }}</a>
     <button @click="$emit('close')">×</button>
   </div>
 </template>
