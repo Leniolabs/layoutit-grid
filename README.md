@@ -2,7 +2,7 @@
 
 _CSS Grids layouts made easy!_
 
-_Layoutit grid_ is a CSS Grid layout generator. Quickly draw down web pages layouts with our clean editor, and get HTML and CSS code to quickstart your next project.
+_Layoutit grid_ is a CSS Grid layout generator. Quickly design web pages layouts with our clean editor, and get HTML and CSS code to quickstart your next project.
 
 **Read about the process of [Open Sourcing Layoutit Grid, and why we are using Vue 3 and Vite](https://leniolabs.com/software/development/2020/09/23/open-source-layoutit.html)** :heart:
 
@@ -11,6 +11,12 @@ _Layoutit grid_ is a CSS Grid layout generator. Quickly draw down web pages layo
 Go to https://grid.layoutit.com/ and start playing :dart:
 
 <img width="398" src="./assets/layoutit-grid-showcase.gif">
+
+## Why we built a Generator
+
+Generators can be a stepping stone when you are learning new concepts. Layoutit Grid helps you experience the power of CSS Grid by materializing your designs in a few clicks along with the code to make it happen. This gives you the early wins that you need to push forward with the learning process. For some of us, generators permanently remain in our toolboxes. Not because we do not know how to craft the layouts by hand, but because having the visual feedback loop help us to quickly convert our ideas into code. So we keep playing with them.
+
+Read more about [learning CSS Grid visually with a generator here](https://css-tricks.com/layoutit-grid-learning-css-grid-visually-with-a-generator/)
 
 ## Run it locally
 
