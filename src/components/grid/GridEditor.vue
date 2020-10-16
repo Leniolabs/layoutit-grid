@@ -272,7 +272,7 @@ export function handleLineDown(event, { row, col }) {
     if (!dragging.value && (new Date().getTime() - initialTime > 500 || farEnough(initialPos, pos))) {
       if (colLine || rowLine) {
         // Start dragging grid lines
-        dragging.value = { grid: grid.value, rowLine, colLine }
+        dragging.value = { grid: grid.value, rowLine, colLine, prevCursor: document.body.style.cursor }
         document.body.style.cursor = col && row ? 'move' : col ? 'col-resize' : 'row-resize'
         pause()
       }
@@ -302,8 +302,8 @@ export function handleLineDown(event, { row, col }) {
   const handleUp = () => {
     if (dragging.value) {
       // Finish dragging grid lines
+      document.body.style.cursor = dragging.value.prevCursor
       dragging.value = null
-      document.body.style.cursor = 'default'
       resume(true)
     } else if (new Date().getTime() - initialTime < 500) {
       gridLineRefs.value[col ? 'col' : 'row'][col || row].toggleLineName()
