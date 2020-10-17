@@ -36,6 +36,27 @@ export let codeCopied = false
 </script>
 
 <style scoped lang="scss">
+* {
+ scrollbar-width:thin;
+ scrollbar-color:#555 #111;
+}
+::-webkit-scrollbar {
+ width:5px
+}
+::-webkit-scrollbar:horizontal {
+ height:5px
+}
+::-webkit-scrollbar-track {
+ background:#111;
+ border-radius:10px
+}
+::-webkit-scrollbar-thumb {
+ background:#555;
+ border-radius:10px
+}
+::-webkit-scrollbar-thumb:hover {
+ background:#777;
+}
 .code-container {
   background: #23241f;
   border: solid 1px #2a2a2a;

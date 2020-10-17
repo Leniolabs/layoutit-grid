@@ -43,6 +43,27 @@ export const currentFlex = computed(() => currentArea.value.flex)
 </script>
 
 <style scoped lang="scss">
+* {
+ scrollbar-width:thin;
+ scrollbar-color:#491988 #300748;
+}
+::-webkit-scrollbar {
+ width:5px
+}
+::-webkit-scrollbar:horizontal {
+ height:5px
+}
+::-webkit-scrollbar-track {
+ background:#300748;
+ border-radius:10px
+}
+::-webkit-scrollbar-thumb {
+ background:#491988;
+ border-radius:10px
+}
+::-webkit-scrollbar-thumb:hover {
+ background:#5c26a2;
+}
 .area-name {
   background: #fdd835;
   color: #333;
