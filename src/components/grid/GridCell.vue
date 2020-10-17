@@ -96,9 +96,8 @@ section {
   background: #fff;
   height: 100%;
   position: relative;
-  cursor: pointer;
-  &.dragging {
-    cursor: default;
+  &:not(.dragging) {
+    cursor: pointer;
   }
   &.grayed {
     background: #dddddd;

@@ -26,7 +26,7 @@
     </div>
 
     <div
-      :class="['line-handle', type, { first: pos === 1 }]"
+      :class="['line-handle', type, { first: pos === 1, 'dragging-something': dragging }]"
       @pointerdown.stop="$emit('down', $event, { [type]: pos })"
     />
 
@@ -147,7 +147,9 @@ section {
         right: initial;
         left: calc(-10px - var(--gap));
       }
-      cursor: col-resize;
+      &:not(.dragging-something) {
+        cursor: col-resize;
+      }
     }
     &.row {
       right: 0;
@@ -158,7 +160,9 @@ section {
         bottom: initial;
         top: calc(-10px - var(--gap));
       }
-      cursor: row-resize;
+      &:not(.dragging-something) {
+        cursor: row-resize;
+      }
     }
 
     overflow: hidden;

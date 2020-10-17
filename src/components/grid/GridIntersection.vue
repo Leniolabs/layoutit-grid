@@ -5,11 +5,17 @@
       gridArea: `${row} / ${col} / ${row + 1} / ${col + 1}`,
     }"
   >
-    <div class="intersection-handle" @pointerdown.stop="$emit('down', $event, { row, col })" />
+    <div
+      :class="['intersection-handle', { 'dragging-something': dragging }]"
+      @pointerdown.stop="$emit('down', $event, { row, col })"
+    />
   </section>
 </template>
 
 <script setup="props, { emit }">
+export { dragging } from '../../store.js'
+import { computed } from 'vue'
+
 export default {
   props: {
     row: { type: Number, required: true },
@@ -20,8 +26,6 @@ export default {
   },
   emits: ['down'],
 }
-
-import { computed } from 'vue'
 
 export const grid = computed(() => props.area.grid)
 </script>
@@ -41,7 +45,9 @@ section {
     border-radius: 50%;
     left: calc(-10px - var(--colgap));
     top: calc(-10px - var(--rowgap));
-    cursor: move;
+    &:not(.dragging-something) {
+      cursor: move;
+    }
   }
 }
 </style>
