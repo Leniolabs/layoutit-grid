@@ -99,7 +99,7 @@ export const currentFlex = computed(() => currentArea.value.flex)
   display: grid;
   grid-template-rows: auto auto 1fr auto;
   overflow: auto;
-  padding: 0px 0px 0px 12px;
+  padding: 0 0 0 14px;
   text-align: left;
   transition: transform 0.2s ease-in;
   user-select: none;

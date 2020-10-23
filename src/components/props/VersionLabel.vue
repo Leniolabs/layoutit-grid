@@ -11,6 +11,7 @@
   color: #ccc;
   display: flex;
   justify-content: space-between;
+  font-weight: 700;
   font-family: monospace;
   padding: 6px 14px;
   text-align: center;

@@ -33,7 +33,8 @@ export const options = computed(() => units[props.type])
 <style scoped lang="scss">
 .unit-select {
   background: #fff;
-  border: 0;
+  border: 0 none;
+  border-radius: 2px;
   width: 100%;
   font-size: 14px;
 }

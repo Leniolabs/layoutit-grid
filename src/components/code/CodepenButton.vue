@@ -53,15 +53,18 @@ ${props.cssCode}
   font-family: inherit;
   font-size: 1em;
   text-align: center;
+  letter-spacing:0.2px;
   margin: 0 auto;
   background: #23241f;
   user-select: none;
-  border: solid 1px #2a2a2a;
+  border: solid 1px transparent;
   display: flex;
   align-items: center;
   padding: 10px 20px;
+  transition: all 0.2s ease-in-out;
+  text-shadow:rgba(0,0,0,0.3) 0 1px 1px;
   &:hover {
-    background: #333;
+    background: #000;
   }
 }
 </style>
