@@ -14,9 +14,10 @@
   </div>
   <div class="buttons">
     <CodepenButton :css-code="cssCode" :html-code="htmlCode" />
-    <SidebarButton :disabled="!saveDesign" class="btn-link" aria-label="Get Shareable Link" @click="getPermalink"
-      ><IconLink
-    /></SidebarButton>
+    <CodeSanboxButton :css-code="cssCode" :html-code="htmlCode" />
+    <SidebarButton :disabled="!saveDesign" class="btn-link" aria-label="Get Shareable Link" @click="getPermalink">
+      <IconLink />
+    </SidebarButton>
   </div>
   <div class="code-grid">
     <CssCodeEditor :area="area" :options="options" :code="cssCode" />
@@ -33,6 +34,7 @@ export { default as IconRedo } from '../icons/IconRedo.vue'
 export { default as DarkModeButton } from '../props/DarkModeButton.vue'
 export { default as SidebarButton } from '../basic/SidebarButton.vue'
 export { default as CodepenButton } from './CodepenButton.vue'
+export { default as CodeSanboxButton } from './CodeSanboxButton.vue'
 export { default as PermalinkBar } from './PermalinkBar.vue'
 export { default as LiveCodeOptions } from './LiveCodeOptions.vue'
 export { default as HtmlCodeEditor } from './HtmlCodeEditor.vue'
