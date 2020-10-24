@@ -152,15 +152,19 @@ export function removeFromDimension(grid, type, n) {
   const { areas } = grid
   for (let i = 0; i < areas.length; ) {
     const { gridRegion } = areas[i]
-    if (n + 1 < gridRegion[type].start) {
-      --gridRegion[type].start
-      --gridRegion[type].end
-    } else if (n + 1 < gridRegion[type].end) {
-      --gridRegion[type].end
-    }
-    if (gridRegion[type].end <= gridRegion[type].start) {
-      // delete area if it collapses
-      areas.splice(i, 1)
+    if (gridRegion) {
+      if (n + 1 < gridRegion[type].start) {
+        --gridRegion[type].start
+        --gridRegion[type].end
+      } else if (n + 1 < gridRegion[type].end) {
+        --gridRegion[type].end
+      }
+      if (gridRegion[type].end <= gridRegion[type].start) {
+        // delete area if it collapses
+        areas.splice(i, 1)
+      } else {
+        ++i
+      }
     } else {
       ++i
     }

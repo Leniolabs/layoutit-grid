@@ -1,7 +1,7 @@
 <template>
   <section
     :class="{ grayed: !isActive }"
-    :style="{ 'grid-area': getGridArea(area), 'border-color': area.color }"
+    :style="{ 'grid-area': area.gridRegion && getGridArea(area), 'border-color': area.color }"
     class="area-editor"
     @pointerdown="handleDown($event)"
   >
@@ -48,16 +48,12 @@ export function handleDown(event) {
 
 <style scoped lang="scss">
 .area-editor {
+  position: relative;
   pointer-events: none;
   touch-action: none;
   background: #fff;
   height: 100%;
   cursor: pointer;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
   border: 2px solid;
   background: rgba(255, 255, 255, 0.7);
   &.grayed {

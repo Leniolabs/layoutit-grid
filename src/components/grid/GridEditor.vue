@@ -1,65 +1,76 @@
 <template>
-  <section
-    ref="gridEl"
-    :class="{ active: isCurrent, dragging }"
-    :style="{
-      gridTemplateRows,
-      gridTemplateColumns,
-      gridGap,
-      display: 'grid',
-    }"
-    class="grid"
-    @pointerdown="$refs.selection.cellDown($event)"
-  >
-    <GridCell
-      v-for="(section, i) in gridSections(grid)"
-      :key="`section-${i}`"
-      :area="area"
-      :section="section"
-      :grayed="!isActive"
-      :focused="isFocused(section)"
-    />
+  <div class="container">
+    <section
+      ref="gridEl"
+      :class="{ active: isCurrent, dragging }"
+      :style="{
+        gridTemplateRows,
+        gridTemplateColumns,
+        gridGap,
+        display: 'grid',
+      }"
+      class="grid"
+      @pointerdown="$refs.selection.cellDown($event)"
+    >
+      <GridCell
+        v-for="(section, i) in gridSections(grid)"
+        :key="`section-${i}`"
+        :area="area"
+        :section="section"
+        :grayed="!isActive"
+        :focused="isFocused(section)"
+      />
 
-    <GridTrack
-      v-for="track in gridTracks"
-      :key="`track-${track.type}-${track.pos}`"
-      :area="area"
-      :type="track.type"
-      :pos="track.pos"
-    />
+      <GridTrack
+        v-for="track in gridTracks"
+        :key="`track-${track.type}-${track.pos}`"
+        :area="area"
+        :type="track.type"
+        :pos="track.pos"
+      />
 
-    <GridLine
-      v-for="line in gridLines"
-      :ref="
-        (el) => {
-          if (el) {
-            gridLineRefs[line.type][line.pos] = el
+      <GridLine
+        v-for="line in gridLines"
+        :ref="
+          (el) => {
+            if (el) {
+              gridLineRefs[line.type][line.pos] = el
+            }
           }
-        }
-      "
-      :key="`line-${line.type}-${line.pos}`"
-      :area="area"
-      :type="line.type"
-      :pos="line.pos"
-      :gap="computedGap[line.type]"
-      @down="handleLineDown"
-    />
+        "
+        :key="`line-${line.type}-${line.pos}`"
+        :area="area"
+        :type="line.type"
+        :pos="line.pos"
+        :gap="computedGap[line.type]"
+        @down="handleLineDown"
+      />
 
-    <GridIntersection
-      v-for="intersection in gridIntersections"
-      :key="`intersection-${intersection.row}-${intersection.col}`"
-      :area="area"
-      :row="intersection.row"
-      :col="intersection.col"
-      :colgap="computedGap.col"
-      :rowgap="computedGap.row"
-      @down="handleLineDown"
-    />
+      <GridIntersection
+        v-for="intersection in gridIntersections"
+        :key="`intersection-${intersection.row}-${intersection.col}`"
+        :area="area"
+        :row="intersection.row"
+        :col="intersection.col"
+        :colgap="computedGap.col"
+        :rowgap="computedGap.row"
+        @down="handleLineDown"
+      />
 
-    <AreaEditor v-for="a in areasToShow" :key="`area-${a.name}`" :area="a" @edit="$refs.selection.editArea(a)" />
-
-    <AreaSelection ref="selection" :area="area" @editstart="(a) => (editingArea = a)" @editend="editingArea = null" />
-  </section>
+      <AreaSelection ref="selection" :area="area" @editstart="(a) => (editingArea = a)" @editend="editingArea = null" />
+    </section>
+    <section
+      :style="{
+        gridTemplateRows,
+        gridTemplateColumns,
+        gridGap,
+        display: 'grid',
+      }"
+      class="grid-areas"
+    >
+      <AreaEditor v-for="a in areasToShow" :key="`area-${a.name}`" :area="a" @edit="$refs.selection.editArea(a)" />
+    </section>
+  </div>
 </template>
 
 <script setup="props, { el }">
@@ -318,6 +329,10 @@ export function handleLineDown(event, { row, col }) {
 </script>
 
 <style scoped lang="scss">
+.container {
+  position: relative;
+  height: 100%;
+}
 .grid {
   touch-action: none;
   pointer-events: initial;
@@ -327,5 +342,16 @@ export function handleLineDown(event, { row, col }) {
   background: repeating-linear-gradient(45deg, white, white 9px, #f5f5f5 9px, #f5f5f5 14px);
   overflow: hidden;
   user-select: none;
+}
+.grid-areas {
+  touch-action: none;
+  pointer-events: none;
+  overflow: hidden;
+  user-select: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
 }
 </style>

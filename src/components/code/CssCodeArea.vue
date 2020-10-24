@@ -49,8 +49,10 @@ export const templateAreas = computed(() => getGridTemplateAreas(props.area.grid
 export const includeTemplateAreas = computed(() => props.options.templateAreas && templateAreas.value !== undefined)
 
 export const gridArea = computed(() => {
+  if (!props.area.gridRegion) {
+    return undefined
+  }
   const { parent } = props.area
-
   if (parent) {
     return props.options.templateAreas && getGridTemplateAreas(parent.grid)
       ? cssAreaName.value

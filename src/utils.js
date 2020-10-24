@@ -59,13 +59,15 @@ export function gridTemplateAreasMatrix(grid) {
   let validTemplate = true
 
   grid.areas.forEach(({ name, gridRegion }) => {
-    const { row, col } = gridRegion
-    for (let r = row.start; r < row.end; ++r) {
-      for (let c = col.start; c < col.end; ++c) {
-        if (chunkAreas[r - 1][c - 1] !== '.') {
-          validTemplate = false
+    if (gridRegion) {
+      const { row, col } = gridRegion
+      for (let r = row.start; r < row.end; ++r) {
+        for (let c = col.start; c < col.end; ++c) {
+          if (chunkAreas[r - 1][c - 1] !== '.') {
+            validTemplate = false
+          }
+          chunkAreas[r - 1][c - 1] = toCssName(name)
         }
-        chunkAreas[r - 1][c - 1] = toCssName(name)
       }
     }
   })
