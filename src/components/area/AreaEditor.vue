@@ -1,7 +1,12 @@
 <template>
   <section
     :class="{ grayed: !isActive }"
-    :style="{ 'grid-area': area.gridRegion && getGridArea(area), 'border-color': area.color }"
+    :style="{
+      'grid-area': area.gridRegion && getGridArea(area),
+      'border-color': area.color,
+      width: area.width,
+      height: area.height,
+    }"
     class="area-editor"
     @pointerdown="handleDown($event)"
   >

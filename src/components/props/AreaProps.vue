@@ -1,6 +1,11 @@
 <template>
   <div class="area-props">
     <button v-if="area.grid" @click="addImplicitArea">Add Implicit Area</button>
+    <div class="items sizes">
+      <h2><span>⊞</span> Area Size</h2>
+      <AreaSize :area="area" type="width" />
+      <AreaSize :area="area" type="height" />
+    </div>
     <FlexOptions v-if="area.flex" :flex="area.flex" />
     <GridOptions v-if="area.grid" :grid="area.grid" />
   </div>
@@ -9,6 +14,7 @@
 <script setup="props">
 export { default as FlexOptions } from './FlexOptions.vue'
 export { default as GridOptions } from './GridOptions.vue'
+export { default as AreaSize } from '../common/AreaSize.vue'
 
 import { ref, computed } from 'vue'
 import { createAreaState } from '../../store'
@@ -61,5 +67,10 @@ export function addImplicitArea() {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #5c26a2;
+}
+
+.items {
+  font-size: 11px;
+  margin-bottom: 10px;
 }
 </style>

@@ -218,9 +218,11 @@ export function createAreaState({
   grid = null,
   flex = null,
   gridRegion = null,
+  width = '100%',
+  height = '100%',
   parent = null,
 }) {
-  return { name, color, grid, flex, gridRegion, parent }
+  return { name, color, grid, flex, gridRegion, width, height, parent }
 }
 
 function createMainAreaState() {
