@@ -6,6 +6,10 @@
       <AreaSize :area="area" type="width" />
       <AreaSize :area="area" type="height" />
     </div>
+    <template v-if="area.parent && area.parent.grid">
+      <PlacementSelect v-model="area.justifySelf" type="justify-self" />
+      <PlacementSelect v-model="area.alignSelf" type="align-self" />
+    </template>
     <FlexOptions v-if="area.flex" :flex="area.flex" />
     <GridOptions v-if="area.grid" :grid="area.grid" />
   </div>
@@ -15,6 +19,7 @@
 export { default as FlexOptions } from './FlexOptions.vue'
 export { default as GridOptions } from './GridOptions.vue'
 export { default as AreaSize } from '../common/AreaSize.vue'
+export { default as PlacementSelect } from '../common/PlacementSelect.vue'
 
 import { ref, computed } from 'vue'
 import { createAreaState } from '../../store'

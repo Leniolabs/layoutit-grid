@@ -90,6 +90,10 @@ export function createGridDimension(n) {
     sizes: new Array(n).fill('1fr'),
     lineNames: newLineNames(n + 1),
     gap: '0px',
+    justifyContent: 'stretch',
+    alignContent: 'stretch',
+    justifyItems: 'stretch',
+    alignItems: 'stretch',
   }
 }
 
@@ -220,9 +224,11 @@ export function createAreaState({
   gridRegion = null,
   width = '100%',
   height = '100%',
+  justifySelf = 'stretch',
+  alignSelf = 'stretch',
   parent = null,
 }) {
-  return { name, color, grid, flex, gridRegion, width, height, parent }
+  return { name, color, grid, flex, gridRegion, width, height, justifySelf, alignSelf, parent }
 }
 
 function createMainAreaState() {
@@ -230,6 +236,8 @@ function createMainAreaState() {
     name: 'grid-container',
     color: colors[0],
     grid: createGridState(3, 4),
+    justifySelf: 'center',
+    alignSelf: 'start',
   })
 }
 

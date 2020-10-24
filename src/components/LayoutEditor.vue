@@ -1,7 +1,9 @@
 <template>
   <MobileButtons @toggle-props="toggleView('props')" @toggle-code="toggleView('code')" />
   <PropsSidebar :area="mainArea" />
-  <GridEditor :area="mainArea" />
+  <div class="area-editor-container">
+    <AreaEditor :area="mainArea" />
+  </div>
   <SidebarRight>
     <template #body>
       <LiveCode :area="mainArea" :save-design="saveDesign" />
@@ -11,7 +13,6 @@
 
 <script setup>
 export { default as MobileButtons } from './MobileButtons.vue'
-export { default as GridEditor } from './grid/GridEditor.vue'
 export { default as AreaEditor } from './area/AreaEditor.vue'
 export { default as SidebarRight } from './basic/SidebarRight.vue'
 export { default as PropsSidebar } from './props/PropsSidebar.vue'
@@ -167,6 +168,11 @@ p {
       }
     }
   }
+}
+
+.area-editor-container {
+  display: grid;
+  overflow: scroll;
 }
 
 .mobile-buttons {

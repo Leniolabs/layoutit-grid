@@ -1,5 +1,9 @@
 <template>
   <div class="grid-settings-container">
+    <PlacementSelect v-model="grid.justifyContent" type="justify-content" />
+    <PlacementSelect v-model="grid.alignContent" type="align-content" />
+    <PlacementSelect v-model="grid.justifyItems" type="justify-items" />
+    <PlacementSelect v-model="grid.alignItems" type="align-items" />
     <div class="items columns">
       <div class="items-header">
         <h2><span style="transform: rotate(90deg); display: inline-block">≑</span> Grid Columns</h2>
@@ -112,6 +116,7 @@ export { default as IconAdd } from '../icons/IconAdd.vue'
 export { default as UnitSelect } from '../common/UnitSelect.vue'
 export { default as GapInput } from '../common/GapInput.vue'
 export { default as OptionsButton } from '../basic/OptionsButton.vue'
+export { default as PlacementSelect } from '../common/PlacementSelect.vue'
 
 export default {
   props: {
@@ -238,14 +243,14 @@ h2 {
 .remove-button {
   background: var(--color-remove);
   //background:transparent;
-  border-radius:4px;
-  opacity:0.5;
-  padding:8px 0;
+  border-radius: 4px;
+  opacity: 0.5;
+  padding: 8px 0;
   //max-width:18px;
   &:hover {
     background: var(--color-remove-active);
     //background:transparent;
-    opacity:1;
+    opacity: 1;
   }
 }
 

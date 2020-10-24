@@ -65,6 +65,10 @@
         gridTemplateColumns,
         gridGap,
         display: 'grid',
+        justifyContent: grid.justifyContent,
+        alignContent: grid.alignContent,
+        justifyItems: grid.justifyItems,
+        alignItems: grid.alignItems,
       }"
       class="grid-areas"
     >

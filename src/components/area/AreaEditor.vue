@@ -6,6 +6,8 @@
       'border-color': area.color,
       width: area.width,
       height: area.height,
+      justifySelf: area.justifySelf,
+      alignSelf: area.alignSelf,
     }"
     class="area-editor"
     @pointerdown="handleDown($event)"
