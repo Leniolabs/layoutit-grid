@@ -50,6 +50,7 @@ export function valueUnitToString({ value, unit }) {
     case 'min-content':
     case 'max-content':
     case 'auto':
+    case 'initial':
       return unit
     default:
       return `${value}${unit}`
@@ -88,6 +89,7 @@ function typeIndex(type) {
 export function createGridDimension(n) {
   return {
     sizes: new Array(n).fill('1fr'),
+    auto: 'initial',
     lineNames: newLineNames(n + 1),
     gap: '0px',
     justifyContent: 'stretch',
@@ -135,6 +137,24 @@ export function setColValueUnit(grid, n, x) {
 
 export function setColValue(grid, n, value) {
   setColValueUnit(grid, n, { value, unit: getColUnit(grid, n) })
+}
+
+export function withChangedValue(current, newValue) {
+  return valueUnitToString({ value: newValue, unit: parseUnit(current) })
+}
+
+export const unitMeasureMap = {
+  px: 300,
+  fr: 1,
+  em: 4,
+  '%': 10,
+  minmax: '20px, 60px',
+  auto: '',
+  'min-content': '',
+  'max-content': '',
+}
+export function withChangedUnit(current, newUnit) {
+  return valueUnitToString({ value: unitMeasureMap[newUnit], unit: newUnit })
 }
 
 export function addToDimension(dimension, val) {

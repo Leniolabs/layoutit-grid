@@ -18,7 +18,7 @@
           @mouseleave="currentHover = null"
         >
           <input
-            :style="{ visibility: unitHasValue(getColUnit(grid, column - 1)) ? 'visible' : 'hidden' }"
+            :style="{ visibility: unitHasValue(getColUnit(grid)) ? 'visible' : 'hidden' }"
             :value="getColValue(grid, column - 1)"
             :class="{
               active: isFocused('col', column),
@@ -51,6 +51,23 @@
           >
             <IconRemove />
           </OptionsButton>
+        </div>
+        <div>
+          <input
+            :style="{ visibility: unitHasValue(parseUnit(grid.col.auto)) ? 'visible' : 'hidden' }"
+            :value="parseValue(grid.col.auto)"
+            :type="parseUnit(grid.col.auto) === 'minmax' ? 'text' : 'number'"
+            :aria-label="`grid-auto-columns size`"
+            min="0"
+            step="0.5"
+            @input="grid.col.auto = withChangedValue(grid.col.auto, $event.target.value)"
+          />
+          <UnitSelect
+            :value="parseUnit(grid.col.auto)"
+            type="auto"
+            :aria-label="`grid-auto-columns unit`"
+            @input="grid.col.auto = withChangedUnit(grid.col.auto, $event.target.value)"
+          />
         </div>
       </div>
     </div>
@@ -100,6 +117,23 @@
             <IconRemove />
           </OptionsButton>
         </div>
+        <div>
+          <input
+            :style="{ visibility: unitHasValue(parseUnit(grid.row.auto)) ? 'visible' : 'hidden' }"
+            :value="parseValue(grid.row.auto)"
+            :type="parseUnit(grid.row.auto) === 'minmax' ? 'text' : 'number'"
+            :aria-label="`grid-auto-rows size`"
+            min="0"
+            step="0.5"
+            @input="grid.row.auto = withChangedValue(grid.row.auto, $event.target.value)"
+          />
+          <UnitSelect
+            :value="parseUnit(grid.row.auto)"
+            type="auto"
+            :aria-label="`grid-auto-rows unit`"
+            @input="grid.row.auto = withChangedUnit(grid.row.auto, $event.target.value)"
+          />
+        </div>
       </div>
     </div>
     <div class="items gaps">
@@ -137,7 +171,11 @@ export {
   getColUnit,
   setColValue,
   removeCol,
+  parseUnit,
+  parseValue,
   dragging,
+  withChangedValue,
+  withChangedUnit,
 } from '../../store.js'
 
 import { setRowValueUnit, setColValueUnit } from '../../store.js'
@@ -150,7 +188,7 @@ const { grid } = toRefs(props)
 export const { colsNumber, rowsNumber } = useGridDimensions(grid)
 
 export function unitHasValue(unit) {
-  return !(unit === 'auto' || unit === 'min-content' || unit === 'max-content')
+  return !(unit === 'initial' || unit === 'auto' || unit === 'min-content' || unit === 'max-content')
 }
 
 // TODO: compute new value using previous size

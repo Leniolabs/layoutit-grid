@@ -63,6 +63,8 @@
       :style="{
         gridTemplateRows,
         gridTemplateColumns,
+        gridAutoRows: grid.row.auto,
+        gridAutoColumns: grid.col.auto,
         gridGap,
         display: 'grid',
         justifyContent: grid.justifyContent,
