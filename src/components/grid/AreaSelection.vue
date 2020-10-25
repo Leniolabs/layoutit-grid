@@ -167,7 +167,7 @@ export function saveSelection() {
       })
       emit('editend', sa)
     } else {
-      grid.value.areas.push(
+      props.area.children.push(
         createAreaState({
           name: toCssName(gridName.value),
           gridRegion: selectionArea(selection.value),

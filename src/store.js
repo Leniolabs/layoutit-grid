@@ -82,7 +82,6 @@ function typeIndex(type) {
     lineNames
     gap
   }
-  areas
 }
 */
 
@@ -103,7 +102,6 @@ export function createGridState(r = 2, c = 3) {
   return {
     row: createGridDimension(r),
     col: createGridDimension(c),
-    areas: [],
   }
 }
 
@@ -172,10 +170,10 @@ export function addRow(grid, rowStr) {
   addToDimension(grid.row, rowStr)
 }
 
-export function removeFromDimension(grid, type, n) {
-  const { areas } = grid
-  for (let i = 0; i < areas.length; ) {
-    const { gridRegion } = areas[i]
+export function removeFromDimension(area, type, n) {
+  const { grid, children } = area
+  for (let i = 0; i < children.length; ) {
+    const { gridRegion } = children[i]
     if (gridRegion) {
       if (n + 1 < gridRegion[type].start) {
         --gridRegion[type].start
@@ -185,7 +183,7 @@ export function removeFromDimension(grid, type, n) {
       }
       if (gridRegion[type].end <= gridRegion[type].start) {
         // delete area if it collapses
-        areas.splice(i, 1)
+        children.splice(i, 1)
       } else {
         ++i
       }
@@ -199,12 +197,12 @@ export function removeFromDimension(grid, type, n) {
   })
 }
 
-export function removeCol(grid, n) {
-  removeFromDimension(grid, 'col', n)
+export function removeCol(area, n) {
+  removeFromDimension(area, 'col', n)
 }
 
 export function removeRow(grid, n) {
-  removeFromDimension(grid, 'row', n)
+  removeFromDimension(area, 'row', n)
 }
 
 // FlexItem { name, color, grow, shrink, basis }
@@ -247,9 +245,10 @@ export function createAreaState({
   justifySelf = 'stretch',
   alignSelf = 'stretch',
   items = null,
+  children = [],
   parent = null,
 }) {
-  return { name, color, grid, flex, gridRegion, width, height, justifySelf, alignSelf, items, parent }
+  return { name, color, grid, flex, gridRegion, width, height, justifySelf, alignSelf, items, children, parent }
 }
 
 function createMainAreaState() {
@@ -274,7 +273,7 @@ export const darkmode = ref(false)
 function parentify(area, parent = null) {
   area.parent = parent
   if (area.grid) {
-    area.grid.areas.forEach((child) => parentify(child, area))
+    area.children.forEach((child) => parentify(child, area))
   }
   return area
 }
@@ -299,7 +298,7 @@ export const { undo, redo, undoStack, redoStack, pause, resume, batch } = useRef
 
 export function isValidAreaName(newName, area = mainArea.value) {
   const { name, grid } = area
-  return name !== newName && !(grid && !grid.areas.every((a) => isValidAreaName(newName, a)))
+  return name !== newName && !(grid && !area.children.every((a) => isValidAreaName(newName, a)))
 }
 
 export function getRandomColor() {
@@ -327,8 +326,8 @@ export function clearArea(area) {
 }
 
 export function removeArea(area) {
-  const { areas } = area.parent.grid
-  areas.splice(areas.indexOf(area), 1)
+  const { children } = area.parent
+  children.splice(children.indexOf(area), 1)
   deselectCurrentArea()
 }
 

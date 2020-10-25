@@ -18,11 +18,11 @@ export { currentArea }
 
 export const cssAreaName = computed(() => toCssName(props.area.name))
 
-function getGridTemplateAreas(grid) {
-  return grid ? gridTemplateAreas(grid, '\n    ') : undefined
+function getGridTemplateAreas(area) {
+  return area.grid ? gridTemplateAreas(area, '\n    ') : undefined
 }
 
-export const templateAreas = computed(() => getGridTemplateAreas(props.area.grid))
+export const templateAreas = computed(() => getGridTemplateAreas(props.area))
 
 export const includeTemplateAreas = computed(() => props.options.templateAreas && templateAreas.value !== undefined)
 
@@ -30,7 +30,7 @@ export const gridArea = computed(() => {
   const { parent } = props.area
 
   if (parent) {
-    return props.options.templateAreas && getGridTemplateAreas(parent.grid)
+    return props.options.templateAreas && getGridTemplateAreas(parent)
       ? cssAreaName.value
       : getGridArea(props.area, parent.grid)
   } else {

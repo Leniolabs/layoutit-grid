@@ -6,7 +6,7 @@ export function areaToCSS(area, { parentGrid, useTemplateAreas = true, validTemp
   const cssName = toCssName(name)
   let css = `.${cssName} {${singleLine ? '' : '\n'}`
   if (grid) {
-    css += gridToCSS(name, grid, { useTemplateAreas, repeat })
+    css += gridToCSS(area, { useTemplateAreas, repeat })
   }
 
   const gridArea = getGridArea(area, parentGrid)
@@ -16,8 +16,8 @@ export function areaToCSS(area, { parentGrid, useTemplateAreas = true, validTemp
   css += `${singleLine ? ' ' : '\n'}}\n`
 
   if (grid) {
-    const validTemplateAreas = gridTemplateAreas(grid) !== undefined
-    grid.areas.forEach((area) => {
+    const validTemplateAreas = gridTemplateAreas(area) !== undefined
+    area.children.forEach((area) => {
       css += '\n' + areaToCSS(area, { parentGrid: grid, useTemplateAreas, validTemplateAreas, repeat })
     })
   }
@@ -29,14 +29,15 @@ export function areaToCSS(area, { parentGrid, useTemplateAreas = true, validTemp
   return css
 }
 
-export function gridToCSS(name, grid, { useTemplateAreas = true, repeat }) {
+export function gridToCSS(area, { useTemplateAreas = true, repeat }) {
+  const { grid } = area
   let css = `  display: grid;
   grid-template-columns: ${namedTemplateColumns(grid, repeat)};
   grid-template-rows: ${namedTemplateRows(grid, repeat)};
   gap: ${grid.row.gap} ${grid.col.gap};` // TODO: cssGridGap(grid)
 
   if (useTemplateAreas) {
-    const templateAreas = gridTemplateAreas(grid, '\n    ')
+    const templateAreas = gridTemplateAreas(area, '\n    ')
     if (templateAreas) {
       css += `\n  grid-template-areas:\n    ${templateAreas};`
     }
@@ -53,7 +54,7 @@ function ie_areaToCSS_i(area, { repeat }) {
 
   let css = `  .${toCssName(name)} {\n`
   if (grid) {
-    css += ie_gridToCSS(grid, repeat) + '\n'
+    css += ie_gridToCSS(area, repeat) + '\n'
   }
 
   const { gridRegion } = area
@@ -68,7 +69,7 @@ function ie_areaToCSS_i(area, { repeat }) {
   css += '  }\n'
 
   if (grid) {
-    grid.areas.forEach((area) => {
+    area.children.forEach((area) => {
       css += '\n' + ie_areaToCSS_i(area, { repeat })
     })
   }
@@ -76,10 +77,10 @@ function ie_areaToCSS_i(area, { repeat }) {
   return css
 }
 
-export function ie_gridToCSS(grid, repeat) {
+export function ie_gridToCSS(area, repeat) {
   let css = `    display: -ms-grid;
-    -ms-grid-columns: ${namedTemplateColumns(grid, repeat)};
-    -ms-grid-rows: ${namedTemplateRows(grid, repeat)};`
+    -ms-grid-columns: ${namedTemplateColumns(area.grid, repeat)};
+    -ms-grid-rows: ${namedTemplateRows(area.grid, repeat)};`
   return css
 }
 
@@ -87,21 +88,17 @@ export function identString(ident) {
   return '  '.repeat(ident)
 }
 
-export function areaToHTML(area) {
-  return gridToHTML(area.grid, 'grid-container', 0)
-}
-
-function areasToHTML(grid, ident = 0) {
+function areasToHTML(area, ident = 0) {
   let html = ''
-  grid.areas.forEach((area) => {
-    html += '\n' + identString(ident) + gridToHTML(area.grid, area.name, ident)
+  area.children.forEach((child) => {
+    html += '\n' + identString(ident) + areaToHTML(child, ident)
   })
-  if (grid.areas.length > 0) {
+  if (area.children.length > 0) {
     html += '\n' + identString(ident - 1) // ident for parent </div>
   }
   return html
 }
 
-export function gridToHTML(grid, name, ident) {
-  return `<div class="${toCssName(name)}">${grid ? areasToHTML(grid, ident + 1) : ''}</div>`
+export function areaToHTML(area, ident = 0) {
+  return `<div class="${toCssName(area.name)}">${areasToHTML(area, ident + 1)}</div>`
 }

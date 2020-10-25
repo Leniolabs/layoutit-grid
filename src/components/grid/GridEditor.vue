@@ -121,7 +121,7 @@ export const grid = computed(() => props.area.grid)
 export const editingArea = ref(null)
 
 export const areasToShow = computed(() => {
-  return grid.value.areas
+  return props.area.children
     .filter((a) => a !== editingArea.value)
     .flatMap((a) =>
       a.items

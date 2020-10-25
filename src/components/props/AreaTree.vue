@@ -10,7 +10,7 @@
     >
       {{ area.name }}
     </div>
-    <AreaTree v-for="a in area.grid ? area.grid.areas : []" :key="`area-${a.name}`" :area="a" />
+    <AreaTree v-for="a in area.children" :key="`area-${a.name}`" :area="a" />
   </div>
 </template>
 

@@ -45,7 +45,7 @@
             class="remove-button"
             :aria-label="`remove column ${column}`"
             :disabled="grid.col.sizes.length === 1"
-            @click="removeCol(grid, column - 1)"
+            @click="removeCol(area, column - 1)"
             @mouseover.stop="currentHover = { on: 'track', grid, type: 'col', track: column, action: 'remove' }"
             @mouseleave="currentHover = null"
           >
@@ -110,7 +110,7 @@
             class="remove-button"
             :aria-label="`remove row ${row}`"
             :disabled="grid.row.sizes.length === 1"
-            @click="removeRow(grid, row - 1)"
+            @click="removeRow(area, row - 1)"
             @mouseover.stop="currentHover = { on: 'track', grid, type: 'row', track: row, action: 'remove' }"
             @mouseleave="currentHover = null"
           >
@@ -152,13 +152,15 @@ export { default as GapInput } from '../common/GapInput.vue'
 export { default as OptionsButton } from '../basic/OptionsButton.vue'
 export { default as PlacementSelect } from '../common/PlacementSelect.vue'
 
+import { computed } from 'vue'
+
 export default {
   props: {
-    grid: { type: Object, required: true },
+    area: { type: Object, required: true },
   },
 }
 
-import { toRefs } from 'vue'
+export const grid = computed(() => props.area.grid)
 
 export {
   addCol,
@@ -182,8 +184,6 @@ import { setRowValueUnit, setColValueUnit } from '../../store.js'
 import { useGridDimensions } from '../../composables/area.js'
 import { unitMeasureMap } from '../../utils.js'
 export { currentFocus, currentHover } from '../../store.js'
-
-const { grid } = toRefs(props)
 
 export const { colsNumber, rowsNumber } = useGridDimensions(grid)
 

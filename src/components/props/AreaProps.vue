@@ -24,7 +24,7 @@
       <PlacementSelect v-model="area.alignSelf" type="align-self" />
     </template>
     <FlexOptions v-if="area.flex" :flex="area.flex" />
-    <GridOptions v-if="area.grid" :grid="area.grid" />
+    <GridOptions v-if="area.grid" :area="area" />
   </div>
 </template>
 
@@ -51,7 +51,7 @@ export const currentFlex = computed(() => props.area.flex)
 
 const counter = ref(1)
 export function addImplicitArea() {
-  props.area.grid.areas.push(
+  props.area.children.push(
     createAreaState({
       name: 'a' + counter.value++,
       parent: props.area,
@@ -60,7 +60,7 @@ export function addImplicitArea() {
 }
 
 export function addItems() {
-  props.area.grid.areas.push(
+  props.area.children.push(
     createAreaState({
       name: '10 photos',
       parent: props.area,

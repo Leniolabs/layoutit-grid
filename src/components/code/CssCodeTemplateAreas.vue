@@ -29,11 +29,11 @@ export default {
 
 export { currentArea }
 
-function getGridTemplateAreas(grid) {
-  return grid ? gridTemplateAreasMatrix(grid) : []
+function getGridTemplateAreas(area) {
+  return area.grid ? gridTemplateAreasMatrix(area) : []
 }
 
-export const templateAreas = computed(() => getGridTemplateAreas(props.area.grid))
+export const templateAreas = computed(() => getGridTemplateAreas(props.area))
 </script>
 
 <style scoped lang="scss">

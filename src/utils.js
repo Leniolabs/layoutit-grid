@@ -47,7 +47,7 @@ export function gridSections(grid) {
   return sections
 }
 
-export function gridTemplateAreasMatrix(grid) {
+export function gridTemplateAreasMatrix({ grid, children }) {
   const colsNumber = grid.col.sizes.length
   const rowsNumber = grid.row.sizes.length
 
@@ -58,7 +58,7 @@ export function gridTemplateAreasMatrix(grid) {
 
   let validTemplate = true
 
-  grid.areas.forEach(({ name, gridRegion }) => {
+  children.forEach(({ name, gridRegion }) => {
     if (gridRegion) {
       const { row, col } = gridRegion
       for (let r = row.start; r < row.end; ++r) {
@@ -79,8 +79,8 @@ function matrixToTemplateAreas(matrix, separator) {
   return matrix.reduce((prev, item) => prev + `"${item.join(' ')}"${separator}`, '').trim()
 }
 
-export function gridTemplateAreas(grid, separator = ' ') {
-  const matrix = gridTemplateAreasMatrix(grid)
+export function gridTemplateAreas(area, separator = ' ') {
+  const matrix = gridTemplateAreasMatrix(area)
   return matrix && matrixToTemplateAreas(matrix, separator)
 }
 
