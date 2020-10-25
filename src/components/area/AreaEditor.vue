@@ -14,25 +14,50 @@
     @pointerdown="handleDown($event)"
   >
     <img
-      v-if="area.items"
+      v-if="area.type === 'image'"
       style="width: 100%; height: 100%; object-fit: cover"
-      :src="`https://picsum.photos/seed/${area.items.type + '-' + item}/200?grayscale`"
+      :src="`https://picsum.photos/seed/${area.items ? area.type + '-' + item : area.name}/500?grayscale`"
     />
+    <div
+      v-if="area.type === 'component'"
+      style="
+        width: 100%;
+        height: 100%;
+        opacity: 0.5;
+        padding: 20px;
+        display: grid;
+        justify-items: center;
+        align-items: center;
+      "
+    >
+      <PieChart />
+    </div>
+    <div
+      v-if="area.type === 'p'"
+      style="
+        width: 100%;
+        height: 100%;
+        opacity: 0.5;
+        padding: 20px;
+        display: grid;
+        justify-items: center;
+        align-items: center;
+      "
+    >
+      <p style="font-size: 20px">{{ area.name }}</p>
+    </div>
 
-    <template v-if="!area.items">
-      <GridEditor v-if="area.grid" :area="area" />
-
-      <FlexEditor v-if="area.flex" :area="area" />
-
-      <AreaInfo :area="area" @edit="$emit('edit')" />
-    </template>
+    <GridEditor v-if="area.display === 'grid'" :area="area" />
+    <FlexEditor v-if="area.display === 'flex'" :area="area" />
+    <AreaInfo v-if="!area.items" :area="area" @edit="$emit('edit')" />
   </section>
 </template>
 
 <script setup="props">
 export { default as AreaInfo } from './AreaInfo.vue'
-export { default as FlexEditor } from '../flex/FlexEditor.vue'
+export { default as PieChart } from '../content/PieChart.vue'
 // GridEditor imported globally due to circular reference with AreaEditor
+// export { default as FlexEditor } from '../flex/FlexEditor.vue'
 
 import { computed, defineAsyncComponent, toRefs } from 'vue'
 import { mainArea, currentArea, setCurrentArea } from '../../store.js'
@@ -53,6 +78,7 @@ export const isActive = useIsActiveArea(area)
 
 export function handleDown(event) {
   if (!props.area.grid) {
+    // TODO:
     event.stopPropagation()
     event.preventDefault()
     const parent = props.area.parent

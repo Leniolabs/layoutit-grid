@@ -30,7 +30,7 @@ export default {
 export { currentArea }
 
 function getGridTemplateAreas(area) {
-  return area.grid ? gridTemplateAreasMatrix(area) : []
+  return area.display === 'grid' ? gridTemplateAreasMatrix(area) : []
 }
 
 export const templateAreas = computed(() => getGridTemplateAreas(props.area))

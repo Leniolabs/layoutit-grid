@@ -201,7 +201,7 @@ export function removeCol(area, n) {
   removeFromDimension(area, 'col', n)
 }
 
-export function removeRow(grid, n) {
+export function removeRow(area, n) {
   removeFromDimension(area, 'row', n)
 }
 
@@ -237,6 +237,8 @@ const colors = [
 export function createAreaState({
   name = 'area',
   color = colors[0],
+  type = 'div',
+  display = 'block',
   grid = null,
   flex = null,
   gridRegion = null,
@@ -248,13 +250,30 @@ export function createAreaState({
   children = [],
   parent = null,
 }) {
-  return { name, color, grid, flex, gridRegion, width, height, justifySelf, alignSelf, items, children, parent }
+  return {
+    name,
+    color,
+    type,
+    display,
+    grid,
+    flex,
+    gridRegion,
+    width,
+    height,
+    justifySelf,
+    alignSelf,
+    items,
+    children,
+    parent,
+  }
 }
 
 function createMainAreaState() {
   return createAreaState({
     name: 'grid-container',
     color: colors[0],
+    type: 'div',
+    display: 'grid',
     grid: createGridState(3, 4),
     justifySelf: 'center',
     alignSelf: 'start',
@@ -272,9 +291,7 @@ export const darkmode = ref(false)
 
 function parentify(area, parent = null) {
   area.parent = parent
-  if (area.grid) {
-    area.children.forEach((child) => parentify(child, area))
-  }
+  area.children.forEach((child) => parentify(child, area))
   return area
 }
 

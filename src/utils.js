@@ -112,6 +112,7 @@ function namedRegionSide(gridRegion, parentGrid, type, side) {
 }
 
 export function getGridArea(area, parentGrid) {
+  // TODO: remove parentGrid
   if (area && area.gridRegion) {
     const rowStart = namedRegionSide(area.gridRegion, parentGrid, 'row', 'start')
     const colStart = namedRegionSide(area.gridRegion, parentGrid, 'col', 'start')

@@ -19,7 +19,7 @@ export { currentArea }
 export const cssAreaName = computed(() => toCssName(props.area.name))
 
 function getGridTemplateAreas(area) {
-  return area.grid ? gridTemplateAreas(area, '\n    ') : undefined
+  return area.display === 'grid' ? gridTemplateAreas(area, '\n    ') : undefined
 }
 
 export const templateAreas = computed(() => getGridTemplateAreas(props.area))

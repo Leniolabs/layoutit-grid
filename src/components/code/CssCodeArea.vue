@@ -1,5 +1,6 @@
 <template>
-  <span class="token selector">.<CssCodeAreaName :area="area" /></span><span> {</span>{{ area.grid ? '\n  ' : ' '
+  <span class="token selector">.<CssCodeAreaName :area="area" /></span><span> {</span
+  >{{ area.display === 'grid' ? '\n  ' : ' '
   }}<template v-if="area.grid"
     ><span class="token property">display</span>: <span class="token string">grid</span>;{{ '\n  '
     }}<span class="token property">grid-template-columns</span>:
@@ -14,9 +15,9 @@
     >{{ '\n  ' }}<span class="token property">grid-template-areas</span>:{{ '\n    '
     }}<CssCodeTemplateAreas :area="area" :options="options" />;</span
   ><template v-if="gridArea"
-    >{{ area.grid ? '\n  ' : '' }}<span class="token property">grid-area</span>:
+    >{{ area.display === 'grid' ? '\n  ' : '' }}<span class="token property">grid-area</span>:
     <CssCodeGridArea :area="area" :options="options" /></template
-  >{{ (area.grid ? '\n' : ' ') + '}'
+  >{{ (area.display === 'grid' ? '\n' : ' ') + '}'
   }}<template v-for="(a, i) in gridAreas" :key="i">{{ '\n' }}<CssCodeArea :area="a" :options="options" /></template>
 </template>
 
@@ -41,7 +42,7 @@ export default {
 export const cssAreaName = computed(() => props.area.name)
 
 function getGridTemplateAreas(area) {
-  return area.grid ? gridTemplateAreas(area, '\n    ') : undefined
+  return area.display === 'grid' ? gridTemplateAreas(area, '\n    ') : undefined
 }
 
 export const templateAreas = computed(() => getGridTemplateAreas(props.area))
@@ -62,7 +63,7 @@ export const gridArea = computed(() => {
   }
 })
 
-export const gridAreas = computed(() => (props.area.grid ? props.area.children : []))
+export const gridAreas = computed(() => (props.area.display === 'grid' ? props.area.children : []))
 </script>
 
 <style scoped lang="scss"></style>

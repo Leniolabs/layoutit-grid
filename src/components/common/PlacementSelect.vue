@@ -47,14 +47,14 @@ export const options = computed(() => optionsMap[props.type.split('-')[1]])
     width: 100%;
   }
 }
-.justify-select {
+.placement-select {
   background: #fff;
   border: 0 none;
   border-radius: 2px;
   width: 100%;
   font-size: 12px;
 }
-.justify-select.focused {
+.placement-select.focused {
   background: #e4f5e4;
 }
 </style>

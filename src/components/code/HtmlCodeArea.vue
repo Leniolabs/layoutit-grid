@@ -30,7 +30,7 @@ export default {
 
 export const cssAreaName = computed(() => toCssName(props.area.name))
 
-export const gridAreas = computed(() => (props.area.grid ? props.area.children : []))
+export const gridAreas = computed(() => (props.area.display === 'grid' ? props.area.children : []))
 </script>
 
 <style scoped lang="scss"></style>

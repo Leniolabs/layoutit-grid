@@ -24,6 +24,7 @@
         </div>
       </div>
       <br />
+      <!--
       <button @click="addItem">Add</button>
       <div class="inner-items-container">
         <h2><span style="display: inline-block">⚃</span> Flex Items</h2>
@@ -103,6 +104,7 @@
           </div>
         </div>
       </div>
+      -->
     </div>
   </div>
 </template>
@@ -114,10 +116,12 @@ import { currentItem, createFlexItemState } from '../../store.js'
 
 export default {
   props: {
-    flex: { type: Object, required: true },
+    area: { type: Object, required: true },
   },
 }
 
+export const flex = computed(() => props.area.flex)
+/*
 export const selectedFlexItems = computed(() => {
   return props.flex.items.filter((item, i) => {
     return i + 1 === currentItem.value || !props.flex.defaultItem === item
@@ -135,6 +139,7 @@ export function createNewItemIfDefault(item, i) {
   }
   return items[i - 1]
 }
+*/
 </script>
 
 <style scoped lang="scss">
