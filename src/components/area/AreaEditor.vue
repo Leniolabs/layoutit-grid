@@ -8,15 +8,24 @@
       height: area.height,
       justifySelf: area.justifySelf,
       alignSelf: area.alignSelf,
+      overflow: 'hidden',
     }"
     class="area-editor"
     @pointerdown="handleDown($event)"
   >
-    <GridEditor v-if="area.grid" :area="area" />
+    <img
+      v-if="area.items"
+      style="width: 100%; height: 100%; object-fit: cover"
+      :src="`https://picsum.photos/seed/${area.items.type + '-' + item}/200?grayscale`"
+    />
 
-    <FlexEditor v-if="area.flex" :area="area" />
+    <template v-if="!area.items">
+      <GridEditor v-if="area.grid" :area="area" />
 
-    <AreaInfo :area="area" @edit="$emit('edit')" />
+      <FlexEditor v-if="area.flex" :area="area" />
+
+      <AreaInfo :area="area" @edit="$emit('edit')" />
+    </template>
   </section>
 </template>
 
@@ -34,6 +43,7 @@ export { getGridArea } from '../../utils.js'
 export default {
   props: {
     area: { type: Object, required: true },
+    item: { type: Number, default: 1 },
   },
   emits: ['edit'],
 }

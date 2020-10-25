@@ -246,9 +246,10 @@ export function createAreaState({
   height = '100%',
   justifySelf = 'stretch',
   alignSelf = 'stretch',
+  items = null,
   parent = null,
 }) {
-  return { name, color, grid, flex, gridRegion, width, height, justifySelf, alignSelf, parent }
+  return { name, color, grid, flex, gridRegion, width, height, justifySelf, alignSelf, items, parent }
 }
 
 function createMainAreaState() {

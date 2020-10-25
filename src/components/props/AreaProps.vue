@@ -1,6 +1,19 @@
 <template>
   <div class="area-props">
     <button v-if="area.grid" @click="addImplicitArea">Add Implicit Area</button>
+    <button v-if="area.grid" @click="addItems">Add Some Items</button>
+
+    <div v-if="area.items">
+      <span>Items</span>
+      <input
+        :value="area.items.count"
+        type="number"
+        aria-label="items count"
+        min="1"
+        step="1"
+        @input=";(area.items.count = +$event.target.value), (area.name = area.items.count + ' photos')"
+      />
+    </div>
     <div class="items sizes">
       <h2><span>⊞</span> Area Size</h2>
       <AreaSize :area="area" type="width" />
@@ -42,6 +55,19 @@ export function addImplicitArea() {
     createAreaState({
       name: 'a' + counter.value++,
       parent: props.area,
+    })
+  )
+}
+
+export function addItems() {
+  props.area.grid.areas.push(
+    createAreaState({
+      name: '10 photos',
+      parent: props.area,
+      items: {
+        type: 'photo',
+        count: 10,
+      },
     })
   )
 }

@@ -74,7 +74,13 @@
       }"
       class="grid-areas"
     >
-      <AreaEditor v-for="a in areasToShow" :key="`area-${a.name}`" :area="a" @edit="$refs.selection.editArea(a)" />
+      <AreaEditor
+        v-for="a in areasToShow"
+        :key="`area-${a.area.name}`"
+        :item="a.item"
+        :area="a.area"
+        @edit="$refs.selection.editArea(a.area)"
+      />
     </section>
   </div>
 </template>
@@ -114,7 +120,17 @@ export const grid = computed(() => props.area.grid)
 
 export const editingArea = ref(null)
 
-export const areasToShow = computed(() => grid.value.areas.filter((a) => a !== editingArea.value))
+export const areasToShow = computed(() => {
+  return grid.value.areas
+    .filter((a) => a !== editingArea.value)
+    .flatMap((a) =>
+      a.items
+        ? new Array(a.items.count).fill(0).map((_, i) => {
+            return { area: a, item: i + 1 }
+          })
+        : { area: a, item: 1 }
+    )
+})
 
 export const gridLineRefs = ref({ col: [], row: [] })
 onBeforeUpdate(() => {
