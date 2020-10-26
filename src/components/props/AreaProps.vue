@@ -1,7 +1,7 @@
 <template>
   <div class="area-props">
     <div class="area-type">{{ area.type === 'div' ? area.display : area.type }} props</div>
-    <AreaTypeSelect v-if="area.parent" v-model="area.type" />
+    <AreaTypeSelect v-if="area.parent" :model-value="area.type" @update:modelValue="onUpdateType" />
     <template v-if="area.type === 'div'">
       <DisplaySelect :model-value="area.display" @update:modelValue="onUpdateDisplay" />
       <button @click="addImplicitArea">Add Implicit Area</button>
@@ -18,6 +18,14 @@
         />
       </div>
     </template>
+    <div v-if="area.type === 'p'">
+      <textarea
+        style="height: 3em"
+        :value="area.text"
+        aria-label="area text"
+        @input="area.text = $event.target.value"
+      />
+    </div>
 
     <div class="items sizes">
       <h2><span>⊞</span> Area Size</h2>
@@ -88,6 +96,15 @@ export default {
 
 export const currentGrid = computed(() => props.area.grid)
 export const currentFlex = computed(() => props.area.flex)
+
+export function onUpdateType(type) {
+  props.area.type = type
+  if (type === 'p') {
+    if (!props.area.text) {
+      props.area.text = 'Paragraph'
+    }
+  }
+}
 
 export function onUpdateDisplay(value) {
   props.area.display = value

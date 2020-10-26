@@ -47,7 +47,7 @@
         align-items: center;
       "
     >
-      <p style="font-size: 20px">{{ area.name }}</p>
+      <p style="font-size: 20px">{{ area.text }}</p>
     </div>
 
     <GridEditor v-if="area.display === 'grid'" :area="area" />
