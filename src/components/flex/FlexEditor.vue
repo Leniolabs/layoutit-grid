@@ -18,14 +18,6 @@ export { default as AreaEditor } from '../area/AreaEditor.vue'
 
 export { currentItem }
 
-/*
-  :class="{ selected: i + 1 === currentItem, grayed: !isActive }"
-  :style="{
-    'flex-grow': item.grow,
-    'flex-shrink': item.shrink,
-    'flex-basis': item.basis,
-  }"
-*/
 export default {
   props: {
     area: { type: Object, required: true },

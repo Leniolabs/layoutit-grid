@@ -4,10 +4,13 @@
     :style="{
       'grid-area': area.gridRegion && getGridArea(area),
       'border-color': area.color,
+      'justify-self': area.justifySelf,
+      'align-self': area.alignSelf,
+      'flex-grow': area.flexGrow,
+      'flex-shrink': area.flexShrink,
+      'flex-basis': area.flexBasis,
       width: area.width,
       height: area.height,
-      justifySelf: area.justifySelf,
-      alignSelf: area.alignSelf,
       overflow: 'hidden',
     }"
     class="area-editor"
@@ -49,6 +52,9 @@
 
     <GridEditor v-if="area.display === 'grid'" :area="area" />
     <FlexEditor v-if="area.display === 'flex'" :area="area" />
+
+    <AreaEditor v-for="(a, i) in area.children" :key="`area-${i}`" :area="a" />
+
     <AreaInfo v-if="!area.items" :area="area" @edit="$emit('edit')" />
   </section>
 </template>
@@ -66,6 +72,7 @@ import { useIsActiveArea } from '../../composables/area.js'
 export { getGridArea } from '../../utils.js'
 
 export default {
+  name: 'AreaEditor',
   props: {
     area: { type: Object, required: true },
     item: { type: Number, default: 1 },

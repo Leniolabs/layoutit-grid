@@ -23,88 +23,6 @@
           </select>
         </div>
       </div>
-      <br />
-      <!--
-      <button @click="addItem">Add</button>
-      <div class="inner-items-container">
-        <h2><span style="display: inline-block">⚃</span> Flex Items</h2>
-        <div class="inner-items">
-          <div>
-            Flex Grow
-            <input
-              :value="flex.defaultItem.grow"
-              type="number"
-              aria-label="flex grow"
-              @input="flex.defaultItem.grow = +$event.target.value"
-            />
-          </div>
-          <br />
-          <div>
-            Flex Shrink
-            <input
-              :value="flex.defaultItem.shrink"
-              type="number"
-              aria-label="flex shrink"
-              @input="flex.defaultItem.shrink = +$event.target.value"
-            />
-          </div>
-          <br />
-          <div>
-            Flex Basis
-            <input
-              :value="flex.defaultItem.basis"
-              type="text"
-              aria-label="flex basis"
-              @input="flex.defaultItem.basis = $event.target.value"
-            />
-          </div>
-        </div>
-
-        <div
-          v-for="(item, i) in selectedFlexItems"
-          :key="i"
-          :class="{ selected: i + 1 === currentItem }"
-          class="flex-item"
-        >
-          <br />
-          <h2>
-            <span style="display: inline-block">⚃</span>
-            Flex Item {{ i + 1 }}
-          </h2>
-          <div class="inner-items">
-            <div>
-              Flex Grow
-              <input
-                :value="item.grow"
-                type="number"
-                :aria-label="`item ${item} flex grow`"
-                @input="createNewItemIfDefault(item, i + 1).grow = +$event.target.value"
-              />
-            </div>
-            <br />
-            <div>
-              Flex Shrink
-              <input
-                :value="item.shrink"
-                type="number"
-                :aria-label="`item ${item} flex shrink`"
-                @input="createNewItemIfDefault(item, i + 1).shrink = +$event.target.value"
-              />
-            </div>
-            <br />
-            <div>
-              Flex Basis
-              <input
-                :value="item.basis"
-                type="text"
-                :aria-label="`item ${item} flex basis`"
-                @input="createNewItemIfDefault(item, i + 1).basis = $event.target.value"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      -->
     </div>
   </div>
 </template>
@@ -121,25 +39,6 @@ export default {
 }
 
 export const flex = computed(() => props.area.flex)
-/*
-export const selectedFlexItems = computed(() => {
-  return props.flex.items.filter((item, i) => {
-    return i + 1 === currentItem.value || !props.flex.defaultItem === item
-  })
-})
-
-export function addItem() {
-  props.flex.items.push(props.flex.defaultItem)
-}
-
-export function createNewItemIfDefault(item, i) {
-  const { defaultItem, items } = props.flex
-  if (defaultItem === item) {
-    items[i - 1] = createFlexItemState(defaultItem)
-  }
-  return items[i - 1]
-}
-*/
 </script>
 
 <style scoped lang="scss">

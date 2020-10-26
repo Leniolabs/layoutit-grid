@@ -217,13 +217,8 @@ export function createFlexItemState({
   return { name, color, grow, shrink, basis }
 }
 
-export function createFlexState({
-  direction = 'row',
-  wrap = 'nowrap',
-  defaultItem = createFlexItemState(),
-  items = [defaultItem, defaultItem, defaultItem, defaultItem],
-} = {}) {
-  return { direction, wrap, items, defaultItem }
+export function createFlexState({ direction = 'row', wrap = 'nowrap' } = {}) {
+  return { direction, wrap }
 }
 
 const colors = [
@@ -246,6 +241,9 @@ export function createAreaState({
   height = '100%',
   justifySelf = 'stretch',
   alignSelf = 'stretch',
+  flexGrow = 0,
+  flexShrink = 1,
+  flexBasis = '100%',
   items = null,
   children = [],
   parent = null,
@@ -262,6 +260,9 @@ export function createAreaState({
     height,
     justifySelf,
     alignSelf,
+    flexGrow,
+    flexShrink,
+    flexBasis,
     items,
     children,
     parent,
