@@ -50,6 +50,25 @@
       <p style="font-size: 20px">{{ area.text }}</p>
     </div>
 
+    <div
+      v-if="area.type === 'button'"
+      style="
+        width: 100%;
+        height: 100%;
+        opacity: 0.5;
+        padding: 20px;
+        display: grid;
+        justify-items: center;
+        align-items: center;
+      "
+    >
+      <button
+        style="border: none; padding: 10px; border-radius: 5px; font-size: 16px; font-weight: 700; background: #aaa"
+      >
+        {{ area.text }}
+      </button>
+    </div>
+
     <GridEditor v-if="area.display === 'grid'" :area="area" />
     <FlexEditor v-if="area.display === 'flex'" :area="area" />
 

@@ -104,6 +104,11 @@ export function onUpdateType(type) {
       props.area.text = 'Paragraph'
     }
   }
+  if (type === 'button') {
+    if (!props.area.text) {
+      props.area.text = 'Action'
+    }
+  }
 }
 
 export function onUpdateDisplay(value) {
