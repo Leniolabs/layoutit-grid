@@ -14,10 +14,10 @@
     "lodash-es": "4.17.15",
     "lz-string": "^1.4.4",
     "pepjs": "0.5.2",
-    "vue": "^v3.0.0"
+    "vue": "^v3.0.2"
   },
   "devDependencies": {
-    "@vue/compiler-sfc": "^v3.0.0",
+    "@vue/compiler-sfc": "^v3.0.2",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.10.0",
     "eslint-config-prettier": "^6.12.0",
@@ -27,7 +27,7 @@
     "lint-staged": "^10.4.0",
     "prettier": "^2.1.2",
     "sass": "1.26.10",
-    "vite": "^v1.0.0-rc.4"
+    "vite": "v1.0.0-rc.8"
   },
   "bugs": {
     "url": "https://github.com/leniolabs/layoutit-grid/issues"
