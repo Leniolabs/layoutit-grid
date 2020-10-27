@@ -2,90 +2,17 @@
   <div class="area-props">
     <div class="area-type">{{ area.type === 'div' ? area.display : area.type }} props</div>
     <AreaTypeSelect v-if="area.parent" :model-value="area.type" @update:modelValue="onUpdateType" />
-    <template v-if="area.type === 'div'">
-      <DisplaySelect :model-value="area.display" @update:modelValue="onUpdateDisplay" />
-      <button @click="addImplicitArea">Add Implicit Area</button>
-      <!--button @click="addItems">Add Some Items</button-->
-      <div v-if="area.items">
-        <span>Items</span>
-        <input
-          :value="area.items.count"
-          type="number"
-          aria-label="items count"
-          min="1"
-          step="1"
-          @input=";(area.items.count = +$event.target.value), (area.name = area.items.count + ' photos')"
-        />
-      </div>
-    </template>
-    <div v-if="area.type === 'p'">
-      <textarea
-        style="height: 3em"
-        :value="area.text"
-        aria-label="area text"
-        @input="area.text = $event.target.value"
-      />
-    </div>
-
-    <div class="items sizes">
-      <h2><span>⊞</span> Area Size</h2>
-      <AreaSize :area="area" type="width" />
-      <AreaSize :area="area" type="height" />
-    </div>
-    <template v-if="area.parent && area.parent.display === 'grid'">
-      <PlacementSelect v-model="area.justifySelf" type="justify-self" />
-      <PlacementSelect v-model="area.alignSelf" type="align-self" />
-    </template>
-    <template v-if="area.parent && area.parent.display === 'flex'">
-      <div class="inner-items">
-        <div>
-          Flex Grow
-          <input
-            :value="area.flexGrow"
-            type="number"
-            aria-label="flex grow"
-            @input="area.flexGrow = +$event.target.value"
-          />
-        </div>
-        <br />
-        <div>
-          Flex Shrink
-          <input
-            :value="area.flexShrink"
-            type="number"
-            aria-label="flex shrink"
-            @input="area.flexShrink = +$event.target.value"
-          />
-        </div>
-        <br />
-        <div>
-          Flex Basis
-          <input
-            :value="area.flexBasis"
-            type="text"
-            aria-label="flex basis"
-            @input="area.flexBasis = $event.target.value"
-          />
-        </div>
-      </div>
-    </template>
-    <FlexOptions v-if="area.display === 'flex'" :area="area" />
-    <GridOptions v-if="area.display === 'grid'" :area="area" />
+    <AreaContentProps :area="area" />
+    <AreaLayoutProps :area="area" />
   </div>
 </template>
 
 <script setup="props">
-export { default as FlexOptions } from './FlexOptions.vue'
-export { default as GridOptions } from './GridOptions.vue'
-export { default as AreaSize } from '../common/AreaSize.vue'
-export { default as PlacementSelect } from '../common/PlacementSelect.vue'
+export { default as AreaContentProps } from './AreaContentProps.vue'
+export { default as AreaLayoutProps } from './AreaLayoutProps.vue'
 export { default as AreaTypeSelect } from '../common/AreaTypeSelect.vue'
-export { default as DisplaySelect } from '../common/DisplaySelect.vue'
 
-import { ref, computed, watch, toRefs } from 'vue'
-import { createAreaState } from '../../store'
-export { currentArea, currentView, createFlexState } from '../../store.js'
-export { gridRegionToGridArea } from '../../utils.js'
+import { computed } from 'vue'
 
 export default {
   name: 'AreaProps',
@@ -109,38 +36,6 @@ export function onUpdateType(type) {
       props.area.text = 'Action'
     }
   }
-}
-
-export function onUpdateDisplay(value) {
-  props.area.display = value
-  if (props.area.display === 'flex') {
-    if (!props.area.flex) {
-      props.area.flex = createFlexState()
-    }
-  }
-}
-
-const counter = ref(1)
-export function addImplicitArea() {
-  props.area.children.push(
-    createAreaState({
-      name: 'a' + counter.value++,
-      parent: props.area,
-    })
-  )
-}
-
-export function addItems() {
-  props.area.children.push(
-    createAreaState({
-      name: '10 photos',
-      parent: props.area,
-      type: 'image',
-      items: {
-        count: 10,
-      },
-    })
-  )
 }
 </script>
 
