@@ -11,12 +11,10 @@
 
 <script setup="props">
 import { computed, toRefs } from 'vue'
-import { mainArea, currentArea, currentItem } from '../../store.js'
+import { mainArea, currentArea } from '../../store.js'
 export { deselectCurrentArea } from '../../store.js'
 import { useIsActiveArea } from '../../composables/area.js'
 export { default as AreaEditor } from '../area/AreaEditor.vue'
-
-export { currentItem }
 
 export default {
   props: {
@@ -28,11 +26,6 @@ export const flex = computed(() => props.area.flex)
 
 const { area } = toRefs(props)
 export const isActive = useIsActiveArea(area)
-
-export function toggleFlexItem(item) {
-  currentArea.value = props.area
-  currentItem.value = item === props.currentItem ? null : item
-}
 </script>
 
 <style scoped lang="scss">

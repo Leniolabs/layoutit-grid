@@ -30,8 +30,6 @@
 <script setup="props">
 import { computed } from 'vue'
 
-import { currentItem, createFlexItemState } from '../../store.js'
-
 export default {
   props: {
     area: { type: Object, required: true },
