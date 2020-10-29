@@ -76,4 +76,4 @@ Your dev server will start and be running at
 
 ## Creators
 
-Layoutit grid is crafted with love by [Leniolabs](https://leniolabs.com/) and a growing community of contributors. We build digital experiences with your ideas. [Get in touch!](https://leniolabs.com/#contact)
+Layoutit grid is crafted with love by [Leniolabs](https://leniolabs.com/) and a growing community of contributors. We build digital experiences with your ideas. [Get in touch!](https://www.leniolabs.com/services)
