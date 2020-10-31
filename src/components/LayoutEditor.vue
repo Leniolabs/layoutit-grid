@@ -171,6 +171,7 @@ p {
 }
 
 .area-editor-container {
+  display: grid;
   overflow: auto;
 }
 

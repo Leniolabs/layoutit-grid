@@ -78,10 +78,13 @@
       :computed-gap="computedGap"
       :implicit-grid="implicitGrid"
     />
+
+    <!-- Add back when there is special markup for flex 
     <FlexEditor v-if="area.display === 'flex'" :area="area" />
-
-    <AreaBox v-for="(a, i) in area.children" :key="`area-info-${a.name}`" :area="a" :grid-area="gridAreas[i]" />
-
+    -->
+    <template v-if="area.display === 'grid'">
+      <AreaBox v-for="(a, i) in area.children" :key="`area-info-${a.name}`" :area="a" :grid-area="gridAreas[i]" />
+    </template>
     <p v-if="area != mainArea" :style="{ backgroundColor: area.color }" class="area-name">{{ area.name }}</p>
   </component>
 </template>
@@ -162,6 +165,8 @@ function gridStyles(grid) {
 function flexStyles(flex) {
   return {
     display: 'flex',
+    'flex-direction': flex.direction,
+    'flex-wrap': flex.wrap,
   }
 }
 

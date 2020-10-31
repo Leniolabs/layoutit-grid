@@ -10,7 +10,7 @@ import { createGridState } from './store/grid.js'
 
 function createMainAreaState() {
   return createAreaState({
-    name: 'grid-container',
+    name: 'container',
     type: 'div',
     display: 'grid',
     grid: createGridState(3, 4),

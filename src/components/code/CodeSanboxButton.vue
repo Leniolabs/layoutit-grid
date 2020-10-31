@@ -28,7 +28,7 @@ export default {
   },
 }
 
-const containerClass = 'grid-container'
+const containerClass = 'container'
 export const codesanboxJSON = computed(() =>
   getParameters({
     files: {
