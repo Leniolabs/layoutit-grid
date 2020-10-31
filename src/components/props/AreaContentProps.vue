@@ -1,7 +1,7 @@
 <template>
   <template v-if="area.type === 'div'">
     <DisplaySelect :model-value="area.display" @update:modelValue="onUpdateDisplay" />
-    <button @click="addImplicitArea">Add Implicit Area</button>
+    <button @click="addImplicitArea">Add Area</button>
     <!--
       <button @click="addItems">Add Some Items</button>
       <div v-if="area.items">

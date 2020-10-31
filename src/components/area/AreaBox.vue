@@ -5,8 +5,9 @@
       position: 'relative',
       'pointer-events': 'none',
       'touch-action': 'none',
-      'grid-area': gridArea,
-      'border-color': area.color,
+      'grid-area': gridArea || (area.gridRegion && getGridArea(area)),
+      border: `2px solid ${area.color}`,
+      opacity: 0.5,
       'flex-grow': area.flexGrow,
       'flex-shrink': area.flexShrink,
       'flex-basis': area.flexBasis,
@@ -15,6 +16,7 @@
       overflow: 'hidden',
     }"
   >
+    <!--
     <div
       v-if="!isMain"
       :style="{ top: 5 + toolbarStart * 32 + 'px', left: toolbarStart ? toolbarStart * 20 + 'px' : '5px' }"
@@ -23,6 +25,7 @@
       <AreaName :area="area" @edit="$emit('edit')" />
       <AreaButtons :area="area" />
     </div>
+    -->
   </section>
 </template>
 
@@ -34,40 +37,32 @@ import { computed, toRefs } from 'vue'
 import { getAreaDepth } from '../../store.js'
 import { useIsMainArea } from '../../composables/area.js'
 
-import { getGridArea } from '../../utils.js'
+export { getGridArea } from '../../utils.js'
 
 export default {
   props: {
     area: { type: Object, required: true },
+    gridArea: { type: String, default: undefined },
   },
   emits: ['edit'],
 }
 
+/*
 const { area } = toRefs(props)
 export const isMain = useIsMainArea(area)
-
-export const gridArea = computed(() => {
-  const a = area.value
-  if (a.gridRegion) {
-    return getGridArea(a)
-  } else {
-    const areas = a.parent.children
-    const grid = a.parent.grid
-    const cols = grid.col.sizes.length,
-      rows = grid.row.sizes.length
-  }
-})
 
 export const toolbarStart = computed(() => {
   const { gridRegion } = props.area
   return gridRegion ? (gridRegion.col.start === 1 && gridRegion.row.start === 1 ? getAreaDepth(props.area) - 1 : 0) : 0
 })
+*/
 </script>
 
 <style scoped lang="scss">
 .area-box {
   // outline: 1px solid red;
 }
+/*
 .area-info {
   position: absolute;
   top: 5px;
@@ -79,4 +74,5 @@ export const toolbarStart = computed(() => {
     clear: both;
   }
 }
+*/
 </style>

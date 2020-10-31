@@ -70,3 +70,55 @@ export function isValidAreaName(newName, area = mainArea.value) {
   const { name, grid } = area
   return name !== newName && !(grid && !area.children.every((a) => isValidAreaName(newName, a)))
 }
+
+// This should go in grid.js, we need to check again if we can use sync:pre in the history management before
+
+export function addToDimension(dimension, val) {
+  batch(() => {
+    dimension.sizes.push(val)
+    dimension.lineNames.push({ active: false, name: '' })
+  })
+}
+
+export function addCol(grid, colStr) {
+  addToDimension(grid.col, colStr)
+}
+
+export function addRow(grid, rowStr) {
+  addToDimension(grid.row, rowStr)
+}
+
+export function removeFromDimension(area, type, n) {
+  const { grid, children } = area
+  for (let i = 0; i < children.length; ) {
+    const { gridRegion } = children[i]
+    if (gridRegion) {
+      if (n + 1 < gridRegion[type].start) {
+        --gridRegion[type].start
+        --gridRegion[type].end
+      } else if (n + 1 < gridRegion[type].end) {
+        --gridRegion[type].end
+      }
+      if (gridRegion[type].end <= gridRegion[type].start) {
+        // delete area if it collapses
+        children.splice(i, 1)
+      } else {
+        ++i
+      }
+    } else {
+      ++i
+    }
+  }
+  batch(() => {
+    grid[type].sizes.splice(n, 1)
+    grid[type].lineNames.splice(n, 1)
+  })
+}
+
+export function removeCol(area, n) {
+  removeFromDimension(area, 'col', n)
+}
+
+export function removeRow(area, n) {
+  removeFromDimension(area, 'row', n)
+}

@@ -141,6 +141,15 @@
       <GapInput :grid="grid" type="row" />
       <GapInput :grid="grid" type="col" />
     </div>
+    <div class="auto-flow-container">
+      <span>grid-auto-flow</span>
+      <select v-model="grid.autoFlow" class="auto-flow">
+        <option value="row">row</option>
+        <option value="column">column</option>
+        <option value="row dense">row dense</option>
+        <option value="column dense">column dense</option>
+      </select>
+    </div>
   </div>
 </template>
 
@@ -198,11 +207,11 @@ function defaultValueForUnit(unit) {
 }
 
 export function onRowUnitInput(unit, row) {
-  setRowValueUnit(props.grid, row, { value: defaultValueForUnit(unit), unit })
+  setRowValueUnit(props.area.grid, row, { value: defaultValueForUnit(unit), unit })
 }
 
 export function onColUnitInput(unit, col) {
-  setColValueUnit(props.grid, col, { value: defaultValueForUnit(unit), unit })
+  setColValueUnit(props.area.grid, col, { value: defaultValueForUnit(unit), unit })
 }
 
 export function isFocused(type, track) {

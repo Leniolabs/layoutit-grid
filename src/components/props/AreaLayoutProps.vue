@@ -4,6 +4,14 @@
     <AreaSize :area="area" type="width" />
     <AreaSize :area="area" type="height" />
   </div>
+  <div>
+    <label>margin</label>
+    <input :value="area.margin" aria-label="margin" @input="area.margin = $event.target.value" />
+  </div>
+  <div>
+    <label>padding</label>
+    <input :value="area.padding" aria-label="padding" @input="area.padding = $event.target.value" />
+  </div>
   <template v-if="area.parent && area.parent.display === 'grid'">
     <PlacementSelect v-model="area.justifySelf" type="justify-self" />
     <PlacementSelect v-model="area.alignSelf" type="align-self" />

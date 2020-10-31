@@ -1,0 +1,16 @@
+<template>
+  <p :style="{ ...style, 'font-size': '20px', opacity: '0.5' }">
+    {{ area.text }}
+  </p>
+</template>
+
+<script setup="props">
+export default {
+  props: {
+    area: { type: Object, required: true },
+    style: { type: Object, required: true },
+  },
+}
+</script>
+
+<style scoped lang="scss"></style>

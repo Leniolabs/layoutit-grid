@@ -1,97 +1,62 @@
 <template>
-  <div class="container">
-    <section
-      ref="gridEl"
-      :class="{ active: isCurrent, dragging }"
-      :style="{
-        gridTemplateRows,
-        gridTemplateColumns,
-        gridGap,
-        display: 'grid',
-      }"
-      class="grid"
-      @pointerdown="$refs.selection.cellDown($event)"
-    >
-      <GridCell
-        v-for="(section, i) in gridSections(grid)"
-        :key="`section-${i}`"
-        :area="area"
-        :section="section"
-        :grayed="!isActive"
-        :focused="isFocused(section)"
-      />
+  <GridCell
+    v-for="(section, i) in gridSections(grid)"
+    :key="`section-${i}`"
+    :area="area"
+    :section="section"
+    :grayed="!isActive"
+    :focused="isFocused(section)"
+    @pointerdown="(event) => $refs.selection.cellDown(event)"
+  />
 
-      <GridTrack
-        v-for="track in gridTracks"
-        :key="`track-${track.type}-${track.pos}`"
-        :area="area"
-        :type="track.type"
-        :pos="track.pos"
-      />
+  <GridTrack
+    v-for="track in gridTracks"
+    :key="`track-${track.type}-${track.pos}`"
+    :area="area"
+    :type="track.type"
+    :pos="track.pos"
+  />
 
-      <GridLine
-        v-for="line in gridLines"
-        :ref="
-          (el) => {
-            if (el) {
-              gridLineRefs[line.type][line.pos] = el
-            }
-          }
-        "
-        :key="`line-${line.type}-${line.pos}`"
-        :area="area"
-        :type="line.type"
-        :pos="line.pos"
-        :gap="computedGap[line.type]"
-        @down="handleLineDown"
-      />
+  <GridLine
+    v-for="line in gridLines"
+    :ref="
+      (el) => {
+        if (el) {
+          gridLineRefs[line.type][line.pos] = el
+        }
+      }
+    "
+    :key="`line-${line.type}-${line.pos}`"
+    :area="area"
+    :type="line.type"
+    :pos="line.pos"
+    :gap="computedGap[line.type]"
+    @down="handleLineDown"
+  />
 
-      <GridIntersection
-        v-for="intersection in gridIntersections"
-        :key="`intersection-${intersection.row}-${intersection.col}`"
-        :area="area"
-        :row="intersection.row"
-        :col="intersection.col"
-        :colgap="computedGap.col"
-        :rowgap="computedGap.row"
-        @down="handleLineDown"
-      />
+  <GridIntersection
+    v-for="intersection in gridIntersections"
+    :key="`intersection-${intersection.row}-${intersection.col}`"
+    :area="area"
+    :row="intersection.row"
+    :col="intersection.col"
+    :colgap="computedGap.col"
+    :rowgap="computedGap.row"
+    @down="handleLineDown"
+  />
 
-      <AreaSelection ref="selection" :area="area" @editstart="(a) => (editingArea = a)" @editend="editingArea = null" />
-    </section>
-    <section
-      :style="{
-        gridTemplateRows,
-        gridTemplateColumns,
-        gridAutoRows: grid.row.auto,
-        gridAutoColumns: grid.col.auto,
-        gridGap,
-        display: 'grid',
-        justifyContent: grid.justifyContent,
-        alignContent: grid.alignContent,
-        justifyItems: grid.justifyItems,
-        alignItems: grid.alignItems,
-      }"
-      class="grid-areas"
-    >
-      <AreaEditor
-        v-for="a in areasToShow"
-        :key="`area-${a.area.name}`"
-        :item="a.item"
-        :area="a.area"
-        @edit="$refs.selection.editArea(a.area)"
-      />
-    </section>
-  </div>
+  <AreaSelection ref="selection" :area="area" @editstart="(a) => (editingArea = a)" @editend="editingArea = null" />
 </template>
 
 <script setup="props, { el }">
+// @edit="$emit('edit')"
 export { default as GridCell } from './GridCell.vue'
 export { default as GridTrack } from './GridTrack.vue'
 export { default as GridLine } from './GridLine.vue'
 export { default as GridIntersection } from './GridIntersection.vue'
 export { default as AreaSelection } from './AreaSelection.vue'
 export { default as AreaEditor } from '../area/AreaEditor.vue'
+export { default as AreaInfo } from '../area/AreaInfo.vue'
 
 export {
   currentArea,
@@ -113,6 +78,14 @@ export { gridSections } from '../../utils.js'
 export default {
   props: {
     area: { type: Object, required: true },
+    computedStyles: { type: Object, default: null },
+    computedGap: {
+      type: Object,
+      default: () => {
+        return { col: '0px', row: '0px' }
+      },
+    },
+    implicitGrid: { type: Object, required: true },
   },
 }
 
@@ -161,31 +134,6 @@ export const gridTemplateColumns = computed(() => gridSizesForView('col'))
 const { area } = toRefs(props)
 export const isCurrent = useIsCurrentArea(area)
 export const isActive = useIsActiveArea(area)
-
-export const gridEl = ref(null)
-export const computedStyles = ref(null)
-export const computedGap = ref({ col: '0px', row: '0px' })
-watch(
-  grid,
-  () => {
-    nextTick(() => {
-      computedStyles.value = window.getComputedStyle(gridEl.value)
-      const colGap = parseValueUnit(grid.value.col.gap)
-      const rowGap = parseValueUnit(grid.value.row.gap)
-      computedGap.value = {
-        col:
-          colGap.unit === '%'
-            ? (parseValue(computedStyles.value.width) / 100) * colGap.value + 'px'
-            : computedStyles.value.columnGap,
-        row:
-          rowGap.unit === '%'
-            ? (parseValue(computedStyles.value.height) / 100) * rowGap.value + 'px'
-            : computedStyles.value.rowGap,
-      }
-    })
-  },
-  { immediate: true, deep: true, flush: 'post' }
-)
 
 function tracksFor(type) {
   return grid.value[type].sizes.map((size, i) => {
@@ -292,9 +240,9 @@ export function handleLineDown(event, { row, col }) {
   const initialPos = { x: event.clientX, y: event.clientY }
   const initialTime = new Date().getTime()
   const initialRowSizes = [...grid.value.row.sizes]
-  const initialRowComputedSizes = computedStyles.value.gridTemplateRows.split(/\s/g)
+  const initialRowComputedSizes = props.computedStyles.gridTemplateRows.split(/\s/g)
   const initialColSizes = [...grid.value.col.sizes]
-  const initialColComputedSizes = computedStyles.value.gridTemplateColumns.split(/\s/g)
+  const initialColComputedSizes = props.computedStyles.gridTemplateColumns.split(/\s/g)
   const rowsNumber = grid.value.row.sizes.length
   const colsNumber = grid.value.col.sizes.length
   const rowLine = row && row > 1 && row <= rowsNumber ? row : undefined
@@ -351,21 +299,8 @@ export function handleLineDown(event, { row, col }) {
 </script>
 
 <style scoped lang="scss">
-.container {
-  position: relative;
-  height: 100%;
-}
-.grid {
-  touch-action: none;
-  pointer-events: initial;
-  height: 100%;
-  position: relative;
-  background: #300548;
-  background: repeating-linear-gradient(45deg, white, white 9px, #f5f5f5 9px, #f5f5f5 14px);
-  overflow: hidden;
-  user-select: none;
-}
-.grid-areas {
+.grid-areas,
+.grid-area-info {
   touch-action: none;
   pointer-events: none;
   overflow: hidden;

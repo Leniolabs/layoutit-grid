@@ -171,8 +171,7 @@ p {
 }
 
 .area-editor-container {
-  display: grid;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .mobile-buttons {
