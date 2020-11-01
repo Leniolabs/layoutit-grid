@@ -16,6 +16,8 @@ function createMainAreaState() {
     grid: createGridState(3, 4),
     justifySelf: 'center',
     alignSelf: 'start',
+    width: '100%',
+    height: '100%',
   })
 }
 

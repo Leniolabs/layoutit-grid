@@ -1,6 +1,7 @@
 <template>
   <p :style="{ ...style, 'font-size': '20px', opacity: '0.5' }">
     {{ area.text }}
+    <slot />
   </p>
 </template>
 

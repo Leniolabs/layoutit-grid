@@ -1,7 +1,7 @@
 <template>
-  <span class="token selector">.<CssCodeAreaName :area="area" /></span><span> {</span>{{ singleLine ? ' ' : '\n  '
-  }}<template v-if="area.grid"
-    ><span class="token property">display</span>: <span class="token string">grid</span>;<template
+  <span class="token selector">.<CssCodeAreaName :area="area" /></span><span> {</span
+  ><template v-if="area.grid"
+    >{{ '\n  ' }}<span class="token property">display</span>: <span class="token string">grid</span>;<template
       v-if="area.grid.autoFlow !== 'row'"
       >{{ '\n  ' }}<span class="token property">grid-auto-flow</span>:
       <span class="token string">{{ area.grid.autoFlow }}</span
@@ -51,7 +51,7 @@
       >;</template
     ></template
   ><template v-if="gridArea"
-    >{{ singleLine ? '' : '\n  ' }}<span class="token property">grid-area</span>:
+    >{{ singleLine ? ' ' : '\n  ' }}<span class="token property">grid-area</span>:
     <CssCodeGridArea :area="area" :options="options" />;</template
   >{{ (singleLine ? ' ' : '\n') + '}'
   }}<template v-for="(a, i) in areasToInclude" :key="i"

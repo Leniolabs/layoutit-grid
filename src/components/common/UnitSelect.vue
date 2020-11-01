@@ -16,6 +16,7 @@ const units = {
   grid: validGridUnits,
   flex: ['px', '%', 'em'],
   default: ['px', '%', 'em'],
+  size: ['px', '%', 'em', 'initial'],
   auto: [...validGridUnits, 'initial'],
 }
 

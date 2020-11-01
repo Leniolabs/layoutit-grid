@@ -7,35 +7,20 @@
       position: 'relative',
       'pointer-events': 'none',
       'touch-action': 'none',
-      'grid-area': gridArea || (area.gridRegion && getGridArea(area)),
-      border: area !== mainArea ? `2px solid ${area.color}` : 'none',
-      'justify-self': area.justifySelf,
-      'align-self': area.alignSelf,
-      'flex-grow': area.flexGrow,
-      'flex-shrink': area.flexShrink,
-      'flex-basis': area.flexBasis,
-      width: area.width,
-      height: area.height,
+      ...gridAreaStyles(area, gridArea),
       overflow: 'hidden',
       'touch-action': 'none',
       position: 'relative',
       background:
         area.display === 'block'
-          ? '#ffffff88'
-          : 'repeating-linear-gradient(45deg, white, white 9px, #f5f5f5 9px, #f5f5f5 14px)',
+          ? '#ffffff'
+          : 'repeating-linear-gradient(45deg, white, white 9px, #fafafa 9px, #fafafa 14px)',
       'user-select': 'none',
       'z-index': 0,
       ...displayStyles,
     }"
     :area="area"
   >
-    <AreaEditor
-      v-for="(a, i) in area.children"
-      :key="`area-${a.name}`"
-      :area="a"
-      :grid-area="gridAreas[i]"
-      @edit="$refs.selection.editArea(a)"
-    />
     <!--
     <div
       v-if="area.type === 'component'"
@@ -79,13 +64,24 @@
       :implicit-grid="implicitGrid"
     />
 
+    <AreaEditor
+      v-for="(a, i) in area.children"
+      :key="`area-${a.name}`"
+      :area="a"
+      :grid-area="gridAreas[i]"
+      @edit="$refs.selection.editArea(a)"
+    />
     <!-- Add back when there is special markup for flex 
     <FlexEditor v-if="area.display === 'flex'" :area="area" />
     -->
     <template v-if="area.display === 'grid'">
-      <AreaBox v-for="(a, i) in area.children" :key="`area-info-${a.name}`" :area="a" :grid-area="gridAreas[i]" />
+      <template v-for="(a, i) in area.children" :key="`area-info-${a.name}`">
+        <AreaBox :area="a" :grid-area="gridAreas[i]" />
+      </template>
     </template>
-    <p v-if="area != mainArea" :style="{ backgroundColor: area.color }" class="area-name">{{ area.name }}</p>
+    <div v-if="area != mainArea" class="area-info" :style="{ border: `2px solid ${area.color}` }">
+      <p :style="{ backgroundColor: area.color }" class="area-name">{{ area.name }}</p>
+    </div>
   </component>
 </template>
 
@@ -145,6 +141,21 @@ function gridSizesForView(grid, type) {
       }
     })
     .join(' ')
+}
+
+export function gridAreaStyles(area, gridArea) {
+  return {
+    'grid-area': gridArea || (area.gridRegion && getGridArea(area)),
+    'justify-self': area.justifySelf,
+    'align-self': area.alignSelf,
+    'flex-grow': area.flexGrow,
+    'flex-shrink': area.flexShrink,
+    'flex-basis': area.flexBasis,
+    margin: area.margin,
+    padding: area.padding,
+    width: area.width,
+    height: area.height,
+  }
 }
 
 function gridStyles(grid) {
@@ -308,14 +319,27 @@ watch(
   }
 }
 
+.area-info {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
 .area-name {
   position: absolute;
+  /*
   bottom: -14px;
   right: 0;
+  border-top-left-radius: 6px;
   padding: 5px 7px 5px 10px;
+  */
+  top: 0;
+  left: 0;
+  border-bottom-right-radius: 6px;
+  padding: 3px 10px 6px 7px;
   font-size: 13px;
   font-weight: 500;
   color: white;
-  border-top-left-radius: 6px;
 }
 </style>

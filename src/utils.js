@@ -7,6 +7,7 @@ export const unitMeasureMap = {
   auto: '',
   'min-content': '',
   'max-content': '',
+  initial: '',
 }
 
 export function templateRows(grid) {

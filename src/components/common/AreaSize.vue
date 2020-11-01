@@ -2,13 +2,14 @@
   <div class="area-size">
     <div class="input-container">
       <input
+        v-if="size.unit !== 'initial'"
         :value="size.value"
         aria-label="size value"
         type="number"
         min="0"
         @input="setSizeValue($event.target.value)"
       />
-      <UnitSelect :value="size.unit" aria-label="size unit" @input="setSizeUnit($event.target.value)" />
+      <UnitSelect type="size" :value="size.unit" aria-label="size unit" @input="setSizeUnit($event.target.value)" />
     </div>
   </div>
 </template>
@@ -18,6 +19,7 @@ export { default as UnitSelect } from './UnitSelect.vue'
 
 import { computed } from 'vue'
 import { parseValueUnit } from '../../store.js'
+import { unitMeasureMap } from '../../utils.js'
 
 export default {
   props: {
@@ -40,7 +42,7 @@ export function setSizeValue(value) {
 
 export function setSizeUnit(unit) {
   // TODO: Adjust value to avoid jump
-  setSize(size.value.value + unit)
+  setSize(unitMeasureMap[unit] + unit)
 }
 </script>
 
