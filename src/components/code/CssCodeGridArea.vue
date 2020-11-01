@@ -3,9 +3,9 @@
 </template>
 
 <script setup="props, { emit }">
-import { dragging, currentArea, isValidAreaName } from '../../store.js'
+import { dragging, currentArea, isValidAreaName, getGridRegion } from '../../store.js'
 import { computed } from 'vue'
-import { getGridArea, gridTemplateAreas, toCssName } from '../../utils.js'
+import { getGridAreaWithNamedLines, gridTemplateAreas, toCssName } from '../../utils.js'
 
 export default {
   props: {
@@ -27,14 +27,17 @@ export const templateAreas = computed(() => getGridTemplateAreas(props.area))
 export const includeTemplateAreas = computed(() => props.options.templateAreas && templateAreas.value !== undefined)
 
 export const gridArea = computed(() => {
+  const gridRegion = getGridRegion(props.area) // TODO: span
+  if (!gridRegion) {
+    return undefined
+  }
   const { parent } = props.area
-
   if (parent) {
     return props.options.templateAreas && getGridTemplateAreas(parent)
       ? cssAreaName.value
-      : getGridArea(props.area, parent.grid)
+      : getGridAreaWithNamedLines(props.area, parent.grid)
   } else {
-    return getGridArea(props.area)
+    return getGridAreaWithNamedLines(props.area)
   }
 })
 </script>

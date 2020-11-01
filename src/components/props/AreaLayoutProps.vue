@@ -15,6 +15,10 @@
   <template v-if="area.parent && area.parent.display === 'grid'">
     <PlacementSelect v-model="area.justifySelf" type="justify-self" />
     <PlacementSelect v-model="area.alignSelf" type="align-self" />
+    <div>
+      <label>grid-area</label>
+      <input :value="area.gridArea" aria-label="margin" @input="setGridArea($event.target.value)" />
+    </div>
   </template>
   <template v-if="area.parent && area.parent.display === 'flex'">
     <div class="inner-items">
@@ -58,7 +62,7 @@ export { default as FlexOptions } from './FlexOptions.vue'
 export { default as GridOptions } from './GridOptions.vue'
 export { default as AreaSize } from '../common/AreaSize.vue'
 export { default as PlacementSelect } from '../common/PlacementSelect.vue'
-
+import { debounce } from 'lodash-es'
 import { computed } from 'vue'
 
 export default {
@@ -70,6 +74,10 @@ export default {
 
 export const currentGrid = computed(() => props.area.grid)
 export const currentFlex = computed(() => props.area.flex)
+
+export const setGridArea = debounce((val) => {
+  props.area.gridArea = val
+}, 500)
 </script>
 
 <style scoped lang="scss"></style>

@@ -20,7 +20,6 @@ export { default as GridOptions } from './GridOptions.vue'
 
 import { ref, computed } from 'vue'
 export { currentArea } from '../../store.js'
-export { gridRegionToGridArea } from '../../utils.js'
 
 import { getAreaDepth } from '../../store.js'
 

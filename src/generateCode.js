@@ -1,4 +1,11 @@
-import { getGridArea, toCssName, gridTemplateAreas, namedTemplateColumns, namedTemplateRows } from './utils.js'
+import { getGridRegion } from './store.js'
+import {
+  toCssName,
+  gridTemplateAreas,
+  namedTemplateColumns,
+  namedTemplateRows,
+  getGridAreaWithNamedLines,
+} from './utils.js'
 
 export function areaToCSS(area, { parentGrid, useTemplateAreas = true, validTemplateAreas = true, repeat, oldSpec }) {
   const { name, grid } = area
@@ -9,7 +16,7 @@ export function areaToCSS(area, { parentGrid, useTemplateAreas = true, validTemp
     css += gridToCSS(area, { useTemplateAreas, repeat })
   }
 
-  const gridArea = getGridArea(area, parentGrid)
+  const gridArea = getGridAreaWithNamedLines(area, parentGrid)
   if (gridArea) {
     css += `${singleLine ? ' ' : '\n  '}grid-area: ${useTemplateAreas && validTemplateAreas ? cssName : gridArea};`
   }
@@ -57,7 +64,7 @@ function ie_areaToCSS_i(area, { repeat }) {
     css += ie_gridToCSS(area, repeat) + '\n'
   }
 
-  const { gridRegion } = area
+  const gridRegion = getGridRegion(area) // TODO:
   if (gridRegion) {
     const { row, col } = gridRegion
     css += `    -ms-grid-row: ${row.start};\n`

@@ -28,7 +28,6 @@ export { default as DisplaySelect } from '../common/DisplaySelect.vue'
 import { ref } from 'vue'
 import { createAreaState, createFlexState } from '../../store'
 export { currentArea } from '../../store.js'
-export { gridRegionToGridArea } from '../../utils.js'
 
 export default {
   name: 'AreaProps',

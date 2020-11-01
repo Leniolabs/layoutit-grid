@@ -5,7 +5,7 @@ export * from './store/grid.js'
 export * from './store/flex.js'
 export * from './store/area.js'
 
-import { createAreaState, parseArea, serializeArea } from './store/area.js'
+import { createAreaState, parseArea, serializeArea, getGridRegion } from './store/area.js'
 import { createGridState } from './store/grid.js'
 
 function createMainAreaState() {
@@ -93,7 +93,7 @@ export function addRow(grid, rowStr) {
 export function removeFromDimension(area, type, n) {
   const { grid, children } = area
   for (let i = 0; i < children.length; ) {
-    const { gridRegion } = children[i]
+    const { gridRegion } = getGridRegion(children[i])
     if (gridRegion) {
       if (n + 1 < gridRegion[type].start) {
         --gridRegion[type].start

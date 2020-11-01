@@ -5,7 +5,7 @@
       position: 'relative',
       'pointer-events': 'none',
       'touch-action': 'none',
-      'grid-area': gridArea || (area.gridRegion && getGridArea(area)),
+      'grid-area': gridArea || area.gridArea,
       border: `2px solid ${area.color}`,
       opacity: 0.5,
       'flex-grow': area.flexGrow,
@@ -36,8 +36,6 @@ export { default as AreaButtons } from './AreaButtons.vue'
 import { computed, toRefs } from 'vue'
 import { getAreaDepth } from '../../store.js'
 import { useIsMainArea } from '../../composables/area.js'
-
-export { getGridArea } from '../../utils.js'
 
 export default {
   props: {

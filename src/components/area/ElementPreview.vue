@@ -61,8 +61,6 @@ import { computed, defineAsyncComponent, toRefs } from 'vue'
 import { mainArea, currentArea, setCurrentArea } from '../../store.js'
 import { useIsActiveArea } from '../../composables/area.js'
 
-export { getGridArea } from '../../utils.js'
-
 export default {
   name: 'ElementPreview',
   props: {

@@ -67,8 +67,8 @@ export { default as CssCodeTemplateAreas } from './CssCodeTemplateAreas.vue'
 export { default as CssCodeGap } from './CssCodeGap.vue'
 
 import { computed } from 'vue'
-export { namedTemplateColumns, namedTemplateRows, getGridArea, gridTemplateAreas } from '../../utils.js'
-export { mainArea } from '../../store.js'
+export { namedTemplateColumns, namedTemplateRows, gridTemplateAreas, getGridAreaWithNamedLines } from '../../utils.js'
+export { mainArea, getGridRegion } from '../../store.js'
 
 export default {
   name: 'CssCodeArea',
@@ -93,24 +93,29 @@ export const templateAreas = computed(() => getGridTemplateAreas(props.area))
 export const includeTemplateAreas = computed(() => props.options.templateAreas && templateAreas.value !== undefined)
 
 export const gridArea = computed(() => {
-  if (!props.area.gridRegion) {
+  const gridRegion = getGridRegion(props.area) // TODO: span
+  if (!gridRegion) {
     return undefined
   }
   const { parent } = props.area
   if (parent) {
     return props.options.templateAreas && getGridTemplateAreas(parent)
       ? cssAreaName.value
-      : getGridArea(props.area, parent.grid)
+      : getGridAreaWithNamedLines(props.area, parent.grid)
   } else {
-    return getGridArea(props.area)
+    return getGridAreaWithNamedLines(props.area)
   }
 })
 
 export const areasToInclude = computed(() =>
-  props.area.children.filter(
-    (area) =>
-      !(area.display !== 'grid' && area.justifySelf === 'stretch' && area.alignSelf === 'stretch' && !area.gridRegion)
-  )
+  props.area.children.filter((area) => {
+    return !(
+      area.display !== 'grid' &&
+      area.justifySelf === 'stretch' &&
+      area.alignSelf === 'stretch' &&
+      area.gridArea === 'auto'
+    )
+  })
 )
 </script>
 

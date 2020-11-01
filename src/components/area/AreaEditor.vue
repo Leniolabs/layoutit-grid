@@ -94,12 +94,20 @@ export { default as ElementParagraph } from './ElementParagraph.vue'
 // export { default as FlexEditor } from '../flex/FlexEditor.vue'
 
 import { ref, computed, watch, nextTick, defineAsyncComponent, toRefs } from 'vue'
-import { mainArea, currentArea, setCurrentArea, parseUnit, parseValueUnit } from '../../store.js'
+import {
+  mainArea,
+  currentArea,
+  setCurrentArea,
+  parseUnit,
+  parseValueUnit,
+  getGridArea,
+  getGridRegion,
+  gridAreaToGridLimits,
+  findImplicitGrid,
+} from '../../store.js'
 import { useIsActiveArea } from '../../composables/area.js'
 
 export { mainArea }
-
-export { getGridArea } from '../../utils.js'
 
 export default {
   name: 'AreaEditor',
@@ -145,7 +153,7 @@ function gridSizesForView(grid, type) {
 
 export function gridAreaStyles(area, gridArea) {
   return {
-    'grid-area': gridArea || (area.gridRegion && getGridArea(area)),
+    'grid-area': gridArea || area.gridArea,
     'justify-self': area.justifySelf,
     'align-self': area.alignSelf,
     'flex-grow': area.flexGrow,
@@ -222,71 +230,6 @@ watch(
   },
   { immediate: true, deep: true, flush: 'post' }
 )
-
-function findImplicitGrid(area) {
-  const children = area.children
-  const grid = area.grid
-  let gridAreas, rows, cols
-  if (area.display === 'grid' && grid) {
-    rows = grid.row.sizes.length
-    cols = grid.col.sizes.length
-    const pg = new Array(rows)
-    for (let r = 0; r < rows; r++) {
-      pg[r] = new Array(cols).fill(false)
-    }
-    children.forEach(({ gridRegion }) => {
-      if (gridRegion) {
-        const { row, col } = gridRegion
-        for (let r = row.start; r < row.end; ++r) {
-          for (let c = col.start; c < col.end; ++c) {
-            pg[r - 1][c - 1] = true
-          }
-        }
-      }
-    })
-    gridAreas = children.map(({ gridRegion }) => {
-      if (gridRegion) {
-        return getGridArea(area)
-      } else {
-        if (grid.autoFlow === 'row' || grid.autoFlow === 'row dense') {
-          // TODO: take into account grid-area span
-          for (let r = 0; r < rows; r++) {
-            for (let c = 0; c < cols; c++) {
-              if (!pg[r][c]) {
-                pg[r][c] = true
-                return `${r + 1} / ${c + 1} / ${r + 2} / ${c + 2}`
-              }
-            }
-          }
-          rows++
-          pg.push(new Array(cols).fill(false))
-          pg[rows - 1][0] = true
-          return `${rows} / 1 / ${rows + 1} / 2`
-        } else {
-          for (let c = 0; c < cols; c++) {
-            for (let r = 0; r < rows; r++) {
-              if (!pg[r][c]) {
-                pg[r][c] = true
-                return `${r + 1} / ${c + 1} / ${r + 2} / ${c + 2}`
-              }
-            }
-          }
-          cols++
-          for (let r = 0; r < rows; r++) {
-            pg[r].push(false)
-          }
-          pg.push(new Array(cols).fill(false))
-          pg[0][cols - 1] = true
-          return `1 / ${cols} / 2 / ${cols + 1}`
-        }
-      }
-    })
-  } else {
-    gridAreas = children.map(() => undefined)
-    rows = cols = 1
-  }
-  return { gridAreas, implicitGrid: { cols, rows } }
-}
 
 export const gridAreas = ref([])
 export const implicitGrid = ref({ rows: 0, cols: 0 })

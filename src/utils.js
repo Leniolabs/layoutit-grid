@@ -1,3 +1,5 @@
+import { getGridRegion } from './store.js'
+
 export const unitMeasureMap = {
   px: 300,
   fr: 1,
@@ -59,15 +61,20 @@ export function gridTemplateAreasMatrix({ grid, children }) {
 
   let validTemplate = true
 
-  children.forEach(({ name, gridRegion }) => {
+  children.forEach((area) => {
+    const gridRegion = getGridRegion(area)
     if (gridRegion) {
       const { row, col } = gridRegion
-      for (let r = row.start; r < row.end; ++r) {
-        for (let c = col.start; c < col.end; ++c) {
-          if (chunkAreas[r - 1][c - 1] !== '.') {
-            validTemplate = false
+      if (row.start < 1 || row.end > rowsNumber + 1 || col.start < 1 || col.end > colsNumber + 1) {
+        validTemplate = false
+      } else {
+        for (let r = row.start; r < row.end; ++r) {
+          for (let c = col.start; c < col.end; ++c) {
+            if (chunkAreas[r - 1][c - 1] !== '.') {
+              validTemplate = false
+            }
+            chunkAreas[r - 1][c - 1] = toCssName(area.name)
           }
-          chunkAreas[r - 1][c - 1] = toCssName(name)
         }
       }
     }
@@ -86,21 +93,14 @@ export function gridTemplateAreas(area, separator = ' ') {
 }
 
 export function gridRegionToGridArea(gridRegion) {
+  // TODO:
   const { row, col } = gridRegion
   return `${row.start} / ${col.start} / ${row.end} / ${col.end}`
 }
 
-export function gridAreaToGridRegion(gridArea) {
-  const p = gridArea.split('/')
-  return {
-    row: { start: parseInt(p[0]), end: parseInt(p[2]) },
-    col: { start: parseInt(p[1]), end: parseInt(p[3]) },
-  }
-}
-
 function namedRegionSide(gridRegion, parentGrid, type, side) {
   let result = gridRegion[type][side]
-  if (parentGrid) {
+  if (parentGrid && result > 0 && result <= parentGrid[type].lineNames.length) {
     const lineNameState = parentGrid[type].lineNames[result - 1]
     if (lineNameState.active) {
       const name = lineNameState.name
@@ -112,15 +112,20 @@ function namedRegionSide(gridRegion, parentGrid, type, side) {
   return result
 }
 
-export function getGridArea(area, parentGrid) {
+export function getGridAreaWithNamedLines(area, parentGrid) {
   // TODO: remove parentGrid
-  if (area && area.gridRegion) {
-    const rowStart = namedRegionSide(area.gridRegion, parentGrid, 'row', 'start')
-    const colStart = namedRegionSide(area.gridRegion, parentGrid, 'col', 'start')
-    const rowEnd = namedRegionSide(area.gridRegion, parentGrid, 'row', 'end')
-    const colEnd = namedRegionSide(area.gridRegion, parentGrid, 'col', 'end')
-    return `${rowStart} / ${colStart} / ${rowEnd} / ${colEnd}`
-  } else return ''
+  // TODO: span
+  if (area) {
+    const gridRegion = getGridRegion(area)
+    if (gridRegion) {
+      const rowStart = namedRegionSide(gridRegion, parentGrid, 'row', 'start')
+      const colStart = namedRegionSide(gridRegion, parentGrid, 'col', 'start')
+      const rowEnd = namedRegionSide(gridRegion, parentGrid, 'row', 'end')
+      const colEnd = namedRegionSide(gridRegion, parentGrid, 'col', 'end')
+      return `${rowStart} / ${colStart} / ${rowEnd} / ${colEnd}`
+    }
+  }
+  return ''
 }
 
 function parseLineName(item) {

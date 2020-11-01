@@ -31,10 +31,8 @@ export { default as AreaName } from './AreaName.vue'
 export { default as AreaButtons } from './AreaButtons.vue'
 
 import { computed, toRefs } from 'vue'
-import { getAreaDepth } from '../../store.js'
+import { getAreaDepth, getGridRegion } from '../../store.js'
 import { useIsMainArea } from '../../composables/area.js'
-
-import { getGridArea } from '../../utils.js'
 
 export default {
   props: {
@@ -46,20 +44,8 @@ export default {
 const { area } = toRefs(props)
 export const isMain = useIsMainArea(area)
 
-export const gridArea = computed(() => {
-  const a = area.value
-  if (a.gridRegion) {
-    return getGridArea(a)
-  } else {
-    const areas = a.parent.children
-    const grid = a.parent.grid
-    const cols = grid.col.sizes.length,
-      rows = grid.row.sizes.length
-  }
-})
-
 export const toolbarStart = computed(() => {
-  const { gridRegion } = props.area
+  const gridRegion = getGridRegion(props.area)
   return gridRegion ? (gridRegion.col.start === 1 && gridRegion.row.start === 1 ? getAreaDepth(props.area) - 1 : 0) : 0
 })
 </script>

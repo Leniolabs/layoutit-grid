@@ -21,7 +21,7 @@
 export { default as IconRemove } from '../icons/IconRemove.vue'
 
 import { gridRegionToGridArea, createSection, toCssName } from '../../utils.js'
-import { createAreaState, setCurrentArea, getRandomColor, isValidAreaName, batch } from '../../store.js'
+import { createAreaState, setCurrentArea, getRandomColor, isValidAreaName, batch, getGridRegion } from '../../store.js'
 
 import { ref, computed } from 'vue'
 
@@ -61,20 +61,23 @@ export const gridArea = computed(() =>
 )
 
 export function editArea(area) {
-  emit('editstart', area)
+  // TODO: if ! gridRegion
+  const gridRegion = getGridRegion(area)
+  if (gridRegion) {
+    emit('editstart', area)
 
-  gridName.value = area.name
+    gridName.value = area.name
 
-  const { gridRegion } = area
-  selection.value = {
-    start: createSection({ col: gridRegion.col.start, row: gridRegion.row.start }),
-    end: createSection({ col: gridRegion.col.end - 1, row: gridRegion.row.end - 1 }),
-    color: area.color,
-    fresh: false,
-    area,
+    selection.value = {
+      start: createSection({ col: gridRegion.col.start, row: gridRegion.row.start }),
+      end: createSection({ col: gridRegion.col.end - 1, row: gridRegion.row.end - 1 }),
+      color: area.color,
+      fresh: false,
+      area,
+    }
+
+    setTimeout(() => nameInputElement.value.focus(), 0)
   }
-
-  setTimeout(() => nameInputElement.value.focus(), 0)
 }
 
 function validGridName(name) {
@@ -163,14 +166,14 @@ export function saveSelection() {
     if (sa) {
       batch(() => {
         sa.name = toCssName(gridName.value)
-        sa.gridRegion = selectionArea(selection.value)
+        sa.gridRegion = gridRegionToGridArea(selectionArea(selection.value))
       })
       emit('editend', sa)
     } else {
       props.area.children.push(
         createAreaState({
           name: toCssName(gridName.value),
-          gridRegion: selectionArea(selection.value),
+          gridArea: gridRegionToGridArea(selectionArea(selection.value)),
           color,
           parent: props.area,
         })
