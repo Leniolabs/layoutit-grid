@@ -85,10 +85,6 @@ export function createGridDimension(n) {
     auto: 'initial',
     lineNames: newLineNames(n + 1),
     gap: '0px',
-    justifyContent: 'stretch',
-    alignContent: 'stretch',
-    justifyItems: 'stretch',
-    alignItems: 'stretch',
   }
 }
 
@@ -97,6 +93,10 @@ export function createGridState(r = 2, c = 3) {
     row: createGridDimension(r),
     col: createGridDimension(c),
     autoFlow: 'row',
+    justifyContent: 'stretch',
+    alignContent: 'stretch',
+    justifyItems: 'stretch',
+    alignItems: 'stretch',
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <span class="token string">{{ gridArea }};</span>
+  <span class="token string">{{ gridArea }}</span>
 </template>
 
 <script setup="props, { emit }">
