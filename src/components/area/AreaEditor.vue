@@ -269,8 +269,12 @@ watch(
   height: 100%;
   width: 100%;
 }
+
 .area-name {
   position: absolute;
+  font-size: 13px;
+  font-weight: 500;
+  color: white;
   /*
   bottom: -14px;
   right: 0;
@@ -281,8 +285,5 @@ watch(
   left: 0;
   border-bottom-right-radius: 6px;
   padding: 3px 10px 6px 7px;
-  font-size: 13px;
-  font-weight: 500;
-  color: white;
 }
 </style>

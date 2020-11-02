@@ -1,5 +1,11 @@
 <template>
-  <div class="area-tree">
+  <div
+    class="area-tree"
+    :style="{
+      'border-left': `6px solid ${area.color}`,
+      'border-top': `2px solid ${area.color}`,
+    }"
+  >
     <!--
     <div v-if="currentArea !== area" class="area-name">{{ area.name }}</div>
     <div v-else></div>-->
@@ -39,17 +45,18 @@ export const currentFlex = computed(() => props.area.flex)
 </script>
 
 <style scoped lang="scss" vars="{ depth }">
+.area-tree {
+  margin-left: var(--depth);
+  background: white;
+}
 .area-name {
-  background: #fdd835;
-  color: #333;
-  border-bottom: 1px solid black;
+  font-size: 13px;
+  color: black;
   padding: 5px 8px;
   top: 0;
-  left: var(--depth);
-  width: calc(100% - var(--depth));
+  width: 100%;
   word-break: break-all;
   position: relative;
-  border-radius: 2px;
   font-weight: bold;
   &:not(.current) {
     opacity: 0.5;
