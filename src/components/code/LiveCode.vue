@@ -24,6 +24,7 @@
     <HtmlCodeEditor :area="area" :options="options" :code="htmlCode" />
   </div>
   <LiveCodeOptions v-model="options" />
+  <BrandBanner />
 </template>
 
 <script setup="props">
@@ -39,6 +40,7 @@ export { default as PermalinkBar } from './PermalinkBar.vue'
 export { default as LiveCodeOptions } from './LiveCodeOptions.vue'
 export { default as HtmlCodeEditor } from './HtmlCodeEditor.vue'
 export { default as CssCodeEditor } from './CssCodeEditor.vue'
+export { default as BrandBanner } from '../props/BrandBanner.vue' // TODO:
 
 import { ref, computed } from 'vue'
 
