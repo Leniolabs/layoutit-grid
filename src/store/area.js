@@ -196,9 +196,11 @@ export function getGridDimension(area, type, limits) {
   }
 }
 
-export function getGridRegion(area) {
+export function getGridRegion(area, limits) {
   // https://developer.mozilla.org/en-US/docs/Web/CSS/grid-area
-  const limits = gridAreaToGridLimits(area.gridArea)
+  if (!limits) {
+    limits = gridAreaToGridLimits(area.gridArea)
+  }
   if (!limits.auto) {
     return {
       row: getGridDimension(area, 'row', limits),
@@ -268,168 +270,294 @@ function colIsTherePlace(pg, r, c, rowSpan, colSpan) {
   return true
 }
 
-function fillSpace(pg, r, c, rowSpan, colSpan) {
+function initialImplicitGrid(rows, cols) {
+  const grid = new Array(rows)
+  for (let r = 0; r < rows; r++) {
+    grid[r] = new Array(cols).fill(false)
+  }
+  return {
+    rd: rows,
+    cd: cols,
+    rows,
+    cols,
+    ri: 1,
+    ci: 1,
+    grid,
+  }
+}
+
+function addTopRows(ig, count) {
+  for (let i = 0; i < count; i++) {
+    ig.grid.unshift(new Array(ig.cols).fill(false))
+  }
+  ig.ri -= count
+  ig.rows += count
+}
+
+function addBottomRows(ig, count) {
+  for (let i = 0; i < count; i++) {
+    ig.grid.push(new Array(ig.cols).fill(false))
+  }
+  ig.rows += count
+}
+
+function addLeftColumns(ig, count) {
+  for (let r = 0; r < ig.rows; r++) {
+    for (let i = 0; i < count; i++) {
+      ig.grid[r].unshift(false)
+    }
+  }
+  ig.ci -= count
+  ig.cols += count
+}
+
+function addRightColumns(ig, count) {
+  for (let r = 0; r < ig.rows; r++) {
+    for (let i = 0; i < count; i++) {
+      ig.grid[r].push(false)
+    }
+  }
+  ig.cols += count
+}
+
+function fillCell(ig, r, c) {
+  ig.grid[r - ig.ri][c - ig.ci] = true
+}
+
+function fillGridRegion(ig, gridRegion) {
+  const { row, col } = gridRegion
+  if (row.start < ig.ri) {
+    addTopRows(ig, ig.ri - row.start)
+  }
+  if (row.end - 1 > ig.rows) {
+    addBottomRows(ig, row.end - 1 - ig.rows)
+  }
+  if (col.start < ig.ci) {
+    addLeftColumns(ig, ig.ci - col.start)
+  }
+  if (col.end - 1 > ig.cols) {
+    addRightColumns(ig, col.end - 1 - ig.cols)
+  }
+  for (let r = row.start; r < row.end; ++r) {
+    for (let c = col.start; c < col.end; ++c) {
+      fillCell(ig, r, c)
+    }
+  }
+}
+
+function directFillGrid(grid, r, c, rowSpan, colSpan) {
   for (let ci = c; ci < c + colSpan; ci++) {
     for (let ri = r; ri < r + rowSpan; ri++) {
-      pg[ri][ci] = true
+      grid[ri][ci] = true
+    }
+  }
+}
+
+function directToValidGridArea(ig, rs, cs, re, ce) {
+  return toValidGridArea(rs + ig.ri, cs + ig.ci, re + ig.ri, ce + ig.ci, ig.rd, ig.cd)
+}
+
+function fillSpan(ig, cursor, rspan, cspan) {
+  const r = cursor.row,
+    c = cursor.col
+  if (ig.rows < r + rspan) {
+    addBottomRows(ig, r + rspan - ig.rows)
+  }
+  if (ig.cols < c + cspan) {
+    addRightColumns(ig, c + cspan - ig.cols)
+  }
+  directFillGrid(ig.grid, r, c, rspan, cspan)
+  return directToValidGridArea(ig, r, c, r + rspan, c + cspan)
+}
+
+function placeRowLockedArea(ig, area, cursor, limits) {
+  if (!limits) {
+    limits = gridAreaToGridLimits(area.gridArea)
+  }
+  const { row, col } = limits
+  const gd = getGridDimension(area, 'row', limits)
+  cursor.row = gd.start + ig.ri
+  for (let c = cursor.col; c < ig.cols; c++) {
+    if (colIsTherePlace(ig.grid, cursor.row, c, row.span, col.span)) {
+      cursor.col = c
+      return fillSpan(ig, cursor, row.span, col.span)
+    }
+  }
+  cursor.col = ig.cols
+  return fillSpan(ig, cursor, row.span, col.span)
+}
+
+function placeColLockedArea(ig, area, cursor, limits) {
+  if (!limits) {
+    limits = gridAreaToGridLimits(area.gridArea)
+  }
+  const { row, col } = limits
+  const gd = getGridDimension(limits, 'col')
+  cursor.col = gd.start + ig.ci
+  for (let r = cursor.row; r < ig.rows; r++) {
+    if (rowIsTherePlace(ig.grid, r, cursor.col, row.span, col.span)) {
+      cursor.row = r
+      return fillSpan(ig, cursor, row.span, col.span)
+    }
+  }
+  cursor.row = ig.rows
+  return fillSpan(ig, cursor, row.span, col.span)
+}
+
+function placeAutoAreaForRowDir(ig, area, cursor, limits) {
+  if (!limits) {
+    limits = gridAreaToGridLimits(area.gridArea)
+  }
+  const { row, col } = limits
+  for (let r = cursor.row; r < ig.rows; r++) {
+    for (let c = cursor.col; c < ig.cols; c++) {
+      if (rowIsTherePlace(ig.grid, r, c, row.span, col.span)) {
+        cursor.row = r
+        cursor.col = c
+        return fillSpan(ig, cursor, row.span, col.span)
+      }
+    }
+    cursor.col = 0
+  }
+  cursor.row = ig.rows
+  cursor.col = 0
+  return fillSpan(ig, cursor, row.span, col.span)
+}
+
+function placeAutoAreaForColDir(ig, area, cursor, limits) {
+  if (!limits) {
+    limits = gridAreaToGridLimits(area.gridArea)
+  }
+  const { row, col } = limits
+  for (let c = cursor.col; c < ig.cols; c++) {
+    for (let r = cursor.row; r < ig.rows; r++) {
+      if (colIsTherePlace(ig.grid, r, c, row.span, col.span)) {
+        cursor.row = r
+        cursor.col = c
+        return fillSpan(ig, cursor, row.span, col.span)
+      }
+    }
+    cursor.row = 0
+  }
+  cursor.row = 0
+  cursor.col = ig.cols
+  return fillSpan(ig, cursor, row.span, col.span)
+}
+
+function placeArea(dir, ig, area, cursor, limits) {
+  if (!limits) {
+    limits = gridAreaToGridLimits(area.gridArea)
+  }
+  const { row, col } = limits
+  if (!row.auto) {
+    // only for autoFlow.dir === 'col', for 'row' these are already placed
+    return placeRowLockedArea(ig, area, cursor, limits)
+  } else if (!col.auto) {
+    // only for autoFlow.dir === 'row', for 'col' these are already placed
+    return placeColLockedArea(ig, area, cursor, limits)
+  } else {
+    if (dir === 'row') {
+      return placeAutoAreaForRowDir(ig, area, cursor, limits)
+    } else {
+      return placeAutoAreaForColDir(ig, area, cursor, limits)
     }
   }
 }
 
 export function findImplicitGrid(area) {
+  // https://drafts.csswg.org/css-grid/#auto-placement-algo
+
   const children = area.children
   const grid = area.grid
-  let gridAreas, rows, cols, ri, ci
+  let gridAreas
+  let ig
   if (area.display === 'grid' && grid) {
-    const rd = grid.row.sizes.length
-    const cd = grid.col.sizes.length
-    rows = rd
-    cols = cd
-    ri = 1
-    ci = 1
-    const pg = new Array(rows)
-    for (let r = 0; r < rows; r++) {
-      pg[r] = new Array(cols).fill(false)
+    // Grid auto flow logic
+    const dir = grid.autoFlow === 'row' || grid.autoFlow === 'row dense' ? 'row' : 'col'
+    const dense = grid.autoFlow.includes('dense')
+    const denseReset = (cursor) => {
+      if (dense) {
+        cursor.row = 0
+        cursor.col = 0
+      }
     }
-    children.forEach((area) => {
-      const gridRegion = getGridRegion(area)
+
+    ig = initialImplicitGrid(grid.row.sizes.length, grid.col.sizes.length)
+
+    // Preprocess areas computing limits
+    const areas = children.map((area) => {
+      return {
+        area,
+        limits: gridAreaToGridLimits(area.gridArea),
+        gridArea: null,
+      }
+    })
+
+    // Process the areas with a definite position (gridRegion !== undefined)
+    areas.forEach((a) => {
+      const gridRegion = getGridRegion(a.area, a.limits)
       if (gridRegion) {
-        const { row, col } = gridRegion
-        if (row.start < ri) {
-          const diff = ri - row.start
-          for (let i = 0; i < diff; i++) {
-            pg.unshift(new Array(cols).fill(false))
-          }
-          ri -= diff
-          rows += diff
-        }
-        if (row.end - 1 > rows) {
-          const diff = row.end - 1 - rows
-          for (let i = 0; i < diff; i++) {
-            pg.push(new Array(cols).fill(false))
-          }
-          rows += diff
-        }
-        if (col.start < ci) {
-          const diff = ci - col.start
-          for (let r = 0; r < rows; r++) {
-            for (let i = 0; i < diff; i++) {
-              pg[r].unshift(false)
-            }
-          }
-          ci -= diff
-          cols += diff
-        }
-        if (col.end - 1 > cols) {
-          const diff = col.end - 1 - cols
-          for (let r = 0; r < rows; r++) {
-            for (let i = 0; i < diff; i++) {
-              pg[r].push(false)
-            }
-          }
-          cols += diff
-        }
-        for (let r = row.start; r < row.end; ++r) {
-          for (let c = col.start; c < col.end; ++c) {
-            pg[r - ri][c - ci] = true
-          }
-        }
+        fillGridRegion(ig, gridRegion)
+        a.gridArea = a.area.gridArea
       }
     })
 
     // Process the items locked to a given row
-    children.forEach((area) => {
-      const { row, col } = gridAreaToGridLimits(area.gridArea)
-      if (col.auto && !row.auto) {
-        // row.start, row.start, col.span
-        // TODO:
-      }
-    })
-    // Process the items locked to a given column
-    children.forEach((area) => {
-      const { col, row } = gridAreaToGridLimits(area.gridArea)
-      if (row.auto && !col.auto) {
-        // col.start, col.end, row.span
-        // TODO:
-      }
-    })
+    if (dir === 'row') {
+      let cursor = { row: 0, col: 0 }
+      areas.forEach((a) => {
+        denseReset(cursor)
+        if (a.limits.col.auto && !a.limits.row.auto) {
+          a.gridArea = placeRowLockedArea(ig, a.area, cursor, a.limits)
+        }
+      })
+    }
 
-    // TODO: add rows or columns to accomodate max span for auto placed items
-    if (grid.autoFlow === 'row' || grid.autoFlow === 'row dense') {
-      const maxColSpan = children.reduce((span, current) => {
-        const { col } = gridAreaToGridLimits(current.gridArea)
+    // Process the items locked to a given column
+    if (dir === 'col') {
+      let cursor = { row: 0, col: 0 }
+      areas.forEach((a) => {
+        denseReset(cursor)
+        if (a.limits.row.auto && !a.limits.col.auto) {
+          a.gridArea = placeColLockedArea(ig, a.area, cursor, a.limits)
+        }
+      })
+    }
+
+    // Add rows or columns to accomodate max span for auto placed items
+    if (dir === 'row') {
+      const maxColSpan = areas.reduce((span, current) => {
+        const { col } = current.limits
         return col.auto && span < col.span ? col.span : span
       }, 1)
-      if (cols < maxColSpan) {
-        const diff = maxColSpan - cols
-        for (let r = 0; r < rows; r++) {
-          for (let i = 0; i < diff; i++) {
-            pg[r].push(false)
-          }
-        }
-        cols += diff
+      if (ig.cols < maxColSpan) {
+        addRightColumns(ig, maxColSpan - ig.cols)
       }
     } else {
-      const maxRowSpan = children.reduce((span, current) => {
-        const { row } = gridAreaToGridLimits(current.gridArea)
+      const maxRowSpan = areas.reduce((span, current) => {
+        const { row } = current.limits
         return row.auto && span < row.span ? row.span : span
       }, 1)
-      if (rows < maxRowSpan) {
-        const diff = maxRowSpan - rows
-        for (let i = 0; i < diff; i++) {
-          pg.push(new Array(cols).fill(false))
-        }
-        rows += diff
+      if (ig.rows < maxRowSpan) {
+        addBottomRows(ig, maxRowSpan - ig.rows)
       }
     }
 
-    gridAreas = children.map((area) => {
-      const { row, col, auto } = gridAreaToGridLimits(area.gridArea)
-      if (!auto) {
-        return getGridArea(area)
-      } else {
-        if (grid.autoFlow === 'row' || grid.autoFlow === 'row dense') {
-          // TODO: take into account grid-area span
-          for (let r = 0; r < rows; r++) {
-            for (let c = 0; c < cols; c++) {
-              if (rowIsTherePlace(pg, r, c, row.span, col.span)) {
-                // TODO: rowSpan
-                fillSpace(pg, r, c, row.span, col.span)
-                return toValidGridArea(r + ri, c + ci, r + ri + row.span, c + ci + col.span, rd, cd)
-              }
-            }
-          }
-          // TODO: rowSpan
-          rows++
-          pg.push(new Array(cols).fill(false))
-          pg[rows - 1][0] = true
-          return toValidGridArea(rows - 1 + ri, ci, rows - 1 + ri + row.span, ci + col.span, rd, cd)
-        } else {
-          // auto flow column
-          for (let c = 0; c < cols; c++) {
-            for (let r = 0; r < rows; r++) {
-              if (colIsTherePlace(pg, r, c, row.span, col.span)) {
-                // TODO: colSpan
-                fillSpace(pg, r, c, row.span, col.span)
-                return toValidGridArea(r + ri, c + ci, r + ri + row.span, c + ci + col.span, rd, cd)
-              }
-            }
-          }
-          // TODO: colSpan
-          cols++
-          for (let r = 0; r < rows; r++) {
-            pg[r].push(false)
-          }
-          pg.push(new Array(cols).fill(false))
-          pg[0][cols - 1] = true
-          return toValidGridArea(ri, cols - 1 + ci, ri + row.span, cols - 1 + ci + col.span, rd, cd)
-        }
+    // Place remaining areas
+    const cursor = { row: 0, col: 0 }
+    gridAreas = areas.map(({ area, limits, gridArea }) => {
+      if (gridArea) {
+        // already positioned areas:
+        //  - areas with a definite position
+        //  - row and column locked areas depending on grid flow
+        return gridArea
       }
+      denseReset(cursor)
+      return placeArea(dir, ig, area, cursor, limits)
     })
   } else {
     gridAreas = children.map(() => undefined)
-    rows = cols = 1
-    ri = ci = 1
+    ig = { rows: 1, cols: 1, ri: 1, ci: 1 }
   }
-  return { gridAreas, implicitGrid: { cols, rows, ri, ci } }
+  return { gridAreas, implicitGrid: { cols: ig.cols, rows: ig.rows, ri: ig.ri, ci: ig.ci } }
 }
