@@ -5,7 +5,14 @@ export * from './store/grid.js'
 export * from './store/flex.js'
 export * from './store/area.js'
 
-import { createAreaState, parseArea, serializeArea, getGridRegion } from './store/area.js'
+import {
+  createAreaState,
+  parseArea,
+  serializeArea,
+  getGridDimension,
+  gridLimitsToGridArea,
+  gridAreaToGridLimits,
+} from './store/area.js'
 import { createGridState } from './store/grid.js'
 
 function createMainAreaState() {
@@ -90,28 +97,62 @@ export function addRow(grid, rowStr) {
   addToDimension(grid.row, rowStr)
 }
 
+function reduceLimit(l) {
+  if (l.limit) {
+    if (l.limit > 0) {
+      l.limit--
+    } else {
+      l.limit++
+    }
+  } else if (l.span) {
+    l.span--
+  }
+}
+
 export function removeFromDimension(area, type, n) {
   const { grid, children } = area
-  for (let i = 0; i < children.length; ) {
-    const { gridRegion } = getGridRegion(children[i])
-    if (gridRegion) {
-      if (n + 1 < gridRegion[type].start) {
-        --gridRegion[type].start
-        --gridRegion[type].end
-      } else if (n + 1 < gridRegion[type].end) {
-        --gridRegion[type].end
+  const toRemove = [],
+    toChange = []
+  for (let i = 0; i < children.length; ++i) {
+    const limits = gridAreaToGridLimits(children[i].gridArea)
+    const dim = getGridDimension(children[i], type, limits)
+    const { start, end } = limits[type]
+    if (limits.valid && !limits[type].auto) {
+      if (n + 1 < dim.start) {
+        reduceLimit(start)
+        reduceLimit(end)
+      } else if (n + 1 < dim.end) {
+        limits[type].span--
+        if (start.limit) {
+          reduceLimit(end)
+        } else {
+          reduceLimit(start)
+        }
+      } else if (n + 1 >= dim.end) {
+        if (start.limit && start.limit < -1) {
+          start.limit++
+        }
+        if (end.limit && end.limit < -1) {
+          end.limit++
+        }
       }
-      if (gridRegion[type].end <= gridRegion[type].start) {
+      if (limits[type].span === 0) {
         // delete area if it collapses
-        children.splice(i, 1)
+        toRemove.push(i)
       } else {
-        ++i
+        toChange.push({ i, gridArea: gridLimitsToGridArea(limits) })
       }
     } else {
       ++i
     }
   }
   batch(() => {
+    for (let i = toRemove.length - 1; i >= 0; i--) {
+      area.children.splice(toRemove[i], 1)
+    }
+    for (let i = toChange.length - 1; i >= 0; i--) {
+      children[toChange[i].i].gridArea = toChange[i].gridArea
+    }
     grid[type].sizes.splice(n, 1)
     grid[type].lineNames.splice(n, 1)
   })

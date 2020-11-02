@@ -114,28 +114,54 @@ function isLimit(l) {
 
 export function gridAreaToGridLimits(gridArea) {
   const parts = trimSplit(gridArea, '/')
-  const rowStart = parseGridLimit(parts[0])
-  const colStart = parseGridLimit(parts[1])
-  const rowEnd = parseGridLimit(parts[2])
-  const colEnd = parseGridLimit(parts[3])
-  const valid = rowStart && rowEnd && colStart && colEnd
-  let colSpan, rowSpan
-  if (valid) {
-    rowSpan = isLimit(rowStart)
-      ? isLimit(rowEnd)
-        ? Math.abs(rowEnd.limit - rowStart.limit)
-        : rowEnd.span
-      : rowStart.span
-    colSpan = isLimit(colStart)
-      ? isLimit(colEnd)
-        ? Math.abs(colEnd.limit - colStart.limit)
-        : colEnd.span
-      : colStart.span
+  const row = {
+    start: parseGridLimit(parts[0]),
+    end: parseGridLimit(parts[2]),
   }
-  const auto = !valid || !((isLimit(rowStart) || isLimit(rowEnd)) && (isLimit(colStart) || isLimit(colEnd)))
-  const rowAuto = !valid || (auto && !isLimit(rowStart) && !isLimit(rowEnd))
-  const colAuto = !valid || (auto && !isLimit(colStart) && !isLimit(colEnd))
-  return { rowStart, colStart, rowEnd, colEnd, rowSpan, colSpan, valid, auto, rowAuto, colAuto }
+  const col = {
+    start: parseGridLimit(parts[1]),
+    end: parseGridLimit(parts[3]),
+  }
+  const valid = !!(row.start && row.end && col.start && col.end)
+  if (valid) {
+    row.span = isLimit(row.start)
+      ? isLimit(row.end)
+        ? Math.abs(row.end.limit - row.start.limit)
+        : row.end.span
+      : row.start.span
+    col.span = isLimit(col.start)
+      ? isLimit(col.end)
+        ? Math.abs(col.end.limit - col.start.limit)
+        : col.end.span
+      : col.start.span
+  }
+  const auto = !valid || !((isLimit(row.start) || isLimit(row.end)) && (isLimit(col.start) || isLimit(col.end)))
+  row.auto = !valid || (auto && !isLimit(row.start) && !isLimit(row.end))
+  col.auto = !valid || (auto && !isLimit(col.start) && !isLimit(col.end))
+  return { row, col, valid, auto }
+}
+
+export function limitToString(l) {
+  if (l !== undefined) {
+    return l.limit ? l.limit.toString() : `span ${l.span.toString}`
+  } else {
+    return 'auto'
+  }
+}
+
+// TODO: Test
+export function gridLimitsToGridArea({ row, col }) {
+  let ga = limitToString(row.start)
+  if (!col.start.auto) {
+    ga += ' / ' + limitToString(col.start)
+  }
+  if (!row.end.auto) {
+    ga += ' / ' + limitToString(row.end)
+  }
+  if (!col.end.auto) {
+    ga += ' / ' + limitToString(col.end)
+  }
+  return ga
 }
 
 // We may change how we store grid area state in the future, we use
@@ -151,21 +177,32 @@ function swapedIfInverted({ start, end }) {
   } else return { start, end }
 }
 
-export function getGridRegion(area) {
-  // https://developer.mozilla.org/en-US/docs/Web/CSS/grid-area
-  const { rowStart, colStart, rowEnd, colEnd, auto } = gridAreaToGridLimits(area.gridArea)
-  if (!auto) {
+export function getGridDimension(area, type, limits) {
+  if (!limits) {
+    limits = gridAreaToGridLimits(area.gridArea)
+  }
+  const dim = limits[type]
+  if (!dim.auto) {
     const grid = area.parent && area.parent.grid
     if (grid) {
-      const cols = grid.col.sizes.length
-      const rows = grid.row.sizes.length
-      const rs = limitToLineNumber(rowStart, rows)
-      const re = limitToLineNumber(rowEnd, rows)
-      const cs = limitToLineNumber(colStart, cols)
-      const ce = limitToLineNumber(colEnd, cols)
-      const row = { start: isLimit(rowStart) ? rs : re - rowStart.span, end: isLimit(rowEnd) ? re : rs + rowEnd.span }
-      const col = { start: isLimit(colStart) ? cs : ce - colStart.span, end: isLimit(colEnd) ? ce : cs + colEnd.span }
-      return { row: swapedIfInverted(row), col: swapedIfInverted(col) }
+      const count = grid[type].sizes.length
+      const s = limitToLineNumber(dim.start, count)
+      const e = limitToLineNumber(dim.end, count)
+      return swapedIfInverted({
+        start: isLimit(dim.start) ? s : e - dim.start.span,
+        end: isLimit(dim.end) ? e : s + dim.end.span,
+      })
+    }
+  }
+}
+
+export function getGridRegion(area) {
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/grid-area
+  const limits = gridAreaToGridLimits(area.gridArea)
+  if (!limits.auto) {
+    return {
+      row: getGridDimension(area, 'row', limits),
+      col: getGridDimension(area, 'col', limits),
     }
   }
   return undefined // This is an auto placed grid area
@@ -302,17 +339,17 @@ export function findImplicitGrid(area) {
 
     // Process the items locked to a given row
     children.forEach((area) => {
-      const { rowStart, rowEnd, colSpan, rowAuto, colAuto } = gridAreaToGridLimits(area.gridArea)
-      if (colAuto && !rowAuto) {
-        // rowStart, rowStart, colSpan
+      const { row, col } = gridAreaToGridLimits(area.gridArea)
+      if (col.auto && !row.auto) {
+        // row.start, row.start, col.span
         // TODO:
       }
     })
     // Process the items locked to a given column
     children.forEach((area) => {
-      const { colStart, colEnd, rowSpan, rowAuto, colAuto } = gridAreaToGridLimits(area.gridArea)
-      if (rowAuto && !colAuto) {
-        // colStart, colEnd, rowSpan
+      const { col, row } = gridAreaToGridLimits(area.gridArea)
+      if (row.auto && !col.auto) {
+        // col.start, col.end, row.span
         // TODO:
       }
     })
@@ -320,8 +357,8 @@ export function findImplicitGrid(area) {
     // TODO: add rows or columns to accomodate max span for auto placed items
     if (grid.autoFlow === 'row' || grid.autoFlow === 'row dense') {
       const maxColSpan = children.reduce((span, current) => {
-        const { colSpan, colAuto } = gridAreaToGridLimits(current.gridArea)
-        return colAuto && span < colSpan ? colSpan : span
+        const { col } = gridAreaToGridLimits(current.gridArea)
+        return col.auto && span < col.span ? col.span : span
       }, 1)
       if (cols < maxColSpan) {
         const diff = maxColSpan - cols
@@ -334,8 +371,8 @@ export function findImplicitGrid(area) {
       }
     } else {
       const maxRowSpan = children.reduce((span, current) => {
-        const { rowSpan, rowAuto } = gridAreaToGridLimits(current.gridArea)
-        return rowAuto && span < rowSpan ? rowSpan : span
+        const { row } = gridAreaToGridLimits(current.gridArea)
+        return row.auto && span < row.span ? row.span : span
       }, 1)
       if (rows < maxRowSpan) {
         const diff = maxRowSpan - rows
@@ -347,7 +384,7 @@ export function findImplicitGrid(area) {
     }
 
     gridAreas = children.map((area) => {
-      const { rowSpan, colSpan, auto } = gridAreaToGridLimits(area.gridArea)
+      const { row, col, auto } = gridAreaToGridLimits(area.gridArea)
       if (!auto) {
         return getGridArea(area)
       } else {
@@ -355,10 +392,10 @@ export function findImplicitGrid(area) {
           // TODO: take into account grid-area span
           for (let r = 0; r < rows; r++) {
             for (let c = 0; c < cols; c++) {
-              if (rowIsTherePlace(pg, r, c, rowSpan, colSpan)) {
+              if (rowIsTherePlace(pg, r, c, row.span, col.span)) {
                 // TODO: rowSpan
-                fillSpace(pg, r, c, rowSpan, colSpan)
-                return toValidGridArea(r + ri, c + ci, r + ri + rowSpan, c + ci + colSpan, rd, cd)
+                fillSpace(pg, r, c, row.span, col.span)
+                return toValidGridArea(r + ri, c + ci, r + ri + row.span, c + ci + col.span, rd, cd)
               }
             }
           }
@@ -366,15 +403,15 @@ export function findImplicitGrid(area) {
           rows++
           pg.push(new Array(cols).fill(false))
           pg[rows - 1][0] = true
-          return toValidGridArea(rows - 1 + ri, ci, rows - 1 + ri + rowSpan, ci + colSpan, rd, cd)
+          return toValidGridArea(rows - 1 + ri, ci, rows - 1 + ri + row.span, ci + col.span, rd, cd)
         } else {
           // auto flow column
           for (let c = 0; c < cols; c++) {
             for (let r = 0; r < rows; r++) {
-              if (colIsTherePlace(pg, r, c, rowSpan, colSpan)) {
+              if (colIsTherePlace(pg, r, c, row.span, col.span)) {
                 // TODO: colSpan
-                fillSpace(pg, r, c, rowSpan, colSpan)
-                return toValidGridArea(r + ri, c + ci, r + ri + rowSpan, c + ci + colSpan, rd, cd)
+                fillSpace(pg, r, c, row.span, col.span)
+                return toValidGridArea(r + ri, c + ci, r + ri + row.span, c + ci + col.span, rd, cd)
               }
             }
           }
@@ -385,7 +422,7 @@ export function findImplicitGrid(area) {
           }
           pg.push(new Array(cols).fill(false))
           pg[0][cols - 1] = true
-          return toValidGridArea(ri, cols - 1 + ci, ri + rowSpan, cols - 1 + ci + colSpan, rd, cd)
+          return toValidGridArea(ri, cols - 1 + ci, ri + row.span, cols - 1 + ci + col.span, rd, cd)
         }
       }
     })

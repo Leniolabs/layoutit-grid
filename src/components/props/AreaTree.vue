@@ -15,13 +15,7 @@
       @click="currentArea = area"
     >
       {{ area.name }}
-      <button
-        v-show="!hasDisplay"
-        aria-label="Remove area"
-        class="btn-remove"
-        title="Remove Area"
-        @click="removeArea(area)"
-      >
+      <button aria-label="Remove area" class="btn-remove" title="Remove Area" @click="removeArea(area)">
         <IconRemove />
       </button>
     </div>
