@@ -444,26 +444,6 @@ function placeAutoAreaForColDir(ig, area, cursor, limits) {
   return fillSpan(ig, cursor, row.span, col.span)
 }
 
-function placeArea(dir, ig, area, cursor, limits) {
-  if (!limits) {
-    limits = gridAreaToGridLimits(area.gridArea)
-  }
-  const { row, col } = limits
-  if (!row.auto) {
-    // only for autoFlow.dir === 'col', for 'row' these are already placed
-    return placeRowLockedArea(ig, area, cursor, limits)
-  } else if (!col.auto) {
-    // only for autoFlow.dir === 'row', for 'col' these are already placed
-    return placeColLockedArea(ig, area, cursor, limits)
-  } else {
-    if (dir === 'row') {
-      return placeAutoAreaForRowDir(ig, area, cursor, limits)
-    } else {
-      return placeAutoAreaForColDir(ig, area, cursor, limits)
-    }
-  }
-}
-
 export function findImplicitGrid(area) {
   // https://drafts.csswg.org/css-grid/#auto-placement-algo
 
@@ -472,16 +452,6 @@ export function findImplicitGrid(area) {
   let gridAreas
   let ig
   if (area.display === 'grid' && grid) {
-    // Grid auto flow logic
-    const dir = grid.autoFlow === 'row' || grid.autoFlow === 'row dense' ? 'row' : 'col'
-    const dense = grid.autoFlow.includes('dense')
-    const denseReset = (cursor) => {
-      if (dense) {
-        cursor.row = 0
-        cursor.col = 0
-      }
-    }
-
     ig = initialImplicitGrid(grid.row.sizes.length, grid.col.sizes.length)
 
     // Preprocess areas computing limits
@@ -502,8 +472,17 @@ export function findImplicitGrid(area) {
       }
     })
 
-    // Process the items locked to a given row
+    // Grid auto flow logic
+    const dir = grid.autoFlow === 'row' || grid.autoFlow === 'row dense' ? 'row' : 'col'
+    const dense = grid.autoFlow.includes('dense')
+    const denseReset = (cursor) => {
+      if (dense) {
+        cursor.row = 0
+        cursor.col = 0
+      }
+    }
     if (dir === 'row') {
+      // Process the items locked to a given row
       let cursor = { row: 0, col: 0 }
       areas.forEach((a) => {
         denseReset(cursor)
@@ -511,21 +490,8 @@ export function findImplicitGrid(area) {
           a.gridArea = placeRowLockedArea(ig, a.area, cursor, a.limits)
         }
       })
-    }
 
-    // Process the items locked to a given column
-    if (dir === 'col') {
-      let cursor = { row: 0, col: 0 }
-      areas.forEach((a) => {
-        denseReset(cursor)
-        if (a.limits.row.auto && !a.limits.col.auto) {
-          a.gridArea = placeColLockedArea(ig, a.area, cursor, a.limits)
-        }
-      })
-    }
-
-    // Add rows or columns to accomodate max span for auto placed items
-    if (dir === 'row') {
+      // Add columns to accomodate max span for auto placed items
       const maxColSpan = areas.reduce((span, current) => {
         const { col } = current.limits
         return col.auto && span < col.span ? col.span : span
@@ -533,7 +499,37 @@ export function findImplicitGrid(area) {
       if (ig.cols < maxColSpan) {
         addRightColumns(ig, maxColSpan - ig.cols)
       }
+
+      // Place remaining areas
+      cursor = { row: 0, col: 0 }
+      gridAreas = areas.map(({ area, limits, gridArea }) => {
+        if (gridArea) {
+          // already positioned areas:
+          //  - areas with a definite position
+          //  - row and column locked areas depending on grid flow
+          return gridArea
+        }
+        denseReset(cursor)
+        if (!limits.col.auto) {
+          // only for autoFlow.dir === 'row', for 'col' these are already placed
+          return placeColLockedArea(ig, area, cursor, limits)
+        } else {
+          return placeAutoAreaForRowDir(ig, area, cursor, limits)
+        }
+      })
     } else {
+      // dir === 'col'
+
+      // Process the items locked to a given column
+      let cursor = { row: 0, col: 0 }
+      areas.forEach((a) => {
+        denseReset(cursor)
+        if (a.limits.row.auto && !a.limits.col.auto) {
+          a.gridArea = placeColLockedArea(ig, a.area, cursor, a.limits)
+        }
+      })
+
+      // Add rows to accomodate max span for auto placed items
       const maxRowSpan = areas.reduce((span, current) => {
         const { row } = current.limits
         return row.auto && span < row.span ? row.span : span
@@ -541,20 +537,25 @@ export function findImplicitGrid(area) {
       if (ig.rows < maxRowSpan) {
         addBottomRows(ig, maxRowSpan - ig.rows)
       }
-    }
 
-    // Place remaining areas
-    const cursor = { row: 0, col: 0 }
-    gridAreas = areas.map(({ area, limits, gridArea }) => {
-      if (gridArea) {
-        // already positioned areas:
-        //  - areas with a definite position
-        //  - row and column locked areas depending on grid flow
-        return gridArea
-      }
-      denseReset(cursor)
-      return placeArea(dir, ig, area, cursor, limits)
-    })
+      // Place remaining areas
+      cursor = { row: 0, col: 0 }
+      gridAreas = areas.map(({ area, limits, gridArea }) => {
+        if (gridArea) {
+          // already positioned areas:
+          //  - areas with a definite position
+          //  - row and column locked areas depending on grid flow
+          return gridArea
+        }
+        denseReset(cursor)
+        if (!limits.row.auto) {
+          // only for autoFlow.dir === 'col', for 'row' these are already placed
+          return placeRowLockedArea(ig, area, cursor, limits)
+        } else {
+          return placeAutoAreaForColDir(ig, area, cursor, limits)
+        }
+      })
+    }
   } else {
     gridAreas = children.map(() => undefined)
     ig = { rows: 1, cols: 1, ri: 1, ci: 1 }

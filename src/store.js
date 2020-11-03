@@ -65,7 +65,9 @@ export function clearArea(area) {
 
 export function removeArea(area) {
   const { children } = area.parent
-  children.splice(children.indexOf(area), 1)
+  batch(() => {
+    children.splice(children.indexOf(area), 1)
+  })
   deselectCurrentArea()
 }
 
