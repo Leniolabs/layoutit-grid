@@ -1,6 +1,8 @@
 <template>
   <div class="area-props">
+    <!--
     <div class="area-type">{{ area.type === 'div' ? area.display : area.type }} props</div>
+    -->
     <AreaTypeSelect v-if="area.parent" :model-value="area.type" @update:modelValue="onUpdateType" />
     <AreaContentProps :area="area" />
     <AreaLayoutProps :area="area" />

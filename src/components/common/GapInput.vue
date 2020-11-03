@@ -55,6 +55,7 @@ export function setGapUnit(unit) {
     input {
       text-align: center;
       font-size: 14px;
+      height: 24px;
       border: 0;
       width: auto;
       background: #fff;
@@ -64,10 +65,10 @@ export function setGapUnit(unit) {
       min-width: 45px;
     }
   }
-  input{
+  input {
     border-radius: 2px 0 0 2px;
   }
-  .unit-select{
+  .unit-select {
     border-radius: 0 2px 2px 0;
   }
   &:nth-child(3) {

@@ -15,6 +15,15 @@
       @click="currentArea = area"
     >
       {{ area.name }}
+      <button
+        v-if="area.display !== 'block'"
+        aria-label="Add area"
+        class="btn-add"
+        title="Add Area"
+        @click="addImplicitArea"
+      >
+        <IconAdd />
+      </button>
       <button aria-label="Remove area" class="btn-remove" title="Remove Area" @click="removeArea(area)">
         <IconRemove />
       </button>
@@ -26,12 +35,14 @@
 <script setup="props">
 export { default as FlexOptions } from './FlexOptions.vue'
 export { default as GridOptions } from './GridOptions.vue'
+export { default as IconAdd } from '../icons/IconAdd.vue'
 export { default as IconRemove } from '../icons/IconRemove.vue'
 
 import { ref, computed } from 'vue'
-export { currentArea, removeArea } from '../../store.js'
+export { currentArea, removeArea, createAreaState, getRandomColor } from '../../store.js'
 
 import { getAreaDepth } from '../../store.js'
+import { getRandomColor } from '../../store/area'
 
 export const depth = computed(() => getAreaDepth(props.area) * 5 + 'px')
 
@@ -46,6 +57,17 @@ export const showOptions = ref(true)
 
 export const currentGrid = computed(() => props.area.grid)
 export const currentFlex = computed(() => props.area.flex)
+
+const counter = ref(1)
+export function addImplicitArea() {
+  props.area.children.push(
+    createAreaState({
+      name: 'a' + counter.value++,
+      parent: props.area,
+      color: getRandomColor(),
+    })
+  )
+}
 </script>
 
 <style scoped lang="scss" vars="{ depth }">
@@ -69,12 +91,9 @@ export const currentFlex = computed(() => props.area.flex)
   }
 }
 
-.btn-remove {
+.btn-remove,
+.btn-add {
   position: absolute;
-  top: 5px;
-  height: 16px;
-  right: 5px;
-  width: 16px;
   border: 0;
   line-height: 6px;
   margin-bottom: 5px;
@@ -85,13 +104,35 @@ export const currentFlex = computed(() => props.area.flex)
   pointer-events: all;
   border-radius: 2px;
   padding-top: 3px;
-  &:hover {
-    background: #c2185b;
-  }
   svg {
     height: 10px;
     width: 10px;
-    fill: #888;
+    fill: white;
+  }
+}
+
+.btn-remove {
+  top: 5px;
+  height: 16px;
+  right: 5px;
+  width: 16px;
+  &:hover {
+    background: #c2185b;
+  }
+}
+
+.btn-add {
+  top: 5px;
+  height: 16px;
+  right: 25px;
+  width: 16px;
+  padding: 4px;
+  svg {
+    height: 8px;
+    width: 8px;
+  }
+  &:hover {
+    background: green;
   }
 }
 </style>

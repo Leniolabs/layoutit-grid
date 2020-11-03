@@ -1,60 +1,61 @@
 <template>
-  <div class="items sizes">
-    <h2><span>⊞</span> Area Size</h2>
-    <AreaSize :area="area" type="width" />
-    <AreaSize :area="area" type="height" />
-  </div>
-  <div>
-    <label>margin</label>
-    <input :value="area.margin" aria-label="margin" @input="area.margin = $event.target.value" />
-  </div>
-  <div>
-    <label>padding</label>
-    <input :value="area.padding" aria-label="padding" @input="area.padding = $event.target.value" />
-  </div>
-  <template v-if="area.parent && area.parent.display === 'grid'">
-    <PlacementSelect v-model="area.justifySelf" type="justify-self" />
-    <PlacementSelect v-model="area.alignSelf" type="align-self" />
-    <div>
-      <label>grid-area</label>
-      <input :value="area.gridArea" aria-label="margin" @input="setGridArea($event.target.value)" />
+  <div class="layout-props">
+    <div class="area-size">
+      <AreaSize :area="area" type="width" />
+      <AreaSize :area="area" type="height" />
     </div>
-  </template>
-  <template v-if="area.parent && area.parent.display === 'flex'">
-    <div class="inner-items">
-      <div>
-        Flex Grow
-        <input
-          :value="area.flexGrow"
-          type="number"
-          aria-label="flex grow"
-          @input="area.flexGrow = +$event.target.value"
-        />
-      </div>
-      <br />
-      <div>
-        Flex Shrink
-        <input
-          :value="area.flexShrink"
-          type="number"
-          aria-label="flex shrink"
-          @input="area.flexShrink = +$event.target.value"
-        />
-      </div>
-      <br />
-      <div>
-        Flex Basis
-        <input
-          :value="area.flexBasis"
-          type="text"
-          aria-label="flex basis"
-          @input="area.flexBasis = $event.target.value"
-        />
-      </div>
+    <div class="margin-input">
+      <label>margin</label>
+      <input :value="area.margin" aria-label="margin" @input="area.margin = $event.target.value" />
     </div>
-  </template>
-  <FlexOptions v-if="area.display === 'flex'" :area="area" />
-  <GridOptions v-if="area.display === 'grid'" :area="area" />
+    <div class="padding-input">
+      <label>padding</label>
+      <input :value="area.padding" aria-label="padding" @input="area.padding = $event.target.value" />
+    </div>
+    <template v-if="area.parent && area.parent.display === 'grid'">
+      <PlacementSelect v-model="area.justifySelf" type="justify-self" />
+      <PlacementSelect v-model="area.alignSelf" type="align-self" />
+      <div>
+        <label>grid-area</label>
+        <input :value="area.gridArea" aria-label="margin" @input="setGridArea($event.target.value)" />
+      </div>
+    </template>
+    <template v-if="area.parent && area.parent.display === 'flex'">
+      <div class="inner-items">
+        <div>
+          Flex Grow
+          <input
+            :value="area.flexGrow"
+            type="number"
+            aria-label="flex grow"
+            @input="area.flexGrow = +$event.target.value"
+          />
+        </div>
+        <br />
+        <div>
+          Flex Shrink
+          <input
+            :value="area.flexShrink"
+            type="number"
+            aria-label="flex shrink"
+            @input="area.flexShrink = +$event.target.value"
+          />
+        </div>
+        <br />
+        <div>
+          Flex Basis
+          <input
+            :value="area.flexBasis"
+            type="text"
+            aria-label="flex basis"
+            @input="area.flexBasis = $event.target.value"
+          />
+        </div>
+      </div>
+    </template>
+    <FlexOptions v-if="area.display === 'flex'" :area="area" />
+    <GridOptions v-if="area.display === 'grid'" :area="area" />
+  </div>
 </template>
 
 <script setup="props">
@@ -80,4 +81,18 @@ export const setGridArea = debounce((val) => {
 }, 500)
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.layout-props {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.margin-input,
+.padding-input {
+  display: grid;
+  grid-template-columns: 65px 1fr;
+  input {
+    width: 100%;
+  }
+}
+</style>

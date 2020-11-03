@@ -1,5 +1,6 @@
 <template>
   <div class="area-size">
+    <label>{{ type }}</label>
     <div class="input-container">
       <input
         v-if="size.unit !== 'initial'"
@@ -48,12 +49,13 @@ export function setSizeUnit(unit) {
 
 <style scoped lang="scss">
 .area-size {
-  display: inline-block;
+  display: block;
   margin-right: 10px;
   .input-container {
     display: grid;
-    grid-template-columns: 45px 40px;
+    grid-template-columns: 100px 90px;
     grid-template-rows: 30px;
+    gap: 0 8px;
     input {
       text-align: center;
       font-size: 14px;
@@ -68,6 +70,7 @@ export function setSizeUnit(unit) {
   }
   input {
     border-radius: 2px 0 0 2px;
+    height: 24px;
   }
   .unit-select {
     border-radius: 0 2px 2px 0;

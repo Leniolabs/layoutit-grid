@@ -3,6 +3,7 @@
     <BrandLogo />
     <AreaTree :area="area" />
     <AreaProps :area="currentArea" />
+    <BrandBanner />
   </div>
 </template>
 
@@ -13,6 +14,7 @@ export { default as FlexOptions } from './FlexOptions.vue'
 export { default as GridOptions } from './GridOptions.vue'
 export { default as AreaProps } from './AreaProps.vue'
 export { default as AreaTree } from './AreaTree.vue'
+export { default as BrandBanner } from '../props/BrandBanner.vue'
 
 import { computed } from 'vue'
 export { currentArea, currentView } from '../../store.js'
@@ -30,7 +32,7 @@ export default {
   color: #fff;
   display: grid;
   gap: 20px 0px;
-  grid-template-rows: auto auto 1fr;
+  grid-template-rows: auto auto 1fr auto;
   overflow: auto;
   padding: 0 0 0 14px;
   text-align: left;

@@ -1,21 +1,21 @@
 <template>
   <template v-if="area.type === 'div'">
     <DisplaySelect :model-value="area.display" @update:modelValue="onUpdateDisplay" />
-    <button @click="addImplicitArea">Add Area</button>
     <!--
-      <button @click="addItems">Add Some Items</button>
-      <div v-if="area.items">
-        <span>Items</span>
-        <input
-          :value="area.items.count"
-          type="number"
-          aria-label="items count"
-          min="1"
-          step="1"
-          @input=";(area.items.count = +$event.target.value), (area.name = area.items.count + ' photos')"
-        />
-      </div>
-      -->
+    <button @click="addImplicitArea">Add Area</button>
+    <button @click="addItems">Add Some Items</button>
+    <div v-if="area.items">
+      <span>Items</span>
+      <input
+        :value="area.items.count"
+        type="number"
+        aria-label="items count"
+        min="1"
+        step="1"
+        @input=";(area.items.count = +$event.target.value), (area.name = area.items.count + ' photos')"
+      />
+    </div>
+    -->
   </template>
   <div v-if="area.type === 'p'">
     <textarea style="height: 3em" :value="area.text" aria-label="area text" @input="area.text = $event.target.value" />

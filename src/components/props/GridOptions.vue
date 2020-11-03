@@ -4,6 +4,15 @@
     <PlacementSelect v-model="grid.alignContent" type="align-content" />
     <PlacementSelect v-model="grid.justifyItems" type="justify-items" />
     <PlacementSelect v-model="grid.alignItems" type="align-items" />
+    <div class="auto-flow-container">
+      <span>grid-auto-flow</span>
+      <select v-model="grid.autoFlow" class="auto-flow">
+        <option value="row">row</option>
+        <option value="column">column</option>
+        <option value="row dense">row dense</option>
+        <option value="column dense">column dense</option>
+      </select>
+    </div>
     <div class="items columns">
       <div class="items-header">
         <h2><span style="transform: rotate(90deg); display: inline-block">≑</span> Grid Columns</h2>
@@ -141,15 +150,6 @@
       <GapInput :grid="grid" type="row" />
       <GapInput :grid="grid" type="col" />
     </div>
-    <div class="auto-flow-container">
-      <span>grid-auto-flow</span>
-      <select v-model="grid.autoFlow" class="auto-flow">
-        <option value="row">row</option>
-        <option value="column">column</option>
-        <option value="row dense">row dense</option>
-        <option value="column dense">column dense</option>
-      </select>
-    </div>
   </div>
 </template>
 
@@ -224,7 +224,7 @@ export function isFocused(type, track) {
 h2 {
   font-family: 'Alegreya Sans', 'Helvetica Neue', Arial, sans-serif;
   margin: 0;
-  font-size: 16px;
+  font-size: 15px;
   padding: 0;
   line-height: 30px;
   display: flex;
@@ -232,12 +232,13 @@ h2 {
   span {
     font-weight: normal;
     margin-right: 6px;
-    height: 34px;
+    height: 30px;
   }
 }
 
 .items {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  margin-top: 20px;
   .items-header {
     display: grid;
     grid-template-columns: auto 55px;
@@ -252,15 +253,16 @@ h2 {
       grid-template-columns: 70px auto 30px;
       grid-gap: 0 8px;
       border-radius: 2px;
-      height: 30px;
-      margin-bottom: 8px;
+      height: 25px;
+      margin-bottom: 2px;
       input {
         text-align: center;
         width: 100%;
         border: 0;
         border-radius: 2px;
-        padding: 0.313em;
-        font-size: 14px;
+        padding: 0.113em;
+        font-size: 12px;
+        height: 24px;
         background: #fff;
         color: #333;
         &.dragging {
@@ -292,7 +294,9 @@ h2 {
   //background:transparent;
   border-radius: 4px;
   opacity: 0.5;
-  padding: 8px 0;
+  padding: 5px 0;
+  height: 24px;
+  width: 24px;
   //max-width:18px;
   &:hover {
     background: var(--color-remove-active);
@@ -302,9 +306,29 @@ h2 {
 }
 
 .add-button {
+  height: 24px;
+  padding: 0;
   background: var(--color-add);
   &:hover {
     background: var(--color-add-active);
+  }
+}
+
+.auto-flow-container {
+  display: grid;
+  grid-template-columns: 0.75fr 1fr;
+  margin-bottom: 5px;
+  span {
+    align-self: center;
+    font-size: 12px;
+    width: 100%;
+  }
+  select {
+    background: #fff;
+    border: 0 none;
+    border-radius: 2px;
+    width: 100%;
+    font-size: 12px;
   }
 }
 </style>

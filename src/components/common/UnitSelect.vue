@@ -38,6 +38,7 @@ export const options = computed(() => units[props.type])
   border: 0 none;
   border-radius: 2px;
   width: 100%;
+  height: 24px;
   font-size: 14px;
 }
 .unit-select.focused {
