@@ -1,18 +1,5 @@
 <template>
   <div class="grid-settings-container">
-    <PlacementSelect v-model="grid.justifyContent" type="justify-content" />
-    <PlacementSelect v-model="grid.alignContent" type="align-content" />
-    <PlacementSelect v-model="grid.justifyItems" type="justify-items" />
-    <PlacementSelect v-model="grid.alignItems" type="align-items" />
-    <div class="auto-flow-container">
-      <span>grid-auto-flow</span>
-      <select v-model="grid.autoFlow" class="auto-flow">
-        <option value="row">row</option>
-        <option value="column">column</option>
-        <option value="row dense">row dense</option>
-        <option value="column dense">column dense</option>
-      </select>
-    </div>
     <div class="items columns">
       <div class="items-header">
         <h2><span style="transform: rotate(90deg); display: inline-block">≑</span> Grid Columns</h2>
@@ -150,6 +137,22 @@
       <GapInput :grid="grid" type="row" />
       <GapInput :grid="grid" type="col" />
     </div>
+    <GridAutoFlowSelect v-model="grid.autoFlow" />
+    <!--
+    <div class="auto-flow-container">
+      <span>grid-auto-flow</span>
+      <select v-model="grid.autoFlow" class="auto-flow">
+        <option value="row">row</option>
+        <option value="column">column</option>
+        <option value="row dense">row dense</option>
+        <option value="column dense">column dense</option>
+      </select>
+    </div>
+    -->
+    <PlacementSelect v-model="grid.justifyContent" type="justify-content" />
+    <PlacementSelect v-model="grid.alignContent" type="align-content" />
+    <PlacementSelect v-model="grid.justifyItems" type="justify-items" />
+    <PlacementSelect v-model="grid.alignItems" type="align-items" />
   </div>
 </template>
 
@@ -160,6 +163,7 @@ export { default as UnitSelect } from '../common/UnitSelect.vue'
 export { default as GapInput } from '../common/GapInput.vue'
 export { default as OptionsButton } from '../basic/OptionsButton.vue'
 export { default as PlacementSelect } from '../common/PlacementSelect.vue'
+export { default as GridAutoFlowSelect } from '../common/GridAutoFlowSelect.vue'
 
 import { computed } from 'vue'
 

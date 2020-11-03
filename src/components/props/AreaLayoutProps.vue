@@ -1,25 +1,7 @@
 <template>
   <div class="layout-props">
-    <div class="area-size">
-      <AreaSize :area="area" type="width" />
-      <AreaSize :area="area" type="height" />
-    </div>
-    <div class="margin-input">
-      <label>margin</label>
-      <input :value="area.margin" aria-label="margin" @input="area.margin = $event.target.value" />
-    </div>
-    <div class="padding-input">
-      <label>padding</label>
-      <input :value="area.padding" aria-label="padding" @input="area.padding = $event.target.value" />
-    </div>
-    <template v-if="area.parent && area.parent.display === 'grid'">
-      <PlacementSelect v-model="area.justifySelf" type="justify-self" />
-      <PlacementSelect v-model="area.alignSelf" type="align-self" />
-      <div>
-        <label>grid-area</label>
-        <input :value="area.gridArea" aria-label="margin" @input="setGridArea($event.target.value)" />
-      </div>
-    </template>
+    <FlexOptions v-if="area.display === 'flex'" :area="area" />
+    <GridOptions v-if="area.display === 'grid'" :area="area" />
     <template v-if="area.parent && area.parent.display === 'flex'">
       <div class="inner-items">
         <div>
@@ -53,8 +35,26 @@
         </div>
       </div>
     </template>
-    <FlexOptions v-if="area.display === 'flex'" :area="area" />
-    <GridOptions v-if="area.display === 'grid'" :area="area" />
+    <template v-if="area.parent && area.parent.display === 'grid'">
+      <PlacementSelect v-model="area.justifySelf" type="justify-self" />
+      <PlacementSelect v-model="area.alignSelf" type="align-self" />
+      <div>
+        <label>grid-area</label>
+        <input :value="area.gridArea" aria-label="margin" @input="setGridArea($event.target.value)" />
+      </div>
+    </template>
+    <div class="area-size">
+      <AreaSize :area="area" type="width" />
+      <AreaSize :area="area" type="height" />
+    </div>
+    <div class="margin-input">
+      <label>margin</label>
+      <input :value="area.margin" aria-label="margin" @input="area.margin = $event.target.value" />
+    </div>
+    <div class="padding-input">
+      <label>padding</label>
+      <input :value="area.padding" aria-label="padding" @input="area.padding = $event.target.value" />
+    </div>
   </div>
 </template>
 
