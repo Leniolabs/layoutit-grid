@@ -1,9 +1,18 @@
 <template>
   <div class="display-select-container">
-    <span>display</span>
-    <select :value="modelValue" class="display-select" @input="$emit('update:modelValue', $event.target.value)">
-      <option v-for="option in options" :key="option" :value="option">{{ option }}</option>
-    </select>
+    <div class="radio-toolbar">
+      <template v-for="option in options" :key="option">
+        <input
+          :id="`display-${option}`"
+          :checked="modelValue === option"
+          type="radio"
+          name="display"
+          :value="option"
+          @input="$emit('update:modelValue', option)"
+        />
+        <label :for="`display-${option}`">{{ option }}</label>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -17,7 +26,7 @@ export default {
   emits: ['update:modelValue'],
 }
 
-export const options = ['block', 'grid', 'flex']
+export const options = ['block', 'flex', 'grid']
 </script>
 
 <style scoped lang="scss">
@@ -37,5 +46,46 @@ export const options = ['block', 'grid', 'flex']
   border-radius: 2px;
   width: 100%;
   font-size: 12px;
+}
+
+.radio-toolbar {
+  display: flex;
+  gap: 5px;
+  width: 330px;
+}
+
+.radio-toolbar input[type='radio'] {
+  opacity: 0;
+  position: fixed;
+  width: 0;
+}
+
+.radio-toolbar label {
+  color: #444;
+  display: inline-block;
+  background-color: #ddd;
+  padding: 3px 6px;
+  font-family: sans-serif, Arial;
+  font-size: 14px;
+  width: 62px;
+  text-align: center;
+  border: 2px solid #444;
+  border-radius: 4px;
+  opacity: 0.7;
+}
+
+.radio-toolbar label:hover {
+  background-color: #dfd;
+}
+
+.radio-toolbar input[type='radio']:focus + label {
+  border: 2px solid #444;
+}
+
+.radio-toolbar input[type='radio']:checked + label {
+  opacity: 1;
+  background-color: white;
+  color: black;
+  border-color: #4c4;
 }
 </style>

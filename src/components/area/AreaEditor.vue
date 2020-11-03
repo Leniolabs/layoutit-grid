@@ -13,7 +13,7 @@
       position: 'relative',
       outline: area === currentArea ? `2px solid ${area.color}` : 'none',
       background:
-        area.display === 'block'
+        area.display === 'block' && area.parent
           ? '#ffffff88'
           : 'repeating-linear-gradient(45deg, white, white 9px, #fafafa 9px, #fafafa 14px)',
       'user-select': 'none',
@@ -157,7 +157,7 @@ export function gridAreaStyles(area, gridArea) {
     margin: area.margin,
     padding: area.padding,
     width: area.width,
-    height: area.height,
+    height: area.parent && area.parent.display === 'block' && area.height === 'initial' ? '100px' : area.height,
   }
 }
 
