@@ -7,7 +7,7 @@
       'touch-action': 'none',
       'grid-area': gridArea || area.gridArea,
       border: `2px solid ${area.color}`,
-      opacity: 0.5,
+      opacity: 0.3,
       'flex-grow': area.flexGrow,
       'flex-shrink': area.flexShrink,
       'flex-basis': area.flexBasis,

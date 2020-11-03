@@ -24,8 +24,8 @@ export default {
   emits: ['update:modelValue'],
 }
 
-const optionsContent = ['start', 'end', 'center', 'stretch', 'space-around', 'space-between', 'space-evenly']
-const optionsItems = ['start', 'end', 'center', 'stretch']
+const optionsContent = ['initial', 'start', 'end', 'center', 'stretch', 'space-around', 'space-between', 'space-evenly']
+const optionsItems = ['initial', 'start', 'end', 'center', 'stretch']
 
 const optionsMap = {
   content: optionsContent,

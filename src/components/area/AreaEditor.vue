@@ -151,11 +151,21 @@ function gridSizesForView(grid, type) {
     .join(' ')
 }
 
+function computedJustifyItem(area) {
+  const { parent, justifySelf } = area
+  return justifySelf !== 'initial' ? justifySelf : parent.grid ? parent.grid.justifyItems : 'initial'
+}
+
+function computedAlignItem(area) {
+  const { alignSelf, parent } = area
+  return alignSelf !== 'initial' ? alignSelf : parent.grid ? parent.grid.alignItems : 'initial'
+}
+
 export function gridAreaStyles(area, gridArea) {
   return {
     'grid-area': gridArea || area.gridArea,
-    'justify-self': area.justifySelf,
-    'align-self': area.alignSelf,
+    'justify-self': computedJustifyItem(area),
+    'align-self': computedAlignItem(area),
     'flex-grow': area.flexGrow,
     'flex-shrink': area.flexShrink,
     'flex-basis': area.flexBasis,
@@ -176,8 +186,10 @@ function gridStyles(grid) {
     gridGap: `${grid.row.gap} ${grid.col.gap}`,
     justifyContent: grid.justifyContent,
     alignContent: grid.alignContent,
-    justifyItems: grid.justifyItems,
-    alignItems: grid.alignItems,
+    // justifyItems and alignItems are always initial to avoid afecting
+    // the helper elements in the grid, grid.justifyItems and grid.alignItems
+    // are used in the areas for justifySelf and alignSelf
+    // we could also use justifySelf, alignSelf in each helper
   }
 }
 

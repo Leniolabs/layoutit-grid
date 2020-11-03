@@ -93,10 +93,10 @@ export function createGridState(r = 2, c = 3) {
     row: createGridDimension(r),
     col: createGridDimension(c),
     autoFlow: 'row',
-    justifyContent: 'stretch',
-    alignContent: 'stretch',
-    justifyItems: 'stretch',
-    alignItems: 'stretch',
+    justifyContent: 'initial',
+    alignContent: 'initial',
+    justifyItems: 'initial',
+    alignItems: 'initial',
   }
 }
 
