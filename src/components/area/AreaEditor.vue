@@ -11,9 +11,10 @@
       overflow: 'hidden',
       'touch-action': 'none',
       position: 'relative',
+      outline: area === currentArea ? `2px solid ${area.color}` : 'none',
       background:
         area.display === 'block'
-          ? '#ffffff'
+          ? '#ffffff88'
           : 'repeating-linear-gradient(45deg, white, white 9px, #fafafa 9px, #fafafa 14px)',
       'user-select': 'none',
       'z-index': 0,
@@ -35,25 +36,6 @@
       "
     >
       <PieChart />
-    </div>
-
-    <div
-      v-if="area.type === 'button'"
-      style="
-        width: 100%;
-        height: 100%;
-        opacity: 0.5;
-        padding: 20px;
-        display: grid;
-        justify-items: center;
-        align-items: center;
-      "
-    >
-      <button
-        style="border: none; padding: 10px; border-radius: 5px; font-size: 16px; font-weight: 700; background: #aaa"
-      >
-        {{ area.text }}
-      </button>
     </div>
     -->
     <GridEditor
@@ -80,7 +62,7 @@
       </template>
     </template>
     <div v-if="area != mainArea" class="area-info" :style="{ border: `2px solid ${area.color}` }">
-      <p :style="{ backgroundColor: area.color }" class="area-name">{{ area.name }}</p>
+      <p :style="{ backgroundColor: area.color }" class="area-name" @click="currentArea = area">{{ area.name }}</p>
     </div>
   </component>
 </template>
@@ -90,6 +72,7 @@ export { default as AreaBox } from './AreaBox.vue'
 export { default as PieChart } from '../content/PieChart.vue'
 export { default as ElementImage } from './ElementImage.vue'
 export { default as ElementParagraph } from './ElementParagraph.vue'
+export { default as ElementButton } from './ElementButton.vue'
 // GridEditor imported globally due to circular reference with AreaEditor
 // export { default as FlexEditor } from '../flex/FlexEditor.vue'
 
@@ -107,7 +90,7 @@ import {
 } from '../../store.js'
 import { useIsActiveArea } from '../../composables/area.js'
 
-export { mainArea }
+export { currentArea, mainArea }
 
 export default {
   name: 'AreaEditor',
@@ -128,6 +111,8 @@ export const areaType = computed(() => {
       return ElementImage
     case 'p':
       return ElementParagraph
+    case 'button':
+      return ElementButton
     default:
       return 'section'
   }
@@ -284,6 +269,7 @@ watch(
 
 .area-name {
   position: absolute;
+  pointer-events: initial;
   font-size: 13px;
   font-weight: 500;
   color: white;

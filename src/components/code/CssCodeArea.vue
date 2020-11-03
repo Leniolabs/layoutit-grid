@@ -24,29 +24,29 @@
     >;<span v-if="includeTemplateAreas"
       >{{ '\n  ' }}<span class="token property">grid-template-areas</span>:{{ '\n    '
       }}<CssCodeTemplateAreas :area="area" :options="options" />;</span
-    ><template v-if="area.grid.justifyContent !== 'stretch'"
+    ><template v-if="area.grid.justifyContent !== 'initial'"
       >{{ '\n  ' }}<span class="token property">justify-content</span>:
       <span class="token string">{{ area.grid.justifyContent }}</span
       >;</template
-    ><template v-if="area.grid.alignContent !== 'stretch'"
+    ><template v-if="area.grid.alignContent !== 'initial'"
       >{{ '\n  ' }}<span class="token property">align-content</span>:
       <span class="token string">{{ area.grid.alignContent }}</span
       >;</template
-    ><template v-if="area.grid.justifyItems !== 'stretch'"
+    ><template v-if="area.grid.justifyItems !== 'initial'"
       >{{ '\n  ' }}<span class="token property">justify-items</span>:
       <span class="token string">{{ area.grid.justifyItems }}</span
       >;</template
-    ><template v-if="area.grid.alignItems !== 'stretch'"
+    ><template v-if="area.grid.alignItems !== 'initial'"
       >{{ '\n  ' }}<span class="token property">align-items</span>:
       <span class="token string">{{ area.grid.alignItems }}</span
       >;</template
     ></template
   ><template v-if="area !== mainArea"
-    ><template v-if="area.justifySelf !== 'stretch'"
+    ><template v-if="area.justifySelf !== 'initial'"
       >{{ '\n  ' }}<span class="token property">justify-self</span>:
       <span class="token string">{{ area.justifySelf }}</span
       >;</template
-    ><template v-if="area.alignSelf !== 'stretch'"
+    ><template v-if="area.alignSelf !== 'initial'"
       >{{ '\n  ' }}<span class="token property">align-self</span>: <span class="token string">{{ area.alignSelf }}</span
       >;</template
     ></template
@@ -79,7 +79,7 @@ export default {
 }
 
 export const singleLine = computed(
-  () => props.area.display !== 'grid' && props.area.justifySelf === 'stretch' && props.area.alignSelf === 'stretch'
+  () => props.area.display !== 'grid' && props.area.justifySelf === 'initial' && props.area.alignSelf === 'initial'
 )
 
 export const cssAreaName = computed(() => props.area.name)
@@ -111,8 +111,8 @@ export const areasToInclude = computed(() =>
   props.area.children.filter((area) => {
     return !(
       area.display !== 'grid' &&
-      area.justifySelf === 'stretch' &&
-      area.alignSelf === 'stretch' &&
+      area.justifySelf === 'initial' &&
+      area.alignSelf === 'initial' &&
       area.gridArea === 'auto'
     )
   })

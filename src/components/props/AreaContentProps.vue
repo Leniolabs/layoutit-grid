@@ -26,7 +26,7 @@
 export { default as DisplaySelect } from '../common/DisplaySelect.vue'
 
 import { ref } from 'vue'
-import { createAreaState, createFlexState } from '../../store'
+import { createAreaState, createFlexState, createGridState } from '../../store'
 export { currentArea } from '../../store.js'
 
 export default {
@@ -41,6 +41,11 @@ export function onUpdateDisplay(value) {
   if (props.area.display === 'flex') {
     if (!props.area.flex) {
       props.area.flex = createFlexState()
+    }
+  }
+  if (props.area.display === 'grid') {
+    if (!props.area.grid) {
+      props.area.grid = createGridState(2, 3)
     }
   }
 }

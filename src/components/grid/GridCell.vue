@@ -103,9 +103,9 @@ section {
   &:not(.dragging) {
     cursor: pointer;
   }
-  &.grayed {
+  /*&.grayed {
     background: #ddddddcc;
-  }
+  }*/
   &:not(.dragging):hover {
     background: #f4faf4cc;
   }

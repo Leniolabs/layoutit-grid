@@ -1,5 +1,5 @@
 <template>
-  <p :style="{ ...style, 'font-size': '20px', opacity: '0.5' }">
+  <p :style="{ ...style, 'font-size': '20px', color: '#00000088' }">
     {{ area.text }}
     <slot />
   </p>
