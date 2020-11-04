@@ -1,15 +1,28 @@
 <template>
   <PropsAccordion class="area-props" :accordion="accordion">
+    <PropsAccordionItem
+      name="tree"
+      independent="true"
+      :heading="`Areas`"
+      :closed-heading="`${area.name}`"
+      :accordion="accordion"
+    >
+      <AreaTree :area="mainArea" />
+    </PropsAccordionItem>
     <!--
     <div class="area-type">{{ area.type === 'div' ? area.display : area.type }} props</div>
     -->
-    <PropsAccordionItem heading="Display" :accordion="accordion">
+    <PropsAccordionItem name="display" :heading="`Display ${area.display}`" :accordion="accordion">
       <AreaContentProps :area="area" />
     </PropsAccordionItem>
 
     <template v-if="area.display === 'grid'">
       <PropsAccordionItem name="grid-template" heading="Grid Template" :accordion="accordion">
-        <AreaGridProps :area="area" />
+        <AreaGridTemplateProps :area="area" />
+      </PropsAccordionItem>
+
+      <PropsAccordionItem name="grid-gap" heading="Grid Gap" :accordion="accordion">
+        <AreaGridGapProps :area="area" />
       </PropsAccordionItem>
 
       <PropsAccordionItem name="grid-items-placement" heading="Grid Items Placement" :accordion="accordion">
@@ -54,11 +67,13 @@
 </template>
 
 <script setup="props">
+export { default as AreaTree } from './AreaTree.vue'
 export { default as AreaContentProps } from './AreaContentProps.vue'
 export { default as AreaBoxProps } from './AreaBoxProps.vue'
 export { default as AreaSelfGridProps } from './AreaSelfGridProps.vue'
 export { default as AreaSelfFlexProps } from './AreaSelfFlexProps.vue'
-export { default as AreaGridProps } from './AreaGridProps.vue'
+export { default as AreaGridTemplateProps } from './AreaGridTemplateProps.vue'
+export { default as AreaGridGapProps } from './AreaGridGapProps.vue'
 export { default as AreaGridItemsPlacementProps } from './AreaGridItemsPlacementProps.vue'
 export { default as AreaGridContentPlacementProps } from './AreaGridContentPlacementProps.vue'
 export { default as AreaFlexProps } from './AreaFlexProps.vue'
@@ -66,7 +81,8 @@ export { default as AreaTypeSelect } from '../common/AreaTypeSelect.vue'
 export { default as PropsAccordion } from './PropsAccordion.vue'
 export { default as PropsAccordionItem } from './PropsAccordionItem.vue'
 
-import { batch, currentArea } from '../../store.js'
+import { batch, currentArea, mainArea } from '../../store.js'
+export { mainArea }
 import { ref, computed, watch } from 'vue'
 
 export default {
@@ -81,10 +97,12 @@ export const currentGrid = computed(() => props.area.grid)
 export const currentFlex = computed(() => props.area.flex)
 
 watch(currentArea, () => {
-  if (currentArea.display === 'grid') {
-    accordion.value.active = 'grid-template'
-  } else {
-    accordion.value.active = 'box'
+  if (accordion.value.active !== 'tree') {
+    if (currentArea.display === 'grid') {
+      accordion.value.active = 'grid-template'
+    } else {
+      accordion.value.active = 'box'
+    }
   }
 })
 

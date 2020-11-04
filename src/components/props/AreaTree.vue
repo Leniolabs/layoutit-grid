@@ -14,6 +14,10 @@
       :class="['area-name', { 'has-display': area.flex || area.grid, current: currentArea === area }]"
       @click="currentArea = area"
     >
+      <span
+        :class="{ caret: area.children.length > 0, 'caret-down': showChildren }"
+        @click="showChildren = !showChildren"
+      ></span>
       {{ area.name }}
       <button
         v-if="area.display !== 'block'"
@@ -28,7 +32,9 @@
         <IconRemove />
       </button>
     </div>
-    <AreaTree v-for="a in area.children" :key="`area-${a.name}`" :area="a" />
+    <template v-if="showChildren">
+      <AreaTree v-for="a in area.children" :key="`area-${a.name}`" :area="a" />
+    </template>
   </div>
 </template>
 
@@ -51,7 +57,7 @@ export default {
   },
 }
 
-export const showOptions = ref(true)
+export const showChildren = ref(false)
 
 export const currentGrid = computed(() => props.area.grid)
 export const currentFlex = computed(() => props.area.flex)
@@ -75,6 +81,7 @@ export function addImplicitArea() {
   border-bottom: solid 1px #ddd;
   background: white;
 }
+
 .area-name {
   font-size: 13px;
   color: black;
@@ -87,6 +94,19 @@ export function addImplicitArea() {
   &:not(.current) {
     opacity: 0.5;
   }
+}
+
+/* Create the caret/arrow with a unicode, and style it */
+.caret::before {
+  content: '\25B6';
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+/* Rotate the caret/arrow icon when clicked on (using JavaScript) */
+.caret-down::before {
+  transform: rotate(90deg);
 }
 
 .btn-remove,

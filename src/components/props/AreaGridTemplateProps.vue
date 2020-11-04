@@ -132,11 +132,6 @@
         </div>
       </div>
     </div>
-    <div class="items gaps">
-      <h2><span>⊞</span> Grid Gap</h2>
-      <GapInput :grid="grid" type="row" />
-      <GapInput :grid="grid" type="col" />
-    </div>
   </div>
 </template>
 
@@ -144,7 +139,6 @@
 export { default as IconRemove } from '../icons/IconRemove.vue'
 export { default as IconAdd } from '../icons/IconAdd.vue'
 export { default as UnitSelect } from '../common/UnitSelect.vue'
-export { default as GapInput } from '../common/GapInput.vue'
 export { default as OptionsButton } from '../basic/OptionsButton.vue'
 
 import { computed } from 'vue'

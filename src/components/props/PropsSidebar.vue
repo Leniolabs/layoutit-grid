@@ -1,7 +1,6 @@
 <template>
   <div :class="['sidebar', { active: currentView === 'props' }]">
     <BrandLogo />
-    <AreaTree :area="area" />
     <AreaProps :area="currentArea" />
     <BrandBanner />
   </div>
@@ -11,7 +10,6 @@
 export { default as BrandLogo } from './BrandLogo.vue'
 export { default as IconGithub } from '../icons/IconGithub.vue'
 export { default as AreaProps } from './AreaProps.vue'
-export { default as AreaTree } from './AreaTree.vue'
 export { default as BrandBanner } from '../props/BrandBanner.vue'
 
 import { computed } from 'vue'
@@ -30,7 +28,7 @@ export default {
   color: #fff;
   display: grid;
   gap: 20px 0px;
-  grid-template-rows: auto auto 1fr auto;
+  grid-template-rows: auto 1fr auto;
   overflow: auto;
   padding: 0 0 0 14px;
   text-align: left;
