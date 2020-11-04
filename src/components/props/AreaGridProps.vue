@@ -224,7 +224,7 @@ h2 {
 
 .items {
   margin-bottom: 10px;
-  margin-top: 20px;
+  margin-top: 0px;
   .items-header {
     display: grid;
     grid-template-columns: auto 55px;

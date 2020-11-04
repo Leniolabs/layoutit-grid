@@ -20,7 +20,7 @@ function createMainAreaState() {
     name: 'container',
     type: 'div',
     display: 'grid',
-    grid: createGridState(3, 4),
+    grid: createGridState(),
     justifySelf: 'center',
     alignSelf: 'start',
     width: '100%',

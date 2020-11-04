@@ -88,7 +88,7 @@ export function createGridDimension(n) {
   }
 }
 
-export function createGridState(r = 2, c = 3) {
+export function createGridState(r = 3, c = 2) {
   return {
     row: createGridDimension(r),
     col: createGridDimension(c),

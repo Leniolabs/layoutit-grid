@@ -12,8 +12,6 @@
       </select>
     </div>
     -->
-    <PlacementPicker v-model="grid.justifyContent" type="justify-content" />
-    <PlacementPicker v-model="grid.alignContent" type="align-content" />
     <PlacementPicker v-model="grid.justifyItems" type="justify-items" />
     <PlacementPicker v-model="grid.alignItems" type="align-items" />
   </div>

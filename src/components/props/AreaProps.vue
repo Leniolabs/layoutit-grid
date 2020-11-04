@@ -7,31 +7,47 @@
       <AreaContentProps :area="area" />
     </PropsAccordionItem>
 
-    <PropsAccordionItem v-if="area.display === 'grid'" heading="Grid" :accordion="accordion">
-      <AreaGridProps :area="area" />
-    </PropsAccordionItem>
+    <template v-if="area.display === 'grid'">
+      <PropsAccordionItem name="grid-template" heading="Grid Template" :accordion="accordion">
+        <AreaGridProps :area="area" />
+      </PropsAccordionItem>
 
-    <PropsAccordionItem v-if="area.display === 'grid'" heading="Grid Placement" :accordion="accordion">
-      <AreaGridPlacementProps :area="area" />
-    </PropsAccordionItem>
+      <PropsAccordionItem name="grid-items-placement" heading="Grid Items Placement" :accordion="accordion">
+        <AreaGridItemsPlacementProps :area="area" />
+      </PropsAccordionItem>
 
-    <PropsAccordionItem v-if="area.display === 'flex'" heading="Flex" :accordion="accordion">
+      <PropsAccordionItem name="grid-content-placement" heading="Grid Content Placement" :accordion="accordion">
+        <AreaGridContentPlacementProps :area="area" />
+      </PropsAccordionItem>
+    </template>
+
+    <PropsAccordionItem v-if="area.display === 'flex'" name="flex-props" heading="Flex Props" :accordion="accordion">
       <AreaFlexProps :area="area" />
     </PropsAccordionItem>
 
-    <PropsAccordionItem v-if="area.parent && area.parent.display === 'grid'" heading="Self Grid" :accordion="accordion">
+    <PropsAccordionItem
+      v-if="area.parent && area.parent.display === 'grid'"
+      name="self-grid"
+      heading="Self Grid"
+      :accordion="accordion"
+    >
       <AreaSelfGridProps :area="area" />
     </PropsAccordionItem>
 
-    <PropsAccordionItem v-if="area.parent && area.parent.display === 'flex'" heading="Self Flex" :accordion="accordion">
+    <PropsAccordionItem
+      v-if="area.parent && area.parent.display === 'flex'"
+      name="self-flex"
+      heading="Self Flex"
+      :accordion="accordion"
+    >
       <AreaSelfFlexProps :area="area" />
     </PropsAccordionItem>
 
-    <PropsAccordionItem heading="Box" :accordion="accordion">
+    <PropsAccordionItem name="box" heading="Box" :accordion="accordion">
       <AreaBoxProps :area="area" />
     </PropsAccordionItem>
 
-    <PropsAccordionItem v-if="area.parent" heading="Type" :accordion="accordion">
+    <PropsAccordionItem v-if="area.parent" name="type" heading="Type" :accordion="accordion">
       <AreaTypeSelect v-if="area.parent" :model-value="area.type" @update:modelValue="onUpdateType" />
     </PropsAccordionItem>
   </PropsAccordion>
@@ -43,7 +59,8 @@ export { default as AreaBoxProps } from './AreaBoxProps.vue'
 export { default as AreaSelfGridProps } from './AreaSelfGridProps.vue'
 export { default as AreaSelfFlexProps } from './AreaSelfFlexProps.vue'
 export { default as AreaGridProps } from './AreaGridProps.vue'
-export { default as AreaGridPlacementProps } from './AreaGridPlacementProps.vue'
+export { default as AreaGridItemsPlacementProps } from './AreaGridItemsPlacementProps.vue'
+export { default as AreaGridContentPlacementProps } from './AreaGridContentPlacementProps.vue'
 export { default as AreaFlexProps } from './AreaFlexProps.vue'
 export { default as AreaTypeSelect } from '../common/AreaTypeSelect.vue'
 export { default as PropsAccordion } from './PropsAccordion.vue'
@@ -59,15 +76,15 @@ export default {
   },
 }
 
-export const accordion = ref({ active: 'Grid' })
+export const accordion = ref({ active: 'grid-template' })
 export const currentGrid = computed(() => props.area.grid)
 export const currentFlex = computed(() => props.area.flex)
 
 watch(currentArea, () => {
   if (currentArea.display === 'grid') {
-    accordion.value.active = 'Grid'
+    accordion.value.active = 'grid-template'
   } else {
-    accordion.value.active = 'Box'
+    accordion.value.active = 'box'
   }
 })
 

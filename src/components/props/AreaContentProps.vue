@@ -49,7 +49,7 @@ export function onUpdateDisplay(value) {
   }
   if (props.area.display === 'grid') {
     if (!props.area.grid) {
-      props.area.grid = createGridState(2, 3)
+      props.area.grid = createGridState()
     }
   }
 }

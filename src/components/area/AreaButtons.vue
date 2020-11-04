@@ -50,7 +50,7 @@ export function subGrid() {
   if (!props.area.grid) {
     props.area.type = 'div'
     props.area.display = 'grid'
-    props.area.grid = createGridState(2, 3)
+    props.area.grid = createGridState()
   }
   setCurrentArea(props.area)
 }

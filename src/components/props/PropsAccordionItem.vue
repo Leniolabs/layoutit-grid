@@ -1,7 +1,7 @@
 <template>
   <div class="props-accordion-item">
-    <h1 @click="accordion.active = heading">{{ heading }}</h1>
-    <div v-if="accordion.active === heading" class="props-accordion-content">
+    <h1 @click="accordion.active = name">{{ heading }}</h1>
+    <div v-if="accordion.active === name" class="props-accordion-content">
       <slot />
     </div>
   </div>
@@ -11,6 +11,7 @@
 export default {
   name: 'AreaProps',
   props: {
+    name: { type: String, required: true },
     heading: { type: String, required: true },
     accordion: { type: Object, required: true },
   },
@@ -24,12 +25,12 @@ export default {
 }
 
 h1 {
-  margin: 1px 0 0 0;
+  margin: 0 0 0 0;
   font-size: 0.9em;
   width: 100%;
   padding: 1px 0 0 5px;
   height: 1.5em;
-  border: 1px solid white;
+  border-bottom: 1px solid #444;
   background-color: #ddd;
   color: black;
 }
