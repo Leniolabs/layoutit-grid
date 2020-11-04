@@ -35,7 +35,6 @@ import { createAreaState, createFlexState, createGridState } from '../../store'
 export { currentArea } from '../../store.js'
 
 export default {
-  name: 'AreaProps',
   props: {
     area: { type: Object, required: true },
   },

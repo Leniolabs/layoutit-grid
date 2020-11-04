@@ -33,8 +33,6 @@
 </template>
 
 <script setup="props">
-export { default as FlexOptions } from './FlexOptions.vue'
-export { default as GridOptions } from './GridOptions.vue'
 export { default as IconAdd } from '../icons/IconAdd.vue'
 export { default as IconRemove } from '../icons/IconRemove.vue'
 

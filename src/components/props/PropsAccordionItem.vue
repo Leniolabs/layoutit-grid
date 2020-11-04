@@ -1,9 +1,9 @@
 <template>
   <div class="props-accordion-item">
     <h1 @click="accordion.active = heading">{{ heading }}</h1>
-    <template v-if="accordion.active === heading">
+    <div v-if="accordion.active === heading" class="props-accordion-content">
       <slot />
-    </template>
+    </div>
   </div>
 </template>
 
@@ -20,9 +20,11 @@ export default {
 <style scoped lang="scss">
 .props-accordion-item {
   overflow: hidden;
+  margin: 0;
 }
 
 h1 {
+  margin: 1px 0 0 0;
   font-size: 0.9em;
   width: 100%;
   padding: 1px 0 0 5px;
@@ -30,6 +32,10 @@ h1 {
   border: 1px solid white;
   background-color: #ddd;
   color: black;
+}
+
+.props-accordion-content {
+  padding-top: 8px;
 }
 
 * {

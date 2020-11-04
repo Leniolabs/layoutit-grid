@@ -21,7 +21,6 @@ import { debounce } from 'lodash-es'
 import { computed } from 'vue'
 
 export default {
-  name: 'AreaProps',
   props: {
     area: { type: Object, required: true },
   },

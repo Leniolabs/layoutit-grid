@@ -10,8 +10,6 @@
 <script setup="props">
 export { default as BrandLogo } from './BrandLogo.vue'
 export { default as IconGithub } from '../icons/IconGithub.vue'
-export { default as FlexOptions } from './FlexOptions.vue'
-export { default as GridOptions } from './GridOptions.vue'
 export { default as AreaProps } from './AreaProps.vue'
 export { default as AreaTree } from './AreaTree.vue'
 export { default as BrandBanner } from '../props/BrandBanner.vue'
