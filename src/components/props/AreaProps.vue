@@ -1,20 +1,41 @@
 <template>
-  <div class="area-props">
+  <PropsAccordion class="area-props" :accordion="accordion">
     <!--
     <div class="area-type">{{ area.type === 'div' ? area.display : area.type }} props</div>
     -->
-    <AreaTypeSelect v-if="area.parent" :model-value="area.type" @update:modelValue="onUpdateType" />
-    <AreaContentProps :area="area" />
-    <AreaLayoutProps :area="area" />
-  </div>
+    <PropsAccordionItem heading="Display" :accordion="accordion">
+      <AreaContentProps :area="area" />
+    </PropsAccordionItem>
+
+    <PropsAccordionItem heading="Layout" :accordion="accordion">
+      <AreaLayoutProps :area="area" />
+    </PropsAccordionItem>
+
+    <PropsAccordionItem v-if="area.parent && area.parent.display === 'flex'" heading="Flex" :accordion="accordion">
+      <AreaFlexProps :area="area" />
+    </PropsAccordionItem>
+
+    <PropsAccordionItem heading="Box" :accordion="accordion">
+      <AreaBoxProps :area="area" />
+    </PropsAccordionItem>
+
+    <PropsAccordionItem v-if="area.parent" heading="Type" :accordion="accordion">
+      <AreaTypeSelect v-if="area.parent" :model-value="area.type" @update:modelValue="onUpdateType" />
+    </PropsAccordionItem>
+  </PropsAccordion>
 </template>
 
 <script setup="props">
 export { default as AreaContentProps } from './AreaContentProps.vue'
 export { default as AreaLayoutProps } from './AreaLayoutProps.vue'
+export { default as AreaFlexProps } from './AreaFlexProps.vue'
+export { default as AreaBoxProps } from './AreaBoxProps.vue'
 export { default as AreaTypeSelect } from '../common/AreaTypeSelect.vue'
+export { default as PropsAccordion } from './PropsAccordion.vue'
+export { default as PropsAccordionItem } from './PropsAccordionItem.vue'
 
-import { computed } from 'vue'
+import { batch } from '../../store.js'
+import { ref, computed } from 'vue'
 
 export default {
   name: 'AreaProps',
@@ -23,21 +44,26 @@ export default {
   },
 }
 
+export const accordion = ref({ active: 'Layout' })
 export const currentGrid = computed(() => props.area.grid)
 export const currentFlex = computed(() => props.area.flex)
 
 export function onUpdateType(type) {
-  props.area.type = type
-  if (type === 'p') {
-    if (!props.area.text) {
-      props.area.text = 'Paragraph'
+  batch(() => {
+    props.area.type = type
+    if (type === 'p') {
+      if (!props.area.text) {
+        props.area.text = 'Paragraph'
+        props.area.display = 'block'
+      }
     }
-  }
-  if (type === 'button') {
-    if (!props.area.text) {
-      props.area.text = 'Action'
+    if (type === 'button') {
+      if (!props.area.text) {
+        props.area.text = 'Action'
+        props.area.display = 'block'
+      }
     }
-  }
+  })
 }
 </script>
 

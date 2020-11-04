@@ -149,10 +149,10 @@
       </select>
     </div>
     -->
-    <PlacementSelect v-model="grid.justifyContent" type="justify-content" />
-    <PlacementSelect v-model="grid.alignContent" type="align-content" />
-    <PlacementSelect v-model="grid.justifyItems" type="justify-items" />
-    <PlacementSelect v-model="grid.alignItems" type="align-items" />
+    <PlacementPicker v-model="grid.justifyContent" type="justify-content" />
+    <PlacementPicker v-model="grid.alignContent" type="align-content" />
+    <PlacementPicker v-model="grid.justifyItems" type="justify-items" />
+    <PlacementPicker v-model="grid.alignItems" type="align-items" />
   </div>
 </template>
 
@@ -163,6 +163,7 @@ export { default as UnitSelect } from '../common/UnitSelect.vue'
 export { default as GapInput } from '../common/GapInput.vue'
 export { default as OptionsButton } from '../basic/OptionsButton.vue'
 export { default as PlacementSelect } from '../common/PlacementSelect.vue'
+export { default as PlacementPicker } from '../common/PlacementPicker.vue'
 export { default as GridAutoFlowSelect } from '../common/GridAutoFlowSelect.vue'
 
 import { computed } from 'vue'

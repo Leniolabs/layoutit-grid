@@ -51,7 +51,6 @@ export const options = ['block', 'flex', 'grid']
 .radio-toolbar {
   display: flex;
   gap: 5px;
-  width: 330px;
 }
 
 .radio-toolbar input[type='radio'] {

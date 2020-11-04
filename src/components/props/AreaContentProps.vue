@@ -18,7 +18,12 @@
     -->
   </template>
   <div v-if="area.type === 'p'">
-    <textarea style="height: 3em" :value="area.text" aria-label="area text" @input="area.text = $event.target.value" />
+    <textarea
+      style="height: 4em; width: 100%"
+      :value="area.text"
+      aria-label="area text"
+      @input="area.text = $event.target.value"
+    />
   </div>
 </template>
 
