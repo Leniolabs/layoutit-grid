@@ -1,6 +1,13 @@
 <template>
   <div class="version">
-    <span><a target="_blank" rel="noopener" href="https://leniolabs.com">Hire us!</a></span>
+    <span
+      ><a
+        target="_blank"
+        rel="noopener"
+        href="https://www.leniolabs.com/services/team-augmentation/?utm_source=layoutit&utm_medium=banner&utm_campaign=leniolabs&utm_content=grid_banner"
+        >Hire us!</a
+      ></span
+    >
     <span class="version-text">v1.3.4</span>
   </div>
 </template>
