@@ -5,21 +5,37 @@ import {
   namedTemplateColumns,
   namedTemplateRows,
   getGridAreaWithNamedLines,
+  areaIsSingleLineInCSS,
+  getElementTag,
 } from './utils.js'
+
+function declaration(name, value, def) {
+  return value !== def ? `\n  ${name}: ${value};` : ''
+}
 
 export function areaToCSS(area, { parentGrid, useTemplateAreas = true, validTemplateAreas = true, repeat, oldSpec }) {
   const { name, grid } = area
-  const singleLine = grid == null
+  const singleLine = areaIsSingleLineInCSS(area)
   const cssName = toCssName(name)
   let css = `.${cssName} {${singleLine ? '' : '\n'}`
   if (grid) {
     css += gridToCSS(area, { useTemplateAreas, repeat })
   }
 
-  const gridArea = getGridAreaWithNamedLines(area, parentGrid)
-  if (gridArea) {
-    css += `${singleLine ? ' ' : '\n  '}grid-area: ${useTemplateAreas && validTemplateAreas ? cssName : gridArea};`
+  if (area.parent && area.parent.display === 'grid') {
+    css += declaration('justify-self', area.justifySelf, 'initial')
+    css += declaration('align-self', area.alignSelf, 'initial')
+    const gridArea = getGridAreaWithNamedLines(area, parentGrid)
+    if (gridArea) {
+      css += `${singleLine ? ' ' : '\n  '}grid-area: ${useTemplateAreas && validTemplateAreas ? cssName : gridArea};`
+    }
   }
+
+  css += declaration('width', area.width, 'initial')
+  css += declaration('height', area.height, 'initial')
+  css += declaration('margin', area.margin, '0')
+  css += declaration('padding', area.padding, '0')
+
   css += `${singleLine ? ' ' : '\n'}}\n`
 
   if (grid) {
@@ -42,7 +58,13 @@ export function gridToCSS(area, { useTemplateAreas = true, repeat }) {
   grid-template-columns: ${namedTemplateColumns(grid, repeat)};
   grid-template-rows: ${namedTemplateRows(grid, repeat)};
   gap: ${grid.row.gap} ${grid.col.gap};` // TODO: cssGridGap(grid)
-
+  css += declaration('grid-auto-columns', grid.row.auto, 'initial')
+  css += declaration('grid-auto-rows', grid.col.auto, 'initial')
+  css += declaration('grid-auto-flow', grid.autoFlow, 'initial')
+  css += declaration('justify-content', grid.justifyContent, 'initial')
+  css += declaration('align-content', grid.alignContent, 'initial')
+  css += declaration('justify-items', grid.justifyItems, 'initial')
+  css += declaration('align-items', grid.alignItems, 'initial')
   if (useTemplateAreas) {
     const templateAreas = gridTemplateAreas(area, '\n    ')
     if (templateAreas) {
@@ -107,5 +129,6 @@ function areasToHTML(area, ident = 0) {
 }
 
 export function areaToHTML(area, ident = 0) {
-  return `<div class="${toCssName(area.name)}">${areasToHTML(area, ident + 1)}</div>`
+  const tag = getElementTag(area)
+  return `<${tag} class="${toCssName(area.name)}">${areasToHTML(area, ident + 1)}</tag>`
 }

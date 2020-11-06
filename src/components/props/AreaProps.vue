@@ -2,7 +2,7 @@
   <PropsAccordion class="area-props" :accordion="accordion">
     <PropsAccordionItem
       name="tree"
-      independent="true"
+      :independent="true"
       :heading="`Areas`"
       :closed-heading="`${area.name}`"
       :accordion="accordion"
@@ -56,7 +56,7 @@
       <AreaSelfFlexProps :area="area" />
     </PropsAccordionItem>
 
-    <PropsAccordionItem name="box" heading="Box" :accordion="accordion">
+    <PropsAccordionItem name="box" heading="Area Box" :accordion="accordion">
       <AreaBoxProps :area="area" />
     </PropsAccordionItem>
 

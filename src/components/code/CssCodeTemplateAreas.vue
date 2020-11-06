@@ -1,6 +1,6 @@
 <template>
-  <span class="token string"
-    ><template v-for="(row, r) in templateAreas" :key="r"
+  <span class="token string">
+    <template v-for="(row, r) in templateAreas" :key="r"
       >{{ '"'
       }}<span
         v-for="(cell, c) in row"
@@ -9,9 +9,9 @@
         @mouseover="currentHover = { on: 'cell', grid: area.grid, col: c + 1, row: r + 1 }"
         @mouseleave="currentHover = null"
         >{{ (c > 0 ? ' ' : '') + cell }}</span
-      >{{ r === templateAreas.length - 1 ? '"' : '"\n    ' }}</template
-    ></span
-  >
+      >{{ r === templateAreas.length - 1 ? '"' : '"\n    ' }}
+    </template>
+  </span>
 </template>
 
 <script setup="props, { emit }">

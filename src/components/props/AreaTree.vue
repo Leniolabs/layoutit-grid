@@ -1,9 +1,10 @@
 <template>
   <div
-    class="area-tree"
+    :class="['area-tree']"
     :style="{
       'border-left': `4px solid ${area.color}`,
       'border-top': `2px solid ${area.color}`,
+      opacity: reordering && reordering.area === area ? 0.2 : 1,
     }"
   >
     <!--
@@ -33,7 +34,25 @@
       </button>
     </div>
     <template v-if="showChildren">
-      <AreaTree v-for="a in area.children" :key="`area-${a.name}`" :area="a" />
+      <div
+        v-for="a in area.children"
+        :key="`area-${a.name}-${depth}`"
+        :class="[
+          'area-children',
+          {
+            reordering: reordering && reordering.target === a,
+            after: reordering && reordering.target === a && reordering.after,
+          },
+        ]"
+        :data-area-name="a.name"
+        :draggable="true"
+        @dragstart="onDragStart(a)"
+        @dragend="onDragEnd(a)"
+        @drop="onDrop(a)"
+        @dragover="onDragOver(a)"
+      >
+        <AreaTree :area="a" />
+      </div>
     </template>
   </div>
 </template>
@@ -43,7 +62,7 @@ export { default as IconAdd } from '../icons/IconAdd.vue'
 export { default as IconRemove } from '../icons/IconRemove.vue'
 
 import { ref, computed } from 'vue'
-export { currentArea, removeArea, createAreaState, getRandomColor } from '../../store.js'
+export { mainArea, currentArea, removeArea, createAreaState, getRandomColor, reordering } from '../../store.js'
 
 import { getAreaDepth } from '../../store.js'
 import { getRandomColor } from '../../store/area'
@@ -55,6 +74,46 @@ export default {
   props: {
     area: { type: Object, required: true },
   },
+}
+
+export function onDragStart(area) {
+  event.stopPropagation()
+  reordering.value = { area, reordering: null, after: true }
+}
+
+function areaIndex(area) {
+  return area.parent.children.findIndex((a) => a === area)
+}
+
+export function onDrop(areaTarget) {
+  event.stopPropagation()
+  const areaFrom = reordering.value.area
+  const sameParent = areaTarget.parent === areaFrom.parent
+  const children = sameParent ? areaTarget.parent.children.filter((a) => a !== areaFrom) : areaTarget.parent.children
+  if (!sameParent) {
+    areaFrom.parent.children = areaFrom.parent.children.filter((a) => a !== areaFrom)
+  }
+  const iFrom = areaIndex(areaFrom)
+  const i = children.findIndex((a) => a === areaTarget)
+  children.splice(iFrom > i ? i : i + 1, 0, areaFrom) // TODO
+  if (!sameParent) {
+    areaFrom.parent = areaTarget.parent
+  }
+  props.area.children = children
+}
+
+export function onDragEnd(a) {
+  reordering.value = null
+}
+
+export function onDragOver(areaTarget) {
+  event.preventDefault()
+  event.stopPropagation()
+  const iFrom = areaIndex(reordering.value.area)
+  const iTarget = areaIndex(areaTarget)
+  reordering.value.target = areaTarget !== reordering.value.area ? areaTarget : null
+  reordering.value.after = iFrom < iTarget
+  console.log(reordering.value.after)
 }
 
 export const showChildren = ref(false)
@@ -76,10 +135,31 @@ export function addImplicitArea() {
 
 <style scoped lang="scss" vars="{ depth }">
 .area-tree {
-  margin-bottom: 3px;
   margin-left: var(--depth);
   border-bottom: solid 1px #ddd;
   background: white;
+}
+
+.area-children {
+  padding-bottom: 3px;
+  pointer-events: initial;
+  cursor: move;
+}
+
+:not(.after).reordering::before {
+  margin-left: var(--depth);
+  height: 10px;
+  content: '>';
+  opacity: 0;
+  color: black;
+}
+
+.reordering.after::after {
+  margin-left: var(--depth);
+  height: 10px;
+  color: black;
+  opacity: 0;
+  content: '>';
 }
 
 .area-name {

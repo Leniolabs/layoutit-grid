@@ -11,7 +11,7 @@
 
 <script setup="props">
 import { computed } from 'vue'
-import { toCssName } from '../../utils.js'
+import { toCssName, getElementTag } from '../../utils.js'
 
 export default {
   name: 'HtmlCodeArea',
@@ -25,17 +25,8 @@ export default {
 export const OPEN_TAG = '<'
 export const CLOSE_TAG = '</'
 export const cssAreaName = computed(() => toCssName(props.area.name))
-export const elementTag = computed(() => {
-  switch (props.area.type) {
-    case 'p':
-      return 'p'
-    case 'image': // TODO: Should we keep it as div in the code?
-      return 'img'
-    default:
-      return 'div'
-    // TODO: Should we add a comment if component is used?
-  }
-})
+export const elementTag = computed(() => getElementTag(props.area))
+
 export const gridAreas = computed(() => (props.area.display === 'grid' ? props.area.children : []))
 </script>
 

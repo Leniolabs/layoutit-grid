@@ -12,6 +12,30 @@ export const unitMeasureMap = {
   initial: '',
 }
 
+export function getElementTag(area) {
+  switch (area.type) {
+    case 'p':
+      return 'p'
+    case 'image': // TODO: Should we keep it as div in the code?
+      return 'img'
+    default:
+      return 'div'
+    // TODO: Should we add a comment if component is used?
+  }
+}
+
+export function areaIsSingleLineInCSS(area) {
+  return (
+    area.display !== 'grid' &&
+    area.justifySelf === 'initial' &&
+    area.alignSelf === 'initial' &&
+    area.margin === '0' &&
+    area.padding === '0' &&
+    area.width === 'initial' &&
+    area.height === 'initial'
+  )
+}
+
 export function templateRows(grid) {
   return grid.row.sizes.length.join(' ')
 }
