@@ -6,7 +6,7 @@
       <div class="inner-items">
         <div>
           Flex Direction
-          <select id :value="flex.direction" name @input="flex.direction = $event.target">
+          <select id :value="flex.direction" name @input="flex.direction = $event.target.value">
             <option value="row">row</option>
             <option value="row-reverse">row-reverse</option>
             <option value="column">column</option>
@@ -16,7 +16,7 @@
         <br />
         <div>
           Flex Wrap
-          <select id :value="flex.wrap" name @input="flex.wrap = $event.target">
+          <select id :value="flex.wrap" name @input="flex.wrap = $event.target.value">
             <option value="nowrap">nowrap</option>
             <option value="wrap">wrap</option>
             <option value="wrap-reverse">wrap-reverse</option>
