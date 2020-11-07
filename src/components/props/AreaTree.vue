@@ -20,13 +20,7 @@
         @click="showChildren = !showChildren"
       ></span>
       {{ area.name }}
-      <button
-        v-if="area.display !== 'block'"
-        aria-label="Add area"
-        class="btn-add"
-        title="Add Area"
-        @click="addImplicitArea"
-      >
+      <button v-if="area.display !== 'block'" aria-label="Add area" class="btn-add" title="Add Area" @click="addArea">
         <IconAdd />
       </button>
       <button aria-label="Remove area" class="btn-remove" title="Remove Area" @click="removeArea(area)">
@@ -46,10 +40,10 @@
         ]"
         :data-area-name="a.name"
         :draggable="true"
-        @dragstart="onDragStart(a)"
+        @dragstart="onDragStart(a, $event)"
         @dragend="onDragEnd(a)"
-        @drop="onDrop(a)"
-        @dragover="onDragOver(a)"
+        @drop="onDrop(a, $event)"
+        @dragover="onDragOver(a, $event)"
       >
         <AreaTree :area="a" />
       </div>
@@ -62,7 +56,15 @@ export { default as IconAdd } from '../icons/IconAdd.vue'
 export { default as IconRemove } from '../icons/IconRemove.vue'
 
 import { ref, computed } from 'vue'
-export { mainArea, currentArea, removeArea, createAreaState, getRandomColor, reordering } from '../../store.js'
+export {
+  mainArea,
+  currentArea,
+  removeArea,
+  createAreaState,
+  newAreaName,
+  getRandomColor,
+  reordering,
+} from '../../store.js'
 
 import { getAreaDepth } from '../../store.js'
 import { getRandomColor } from '../../store/area'
@@ -76,7 +78,7 @@ export default {
   },
 }
 
-export function onDragStart(area) {
+export function onDragStart(area, event) {
   event.stopPropagation()
   reordering.value = { area, reordering: null, after: true }
 }
@@ -85,7 +87,7 @@ function areaIndex(area) {
   return area.parent.children.findIndex((a) => a === area)
 }
 
-export function onDrop(areaTarget) {
+export function onDrop(areaTarget, event) {
   event.stopPropagation()
   const areaFrom = reordering.value.area
   const sameParent = areaTarget.parent === areaFrom.parent
@@ -95,7 +97,7 @@ export function onDrop(areaTarget) {
   }
   const iFrom = areaIndex(areaFrom)
   const i = children.findIndex((a) => a === areaTarget)
-  children.splice(iFrom > i ? i : i + 1, 0, areaFrom) // TODO
+  children.splice(reordering.value.after ? i + 1 : i, 0, areaFrom)
   if (!sameParent) {
     areaFrom.parent = areaTarget.parent
   }
@@ -106,14 +108,30 @@ export function onDragEnd(a) {
   reordering.value = null
 }
 
-export function onDragOver(areaTarget) {
-  event.preventDefault()
+function afterMiddleHeight(event) {
+  return (event.clientY - event.target.offsetTop) / event.target.clientHeight > 0.5
+}
+export function onDragOver(areaTarget, event) {
   event.stopPropagation()
-  const iFrom = areaIndex(reordering.value.area)
-  const iTarget = areaIndex(areaTarget)
-  reordering.value.target = areaTarget !== reordering.value.area ? areaTarget : null
-  reordering.value.after = iFrom < iTarget
-  console.log(reordering.value.after)
+
+  const areaFrom = reordering.value.area
+  const after = afterMiddleHeight(event)
+  let noop = false
+  if (areaFrom.parent === areaTarget.parent) {
+    const iFrom = areaIndex(areaFrom)
+    const iTarget = areaIndex(areaTarget)
+    if ((after && iFrom - iTarget === 1) || (!after && iTarget - iFrom === 1)) {
+      noop = true
+    }
+  }
+  if (areaTarget !== areaFrom && !noop) {
+    event.preventDefault()
+
+    reordering.value.target = areaTarget !== areaFrom ? areaTarget : null
+    reordering.value.after = after
+  } else {
+    reordering.value.target = null
+  }
 }
 
 export const showChildren = ref(false)
@@ -121,15 +139,15 @@ export const showChildren = ref(false)
 export const currentGrid = computed(() => props.area.grid)
 export const currentFlex = computed(() => props.area.flex)
 
-const counter = ref(1)
-export function addImplicitArea() {
+export function addArea() {
   props.area.children.push(
     createAreaState({
-      name: 'a' + counter.value++,
+      name: newAreaName(),
       parent: props.area,
       color: getRandomColor(),
     })
   )
+  showChildren.value = true
 }
 </script>
 

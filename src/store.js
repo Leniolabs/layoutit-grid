@@ -37,6 +37,17 @@ export const currentHover = ref(null)
 export const currentView = ref('editor')
 export const darkmode = ref(false)
 
+const areaNameCounter = ref(1)
+
+export function newAreaName() {
+  let name
+  do {
+    name = 'a' + areaNameCounter.value
+    areaNameCounter.value++
+  } while (!isValidAreaName(name))
+  return name
+}
+
 watch(mainArea, (area) => setCurrentArea(area))
 
 export const { undo, redo, undoStack, redoStack, pause, resume, batch } = useRefHistory(mainArea, {
