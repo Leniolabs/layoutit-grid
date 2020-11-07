@@ -6,7 +6,7 @@
       <div class="inner-items">
         <div>
           Flex Direction
-          <select id :value="flex.direction" name @input="flex.direction = $event.target.value">
+          <select id :value="flex.direction" name @input="flex.direction = $event.target">
             <option value="row">row</option>
             <option value="row-reverse">row-reverse</option>
             <option value="column">column</option>
@@ -16,7 +16,7 @@
         <br />
         <div>
           Flex Wrap
-          <select id :value="flex.wrap" name @input="flex.wrap = $event.target.value">
+          <select id :value="flex.wrap" name @input="flex.wrap = $event.target">
             <option value="nowrap">nowrap</option>
             <option value="wrap">wrap</option>
             <option value="wrap-reverse">wrap-reverse</option>
@@ -36,7 +36,7 @@ export default {
   },
 }
 
-export const flex = computed(() => props.area.flex)
+ref: flex = computed(() => props.area.flex)
 </script>
 
 <style scoped lang="scss">

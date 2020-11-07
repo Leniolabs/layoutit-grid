@@ -29,7 +29,7 @@ export default {
   emits: ['update:modelValue'],
 }
 
-export const options = computed(() => units[props.type])
+ref: options = computed(() => units[props.type])
 </script>
 
 <style scoped lang="scss">

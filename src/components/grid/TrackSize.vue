@@ -14,7 +14,7 @@
 </template>
 
 <script setup="props, { emit }">
-import { dragging, currentFocus, isValidTrackSize } from '../../store.js'
+import { dragging as ref_dragging, currentFocus, isValidTrackSize } from '../../store.js'
 
 import { computed } from 'vue'
 import { debounce } from 'lodash-es'
@@ -27,32 +27,32 @@ export default {
   },
 }
 
-export { currentFocus }
+ref: dragging = ref_dragging
 
-export const isFocused = computed(() => {
+ref: isFocused = computed(() => {
   const cf = currentFocus.value
   return cf && cf.on === 'track' && cf.grid === props.grid && cf.type === props.type && cf.track === props.track
 })
 
-export const trackSize = computed({
+ref: trackSize = computed({
   get: () => props.grid[props.type].sizes[props.track - 1],
   set: (value) => (props.grid[props.type].sizes[props.track - 1] = value),
 })
 
-export const trackSizeChanged = debounce((value) => {
+ref: trackSizeChanged = debounce((value) => {
   const textNode = value.target.childNodes[0]
   const text = textNode && textNode.data
   if (isValidTrackSize(text)) {
-    trackSize.value = text
+    trackSize = text
   }
 }, 700)
 
-export const isDraggingGrid = computed(() => dragging.value && dragging.value.grid === props.grid)
+ref: isDraggingGrid = computed(() => dragging && dragging.grid === props.grid)
 
-export const isDraggingTrackLine = computed(
+ref: isDraggingTrackLine = computed(
   () =>
-    isDraggingGrid.value &&
-    (props.track === dragging.value[props.type + 'Line'] || props.track === dragging.value[props.type + 'Line'] - 1)
+    isDraggingGrid &&
+    (props.track === dragging[props.type + 'Line'] || props.track === dragging[props.type + 'Line'] - 1)
 )
 </script>
 

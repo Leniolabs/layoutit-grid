@@ -14,7 +14,7 @@
 </template>
 
 <script setup="props">
-export { default as UnitSelect } from './UnitSelect.vue'
+import UnitSelect from './UnitSelect.vue'
 
 import { computed } from 'vue'
 import { parseValueUnit } from '../../store.js'
@@ -26,21 +26,21 @@ export default {
   },
 }
 
-export const gap = computed(() => {
+ref: gap = computed(() => {
   return parseValueUnit(props.grid[props.type].gap)
 })
 
-export function setGap(g) {
+function setGap(g) {
   props.grid[props.type].gap = g
 }
 
-export function setGapValue(value) {
-  setGap(value + gap.value.unit)
+function setGapValue(value) {
+  setGap(value + gap.unit)
 }
 
-export function setGapUnit(unit) {
+function setGapUnit(unit) {
   // TODO: Adjust value to avoid jump
-  setGap(gap.value.value + unit)
+  setGap(gap.value + unit)
 }
 </script>
 

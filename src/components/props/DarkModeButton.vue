@@ -12,27 +12,28 @@
 <script setup>
 import { onMounted, watch } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
-export { default as IconDark } from '../icons/IconDark.vue'
-export { darkmode } from '../../store'
+import IconDark from '../icons/IconDark.vue'
+import { darkmode as ref_darkmode } from '../../store.js'
 
-const themeStorage = useLocalStorage('theme', null)
+ref: darkmode = ref_darkmode
+ref: themeStorage = useLocalStorage('theme', null)
 
-export function toggleDarkmode() {
-  darkmode.value = !darkmode.value
-  themeStorage.value = darkmode.value ? 'dark' : 'light'
+function toggleDarkmode() {
+  darkmode = !darkmode
+  themeStorage = darkmode ? 'dark' : 'light'
 }
 
-export function switchToSystemTheme() {
-  darkmode.value = getSystemTheme() === 'dark'
-  themeStorage.value = null
+function switchToSystemTheme() {
+  darkmode = getSystemTheme() === 'dark'
+  themeStorage = null
 }
 
 onMounted(() => {
-  darkmode.value = (themeStorage.value || getSystemTheme()) === 'dark'
+  darkmode = (themeStorage || getSystemTheme()) === 'dark'
 })
 
-watch(darkmode, () => {
-  document.getElementById('app').classList[darkmode.value ? 'add' : 'remove']('darkmode')
+watch($darkmode, () => {
+  document.getElementById('app').classList[darkmode ? 'add' : 'remove']('darkmode')
 })
 
 function getSystemTheme() {

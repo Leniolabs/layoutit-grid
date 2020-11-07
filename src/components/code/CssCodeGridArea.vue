@@ -14,19 +14,17 @@ export default {
   },
 }
 
-export { currentArea }
-
-export const cssAreaName = computed(() => toCssName(props.area.name))
+ref: cssAreaName = computed(() => toCssName(props.area.name))
 
 function getGridTemplateAreas(area) {
   return area.display === 'grid' ? gridTemplateAreas(area, '\n    ') : undefined
 }
 
-export const templateAreas = computed(() => getGridTemplateAreas(props.area))
+ref: templateAreas = computed(() => getGridTemplateAreas(props.area))
 
-export const includeTemplateAreas = computed(() => props.options.templateAreas && templateAreas.value !== undefined)
+ref: includeTemplateAreas = computed(() => props.options.templateAreas && templateAreas !== undefined)
 
-export const gridArea = computed(() => {
+ref: gridArea = computed(() => {
   const gridRegion = getGridRegion(props.area) // TODO: span
   if (!gridRegion) {
     return undefined
@@ -34,7 +32,7 @@ export const gridArea = computed(() => {
   const { parent } = props.area
   if (parent) {
     return props.options.templateAreas && getGridTemplateAreas(parent)
-      ? cssAreaName.value
+      ? cssAreaName
       : getGridAreaWithNamedLines(props.area, parent.grid)
   } else {
     return getGridAreaWithNamedLines(props.area)

@@ -68,15 +68,15 @@
 </template>
 
 <script setup="props">
-export { default as AreaBox } from './AreaBox.vue'
-export { default as PieChart } from '../content/PieChart.vue'
-export { default as ElementImage } from './ElementImage.vue'
-export { default as ElementParagraph } from './ElementParagraph.vue'
-export { default as ElementButton } from './ElementButton.vue'
+import AreaBox from './AreaBox.vue'
+import PieChart from '../content/PieChart.vue'
+import ElementImage from './ElementImage.vue'
+import ElementParagraph from './ElementParagraph.vue'
+import ElementButton from './ElementButton.vue'
 // GridEditor imported globally due to circular reference with AreaEditor
-// export { default as FlexEditor } from '../flex/FlexEditor.vue'
+// import FlexEditor  from '../flex/FlexEditor.vue'
 
-import { ref, computed, watch, nextTick, defineAsyncComponent, toRefs } from 'vue'
+import { computed, watch, nextTick, defineAsyncComponent, toRefs } from 'vue'
 import {
   mainArea,
   currentArea,
@@ -90,8 +90,6 @@ import {
 } from '../../store.js'
 import { useIsActiveArea } from '../../composables/area.js'
 
-export { currentArea, mainArea }
-
 export default {
   name: 'AreaEditor',
   props: {
@@ -103,9 +101,9 @@ export default {
 }
 
 const { area } = toRefs(props)
-export const isActive = useIsActiveArea(area)
+ref: isActive = useIsActiveArea(area)
 
-export const areaType = computed(() => {
+ref: areaType = computed(() => {
   switch (props.area.type) {
     case 'image':
       return ElementImage
@@ -146,7 +144,7 @@ function computedAlignItem(area) {
   return alignSelf !== 'initial' ? alignSelf : parent.grid ? parent.grid.alignItems : 'initial'
 }
 
-export function gridAreaStyles(area, gridArea) {
+function gridAreaStyles(area, gridArea) {
   return {
     'grid-area': gridArea || area.gridArea,
     'justify-self': computedJustifyItem(area),
@@ -186,7 +184,7 @@ function flexStyles(flex) {
   }
 }
 
-export const displayStyles = computed(() => {
+ref: displayStyles = computed(() => {
   switch (props.area.display) {
     case 'grid':
       return gridStyles(props.area.grid)
@@ -197,45 +195,46 @@ export const displayStyles = computed(() => {
   }
 })
 
-export const grid = computed(() => props.area.grid)
-export const componentInstance = ref(null)
-export const computedStyles = ref(null)
-export const computedGap = ref({ col: '0px', row: '0px' })
+ref: grid = computed(() => props.area.grid)
+
+ref: componentInstance = null
+ref: computedStyles = null
+ref: computedGap = { col: '0px', row: '0px' }
 watch(
-  grid,
+  $grid,
   () => {
     nextTick(() => {
-      if (grid.value) {
-        computedStyles.value = window.getComputedStyle(componentInstance.value)
-        const colGap = parseValueUnit(grid.value.col.gap)
-        const rowGap = parseValueUnit(grid.value.row.gap)
-        computedGap.value = {
+      if (grid) {
+        computedStyles = window.getComputedStyle(componentInstance)
+        const colGap = parseValueUnit(grid.col.gap)
+        const rowGap = parseValueUnit(grid.row.gap)
+        computedGap = {
           col:
             colGap.unit === '%'
-              ? (parseValue(computedStyles.value.width) / 100) * colGap.value + 'px'
-              : computedStyles.value.columnGap,
+              ? (parseValue(computedStyles.width) / 100) * colGap.value + 'px'
+              : computedStyles.columnGap,
           row:
             rowGap.unit === '%'
-              ? (parseValue(computedStyles.value.height) / 100) * rowGap.value + 'px'
-              : computedStyles.value.rowGap,
+              ? (parseValue(computedStyles.height) / 100) * rowGap.value + 'px'
+              : computedStyles.rowGap,
         }
       } else {
-        computedStyles.value = null
-        computedGap.value = { col: '0px', row: '0px' }
+        computedStyles = null
+        computedGap = { col: '0px', row: '0px' }
       }
     })
   },
   { immediate: true, deep: true, flush: 'post' }
 )
 
-export const gridAreas = ref([])
-export const implicitGrid = ref({ rows: 0, cols: 0 })
+ref: gridAreas = []
+ref: implicitGrid = { rows: 0, cols: 0 }
 watch(
   props.area,
   () => {
     const g = findImplicitGrid(props.area)
-    gridAreas.value = g.gridAreas
-    implicitGrid.value = g.implicitGrid
+    gridAreas = g.gridAreas
+    implicitGrid = g.implicitGrid
   },
   { immediate: true }
 )

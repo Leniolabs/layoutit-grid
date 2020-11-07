@@ -38,7 +38,7 @@ export default {
   emits: ['update:modelValue'],
 }
 
-export const options = ['row', 'column']
+const options = ['row', 'column']
 </script>
 
 <style scoped lang="scss">

@@ -12,7 +12,7 @@
 </template>
 
 <script setup="props">
-export { default as PlacementPicker } from '../common/PlacementPicker.vue'
+import PlacementPicker from '../common/PlacementPicker.vue'
 import { debounce } from 'lodash-es'
 import { computed } from 'vue'
 
@@ -22,7 +22,7 @@ export default {
   },
 }
 
-export const setGridArea = debounce((val) => {
+const setGridArea = debounce((val) => {
   props.area.gridArea = val
 }, 500)
 </script>

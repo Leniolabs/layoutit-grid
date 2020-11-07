@@ -20,10 +20,17 @@
 </template>
 
 <script setup="props, { emit }">
-import { dragging, setCurrentArea, parseValueUnit, valueUnitToString, pause, resume } from '../../store.js'
+import {
+  dragging as ref_dragging,
+  setCurrentArea,
+  parseValueUnit,
+  valueUnitToString,
+  pause,
+  resume,
+} from '../../store.js'
 import { useGridDimensions } from '../../composables/area.js'
 
-export { dragging }
+ref: dragging = ref_dragging
 
 function calcValue(prev, prevComp, delta) {
   const sizeAdd = (prev.value * delta) / prevComp.value
@@ -75,21 +82,19 @@ export default {
 
 import { computed } from 'vue'
 
-export const grid = computed(() => props.area.grid)
+ref: grid = computed(() => props.area.grid)
 
-export const { colsNumber, rowsNumber } = useGridDimensions(grid)
+ref: ({ colsNumber, rowsNumber } = useGridDimensions($grid))
 
-export const isDraggingGrid = computed(() => dragging.value && dragging.value.grid === grid.value)
+ref: isDraggingGrid = computed(() => dragging && dragging.grid === grid)
 
-export const isDraggingSection = computed(
-  () =>
-    isDraggingGrid.value &&
-    (dragging.value.colLine === props.section.col.start || dragging.value.rowLine === props.section.row.start)
+ref: isDraggingSection = computed(
+  () => isDraggingGrid && (dragging.colLine === props.section.col.start || dragging.rowLine === props.section.row.start)
 )
 
-export const isDraggingCol = computed(() => isDraggingGrid.value && dragging.value.colLine === props.section.col.start)
+ref: isDraggingCol = computed(() => isDraggingGrid && dragging.colLine === props.section.col.start)
 
-export const isDraggingRow = computed(() => isDraggingGrid.value && dragging.value.rowLine === props.section.row.start)
+ref: isDraggingRow = computed(() => isDraggingGrid && dragging.rowLine === props.section.row.start)
 </script>
 
 <style scoped lang="scss">

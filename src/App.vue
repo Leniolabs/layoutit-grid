@@ -7,8 +7,7 @@
 </template>
 
 <script setup>
-export { default as LayoutEditor } from './components/LayoutEditor.vue'
+import LayoutEditor from './components/LayoutEditor.vue'
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

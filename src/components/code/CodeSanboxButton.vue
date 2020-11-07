@@ -6,7 +6,7 @@
 </template>
 
 <script setup="props">
-export { default as IconCodesandbox } from '../icons/IconCodesandbox.vue'
+import IconCodesandbox from '../icons/IconCodesandbox.vue'
 
 import { computed } from 'vue'
 import LZString from 'lz-string'
@@ -29,7 +29,7 @@ export default {
 }
 
 const containerClass = 'container'
-export const codesanboxJSON = computed(() =>
+ref: codesanboxJSON = computed(() =>
   getParameters({
     files: {
       'index.html': {

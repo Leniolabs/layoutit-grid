@@ -6,7 +6,7 @@
 </template>
 
 <script setup="props">
-export { default as IconCodepen } from '../icons/IconCodepen.vue'
+import IconCodepen from '../icons/IconCodepen.vue'
 
 import { computed } from 'vue'
 
@@ -17,7 +17,7 @@ export default {
   },
 }
 
-export const codePenJSON = computed(() => {
+ref: codePenJSON = computed(() => {
   const containerClass = 'container'
 
   return JSON.stringify({

@@ -20,14 +20,14 @@
 </template>
 
 <script setup="props, { emit }">
-export { default as IconRemove } from '../icons/IconRemove.vue'
-export { default as IconClear } from '../icons/IconClear.vue'
-export { default as IconSubgrid } from '../icons/IconSubgrid.vue'
-export { default as IconFlex } from '../icons/IconFlex.vue'
+import IconRemove from '../icons/IconRemove.vue'
+import IconClear from '../icons/IconClear.vue'
+import IconSubgrid from '../icons/IconSubgrid.vue'
+import IconFlex from '../icons/IconFlex.vue'
 
 import { computed } from 'vue'
 import { mainArea, setCurrentArea, createGridState, createFlexState } from '../../store.js'
-export { deselectCurrentArea, clearArea, removeArea } from '../../store.js'
+import { deselectCurrentArea, clearArea, removeArea } from '../../store.js'
 
 export default {
   props: {
@@ -35,9 +35,9 @@ export default {
   },
 }
 
-export const hasDisplay = computed(() => props.area.grid || props.area.flex)
+ref: hasDisplay = computed(() => props.area.grid || props.area.flex)
 
-export function subFlex() {
+function subFlex() {
   clearArea(props.area)
   if (!area.flex) {
     props.area.flex = createFlexState()
@@ -45,7 +45,7 @@ export function subFlex() {
   setCurrentArea(props.area)
 }
 
-export function subGrid() {
+function subGrid() {
   clearArea(props.area)
   if (!props.area.grid) {
     props.area.type = 'div'

@@ -43,22 +43,22 @@
 </template>
 
 <script setup="props">
-export { default as CssCodeTemplateTracks } from './CssCodeTemplateTracks.vue'
-export { default as CssCodeAreaName } from './CssCodeAreaName.vue'
-export { default as CssCodeGridArea } from './CssCodeGridArea.vue'
-export { default as CssCodeTemplateAreas } from './CssCodeTemplateAreas.vue'
-export { default as CssCodeGap } from './CssCodeGap.vue'
-export { default as CssDecl } from './CssCodeDeclaration.vue'
+import CssCodeTemplateTracks from './CssCodeTemplateTracks.vue'
+import CssCodeAreaName from './CssCodeAreaName.vue'
+import CssCodeGridArea from './CssCodeGridArea.vue'
+import CssCodeTemplateAreas from './CssCodeTemplateAreas.vue'
+import CssCodeGap from './CssCodeGap.vue'
+import CssDecl from './CssCodeDeclaration.vue'
 
 import { computed } from 'vue'
-export {
+import {
   namedTemplateColumns,
   namedTemplateRows,
   gridTemplateAreas,
   getGridAreaWithNamedLines,
   areaIsSingleLineInCSS,
 } from '../../utils.js'
-export { mainArea, getGridRegion } from '../../store.js'
+import { mainArea, getGridRegion } from '../../store.js'
 
 export default {
   name: 'CssCodeArea',
@@ -68,17 +68,17 @@ export default {
   },
 }
 
-export const cssAreaName = computed(() => props.area.name)
+ref: cssAreaName = computed(() => props.area.name)
 
 function getGridTemplateAreas(area) {
   return area.display === 'grid' ? gridTemplateAreas(area, '\n    ') : undefined
 }
 
-export const templateAreas = computed(() => getGridTemplateAreas(props.area))
+ref: templateAreas = computed(() => getGridTemplateAreas(props.area))
 
-export const includeTemplateAreas = computed(() => props.options.templateAreas && templateAreas.value !== undefined)
+ref: includeTemplateAreas = computed(() => props.options.templateAreas && templateAreas !== undefined)
 
-export const gridArea = computed(() => {
+ref: gridArea = computed(() => {
   const gridRegion = getGridRegion(props.area) // TODO: span
   if (!gridRegion) {
     return undefined
@@ -86,16 +86,16 @@ export const gridArea = computed(() => {
   const { parent } = props.area
   if (parent) {
     return props.options.templateAreas && getGridTemplateAreas(parent)
-      ? cssAreaName.value
+      ? cssAreaName
       : getGridAreaWithNamedLines(props.area, parent.grid)
   } else {
     return getGridAreaWithNamedLines(props.area)
   }
 })
 
-export const singleLine = computed(() => areaIsSingleLineInCSS(props.area))
+ref: singleLine = computed(() => areaIsSingleLineInCSS(props.area))
 
-export const areasToInclude = computed(() =>
+ref: areasToInclude = computed(() =>
   props.area.children.filter((area) => !areaIsSingleLineInCSS(area) && area.gridArea === 'auto')
 )
 </script>

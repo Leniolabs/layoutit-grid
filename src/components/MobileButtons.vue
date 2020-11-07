@@ -10,8 +10,8 @@
 </template>
 
 <script setup>
-export { default as IconSidebar } from './icons/IconSidebar.vue'
-export { default as IconSubgrid } from './icons/IconSubgrid.vue'
+import IconSidebar from './icons/IconSidebar.vue'
+import IconSubgrid from './icons/IconSubgrid.vue'
 </script>
 
 <style scoped lang="scss">

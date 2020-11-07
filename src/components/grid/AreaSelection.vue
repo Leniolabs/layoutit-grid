@@ -18,12 +18,12 @@
 </template>
 
 <script setup="props, { emit }">
-export { default as IconRemove } from '../icons/IconRemove.vue'
+import IconRemove from '../icons/IconRemove.vue'
 
 import { gridRegionToGridArea, createSection, toCssName } from '../../utils.js'
 import { createAreaState, setCurrentArea, getRandomColor, isValidAreaName, batch, getGridRegion } from '../../store.js'
 
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 
 function selectionDimension(type, start, end) {
   return {
@@ -50,25 +50,23 @@ export default {
   },
 }
 
-export const selection = ref(null)
-export const gridName = ref('')
-export const nameInputElement = ref(null)
+ref: selection = null
+ref: gridName = ''
+ref: nameInputElement = null
 
-export const grid = computed(() => props.area.grid)
+ref: grid = computed(() => props.area.grid)
 
-export const gridArea = computed(() =>
-  selection.value ? gridRegionToGridArea(selectionArea(selection.value)) : 'initial'
-)
+ref: gridArea = computed(() => (selection ? gridRegionToGridArea(selectionArea(selection)) : 'initial'))
 
-export function editArea(area) {
+function editArea(area) {
   // TODO: if ! gridRegion
   const gridRegion = getGridRegion(area)
   if (gridRegion) {
     emit('editstart', area)
 
-    gridName.value = area.name
+    gridName = area.name
 
-    selection.value = {
+    selection = {
       start: createSection({ col: gridRegion.col.start, row: gridRegion.row.start }),
       end: createSection({ col: gridRegion.col.end - 1, row: gridRegion.row.end - 1 }),
       color: area.color,
@@ -76,7 +74,7 @@ export function editArea(area) {
       area,
     }
 
-    setTimeout(() => nameInputElement.value.focus(), 0)
+    setTimeout(() => nameInputElement.focus(), 0)
   }
 }
 
@@ -84,12 +82,10 @@ function validGridName(name) {
   return name !== '' && !(name[0] >= '0' && name[0] <= '9')
 }
 
-export const saveEnabled = computed(() => {
-  const name = gridName.value
-  return validGridName(name) && (isValidAreaName(name) || (selection.value.area && selection.value.area.name === name))
+ref: saveEnabled = computed(() => {
+  const name = gridName
+  return validGridName(name) && (isValidAreaName(name) || (selection.area && selection.area.name === name))
 })
-
-export { isValidAreaName }
 
 function sectionFromEvent() {
   const el = document.elementFromPoint(event.clientX, event.clientY)
@@ -102,7 +98,7 @@ function sectionFromEvent() {
   return undefined
 }
 
-export function cellDown(event) {
+function cellDown(event) {
   event.stopPropagation()
   event.preventDefault()
 
@@ -110,8 +106,8 @@ export function cellDown(event) {
   if (section) {
     setCurrentArea(props.area)
 
-    if (!selection.value) {
-      selection.value = {
+    if (!selection) {
+      selection = {
         start: section,
         end: section,
         color: getRandomColor(),
@@ -119,7 +115,7 @@ export function cellDown(event) {
       }
     }
 
-    selection.value.dragging = {
+    selection.dragging = {
       initial: { x: event.clientX, y: event.clientY },
       section,
     }
@@ -127,14 +123,14 @@ export function cellDown(event) {
     const onPointerMove = (event) => {
       const sectionOver = sectionFromEvent(event)
       if (sectionOver) {
-        const { dragging, fresh } = selection.value
+        const { dragging, fresh } = selection
         if (dragging) {
           if (fresh) {
-            selection.value.end = sectionOver
+            selection.end = sectionOver
           } else {
             if (farEnough(dragging.initial, { x: event.clientX, y: event.clientY })) {
-              selection.value.fresh = true
-              selection.value.start = section
+              selection.fresh = true
+              selection.start = section
             }
           }
           dragging.section = sectionOver
@@ -143,53 +139,53 @@ export function cellDown(event) {
     }
 
     const onPointerUp = () => {
-      if (selection.value.dragging) {
-        selection.value.end = selection.value.dragging.section
-        selection.value.dragging = null
+      if (selection.dragging) {
+        selection.end = selection.dragging.section
+        selection.dragging = null
       }
-      selection.value.fresh = false
+      selection.fresh = false
       window.removeEventListener('pointermove', onPointerMove)
       window.removeEventListener('pointerup', onPointerUp)
 
       // TODO: nextTick is not working here
-      setTimeout(() => nameInputElement.value.focus(), 100)
+      setTimeout(() => nameInputElement.focus(), 100)
     }
     window.addEventListener('pointermove', onPointerMove, false)
     window.addEventListener('pointerup', onPointerUp, false)
   }
 }
 
-export function saveSelection() {
-  if (saveEnabled.value) {
-    const { color } = selection.value
-    const sa = selection.value.area
+function saveSelection() {
+  if (saveEnabled) {
+    const { color } = selection
+    const sa = selection.area
     if (sa) {
       batch(() => {
-        sa.name = toCssName(gridName.value)
-        sa.gridRegion = gridRegionToGridArea(selectionArea(selection.value))
+        sa.name = toCssName(gridName)
+        sa.gridRegion = gridRegionToGridArea(selectionArea(selection))
       })
       emit('editend', sa)
     } else {
       props.area.children.push(
         createAreaState({
-          name: toCssName(gridName.value),
-          gridArea: gridRegionToGridArea(selectionArea(selection.value)),
+          name: toCssName(gridName),
+          gridArea: gridRegionToGridArea(selectionArea(selection)),
           color,
           parent: props.area,
         })
       )
     }
 
-    gridName.value = ''
-    selection.value = null
+    gridName = ''
+    selection = null
   }
 }
 
-export function closeSelection() {
-  if (selection.value.area) {
-    emit('editend', selection.value.area)
+function closeSelection() {
+  if (selection.area) {
+    emit('editend', selection.area)
   }
-  selection.value = null
+  selection = null
 }
 </script>
 

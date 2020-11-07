@@ -42,7 +42,7 @@
 </template>
 
 <script setup="props">
-export { default as SlideCheckbox } from '../basic/SlideCheckbox.vue'
+import SlideCheckbox from '../basic/SlideCheckbox.vue'
 
 export default {
   props: {

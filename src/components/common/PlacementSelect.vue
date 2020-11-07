@@ -33,7 +33,7 @@ const optionsMap = {
   self: optionsItems,
 }
 
-export const options = computed(() => optionsMap[props.type.split('-')[1]])
+ref: options = computed(() => optionsMap[props.type.split('-')[1]])
 </script>
 
 <style scoped lang="scss">

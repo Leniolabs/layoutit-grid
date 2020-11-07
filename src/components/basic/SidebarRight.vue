@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-export { currentView } from '../../store.js'
+import { currentView } from '../../store.js'
 </script>
 
 <style scoped lang="scss">

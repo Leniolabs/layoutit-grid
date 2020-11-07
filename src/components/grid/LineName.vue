@@ -15,7 +15,7 @@
 
 <script setup="props">
 import { useLineNameWidth } from '../../composables/lineName.js'
-export { parseValue, currentFocus } from '../../store.js'
+import { parseValue, currentFocus } from '../../store.js'
 
 export default {
   props: {
@@ -26,13 +26,13 @@ export default {
   },
 }
 
-import { ref, computed, nextTick } from 'vue'
+import { computed, nextTick } from 'vue'
 
-export const line = computed(() => props.grid[props.type].lineNames[props.pos - 1])
+ref: line = computed(() => props.grid[props.type].lineNames[props.pos - 1])
 
-export const lineNameWidth = useLineNameWidth(line, '14px arial', 30)
+ref: lineNameWidth = useLineNameWidth($line, '14px arial', 30)
 
-export const style = computed(() => {
+ref: style = computed(() => {
   const g = parseValue(props.gap)
   const s = { width: lineNameWidth.value + 'px' }
   if (props.pos > 1 && props.pos < props.grid[props.type].lineNames.length) {
@@ -41,14 +41,14 @@ export const style = computed(() => {
   return s
 })
 
-export const inputElement = ref(null)
+ref: inputElement = null
 
 function focus() {
-  inputElement.value.focus()
+  inputElement.focus()
 }
 
-export function toggle() {
-  if ((line.value.active = !line.value.active)) {
+function toggle() {
+  if ((line.active = !line.active)) {
     nextTick(focus)
   }
 }

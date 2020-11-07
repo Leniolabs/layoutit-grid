@@ -50,30 +50,30 @@
 
 <script setup="props, { el }">
 // @edit="$emit('edit')"
-export { default as GridCell } from './GridCell.vue'
-export { default as GridTrack } from './GridTrack.vue'
-export { default as GridLine } from './GridLine.vue'
-export { default as GridIntersection } from './GridIntersection.vue'
-export { default as AreaSelection } from './AreaSelection.vue'
-export { default as AreaEditor } from '../area/AreaEditor.vue'
-export { default as AreaInfo } from '../area/AreaInfo.vue'
+import GridCell from './GridCell.vue'
+import GridTrack from './GridTrack.vue'
+import GridLine from './GridLine.vue'
+import GridIntersection from './GridIntersection.vue'
+import AreaSelection from './AreaSelection.vue'
+import AreaEditor from '../area/AreaEditor.vue'
+import AreaInfo from '../area/AreaInfo.vue'
 
-export {
+import {
   currentArea,
   setCurrentArea,
   valueUnitToString,
   pause,
   resume,
-  dragging,
+  dragging as ref_dragging,
   currentFocus,
   currentHover,
 } from '../../store.js'
 import { parseValue, parseUnit, parseValueUnit } from '../../store'
 import { useIsCurrentArea, useIsActiveArea } from '../../composables/area.js'
 
-import { ref, computed, watch, toRefs, onBeforeUpdate, nextTick } from 'vue'
+import { computed, watch, toRef, onBeforeUpdate, nextTick } from 'vue'
 
-export { gridSections } from '../../utils.js'
+import { gridSections } from '../../utils.js'
 
 export default {
   props: {
@@ -89,13 +89,15 @@ export default {
   },
 }
 
-export const grid = computed(() => props.area.grid)
+ref: dragging = ref_dragging
 
-export const editingArea = ref(null)
+ref: grid = computed(() => props.area.grid)
 
-export const areasToShow = computed(() => {
+ref: editingArea = null
+
+ref: areasToShow = computed(() => {
   return props.area.children
-    .filter((a) => a !== editingArea.value)
+    .filter((a) => a !== editingArea)
     .flatMap((a) =>
       a.items
         ? new Array(a.items.count).fill(0).map((_, i) => {
@@ -105,13 +107,13 @@ export const areasToShow = computed(() => {
     )
 })
 
-export const gridLineRefs = ref({ col: [], row: [] })
+ref: gridLineRefs = { col: [], row: [] }
 onBeforeUpdate(() => {
-  gridLineRefs.value = { col: [], row: [] }
+  gridLineRefs = { col: [], row: [] }
 })
 
 function gridSizesForView(type) {
-  return grid.value[type].sizes
+  return grid[type].sizes
     .map((size) => {
       const unit = parseUnit(size)
       switch (unit) {
@@ -128,40 +130,40 @@ function gridSizesForView(type) {
     .join(' ')
 }
 
-export const gridTemplateRows = computed(() => gridSizesForView('row'))
-export const gridTemplateColumns = computed(() => gridSizesForView('col'))
+ref: gridTemplateRows = computed(() => gridSizesForView('row'))
+ref: gridTemplateColumns = computed(() => gridSizesForView('col'))
 
-const { area } = toRefs(props)
-export const isCurrent = useIsCurrentArea(area)
-export const isActive = useIsActiveArea(area)
+ref: area = toRef(props, 'area')
+ref: isCurrent = useIsCurrentArea($area)
+ref: isActive = useIsActiveArea($area)
 
 function tracksFor(type) {
-  return grid.value[type].sizes.map((size, i) => {
+  return grid[type].sizes.map((size, i) => {
     return {
       type,
       pos: i + 1,
     }
   })
 }
-export const gridTracks = computed(() => {
+ref: gridTracks = computed(() => {
   return [...tracksFor('row'), ...tracksFor('col')]
 })
 
 function linesFor(type) {
-  const end = grid.value[type].lineNames.length
+  const end = grid[type].lineNames.length
   const lines = []
   for (let pos = 1; pos <= end; pos++) {
     lines.push({ type, pos })
   }
   return lines
 }
-export const gridLines = computed(() => {
+ref: gridLines = computed(() => {
   return [...linesFor('row'), ...linesFor('col')]
 })
 
-export const gridIntersections = computed(() => {
-  const rowEnd = grid.value.row.sizes.length
-  const colEnd = grid.value.col.sizes.length
+ref: gridIntersections = computed(() => {
+  const rowEnd = grid.row.sizes.length
+  const colEnd = grid.col.sizes.length
   const intersections = []
   for (let row = 2; row <= rowEnd; row++) {
     for (let col = 2; col <= colEnd; col++) {
@@ -177,13 +179,13 @@ function toViewGap(gap) {
   return gap
 }
 
-export const gridGap = computed(() => {
-  return `${toViewGap(grid.value.row.gap)} ${toViewGap(grid.value.col.gap)}`
+ref: gridGap = computed(() => {
+  return `${toViewGap(grid.row.gap)} ${toViewGap(grid.col.gap)}`
 })
 
-export function isFocused(section) {
+function isFocused(section) {
   const c = currentHover.value
-  return c && c.on === 'cell' && c.grid === grid.value && c.row === section.row.start && c.col === section.col.start
+  return c && c.on === 'cell' && c.grid === grid && c.row === section.row.start && c.col === section.col.start
 }
 
 function calcValue(prev, prevComp, delta) {
@@ -224,14 +226,14 @@ function farEnough(a, b, delta = 5) {
   return Math.abs(a.x - b.x) > delta || Math.abs(a.y - b.y) > delta
 }
 
-export function handleLineDown(event, { row, col }) {
+function handleLineDown(event, { row, col }) {
   event.stopPropagation() // TODO: ...
   event.preventDefault()
   if (document.activeElement) {
     document.activeElement.blur()
   }
 
-  if (dragging.value) {
+  if (dragging) {
     return
   }
 
@@ -239,55 +241,55 @@ export function handleLineDown(event, { row, col }) {
 
   const initialPos = { x: event.clientX, y: event.clientY }
   const initialTime = new Date().getTime()
-  const initialRowSizes = [...grid.value.row.sizes]
+  const initialRowSizes = [...grid.row.sizes]
   const initialRowComputedSizes = props.computedStyles.gridTemplateRows.split(/\s/g)
-  const initialColSizes = [...grid.value.col.sizes]
+  const initialColSizes = [...grid.col.sizes]
   const initialColComputedSizes = props.computedStyles.gridTemplateColumns.split(/\s/g)
-  const rowsNumber = grid.value.row.sizes.length
-  const colsNumber = grid.value.col.sizes.length
+  const rowsNumber = grid.row.sizes.length
+  const colsNumber = grid.col.sizes.length
   const rowLine = row && row > 1 && row <= rowsNumber ? row : undefined
   const colLine = col && col > 1 && col <= colsNumber ? col : undefined
   const handleMove = (event) => {
     const pos = { x: event.clientX, y: event.clientY }
 
-    if (!dragging.value && (new Date().getTime() - initialTime > 500 || farEnough(initialPos, pos))) {
+    if (!dragging && (new Date().getTime() - initialTime > 500 || farEnough(initialPos, pos))) {
       if (colLine || rowLine) {
         // Start dragging grid lines
-        dragging.value = { grid: grid.value, rowLine, colLine, prevCursor: document.body.style.cursor }
+        dragging = { grid: grid, rowLine, colLine, prevCursor: document.body.style.cursor }
         document.body.style.cursor = col && row ? 'move' : col ? 'col-resize' : 'row-resize'
         pause()
       }
     }
-    if (dragging.value) {
-      if (dragging.value.rowLine !== null) {
+    if (dragging) {
+      if (dragging.rowLine !== null) {
         // Drag row line by updating row sizes
-        grid.value.row.sizes = resizeGridSizes(
+        grid.row.sizes = resizeGridSizes(
           initialRowSizes,
           initialRowComputedSizes,
           pos.y - initialPos.y,
-          dragging.value.rowLine
+          dragging.rowLine
         )
       }
-      if (dragging.value.colLine !== undefined) {
+      if (dragging.colLine !== undefined) {
         // Drag col line by updating col sizes
-        grid.value.col.sizes = resizeGridSizes(
+        grid.col.sizes = resizeGridSizes(
           initialColSizes,
           initialColComputedSizes,
           pos.x - initialPos.x,
-          dragging.value.colLine
+          dragging.colLine
         )
       }
     }
   }
 
   const handleUp = () => {
-    if (dragging.value) {
+    if (dragging) {
       // Finish dragging grid lines
-      document.body.style.cursor = dragging.value.prevCursor
-      dragging.value = null
+      document.body.style.cursor = dragging.prevCursor
+      dragging = null
       resume(true)
     } else if (new Date().getTime() - initialTime < 500) {
-      gridLineRefs.value[col ? 'col' : 'row'][col || row].toggleLineName()
+      gridLineRefs[col ? 'col' : 'row'][col || row].toggleLineName()
     }
 
     window.removeEventListener('pointermove', handleMove)

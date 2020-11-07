@@ -26,7 +26,7 @@ export default {
   emits: ['update:modelValue'],
 }
 
-export const options = ['block', 'flex', 'grid']
+const options = ['block', 'flex', 'grid']
 </script>
 
 <style scoped lang="scss">

@@ -7,13 +7,13 @@
 </template>
 
 <script setup="props">
-export { default as BrandLogo } from './BrandLogo.vue'
-export { default as IconGithub } from '../icons/IconGithub.vue'
-export { default as AreaProps } from './AreaProps.vue'
-export { default as BrandBanner } from '../props/BrandBanner.vue'
+import BrandLogo from './BrandLogo.vue'
+import IconGithub from '../icons/IconGithub.vue'
+import AreaProps from './AreaProps.vue'
+import BrandBanner from '../props/BrandBanner.vue'
 
 import { computed } from 'vue'
-export { currentArea, currentView } from '../../store.js'
+import { currentArea, currentView } from '../../store.js'
 
 export default {
   props: {

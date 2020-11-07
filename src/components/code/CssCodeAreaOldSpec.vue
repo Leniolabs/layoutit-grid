@@ -28,7 +28,7 @@
 <script setup="props">
 import { computed } from 'vue'
 import { getGridRegion } from '../../store.js'
-export { namedTemplateColumns, namedTemplateRows, toCssName } from '../../utils.js'
+import { namedTemplateColumns, namedTemplateRows, toCssName } from '../../utils.js'
 
 export default {
   name: 'CssCodeAreaOldSpec',
@@ -38,12 +38,12 @@ export default {
   },
 }
 
-export const cssAreaName = computed(() => toCssName(props.area.name))
+ref: cssAreaName = computed(() => toCssName(props.area.name))
 
-export const gridAreas = computed(() => (props.area.display === 'grid' ? props.area.children : []))
+ref: gridAreas = computed(() => (props.area.display === 'grid' ? props.area.children : []))
 
 // TODO:
-export const gridRegion = computed(() => getGridRegion(props.area))
+ref: gridRegion = computed(() => getGridRegion(props.area))
 </script>
 
 <style scoped lang="scss"></style>

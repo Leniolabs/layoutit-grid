@@ -16,7 +16,7 @@
 </template>
 
 <script setup="props">
-export { default as UnitSelect } from './UnitSelect.vue'
+import UnitSelect from './UnitSelect.vue'
 
 import { computed } from 'vue'
 import { parseValueUnit } from '../../store.js'
@@ -29,19 +29,19 @@ export default {
   },
 }
 
-export const size = computed(() => {
+ref: size = computed(() => {
   return parseValueUnit(props.area[props.type])
 })
 
-export function setSize(s) {
+function setSize(s) {
   props.area[props.type] = s
 }
 
-export function setSizeValue(value) {
+function setSizeValue(value) {
   setSize(value + size.value.unit)
 }
 
-export function setSizeUnit(unit) {
+function setSizeUnit(unit) {
   // TODO: Adjust value to avoid jump
   setSize(unitMeasureMap[unit] + unit)
 }

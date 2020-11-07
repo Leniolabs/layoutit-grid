@@ -52,24 +52,24 @@
 </template>
 
 <script setup="props">
-export { default as IconAdd } from '../icons/IconAdd.vue'
-export { default as IconRemove } from '../icons/IconRemove.vue'
+import IconAdd from '../icons/IconAdd.vue'
+import IconRemove from '../icons/IconRemove.vue'
 
-import { ref, computed } from 'vue'
-export {
+import { computed } from 'vue'
+import {
   mainArea,
   currentArea,
   removeArea,
   createAreaState,
   newAreaName,
   getRandomColor,
-  reordering,
+  reordering as ref_reordering,
 } from '../../store.js'
 
 import { getAreaDepth } from '../../store.js'
-import { getRandomColor } from '../../store/area'
 
-export const depth = computed(() => getAreaDepth(props.area) * 5 + 'px')
+ref: reordering = ref_reordering
+ref: depth = computed(() => getAreaDepth(props.area) * 5 + 'px')
 
 export default {
   name: 'AreaTree',
@@ -78,18 +78,18 @@ export default {
   },
 }
 
-export function onDragStart(area, event) {
+function onDragStart(area, event) {
   event.stopPropagation()
-  reordering.value = { area, reordering: null, after: true }
+  reordering = { area, reordering: null, after: true }
 }
 
 function areaIndex(area) {
   return area.parent.children.findIndex((a) => a === area)
 }
 
-export function onDrop(areaTarget, event) {
+function onDrop(areaTarget, event) {
   event.stopPropagation()
-  const areaFrom = reordering.value.area
+  const areaFrom = reordering.area
   const sameParent = areaTarget.parent === areaFrom.parent
   const children = sameParent ? areaTarget.parent.children.filter((a) => a !== areaFrom) : areaTarget.parent.children
   if (!sameParent) {
@@ -97,24 +97,24 @@ export function onDrop(areaTarget, event) {
   }
   const iFrom = areaIndex(areaFrom)
   const i = children.findIndex((a) => a === areaTarget)
-  children.splice(reordering.value.after ? i + 1 : i, 0, areaFrom)
+  children.splice(reordering.after ? i + 1 : i, 0, areaFrom)
   if (!sameParent) {
     areaFrom.parent = areaTarget.parent
   }
   props.area.children = children
 }
 
-export function onDragEnd(a) {
-  reordering.value = null
+function onDragEnd(a) {
+  reordering = null
 }
 
 function afterMiddleHeight(event) {
   return (event.clientY - event.target.offsetTop) / event.target.clientHeight > 0.5
 }
-export function onDragOver(areaTarget, event) {
+function onDragOver(areaTarget, event) {
   event.stopPropagation()
 
-  const areaFrom = reordering.value.area
+  const areaFrom = reordering.area
   const after = afterMiddleHeight(event)
   let noop = false
   if (areaFrom.parent === areaTarget.parent) {
@@ -127,19 +127,19 @@ export function onDragOver(areaTarget, event) {
   if (areaTarget !== areaFrom && !noop) {
     event.preventDefault()
 
-    reordering.value.target = areaTarget !== areaFrom ? areaTarget : null
-    reordering.value.after = after
+    reordering.target = areaTarget !== areaFrom ? areaTarget : null
+    reordering.after = after
   } else {
-    reordering.value.target = null
+    reordering.target = null
   }
 }
 
-export const showChildren = ref(false)
+ref: showChildren = false
 
-export const currentGrid = computed(() => props.area.grid)
-export const currentFlex = computed(() => props.area.flex)
+ref: currentGrid = computed(() => props.area.grid)
+ref: currentFlex = computed(() => props.area.flex)
 
-export function addArea() {
+function addArea() {
   props.area.children.push(
     createAreaState({
       name: newAreaName(),
@@ -147,11 +147,12 @@ export function addArea() {
       color: getRandomColor(),
     })
   )
-  showChildren.value = true
+  showChildren = true
 }
 </script>
 
-<style scoped lang="scss" vars="{ depth }">
+<style scoped lang="scss">
+// vars="{ depth }"
 .area-tree {
   margin-left: var(--depth);
   border-bottom: solid 1px #ddd;

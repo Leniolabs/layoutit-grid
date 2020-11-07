@@ -14,8 +14,8 @@
 </template>
 
 <script setup="props">
-export { default as VersionLabel } from './VersionLabel.vue'
-export { default as HireUs } from './HireUs.vue'
+import VersionLabel from './VersionLabel.vue'
+import HireUs from './HireUs.vue'
 </script>
 
 <style scoped lang="scss">

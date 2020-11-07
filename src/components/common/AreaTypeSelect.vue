@@ -17,7 +17,7 @@ export default {
   emits: ['update:modelValue'],
 }
 
-export const options = ['div', 'p', 'button', 'image', 'component']
+const options = ['div', 'p', 'button', 'image', 'component']
 </script>
 
 <style scoped lang="scss">

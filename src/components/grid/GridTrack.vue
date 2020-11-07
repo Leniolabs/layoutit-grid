@@ -31,9 +31,9 @@
 </template>
 
 <script setup="props, { emit }">
-export { default as TrackSize } from './TrackSize.vue'
+import TrackSize from './TrackSize.vue'
 import { useIsCurrentArea, useGridDimensions } from '../../composables/area.js'
-export { dragging, currentFocus, currentHover, darkmode, parseValue } from '../../store.js'
+import { dragging as ref_dragging, currentFocus, currentHover, darkmode, parseValue } from '../../store.js'
 import { computed, toRefs } from 'vue'
 
 export default {
@@ -44,48 +44,44 @@ export default {
   },
 }
 
-export const grid = computed(() => props.area.grid)
+ref: dragging = ref_dragging
 
-export const isCurrent = useIsCurrentArea(toRefs(props).area)
+ref: grid = computed(() => props.area.grid)
 
-export const isDraggingGrid = computed(() => dragging.value && dragging.value.grid === grid.value)
+ref: isCurrent = useIsCurrentArea(toRefs(props).area)
+
+ref: isDraggingGrid = computed(() => dragging && dragging.grid === grid)
 
 function isHover(pos) {
   const f = currentHover.value
-  return (
-    !currentFocus.value && f && f.on === 'track' && f.grid === grid.value && f.type === props.type && f.track === pos
-  )
+  return !currentFocus.value && f && f.on === 'track' && f.grid === grid && f.type === props.type && f.track === pos
 }
-export const isTrackHover = computed(() => isHover(props.pos))
-export const isNextTrackHover = computed(() => isHover(props.pos + 1))
+ref: isTrackHover = computed(() => isHover(props.pos))
+ref: isNextTrackHover = computed(() => isHover(props.pos + 1))
 
 function isFocused(pos) {
   const f = currentFocus.value
-  return f && f.on === 'track' && f.grid === grid.value && f.type === props.type && f.track === pos
+  return f && f.on === 'track' && f.grid === grid && f.type === props.type && f.track === pos
 }
 
-export const isTrackFocused = computed(() => isFocused(props.pos))
-export const isNextTrackFocused = computed(() => isFocused(props.pos + 1))
+ref: isTrackFocused = computed(() => isFocused(props.pos))
+ref: isNextTrackFocused = computed(() => isFocused(props.pos + 1))
 
-export function isLineFocused(pos) {
+function isLineFocused(pos) {
   const f = currentFocus.value
-  return f && f.on === 'line' && f.grid === grid.value && f.type === props.type && f.pos === pos
+  return f && f.on === 'line' && f.grid === grid && f.type === props.type && f.pos === pos
 }
-export function isLineHover(pos) {
+function isLineHover(pos) {
   const f = currentHover.value
-  return !currentFocus.value && f && f.on === 'line' && f.grid === grid.value && f.type === props.type && f.pos === pos
+  return !currentFocus.value && f && f.on === 'line' && f.grid === grid && f.type === props.type && f.pos === pos
 }
 
-export const isLineDraggingPrev = computed(
-  () => isDraggingGrid.value && dragging.value[props.type + 'Line'] === props.pos
-)
-export const isLineFocusedPrev = computed(() => isLineFocused(props.pos))
-export const isLineDraggingNext = computed(
-  () => isDraggingGrid.value && dragging.value[props.type + 'Line'] === props.pos + 1
-)
-export const isLineFocusedNext = computed(() => isLineFocused(props.pos + 1))
+ref: isLineDraggingPrev = computed(() => isDraggingGrid && dragging[props.type + 'Line'] === props.pos)
+ref: isLineFocusedPrev = computed(() => isLineFocused(props.pos))
+ref: isLineDraggingNext = computed(() => isDraggingGrid && dragging[props.type + 'Line'] === props.pos + 1)
+ref: isLineFocusedNext = computed(() => isLineFocused(props.pos + 1))
 
-export const gridArea = computed(() => {
+ref: gridArea = computed(() => {
   const { pos } = props
   return props.type === 'row' ? `${pos} / 1 / ${pos + 1} / -1` : `1 / ${pos} / -1 / ${pos + 1}`
 })

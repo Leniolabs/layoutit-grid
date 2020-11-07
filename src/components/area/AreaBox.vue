@@ -30,8 +30,8 @@
 </template>
 
 <script setup="props">
-export { default as AreaName } from './AreaName.vue'
-export { default as AreaButtons } from './AreaButtons.vue'
+import AreaName from './AreaName.vue'
+import AreaButtons from './AreaButtons.vue'
 
 import { computed, toRefs } from 'vue'
 import { getAreaDepth } from '../../store.js'
@@ -47,9 +47,9 @@ export default {
 
 /*
 const { area } = toRefs(props)
-export const isMain = useIsMainArea(area)
+ref: isMain = useIsMainArea(area)
 
-export const toolbarStart = computed(() => {
+ref: toolbarStart = computed(() => {
   const { gridRegion } = props.area
   return gridRegion ? (gridRegion.col.start === 1 && gridRegion.row.start === 1 ? getAreaDepth(props.area) - 1 : 0) : 0
 })

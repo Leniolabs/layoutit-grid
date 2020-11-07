@@ -35,9 +35,9 @@
 </template>
 
 <script setup="props, { emit }">
-export { default as LineName } from './LineName.vue'
-export { dragging, currentFocus } from '../../store.js'
-import { ref, computed } from 'vue'
+import LineName from './LineName.vue'
+import { dragging as ref_dragging, currentFocus } from '../../store.js'
+import { computed } from 'vue'
 
 export default {
   props: {
@@ -49,29 +49,33 @@ export default {
   emits: ['down'],
 }
 
-export const grid = computed(() => props.area.grid)
+ref: dragging = ref_dragging
 
-export const last = computed(() => props.pos === grid.value[props.type].lineNames.length)
+ref: grid = computed(() => props.area.grid)
 
-export const showNumber = computed(() => {
-  const otherLineNames = grid.value[props.type === 'col' ? 'row' : 'col'].lineNames
-  return !(last.value && otherLineNames[0].active)
+ref: last = computed(() => props.pos === grid[props.type].lineNames.length)
+
+ref: showNumber = computed(() => {
+  const otherLineNames = grid[props.type === 'col' ? 'row' : 'col'].lineNames
+  return !(last && otherLineNames[0].active)
 })
 
-export const gridArea = computed(() => {
+ref: gridArea = computed(() => {
   // The first line uses the same track as the second one
   const pos = Math.max(props.pos - 1, 1)
   return props.type === 'row' ? `${pos} / 1 / ${pos + 1} / -1` : `1 / ${pos} / -1 / ${pos + 1}`
 })
 
-export const lineNameRef = ref(null)
-export function toggleLineName() {
-  lineNameRef.value.toggle()
+ref: lineNameRef = null
+function toggleLineName() {
+  lineNameRef.toggle()
 }
 </script>
 
-<style scoped lang="scss" vars="{ gap }">
+<style scoped lang="scss">
+// vars="{ gap }"
 section {
+  --gap: 1px;
   touch-action: none;
   pointer-events: none;
   height: 100%;

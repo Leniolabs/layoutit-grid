@@ -27,26 +27,26 @@
 </template>
 
 <script setup="props">
-export { default as IconTrash } from '../icons/IconTrash.vue'
-export { default as IconLink } from '../icons/IconLink.vue'
-export { default as IconUndo } from '../icons/IconUndo.vue'
-export { default as IconRedo } from '../icons/IconRedo.vue'
-export { default as DarkModeButton } from '../props/DarkModeButton.vue'
-export { default as SidebarButton } from '../basic/SidebarButton.vue'
-export { default as CodepenButton } from './CodepenButton.vue'
-export { default as CodeSanboxButton } from './CodeSanboxButton.vue'
-export { default as PermalinkBar } from './PermalinkBar.vue'
-export { default as LiveCodeOptions } from './LiveCodeOptions.vue'
-export { default as HtmlCodeEditor } from './HtmlCodeEditor.vue'
-export { default as CssCodeEditor } from './CssCodeEditor.vue'
+import IconTrash from '../icons/IconTrash.vue'
+import IconLink from '../icons/IconLink.vue'
+import IconUndo from '../icons/IconUndo.vue'
+import IconRedo from '../icons/IconRedo.vue'
+import DarkModeButton from '../props/DarkModeButton.vue'
+import SidebarButton from '../basic/SidebarButton.vue'
+import CodepenButton from './CodepenButton.vue'
+import CodeSanboxButton from './CodeSanboxButton.vue'
+import PermalinkBar from './PermalinkBar.vue'
+import LiveCodeOptions from './LiveCodeOptions.vue'
+import HtmlCodeEditor from './HtmlCodeEditor.vue'
+import CssCodeEditor from './CssCodeEditor.vue'
 
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 
-export { restart } from '../../store.js'
+import { restart } from '../../store.js'
 
 import { areaToCSS, areaToHTML } from '../../generateCode.js'
 
-export { undo, redo, undoStack, redoStack, mainArea } from '../../store.js'
+import { undo, redo, undoStack, redoStack, mainArea } from '../../store.js'
 
 export default {
   props: {
@@ -55,30 +55,30 @@ export default {
   },
 }
 
-export const options = ref({
+ref: options = {
   templateAreas: true,
   oldSpec: false,
   repeat: false,
-})
+}
 
-export const cssCode = computed(() => {
-  const { repeat, templateAreas, oldSpec } = options.value
+ref: cssCode = computed(() => {
+  const { repeat, templateAreas, oldSpec } = options
   return areaToCSS(props.area, { useTemplateAreas: templateAreas, repeat, oldSpec })
 })
 
-export const htmlCode = computed(() => {
+ref: htmlCode = computed(() => {
   return areaToHTML(props.area)
 })
 
-export const showPermalink = ref(false)
-export const permalink = ref('')
+ref: showPermalink = false
+ref: permalink = ''
 
-export function getPermalink() {
+function getPermalink() {
   // Permalink supports depends on the deployed editor
   if (props.saveDesign) {
-    props.saveDesign(mainArea.value).then((path) => {
-      permalink.value = path
-      showPermalink.value = true
+    props.saveDesign(mainArea).then((path) => {
+      permalink = path
+      showPermalink = true
     })
   }
 }

@@ -26,7 +26,7 @@ export default {
   },
 }
 
-export const opened = ref(true)
+ref: opened = true
 </script>
 
 <style scoped lang="scss">

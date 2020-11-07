@@ -13,7 +13,7 @@
 </template>
 
 <script setup="props, { emit }">
-export { dragging } from '../../store.js'
+import { dragging } from '../../store.js'
 import { computed } from 'vue'
 
 export default {
@@ -27,11 +27,14 @@ export default {
   emits: ['down'],
 }
 
-export const grid = computed(() => props.area.grid)
+ref: grid = computed(() => props.area.grid)
 </script>
 
-<style scoped lang="scss" vars="{ colgap, rowgap }">
+<style scoped lang="scss">
+// vars="{ colgap, rowgap }"
 section {
+  --colgap: 1px;
+  --rowgap: 1px;
   touch-action: none;
   pointer-events: none;
   height: 100%;

@@ -9,7 +9,7 @@
 </template>
 
 <script setup="props">
-export { default as GapInput } from '../common/GapInput.vue'
+import GapInput from '../common/GapInput.vue'
 
 import { computed } from 'vue'
 
@@ -19,7 +19,7 @@ export default {
   },
 }
 
-export const grid = computed(() => props.area.grid)
+ref: grid = computed(() => props.area.grid)
 </script>
 
 <style scoped lang="scss">

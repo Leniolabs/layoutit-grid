@@ -25,13 +25,13 @@
 </template>
 
 <script setup="props, { emit }">
-export { default as CssCodeTrackSize } from './CssCodeTrackSize.vue'
-export { default as CssCodeLineName } from './CssCodeLineName.vue'
+import CssCodeTrackSize from './CssCodeTrackSize.vue'
+import CssCodeLineName from './CssCodeLineName.vue'
 import { isValidTrackSize } from '../../store.js'
 import { ref, computed } from 'vue'
 import { debounce } from 'lodash-es'
 
-export { namedTemplateColumns, namedTemplateRows, parseGridTemplate } from '../../utils.js'
+import { namedTemplateColumns, namedTemplateRows, parseGridTemplate } from '../../utils.js'
 
 export default {
   props: {
@@ -41,24 +41,24 @@ export default {
   },
 }
 
-export const isInteractive = computed(() => {
+ref: isInteractive = computed(() => {
   return !(props.repeat && props.grid[props.type].lineNames.every((l) => !l.active))
 })
 
-export const multiline = computed(() => {
+ref: multiline = computed(() => {
   const { lineNames } = props.grid[props.type]
   return lineNames.some((line) => line.name !== '' && line.active === true)
 })
 
-export function separatorBeforeItem(i) {
-  return multiline.value && i === 0 ? '\n    ' : ''
+function separatorBeforeItem(i) {
+  return multiline && i === 0 ? '\n    ' : ''
 }
-export function separatorAfterItem(i) {
-  const isLast = i === trackSizesAndLineNames.value.length - 1
-  return trackSizesAndLineNames.value[i].type === 'size' && !isLast && multiline.value ? '\n    ' : isLast ? '' : ' '
+function separatorAfterItem(i) {
+  const isLast = i === trackSizesAndLineNames.length - 1
+  return trackSizesAndLineNames[i].type === 'size' && !isLast && multiline ? '\n    ' : isLast ? '' : ' '
 }
 
-export const trackSizesAndLineNames = computed(() => {
+ref: trackSizesAndLineNames = computed(() => {
   const { sizes, lineNames } = props.grid[props.type]
   const items = []
   for (var i = 0; i < lineNames.length; i++) {
@@ -73,11 +73,11 @@ export const trackSizesAndLineNames = computed(() => {
   return items
 })
 
-export function onMove(event, i) {
+function onMove(event, i) {
   switch (event.action) {
     case 'right':
-      if (i + 1 < trackSizesAndLineNames.value.length) {
-        trackSizesAndLineNames.value[i + 1].el.value.focus()
+      if (i + 1 < trackSizesAndLineNames.length) {
+        trackSizesAndLineNames[i + 1].el.focus()
       } else {
         if (document.activeElement) {
           document.activeElement.blur()
@@ -86,7 +86,7 @@ export function onMove(event, i) {
       break
     case 'left':
       if (i - 1 >= 0) {
-        trackSizesAndLineNames.value[i - 1].el.value.focus()
+        trackSizesAndLineNames[i - 1].el.focus()
       } else {
         if (document.activeElement) {
           document.activeElement.blur()

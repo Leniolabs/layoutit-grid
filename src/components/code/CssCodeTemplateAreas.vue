@@ -18,7 +18,7 @@
 import { dragging, currentArea, isValidAreaName } from '../../store.js'
 import { computed } from 'vue'
 import { gridTemplateAreasMatrix } from '../../utils.js'
-export { currentHover } from '../../store.js'
+import { currentHover } from '../../store.js'
 
 export default {
   props: {
@@ -27,13 +27,11 @@ export default {
   },
 }
 
-export { currentArea }
-
 function getGridTemplateAreas(area) {
   return area.display === 'grid' ? gridTemplateAreasMatrix(area) : []
 }
 
-export const templateAreas = computed(() => getGridTemplateAreas(props.area))
+ref: templateAreas = computed(() => getGridTemplateAreas(props.area))
 </script>
 
 <style scoped lang="scss">

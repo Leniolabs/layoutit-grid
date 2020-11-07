@@ -6,7 +6,7 @@
 </template>
 
 <script setup="props">
-export { default as PlacementPicker } from '../common/PlacementPicker.vue'
+import PlacementPicker from '../common/PlacementPicker.vue'
 
 import { computed } from 'vue'
 
@@ -16,7 +16,7 @@ export default {
   },
 }
 
-export const grid = computed(() => props.area.grid)
+ref: grid = computed(() => props.area.grid)
 </script>
 
 <style scoped lang="scss"></style>

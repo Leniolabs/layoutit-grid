@@ -4,8 +4,20 @@
       >{{ type.toUpperCase() }}
       <button class="copy-button" @click="copyToClipBoard">
         <!--{{ copied === 0 ? 'Copy' : 'Copied!' }}-->
-        <svg fill='none' stroke='#fff' stroke-width='10' stroke-dashoffset='0' stroke-dasharray='0' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points="30,30 30,10 90,10 90,70 70,70 70,30 30,30"/>
-<rect x="10" y="30" width="60" height="60"/></svg>
+        <svg
+          fill="none"
+          stroke="#fff"
+          stroke-width="10"
+          stroke-dashoffset="0"
+          stroke-dasharray="0"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 100 100"
+        >
+          <polygon points="30,30 30,10 90,10 90,70 70,70 70,30 30,30" />
+          <rect x="10" y="30" width="60" height="60" />
+        </svg>
       </button>
     </span>
     <pre><code><slot/></code></pre>
@@ -26,40 +38,38 @@ export default {
   },
 }
 
-export const copied = ref(0)
+ref: copied = 0
 
-export function copyToClipBoard() {
+function copyToClipBoard() {
   copy(props.code)
-  copied.value++
+  copied++
   setTimeout(() => {
-    copied.value--
+    copied--
   }, 2000)
 }
-
-export let codeCopied = false
 </script>
 
 <style scoped lang="scss">
 * {
- scrollbar-width:thin;
- scrollbar-color:#555 #111;
+  scrollbar-width: thin;
+  scrollbar-color: #555 #111;
 }
 ::-webkit-scrollbar {
- width:5px
+  width: 5px;
 }
 ::-webkit-scrollbar:horizontal {
- height:5px
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
- background:#111;
- border-radius:10px
+  background: #111;
+  border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb {
- background:#555;
- border-radius:10px
+  background: #555;
+  border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
- background:#777;
+  background: #777;
 }
 .code-container {
   background: #23241f;
@@ -94,14 +104,15 @@ export let codeCopied = false
   cursor: pointer;
   overflow: hidden;
   outline: none;
-  svg{
-    height:18px;width:18px;
-    opacity:0.5;
+  svg {
+    height: 18px;
+    width: 18px;
+    opacity: 0.5;
     transition: all 0.2s ease-in-out;
   }
-  &:hover{
-    svg{
-      opacity:1;
+  &:hover {
+    svg {
+      opacity: 1;
     }
   }
 }

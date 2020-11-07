@@ -28,11 +28,11 @@
 </template>
 
 <script setup="props">
-export { default as DisplaySelect } from '../common/DisplaySelect.vue'
+import DisplaySelect from '../common/DisplaySelect.vue'
 
 import { ref } from 'vue'
 import { createAreaState, createFlexState, createGridState } from '../../store'
-export { currentArea } from '../../store.js'
+import { currentArea } from '../../store.js'
 
 export default {
   props: {
@@ -40,7 +40,7 @@ export default {
   },
 }
 
-export function onUpdateDisplay(value) {
+function onUpdateDisplay(value) {
   props.area.display = value
   if (props.area.display === 'flex') {
     if (!props.area.flex) {
@@ -54,17 +54,17 @@ export function onUpdateDisplay(value) {
   }
 }
 
-const counter = ref(1)
-export function addImplicitArea() {
+const counter = 1
+function addImplicitArea() {
   props.area.children.push(
     createAreaState({
-      name: 'a' + counter.value++,
+      name: 'a' + counter++,
       parent: props.area,
     })
   )
 }
 
-export function addItems() {
+function addItems() {
   props.area.children.push(
     createAreaState({
       name: '10 photos',

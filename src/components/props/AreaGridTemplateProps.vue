@@ -136,10 +136,10 @@
 </template>
 
 <script setup="props">
-export { default as IconRemove } from '../icons/IconRemove.vue'
-export { default as IconAdd } from '../icons/IconAdd.vue'
-export { default as UnitSelect } from '../common/UnitSelect.vue'
-export { default as OptionsButton } from '../basic/OptionsButton.vue'
+import IconRemove from '../icons/IconRemove.vue'
+import IconAdd from '../icons/IconAdd.vue'
+import UnitSelect from '../common/UnitSelect.vue'
+import OptionsButton from '../basic/OptionsButton.vue'
 
 import { computed } from 'vue'
 
@@ -149,9 +149,9 @@ export default {
   },
 }
 
-export const grid = computed(() => props.area.grid)
+ref: grid = computed(() => props.area.grid)
 
-export {
+import {
   addCol,
   addRow,
   getRowValue,
@@ -172,11 +172,11 @@ export {
 import { setRowValueUnit, setColValueUnit } from '../../store.js'
 import { useGridDimensions } from '../../composables/area.js'
 import { unitMeasureMap } from '../../utils.js'
-export { currentFocus, currentHover } from '../../store.js'
+import { currentFocus, currentHover } from '../../store.js'
 
-export const { colsNumber, rowsNumber } = useGridDimensions(grid)
+ref: ({ colsNumber, rowsNumber } = useGridDimensions($grid))
 
-export function unitHasValue(unit) {
+function unitHasValue(unit) {
   return !(unit === 'initial' || unit === 'auto' || unit === 'min-content' || unit === 'max-content')
 }
 
@@ -186,17 +186,17 @@ function defaultValueForUnit(unit) {
   return unitMeasureMap[unit] || 1
 }
 
-export function onRowUnitInput(unit, row) {
+function onRowUnitInput(unit, row) {
   setRowValueUnit(props.area.grid, row, { value: defaultValueForUnit(unit), unit })
 }
 
-export function onColUnitInput(unit, col) {
+function onColUnitInput(unit, col) {
   setColValueUnit(props.area.grid, col, { value: defaultValueForUnit(unit), unit })
 }
 
-export function isFocused(type, track) {
+function isFocused(type, track) {
   const tf = currentFocus.value
-  return tf && tf.on === 'track' && tf.grid === grid.value && tf.type === type && tf.track === track
+  return tf && tf.on === 'track' && tf.grid === grid && tf.type === type && tf.track === track
 }
 </script>
 

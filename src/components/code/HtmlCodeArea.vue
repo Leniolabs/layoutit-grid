@@ -22,12 +22,12 @@ export default {
   },
 }
 
-export const OPEN_TAG = '<'
-export const CLOSE_TAG = '</'
-export const cssAreaName = computed(() => toCssName(props.area.name))
-export const elementTag = computed(() => getElementTag(props.area))
+const OPEN_TAG = '<'
+const CLOSE_TAG = '</'
+ref: cssAreaName = computed(() => toCssName(props.area.name))
+ref: elementTag = computed(() => getElementTag(props.area))
 
-export const gridAreas = computed(() => (props.area.display === 'grid' ? props.area.children : []))
+ref: gridAreas = computed(() => (props.area.display === 'grid' ? props.area.children : []))
 </script>
 
 <style scoped lang="scss"></style>

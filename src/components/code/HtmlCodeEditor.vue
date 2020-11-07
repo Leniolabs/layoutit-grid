@@ -3,8 +3,8 @@
 </template>
 
 <script setup>
-export { default as CodeEditor } from './CodeEditor.vue'
-export { default as HtmlCodeArea } from './HtmlCodeArea.vue'
+import CodeEditor from './CodeEditor.vue'
+import HtmlCodeArea from './HtmlCodeArea.vue'
 
 export default {
   props: {

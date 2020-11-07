@@ -16,7 +16,7 @@ export default {
   emits: ['close'],
 }
 
-export const fullPath = computed(() => 'https://' + props.path)
+ref: fullPath = computed(() => 'https://' + props.path)
 </script>
 
 <style scoped lang="scss">

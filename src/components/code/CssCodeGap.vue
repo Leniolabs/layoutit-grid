@@ -13,7 +13,7 @@
 
 <script setup="props, { emit }">
 import { computed, nextTick } from 'vue'
-export { onCodeInputKeydown, toCssName } from '../../utils.js'
+import { onCodeInputKeydown, toCssName } from '../../utils.js'
 
 export default {
   props: {
@@ -22,7 +22,7 @@ export default {
   },
 }
 
-export const gap = computed({
+ref: gap = computed({
   get: () => props.grid[props.type].gap,
   set: (value) => (props.grid[props.type].gap = value),
 })
@@ -32,14 +32,14 @@ function textFrom(event) {
   return textNode && textNode.data
 }
 
-export function onInput(event) {
+function onInput(event) {
   gapSizeChanged(event)
 }
 
 const gapSizeChanged = (event) => {
   const text = textFrom(event)
   if (text) {
-    gap.value = text
+    gap = text
   }
 }
 </script>

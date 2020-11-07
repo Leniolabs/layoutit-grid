@@ -31,12 +31,10 @@ export default {
   },
 }
 
-export { currentFocus, onCodeInputKeydown }
-
-const line = computed(() => props.grid[props.type].lineNames[props.pos - 1])
-export const lineName = computed({
-  get: () => line.value.name,
-  set: (str) => (line.value.name = str),
+ref: line = computed(() => props.grid[props.type].lineNames[props.pos - 1])
+ref: lineName = computed({
+  get: () => line.name,
+  set: (str) => (line.name = str),
 })
 
 function textFrom(event) {
@@ -44,14 +42,14 @@ function textFrom(event) {
   return textNode && textNode.data
 }
 
-export function onInput(event) {
+function onInput(event) {
   lineNameChanged(event)
 }
 
-export const lineNameChanged = (event) => {
+ref: lineNameChanged = (event) => {
   const text = textFrom(event)
   if (isValidLineName(text)) {
-    lineName.value = text
+    lineName = text
   }
 }
 </script>

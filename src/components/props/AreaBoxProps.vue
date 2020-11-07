@@ -16,7 +16,7 @@
 </template>
 
 <script setup="props">
-export { default as AreaSize } from '../common/AreaSize.vue'
+import AreaSize from '../common/AreaSize.vue'
 import { debounce } from 'lodash-es'
 import { computed } from 'vue'
 

@@ -67,23 +67,22 @@
 </template>
 
 <script setup="props">
-export { default as AreaTree } from './AreaTree.vue'
-export { default as AreaContentProps } from './AreaContentProps.vue'
-export { default as AreaBoxProps } from './AreaBoxProps.vue'
-export { default as AreaSelfGridProps } from './AreaSelfGridProps.vue'
-export { default as AreaSelfFlexProps } from './AreaSelfFlexProps.vue'
-export { default as AreaGridTemplateProps } from './AreaGridTemplateProps.vue'
-export { default as AreaGridGapProps } from './AreaGridGapProps.vue'
-export { default as AreaGridItemsPlacementProps } from './AreaGridItemsPlacementProps.vue'
-export { default as AreaGridContentPlacementProps } from './AreaGridContentPlacementProps.vue'
-export { default as AreaFlexProps } from './AreaFlexProps.vue'
-export { default as AreaTypeSelect } from '../common/AreaTypeSelect.vue'
-export { default as PropsAccordion } from './PropsAccordion.vue'
-export { default as PropsAccordionItem } from './PropsAccordionItem.vue'
+import AreaTree from './AreaTree.vue'
+import AreaContentProps from './AreaContentProps.vue'
+import AreaBoxProps from './AreaBoxProps.vue'
+import AreaSelfGridProps from './AreaSelfGridProps.vue'
+import AreaSelfFlexProps from './AreaSelfFlexProps.vue'
+import AreaGridTemplateProps from './AreaGridTemplateProps.vue'
+import AreaGridGapProps from './AreaGridGapProps.vue'
+import AreaGridItemsPlacementProps from './AreaGridItemsPlacementProps.vue'
+import AreaGridContentPlacementProps from './AreaGridContentPlacementProps.vue'
+import AreaFlexProps from './AreaFlexProps.vue'
+import AreaTypeSelect from '../common/AreaTypeSelect.vue'
+import PropsAccordion from './PropsAccordion.vue'
+import PropsAccordionItem from './PropsAccordionItem.vue'
 
 import { batch, currentArea, mainArea } from '../../store.js'
-export { mainArea }
-import { ref, computed, watch } from 'vue'
+import { computed, watch } from 'vue'
 
 export default {
   name: 'AreaProps',
@@ -92,21 +91,21 @@ export default {
   },
 }
 
-export const accordion = ref({ active: 'grid-template' })
-export const currentGrid = computed(() => props.area.grid)
-export const currentFlex = computed(() => props.area.flex)
+ref: accordion = { active: 'grid-template' }
+ref: currentGrid = computed(() => props.area.grid)
+ref: currentFlex = computed(() => props.area.flex)
 
 watch(currentArea, () => {
-  if (accordion.value.active !== 'tree') {
-    if (currentArea.display === 'grid') {
-      accordion.value.active = 'grid-template'
+  if (accordion.active !== 'tree') {
+    if (props.area.display === 'grid') {
+      accordion.active = 'grid-template'
     } else {
-      accordion.value.active = 'box'
+      accordion.active = 'box'
     }
   }
 })
 
-export function onUpdateType(type) {
+function onUpdateType(type) {
   batch(() => {
     props.area.type = type
     if (type === 'p') {

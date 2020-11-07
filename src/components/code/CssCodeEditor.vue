@@ -9,9 +9,9 @@
 </template>
 
 <script setup>
-export { default as CodeEditor } from './CodeEditor.vue'
-export { default as CssCodeArea } from './CssCodeArea.vue'
-export { default as CssCodeAreaOldSpec } from './CssCodeAreaOldSpec.vue'
+import CodeEditor from './CodeEditor.vue'
+import CssCodeArea from './CssCodeArea.vue'
+import CssCodeAreaOldSpec from './CssCodeAreaOldSpec.vue'
 
 export default {
   props: {
