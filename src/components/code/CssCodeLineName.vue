@@ -17,10 +17,10 @@
 </template>
 
 <script setup="props, { emit }">
-import { dragging, currentFocus, isValidLineName } from '../../store.js'
+import { dragging, currentFocus, isValidLineName, parseGridTemplate } from '../../store.js'
 import { computed } from 'vue'
 
-import { namedTemplateColumns, namedTemplateRows, parseGridTemplate, onCodeInputKeydown } from '../../utils.js'
+import { namedTemplateColumns, namedTemplateRows, onCodeInputKeydown } from '../../utils.js'
 
 export default {
   props: {

@@ -1,3 +1,5 @@
+import { parseGridTemplate, lineNamesToState } from './grid.js'
+
 const colors = [
   'rgba(230, 25, 75, 0.8)',
   'rgba(60, 180, 75, 0.8)',
@@ -58,13 +60,142 @@ export function parentify(area, parent = null) {
   return area
 }
 
-const parentRemover = (key, value) => (key === 'parent' ? null : value)
-
-export function serializeArea(area) {
-  return JSON.stringify({ area: area, version: 1 }, parentRemover)
+export function generateNamedTemplate(templateArr, lineNames, css = true, repeat = false) {
+  let str = ''
+  for (var i = 0; i < lineNames.length; i++) {
+    const { active, name } = lineNames[i]
+    if (active && name) {
+      str += `[${css ? toCssName(name) : name}] `
+    }
+    if (i < templateArr.length) {
+      if (repeat) {
+        str += repeatify(templateArr.slice(' '))
+        break
+      } else {
+        str += templateArr[i] + ' '
+      }
+    }
+  }
+  return str.trim()
 }
-export function parseArea(area) {
-  return parentify(JSON.parse(area).area)
+
+function repeatify(tokens) {
+  for (;;) {
+    const longestSequence = findRepeatingSequnce(tokens)
+    if (!longestSequence) {
+      break
+    }
+    tokens.splice(
+      longestSequence.start,
+      longestSequence.tokens.length * longestSequence.times,
+      `repeat(${longestSequence.times}, ${longestSequence.tokens.join(' ')})`
+    )
+  }
+  return tokens.join(' ')
+}
+
+function findRepeatingSequnce(tokens) {
+  let data
+  let longest = 0
+
+  for (let start = 0; start < tokens.length - 1 - longest * 2; start++) {
+    for (let size = 1; start + 2 * size <= tokens.length; size++) {
+      const count = matchSequence(tokens, start, size)
+      const times = count + 1
+      if (count > 0 && times * size > longest) {
+        data = { start, times, size }
+        longest = times * size
+      }
+    }
+  }
+  return (
+    data && {
+      ...data,
+      tokens: tokens.slice(data.start, data.start + data.size),
+    }
+  )
+}
+
+function matchSequence(tokens, start, size) {
+  if (start + 2 * size > tokens.length) {
+    return 0
+  }
+  for (let pos = 0, j = start, k = start + size; pos < size; pos++, j++, k++) {
+    if (tokens[j] !== tokens[k]) {
+      return 0
+    }
+  }
+  return 1 + matchSequence(tokens, start + size, size)
+}
+
+function _serializeTemplate(dim) {
+  return generateNamedTemplate(dim.sizes, dim.lineNames, false)
+}
+
+function _serializeArea({ items, parent, children, ...areaData }) {
+  // Drop parent
+  // items is not used at this point
+  return { ...areaData, ...(children.length > 0 && { children }) }
+}
+
+function _serializeGrid({ col, row, ...gridData }) {
+  return {
+    ...gridData,
+    gap: row.gap + ' ' + col.gap,
+    templateColumns: _serializeTemplate(col),
+    templateRows: _serializeTemplate(row),
+    autoColumns: col.auto,
+    autoRows: row.auto,
+  }
+}
+export function serializeArea(area) {
+  return JSON.stringify({ area: _serializeArea(area), version: 1 }, (key, value) => {
+    if (key === 'grid' && value) {
+      return _serializeGrid(value)
+    }
+    if (key === 'children' && value) {
+      return value.map(_serializeArea)
+    }
+    return value
+  })
+}
+
+// Support for serialization before version 1, area.children was in area.grid.areas
+export function rewireAreas(area) {
+  if (area.grid && area.grid.areas) {
+    area.children = area.grid.areas
+  } else if (!area.children) {
+    area.children = []
+  }
+  area.children.forEach(rewireAreas)
+  return area
+}
+
+export function parseArea(json) {
+  const design = JSON.parse(json, (key, value) => {
+    if (key === 'grid' && value) {
+      const { gap, templateColumns, templateRows, autoColumns, autoRows, ...gridData } = value
+      const [colSizes, colLineNames] = parseGridTemplate(templateColumns)
+      const [rowSizes, rowLineNames] = parseGridTemplate(templateRows)
+      const gridGap = value.gap.split(' ')
+      const grid = {
+        row: { sizes: rowSizes, lineNames: lineNamesToState(rowLineNames), gap: gridGap[0], auto: autoRows },
+        col: { sizes: colSizes, lineNames: lineNamesToState(colLineNames), gap: gridGap[1], auto: autoColumns },
+        ...gridData,
+      }
+      return grid
+    }
+    if (key === 'flex' && value) {
+      return createFlexState(value)
+    }
+    if (key === 'children' || key === 'areas') {
+      // In v1, area.children was in area.grid.areas
+      return value.map(createAreaState)
+    }
+    return value
+  })
+  console.log(design)
+  return parentify(rewireAreas(design.version ? design.area : design))
 }
 
 export function getRandomColor() {

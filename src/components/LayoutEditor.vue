@@ -18,8 +18,8 @@ export { default as SidebarRight } from './basic/SidebarRight.vue'
 export { default as PropsSidebar } from './props/PropsSidebar.vue'
 export { default as LiveCode } from './code/LiveCode.vue'
 
-import { ref, computed } from 'vue'
-export { mainArea, currentArea, currentView } from '../store.js'
+import { ref, computed, onMounted } from 'vue'
+export { mainArea, loadFromStorage, currentArea, currentView } from '../store.js'
 
 export default {
   props: {
@@ -30,6 +30,8 @@ export default {
 export function toggleView(view) {
   currentView.value = currentView.value === view ? 'editor' : view
 }
+
+onMounted(loadFromStorage)
 </script>
 
 <style lang="scss">

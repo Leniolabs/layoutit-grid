@@ -1,5 +1,5 @@
 import { ref, watch } from 'vue'
-import { useRefHistory } from '@vueuse/core'
+import { useRefHistory, useLocalStorage } from '@vueuse/core'
 
 export * from './store/grid.js'
 export * from './store/flex.js'
@@ -50,12 +50,33 @@ export function newAreaName() {
 
 watch(mainArea, (area) => setCurrentArea(area))
 
-export const { undo, redo, undoStack, redoStack, pause, resume, batch } = useRefHistory(mainArea, {
+export const { undo, redo, clear, undoStack, redoStack, pause, resume, batch, history } = useRefHistory(mainArea, {
   capacity: 100,
   parse: parseArea,
   dump: serializeArea,
   deep: true,
 })
+
+const stateStorage = useLocalStorage('app-state')
+watch(
+  undoStack,
+  () => {
+    stateStorage.value = undoStack.value[0] ? undoStack.value[0].value : serializeArea(mainArea.value)
+    console.log(stateStorage.value)
+  },
+  { deep: true }
+)
+export function loadFromStorage() {
+  if (stateStorage.value) {
+    try {
+      mainArea.value = parseArea(stateStorage.value)
+      clear()
+    } catch (error) {
+      console.log(error)
+      stateStorage.value = undefined
+    }
+  }
+}
 
 export function setCurrentArea(area) {
   currentArea.value = area

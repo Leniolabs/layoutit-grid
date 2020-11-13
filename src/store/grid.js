@@ -149,3 +149,32 @@ export const unitMeasureMap = {
 export function withChangedUnit(current, newUnit) {
   return valueUnitToString({ value: unitMeasureMap[newUnit], unit: newUnit })
 }
+
+function parseLineName(item) {
+  return item.includes('[') ? item.match(/\[(.*)\]/)[1].trim() : null
+}
+
+export function parseGridTemplate(templateStr) {
+  // splits at and space that isn't between two [ ] brackets
+  const parsedArr = templateStr.split(/\s(?![^[]*])/)
+  const lineNames = []
+  const templateArr = []
+  let position = 0
+  parsedArr.forEach((item) => {
+    const lineName = parseLineName(item)
+    if (lineName) {
+      while (lineNames.length < position) {
+        lineNames.push('')
+      }
+      lineNames.push(lineName)
+    } else {
+      templateArr.push(item)
+      ++position
+    }
+  })
+  while (lineNames.length <= templateArr.length) {
+    lineNames.push('')
+  }
+
+  return [templateArr, lineNames]
+}

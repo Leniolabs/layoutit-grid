@@ -17,11 +17,11 @@
 </template>
 
 <script setup="props, { emit }">
-import { dragging, currentFocus, currentHover, isValidTrackSize } from '../../store.js'
+import { dragging, currentFocus, currentHover, isValidTrackSize, parseGridTemplate } from '../../store.js'
 import { computed } from 'vue'
 import { debounce } from 'lodash-es'
 
-import { namedTemplateColumns, namedTemplateRows, parseGridTemplate, onCodeInputKeydown } from '../../utils.js'
+import { namedTemplateColumns, namedTemplateRows, onCodeInputKeydown } from '../../utils.js'
 
 export default {
   props: {
