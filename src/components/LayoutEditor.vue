@@ -90,10 +90,10 @@ p {
   -webkit-font-smoothing: antialiased;
   color: #2c3e50;
   background: linear-gradient(#1d032d, #300748);
+  background: #300748;
   height: 100%;
   display: grid;
   grid-template-columns: 220px 1fr 360px;
-  grid-column-gap: 15px;
   @media screen and (max-width: 768px) {
     display: block;
   }

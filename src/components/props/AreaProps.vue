@@ -12,24 +12,24 @@
     <!--
     <div class="area-type">{{ area.type === 'div' ? area.display : area.type }} props</div>
     -->
-    <PropsAccordionItem name="display" :heading="`Display ${area.display}`" :accordion="accordion">
+    <PropsAccordionItem name="display" :heading="`Display (${area.display})`" :accordion="accordion">
       <AreaContentProps :area="area" />
     </PropsAccordionItem>
 
     <template v-if="area.display === 'grid'">
-      <PropsAccordionItem name="grid-template" heading="Grid Template" :accordion="accordion">
+      <PropsAccordionItem name="grid-template" heading="Template" :accordion="accordion">
         <AreaGridTemplateProps :area="area" />
       </PropsAccordionItem>
 
-      <PropsAccordionItem name="grid-gap" heading="Grid Gap" :accordion="accordion">
+      <PropsAccordionItem name="grid-gap" heading="Gap" :accordion="accordion">
         <AreaGridGapProps :area="area" />
       </PropsAccordionItem>
 
-      <PropsAccordionItem name="grid-items-placement" heading="Grid Items Placement" :accordion="accordion">
+      <PropsAccordionItem name="grid-items-placement" heading="Items Placement" :accordion="accordion">
         <AreaGridItemsPlacementProps :area="area" />
       </PropsAccordionItem>
 
-      <PropsAccordionItem name="grid-content-placement" heading="Grid Content Placement" :accordion="accordion">
+      <PropsAccordionItem name="grid-content-placement" heading="Content Placement" :accordion="accordion">
         <AreaGridContentPlacementProps :area="area" />
       </PropsAccordionItem>
     </template>
@@ -139,7 +139,7 @@ export function onUpdateType(type) {
 }
 
 .area-props {
-  overflow: scroll;
+  overflow: auto;
 }
 
 * {
