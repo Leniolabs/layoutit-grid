@@ -50,7 +50,7 @@ export function newAreaName() {
 
 watch(mainArea, (area) => setCurrentArea(area))
 
-export const { undo, redo, clear, undoStack, redoStack, pause, resume, batch, history } = useRefHistory(mainArea, {
+export const { undo, redo, clear, canUndo, canRedo, pause, resume, last } = useRefHistory(mainArea, {
   capacity: 100,
   parse: parseArea,
   dump: serializeArea,
@@ -59,9 +59,9 @@ export const { undo, redo, clear, undoStack, redoStack, pause, resume, batch, hi
 
 const stateStorage = useLocalStorage('app-state')
 watch(
-  undoStack,
+  last,
   () => {
-    stateStorage.value = undoStack.value[0] ? undoStack.value[0].value : serializeArea(mainArea.value)
+    stateStorage.value = last.value
     console.log(stateStorage.value)
   },
   { deep: true }
@@ -98,9 +98,7 @@ export function clearArea(area) {
 
 export function removeArea(area) {
   const { children } = area.parent
-  batch(() => {
-    children.splice(children.indexOf(area), 1)
-  })
+  children.splice(children.indexOf(area), 1)
   deselectCurrentArea()
 }
 
@@ -118,10 +116,8 @@ export function isValidAreaName(newName, area = mainArea.value) {
 // This should go in grid.js, we need to check again if we can use sync:pre in the history management before
 
 export function addToDimension(dimension, val) {
-  batch(() => {
-    dimension.sizes.push(val)
-    dimension.lineNames.push({ active: false, name: '' })
-  })
+  dimension.sizes.push(val)
+  dimension.lineNames.push({ active: false, name: '' })
 }
 
 export function addCol(grid, colStr) {
@@ -181,16 +177,14 @@ export function removeFromDimension(area, type, n) {
       ++i
     }
   }
-  batch(() => {
-    for (let i = toRemove.length - 1; i >= 0; i--) {
-      area.children.splice(toRemove[i], 1)
-    }
-    for (let i = toChange.length - 1; i >= 0; i--) {
-      children[toChange[i].i].gridArea = toChange[i].gridArea
-    }
-    grid[type].sizes.splice(n, 1)
-    grid[type].lineNames.splice(n, 1)
-  })
+  for (let i = toRemove.length - 1; i >= 0; i--) {
+    area.children.splice(toRemove[i], 1)
+  }
+  for (let i = toChange.length - 1; i >= 0; i--) {
+    children[toChange[i].i].gridArea = toChange[i].gridArea
+  }
+  grid[type].sizes.splice(n, 1)
+  grid[type].lineNames.splice(n, 1)
 }
 
 export function removeCol(area, n) {
