@@ -13,15 +13,15 @@
     <DarkModeButton />
   </div>
   <div class="buttons">
-    <CodepenButton :css-code="cssCode" :html-code="htmlCode" />
-    <CodeSanboxButton :css-code="cssCode" :html-code="htmlCode" />
+    <CodepenButton :area="area" :options="options" />
+    <CodeSanboxButton :area="area" :options="options" />
     <SidebarButton :disabled="!saveDesign" class="btn-link" aria-label="Get Shareable Link" @click="getPermalink">
       <IconLink />
     </SidebarButton>
   </div>
   <div class="code-grid">
-    <CssCodeEditor :area="area" :options="options" :code="cssCode" />
-    <HtmlCodeEditor :area="area" :options="options" :code="htmlCode" />
+    <CssCodeEditor :area="area" :options="options" />
+    <HtmlCodeEditor :area="area" :options="options" />
   </div>
   <LiveCodeOptions v-model="options" />
 </template>
@@ -40,11 +40,12 @@ export { default as LiveCodeOptions } from './LiveCodeOptions.vue'
 export { default as HtmlCodeEditor } from './HtmlCodeEditor.vue'
 export { default as CssCodeEditor } from './CssCodeEditor.vue'
 
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 
-export { restart } from '../../store.js'
+export { restart, preferredExport } from '../../store.js'
 
 import { areaToCSS, areaToHTML } from '../../generateCode.js'
+import { useLocalStorage } from '@vueuse/core'
 
 export { undo, redo, canUndo, canRedo, mainArea } from '../../store.js'
 
@@ -54,6 +55,17 @@ export default {
     saveDesign: { type: Function, default: null },
   },
 }
+
+const storedPreferredExport = useLocalStorage('preferred-export')
+watch(preferredExport, () => {
+  storedPreferredExport.value = preferredExport.value
+})
+onMounted(() => {
+  const preferred = storedPreferredExport.value
+  if (preferred) {
+    preferredExport.value = preferred
+  }
+})
 
 export const options = ref({
   templateAreas: true,
@@ -88,9 +100,11 @@ export function getPermalink() {
 .buttons {
   display: flex;
   user-select: none;
+  > * {
+    margin-right: 10px;
+  }
   > button {
     max-width: max-content;
-    margin-left: 10px;
     padding: 0.625em 1em;
     height: 42px;
     transition: all 0.2s ease-in-out;

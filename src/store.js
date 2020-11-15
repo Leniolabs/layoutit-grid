@@ -37,6 +37,8 @@ export const currentHover = ref(null)
 export const currentView = ref('editor')
 export const darkmode = ref(false)
 
+export const preferredExport = ref('codepen')
+
 const areaNameCounter = ref(1)
 
 export function newAreaName() {
