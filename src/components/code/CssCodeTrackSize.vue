@@ -19,7 +19,7 @@
 <script setup="props, { emit }">
 import { dragging, currentFocus, currentHover, isValidTrackSize, parseGridTemplate } from '../../store.js'
 import { computed } from 'vue'
-import { debounce } from 'lodash-es'
+import { useDebounceFn } from '@vueuse/core'
 
 import { namedTemplateColumns, namedTemplateRows, onCodeInputKeydown } from '../../utils.js'
 
@@ -53,7 +53,7 @@ export function onInput(event) {
   trackSizeChanged(event)
 }
 
-export const trackSizeChanged = debounce((event) => {
+export const trackSizeChanged = useDebounceFn((event) => {
   const text = textFrom(event)
   if (isValidTrackSize(text)) {
     trackSize.value = text

@@ -17,7 +17,7 @@
 import { dragging, currentFocus, isValidTrackSize } from '../../store.js'
 
 import { computed } from 'vue'
-import { debounce } from 'lodash-es'
+import { useDebounceFn } from '@vueuse/core'
 
 export default {
   props: {
@@ -39,7 +39,7 @@ export const trackSize = computed({
   set: (value) => (props.grid[props.type].sizes[props.track - 1] = value),
 })
 
-export const trackSizeChanged = debounce((value) => {
+export const trackSizeChanged = useDebounceFn((value) => {
   const textNode = value.target.childNodes[0]
   const text = textNode && textNode.data
   if (isValidTrackSize(text)) {

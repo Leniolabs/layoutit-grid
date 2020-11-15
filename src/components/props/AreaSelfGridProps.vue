@@ -13,7 +13,7 @@
 
 <script setup="props">
 export { default as PlacementPicker } from '../common/PlacementPicker.vue'
-import { debounce } from 'lodash-es'
+import { useDebounceFn } from '@vueuse/core'
 import { computed } from 'vue'
 
 export default {
@@ -22,7 +22,7 @@ export default {
   },
 }
 
-export const setGridArea = debounce((val) => {
+export const setGridArea = useDebounceFn((val) => {
   props.area.gridArea = val
 }, 500)
 </script>

@@ -412,17 +412,17 @@
   integrity sha512-Zx869zlNoujFOclKIoYmkh8ES2RcS/+Jn546yOiPyZ+3+Ejivnr+fb8l+DdXUEFjo+iVDNR3KyLzg03aBFfZ4Q==
 
 "@vueuse/core@npm:@knightly/vueuse@dev":
-  version "4.0.0-knightly-dev.202011140744"
-  resolved "https://registry.yarnpkg.com/@knightly/vueuse/-/vueuse-4.0.0-knightly-dev.202011140744.tgz#82665b12d47c410ba416c848faaf2534f640df82"
-  integrity sha512-XxYpEX659Xh4hb2IvzXCXU6UxBgVLDp+JAlIOdD4eEiSJWn9FMgkn3kdXP21N97UDcUHWF5BCTDeBtN+8JF1jA==
+  version "4.0.0-knightly-dev.202011150043"
+  resolved "https://registry.yarnpkg.com/@knightly/vueuse/-/vueuse-4.0.0-knightly-dev.202011150043.tgz#f8f05bc931cb6a963e367311bd2e1a68cea11ad8"
+  integrity sha512-YhF0OEbFqXIBvW0rwqOB1bNohQtjuYTg8zA4ajJzDVWaSylwyn2bdmJnsvKxmvn+AZ0gl8njpZawZIe8ALhxAQ==
   dependencies:
-    "@vueuse/shared" "npm:@knightly/vueuse__shared@4.0.0-knightly-dev.202011140744"
+    "@vueuse/shared" "npm:@knightly/vueuse__shared@4.0.0-knightly-dev.202011150043"
     vue-demi latest
 
-"@vueuse/shared@npm:@knightly/vueuse__shared@4.0.0-knightly-dev.202011140744":
-  version "4.0.0-knightly-dev.202011140744"
-  resolved "https://registry.yarnpkg.com/@knightly/vueuse__shared/-/vueuse__shared-4.0.0-knightly-dev.202011140744.tgz#ae39bdcc112947b65a631aa80d0b232b36862846"
-  integrity sha512-Nr5OnQu3IrV1yVTUQDAyFnmLuy5RzeWBfPxfpuj5N2uUwetEcVWH/qpcJp/3FwtSwUOkMUb0ZKDxwNqkF/Rq8w==
+"@vueuse/shared@npm:@knightly/vueuse__shared@4.0.0-knightly-dev.202011150043":
+  version "4.0.0-knightly-dev.202011150043"
+  resolved "https://registry.yarnpkg.com/@knightly/vueuse__shared/-/vueuse__shared-4.0.0-knightly-dev.202011150043.tgz#2a2ac487eae5646a8e2116694babe1f74762dc44"
+  integrity sha512-HGDWg7RYg2q29ZB+HYKWawI83dAPRFWc39QTen0+pRMS/eICTJXuVGpdWET1KhyXPWJWGgqlCcya3uoo/cRgNA==
   dependencies:
     vue-demi latest
 
@@ -1867,11 +1867,6 @@ locate-path@^5.0.0:
   dependencies:
     p-locate "^4.1.0"
 
-lodash-es@4.17.15:
-  version "4.17.15"
-  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.15.tgz#21bd96839354412f23d7a10340e5eac6ee455d78"
-  integrity sha512-rlrc3yU3+JNOpZ9zj5pQtxnx2THmvRykwL4Xlxoa8I9lHBlVbbyPhgyPMioxVZ4NqyxaVVtaJnzsyOidQIhyyQ==
-
 lodash.camelcase@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz#b28aa6288a2b9fc651035c7711f65ab6190331a6"
@@ -2471,9 +2466,9 @@ rollup-pluginutils@^2.8.2:
     estree-walker "^0.6.1"
 
 rollup@^2.32.1:
-  version "2.33.1"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.33.1.tgz#802795164164ee63cd47769d8879c33ec8ae0c40"
-  integrity sha512-uY4O/IoL9oNW8MMcbA5hcOaz6tZTMIh7qJHx/tzIJm+n1wLoY38BLn6fuy7DhR57oNFLMbDQtDeJoFURt5933w==
+  version "2.33.2"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.33.2.tgz#c4c76cd405a7605e6ebe90976398c46d4c2ea166"
+  integrity sha512-QPQ6/fWCrzHtSXkI269rhKaC7qXGghYBwXU04b1JsDZ6ibZa3DJ9D1SFAYRMgx1inDg0DaTbb3N4Z1NK/r3fhw==
   optionalDependencies:
     fsevents "~2.1.2"
 
