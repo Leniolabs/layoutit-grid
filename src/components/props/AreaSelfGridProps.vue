@@ -13,8 +13,8 @@
 
 <script setup="props">
 export { default as PlacementPicker } from '../common/PlacementPicker.vue'
-import { useDebounceFn } from '@vueuse/core'
-import { computed } from 'vue'
+import { inputSetter } from '../../composables'
+import { isValidGridArea } from '../../store.js'
 
 export default {
   props: {
@@ -22,9 +22,9 @@ export default {
   },
 }
 
-export const setGridArea = useDebounceFn((val) => {
-  props.area.gridArea = val
-}, 500)
+export const setGridArea = inputSetter((value) => {
+  props.area.gridArea = value
+}, isValidGridArea)
 </script>
 
 <style scoped lang="scss">

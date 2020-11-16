@@ -21,6 +21,7 @@ import { dragging, currentFocus, isValidLineName, parseGridTemplate } from '../.
 import { computed } from 'vue'
 
 import { namedTemplateColumns, namedTemplateRows, onCodeInputKeydown } from '../../utils.js'
+import { useInputSetter } from '../../composables/index.js'
 
 export default {
   props: {
@@ -39,21 +40,7 @@ export const lineName = computed({
   set: (str) => (line.value.name = str),
 })
 
-function textFrom(event) {
-  const textNode = event.target.childNodes[0]
-  return textNode && textNode.data
-}
-
-export function onInput(event) {
-  lineNameChanged(event)
-}
-
-export const lineNameChanged = (event) => {
-  const text = textFrom(event)
-  if (isValidLineName(text)) {
-    lineName.value = text
-  }
-}
+export const onInput = useInputSetter(lineName, isValidLineName, targetText)
 </script>
 
 <style scoped lang="scss">

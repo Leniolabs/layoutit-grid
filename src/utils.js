@@ -168,7 +168,7 @@ export function onCodeInputKeydown(event) {
     return
   }
   if (event.code === 'ArrowRight') {
-    if (getCaretCharacterOffsetWithin(event.target) === textFrom(event).length) {
+    if (getCaretCharacterOffsetWithin(event.target) === targetText(event).length) {
       emit('move', { action: 'right' })
       return
     }
@@ -181,8 +181,8 @@ export function onCodeInputKeydown(event) {
   }
 }
 
-function textFrom(event) {
-  const textNode = event.target.childNodes[0]
+export function targetText(el) {
+  const textNode = el.childNodes[0]
   return textNode && textNode.data
 }
 

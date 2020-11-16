@@ -13,7 +13,7 @@ import {
   gridLimitsToGridArea,
   gridAreaToGridLimits,
 } from './store/area.js'
-import { createGridState } from './store/grid.js'
+import { createGridState, isValidTrackSize } from './store/grid.js'
 
 function createMainAreaState() {
   return createAreaState({
@@ -63,7 +63,7 @@ const stateStorage = useLocalStorage('app-state')
 watch(
   last,
   () => {
-    stateStorage.value = last.value
+    stateStorage.value = last.value.snapshot
     console.log(stateStorage.value)
   },
   { deep: true }
@@ -112,8 +112,12 @@ export function restart() {
 
 export function isValidAreaName(newName, area = mainArea.value) {
   const { name, grid } = area
-  return name !== newName && !(grid && !area.children.every((a) => isValidAreaName(newName, a)))
+  return newName && name !== newName && !(grid && !area.children.every((a) => isValidAreaName(newName, a)))
 }
+
+export const isValidFlexBasis = isValidTrackSize
+
+export const isValidGapSize = isValidTrackSize
 
 // This should go in grid.js, we need to check again if we can use sync:pre in the history management before
 

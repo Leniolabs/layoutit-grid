@@ -15,7 +15,7 @@
 </template>
 
 <script setup="props, { emit }">
-import { dragging, currentArea, isValidAreaName } from '../../store.js'
+import { dragging, currentArea } from '../../store.js'
 import { computed } from 'vue'
 import { gridTemplateAreasMatrix } from '../../utils.js'
 export { currentHover } from '../../store.js'

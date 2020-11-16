@@ -3,7 +3,7 @@
 </template>
 
 <script setup="props, { emit }">
-import { dragging, currentArea, isValidAreaName, getGridRegion } from '../../store.js'
+import { dragging, currentArea, getGridRegion } from '../../store.js'
 import { computed } from 'vue'
 import { getGridAreaWithNamedLines, gridTemplateAreas, toCssName } from '../../utils.js'
 

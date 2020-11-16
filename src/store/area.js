@@ -1,4 +1,4 @@
-import { parseGridTemplate, lineNamesToState } from './grid.js'
+import { parseGridTemplate, lineNamesToState, isValidTrackSize } from './grid.js'
 
 const colors = [
   'rgba(230, 25, 75, 0.8)',
@@ -211,6 +211,22 @@ export function getAreaDepth(area) {
   }
 }
 
+function removeExtraSpaces(str) {
+  return str.replace(/\s+/g, ' ').trim()
+}
+
+function isValidSpacing(str) {
+  const parts = removeExtraSpaces(str).split(' ')
+  return parts.length >= 1 && parts.length <= 4 && parts.every(isValidTrackSize)
+}
+
+export const isValidMargin = isValidSpacing
+export const isValidPadding = isValidSpacing
+
+export function isValidGridArea(gridArea) {
+  return gridAreaToGridLimits(gridArea).valid
+}
+
 function trimSplit(s, sep) {
   return s.split(sep).map((p) => p.trim())
 }
@@ -253,7 +269,7 @@ export function gridAreaToGridLimits(gridArea) {
     start: parseGridLimit(parts[1]),
     end: parseGridLimit(parts[3]),
   }
-  const valid = !!(row.start && row.end && col.start && col.end)
+  const valid = parts.length <= 4 && !!(row.start && row.end && col.start && col.end)
   if (valid) {
     row.span = isLimit(row.start)
       ? isLimit(row.end)

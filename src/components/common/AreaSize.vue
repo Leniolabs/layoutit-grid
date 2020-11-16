@@ -8,7 +8,7 @@
         aria-label="size value"
         type="number"
         min="0"
-        @input="setSizeValue($event.target.value)"
+        @input="onSizeInput($event.target.value)"
       />
       <UnitSelect type="size" :value="size.unit" aria-label="size unit" @input="setSizeUnit($event.target.value)" />
     </div>
@@ -21,6 +21,7 @@ export { default as UnitSelect } from './UnitSelect.vue'
 import { computed } from 'vue'
 import { parseValueUnit } from '../../store.js'
 import { unitMeasureMap } from '../../utils.js'
+import { useInputSetter } from '../../composables'
 
 export default {
   props: {
@@ -29,22 +30,25 @@ export default {
   },
 }
 
-export const size = computed(() => {
-  return parseValueUnit(props.area[props.type])
+export const size = computed({
+  get() {
+    return parseValueUnit(props.area[props.type])
+  },
+  set(s) {
+    props.area[props.type] = s
+  },
 })
 
-export function setSize(s) {
-  props.area[props.type] = s
-}
-
 export function setSizeValue(value) {
-  setSize(value + size.value.unit)
+  size.value = value + size.value.unit
 }
 
 export function setSizeUnit(unit) {
   // TODO: Adjust value to avoid jump
-  setSize(unitMeasureMap[unit] + unit)
+  size.value = unitMeasureMap[unit] + unit
 }
+
+export const onSizeInput = useInputSetter(size)
 </script>
 
 <style scoped lang="scss">
