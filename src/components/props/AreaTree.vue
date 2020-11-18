@@ -187,7 +187,7 @@ export function addArea() {
 /* Create the caret/arrow with a unicode, and style it */
 .caret::before {
   content: '\25B6';
-  color: black;
+  color: #fff;
   display: inline-block;
   margin-right: 6px;
 }

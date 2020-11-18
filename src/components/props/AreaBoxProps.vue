@@ -41,6 +41,7 @@ export const setPadding = inputSetter((value) => {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding-top: 10px;
 }
 .margin-input,
 .padding-input {

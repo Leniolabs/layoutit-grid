@@ -32,5 +32,6 @@ export const setGridArea = inputSetter((value) => {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding-top: 10px;
 }
 </style>

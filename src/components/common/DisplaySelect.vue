@@ -66,7 +66,6 @@ export const options = ['block', 'flex', 'grid']
   padding: 3px 6px;
   font-family: sans-serif, Arial;
   font-size: 14px;
-  width: 62px;
   text-align: center;
   border: 2px solid #444;
   border-radius: 4px;

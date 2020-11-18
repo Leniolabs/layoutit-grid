@@ -57,5 +57,6 @@ const onFlexBasisInput = inputSetter((value) => (props.area.flexBasis = value), 
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding-top: 10px;
 }
 </style>
