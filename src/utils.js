@@ -1,4 +1,5 @@
 import { getGridRegion } from './store.js'
+import { generateNamedTemplate } from './store/area.js'
 
 export const unitMeasureMap = {
   px: 300,
@@ -152,107 +153,8 @@ export function getGridAreaWithNamedLines(area, parentGrid) {
   return ''
 }
 
-function parseLineName(item) {
-  return item.includes('[') ? item.match(/\[(.*)\]/)[1].trim() : null
-}
-
 export function toCssName(name) {
   return CSS.escape(name.replace(/\s/g, '-'))
-}
-
-export function generateNamedTemplate(templateArr, lineNames, css = true, repeat) {
-  let str = ''
-  for (var i = 0; i < lineNames.length; i++) {
-    const { active, name } = lineNames[i]
-    if (active && name) {
-      str += `[${css ? toCssName(name) : name}] `
-    }
-    if (i < templateArr.length) {
-      if (repeat) {
-        str += repeatify(templateArr.slice(' '))
-        break
-      } else {
-        str += templateArr[i] + ' '
-      }
-    }
-  }
-  return str.trim()
-}
-
-function repeatify(tokens) {
-  for (;;) {
-    const longestSequence = findRepeatingSequnce(tokens)
-    if (!longestSequence) {
-      break
-    }
-    tokens.splice(
-      longestSequence.start,
-      longestSequence.tokens.length * longestSequence.times,
-      `repeat(${longestSequence.times}, ${longestSequence.tokens.join(' ')})`
-    )
-  }
-  return tokens.join(' ')
-}
-
-function findRepeatingSequnce(tokens) {
-  let data
-  let longest = 0
-
-  for (let start = 0; start < tokens.length - 1 - longest * 2; start++) {
-    for (let size = 1; start + 2 * size <= tokens.length; size++) {
-      const count = matchSequence(tokens, start, size)
-      const times = count + 1
-      if (count > 0 && times * size > longest) {
-        data = { start, times, size }
-        longest = times * size
-      }
-    }
-  }
-  return (
-    data && {
-      ...data,
-      tokens: tokens.slice(data.start, data.start + data.size),
-    }
-  )
-}
-
-function matchSequence(tokens, start, size) {
-  if (start + 2 * size > tokens.length) {
-    return 0
-  }
-  for (let pos = 0, j = start, k = start + size; pos < size; pos++, j++, k++) {
-    if (tokens[j] !== tokens[k]) {
-      return 0
-    }
-  }
-  return 1 + matchSequence(tokens, start + size, size)
-}
-
-// TODO:
-
-export function parseGridTemplate(templateStr) {
-  // splits at and space that isn't between two [ ] brackets
-  const parsedArr = templateStr.split(/\s(?![^[]*])/)
-  const lineNames = []
-  const templateArr = []
-  let position = 0
-  parsedArr.forEach((item) => {
-    const lineName = parseLineName(item)
-    if (lineName) {
-      while (lineNames.length < position) {
-        lineNames.push('')
-      }
-      lineNames.push(lineName)
-    } else {
-      templateArr.push(item)
-      ++position
-    }
-  })
-  while (lineNames.length <= templateArr.length) {
-    lineNames.push('')
-  }
-
-  return [templateArr, lineNames]
 }
 
 export function onCodeInputKeydown(event) {
@@ -266,7 +168,7 @@ export function onCodeInputKeydown(event) {
     return
   }
   if (event.code === 'ArrowRight') {
-    if (getCaretCharacterOffsetWithin(event.target) === textFrom(event).length) {
+    if (getCaretCharacterOffsetWithin(event.target) === targetText(event).length) {
       emit('move', { action: 'right' })
       return
     }
@@ -279,8 +181,8 @@ export function onCodeInputKeydown(event) {
   }
 }
 
-function textFrom(event) {
-  const textNode = event.target.childNodes[0]
+export function targetText(el) {
+  const textNode = el.childNodes[0]
   return textNode && textNode.data
 }
 

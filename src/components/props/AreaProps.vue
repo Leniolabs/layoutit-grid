@@ -81,7 +81,7 @@ export { default as AreaTypeSelect } from '../common/AreaTypeSelect.vue'
 export { default as PropsAccordion } from './PropsAccordion.vue'
 export { default as PropsAccordionItem } from './PropsAccordionItem.vue'
 
-import { batch, currentArea, mainArea } from '../../store.js'
+import { currentArea, mainArea } from '../../store.js'
 export { mainArea }
 import { ref, computed, watch } from 'vue'
 
@@ -107,21 +107,19 @@ watch(currentArea, () => {
 })
 
 export function onUpdateType(type) {
-  batch(() => {
-    props.area.type = type
-    if (type === 'p') {
-      if (!props.area.text) {
-        props.area.text = 'Paragraph'
-        props.area.display = 'block'
-      }
+  props.area.type = type
+  if (type === 'p') {
+    if (!props.area.text) {
+      props.area.text = 'Paragraph'
+      props.area.display = 'block'
     }
-    if (type === 'button') {
-      if (!props.area.text) {
-        props.area.text = 'Action'
-        props.area.display = 'block'
-      }
+  }
+  if (type === 'button') {
+    if (!props.area.text) {
+      props.area.text = 'Action'
+      props.area.display = 'block'
     }
-  })
+  }
 }
 </script>
 

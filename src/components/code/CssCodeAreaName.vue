@@ -16,8 +16,9 @@
 <script setup="props, { emit }">
 import { dragging, currentArea, isValidAreaName } from '../../store.js'
 import { computed, nextTick } from 'vue'
-export { onCodeInputKeydown, toCssName } from '../../utils.js'
+export { onCodeInputKeydown, toCssName, targetText } from '../../utils.js'
 export { pause, resume } from '../../store.js'
+import { useInputSetter } from '../../composables'
 
 export default {
   props: {
@@ -32,21 +33,7 @@ export const areaName = computed({
   set: (str) => (props.area.name = str),
 })
 
-function textFrom(event) {
-  const textNode = event.target.childNodes[0]
-  return textNode && textNode.data
-}
-
-export function onInput(event) {
-  areaNameChanged(event)
-}
-
-const areaNameChanged = (event) => {
-  const text = textFrom(event)
-  if (text && isValidAreaName(text)) {
-    areaName.value = text
-  }
-}
+const onInput = useInputSetter(areaName, isValidAreaName, targetText)
 </script>
 
 <style scoped lang="scss">

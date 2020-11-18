@@ -49,7 +49,6 @@
 </template>
 
 <script setup="props, { el }">
-// @edit="$emit('edit')"
 export { default as GridCell } from './GridCell.vue'
 export { default as GridTrack } from './GridTrack.vue'
 export { default as GridLine } from './GridLine.vue'

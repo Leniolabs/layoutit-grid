@@ -26,7 +26,7 @@
             step="0.5"
             @focus="currentFocus = { on: 'track', grid, type: 'col', track: column }"
             @blur="currentFocus = null"
-            @input="setColValue(grid, column - 1, $event.target.value)"
+            @input="onSizeValueInput('col', column - 1, $event.target.value)"
           />
           <UnitSelect
             :value="getColUnit(grid, column - 1)"
@@ -56,7 +56,7 @@
             :aria-label="`grid-auto-columns size`"
             min="0"
             step="0.5"
-            @input="grid.col.auto = withChangedValue(grid.col.auto, $event.target.value)"
+            @input="onAutoSizeValueInput('col', $event.target.value)"
           />
           <UnitSelect
             :value="parseUnit(grid.col.auto)"
@@ -93,7 +93,7 @@
             step="0.5"
             @focus="currentFocus = { on: 'track', grid, type: 'row', track: row }"
             @blur="currentFocus = null"
-            @input="setRowValue(grid, row - 1, $event.target.value)"
+            @input="onSizeValueInput('row', row - 1, $event.target.value)"
           />
           <UnitSelect
             :value="getRowUnit(grid, row - 1)"
@@ -121,7 +121,7 @@
             :aria-label="`grid-auto-rows size`"
             min="0"
             step="0.5"
-            @input="grid.row.auto = withChangedValue(grid.row.auto, $event.target.value)"
+            @input="onAutoSizeValueInput('row', $event.target.value)"
           />
           <UnitSelect
             :value="parseUnit(grid.row.auto)"
@@ -173,6 +173,7 @@ import { setRowValueUnit, setColValueUnit } from '../../store.js'
 import { useGridDimensions } from '../../composables/area.js'
 import { unitMeasureMap } from '../../utils.js'
 export { currentFocus, currentHover } from '../../store.js'
+import { debounce } from '../../composables'
 
 export const { colsNumber, rowsNumber } = useGridDimensions(grid)
 
@@ -193,6 +194,17 @@ export function onRowUnitInput(unit, row) {
 export function onColUnitInput(unit, col) {
   setColValueUnit(props.area.grid, col, { value: defaultValueForUnit(unit), unit })
 }
+
+export const onSizeValueInput = debounce((type, track, value) => {
+  if (type === 'row') {
+    setRowValue(grid.value, track, value)
+  } else {
+    setColValue(grid.value, track, value)
+  }
+})
+export const onAutoSizeValueInput = debounce((type, value) => {
+  grid.value[type].auto = withChangedValue(grid.value[type].auto, value)
+})
 
 export function isFocused(type, track) {
   const tf = currentFocus.value

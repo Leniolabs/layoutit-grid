@@ -17,11 +17,11 @@
 </template>
 
 <script setup="props, { emit }">
-import { dragging, currentFocus, currentHover, isValidTrackSize } from '../../store.js'
+import { dragging, currentFocus, currentHover, isValidTrackSize, parseGridTemplate } from '../../store.js'
 import { computed } from 'vue'
-import { debounce } from 'lodash-es'
+import { useInputSetter } from '../../composables'
 
-import { namedTemplateColumns, namedTemplateRows, parseGridTemplate, onCodeInputKeydown } from '../../utils.js'
+import { namedTemplateColumns, namedTemplateRows, onCodeInputKeydown, targetText } from '../../utils.js'
 
 export default {
   props: {
@@ -44,21 +44,7 @@ export const isFocused = computed(() => {
   return cf && cf.on === 'track' && cf.grid === props.grid && cf.type === props.type && cf.track === props.track
 })
 
-function textFrom(event) {
-  const textNode = event.target.childNodes[0]
-  return textNode && textNode.data
-}
-
-export function onInput(event) {
-  trackSizeChanged(event)
-}
-
-export const trackSizeChanged = debounce((event) => {
-  const text = textFrom(event)
-  if (isValidTrackSize(text)) {
-    trackSize.value = text
-  }
-}, 700)
+export const onInput = useInputSetter(trackSize, isValidTrackSize, targetText)
 
 export const isDraggingGrid = computed(() => dragging.value && dragging.value.grid === props.grid)
 

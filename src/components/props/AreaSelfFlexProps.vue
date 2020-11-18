@@ -8,7 +8,7 @@
             :value="area.flexGrow"
             type="number"
             aria-label="flex grow"
-            @input="area.flexGrow = +$event.target.value"
+            @input="onFlexGrowInput(+$event.target.value)"
           />
         </div>
         <br />
@@ -28,7 +28,7 @@
             :value="area.flexBasis"
             type="text"
             aria-label="flex basis"
-            @input="area.flexBasis = $event.target.value"
+            @input="onFlexBasisInput($event.target.value)"
           />
         </div>
       </div>
@@ -38,12 +38,18 @@
 
 <script setup="props">
 import { computed } from 'vue'
+import { isValidFlexBasis } from '../../store.js'
+import { inputSetter } from '../../composables'
 
 export default {
   props: {
     area: { type: Object, required: true },
   },
 }
+
+const onFlexGrowInput = inputSetter((value) => (props.area.flexGrow = value))
+const onFlexShrinkInput = inputSetter((value) => (props.area.Shrink = value))
+const onFlexBasisInput = inputSetter((value) => (props.area.flexBasis = value), isValidFlexBasis)
 </script>
 
 <style scoped lang="scss">

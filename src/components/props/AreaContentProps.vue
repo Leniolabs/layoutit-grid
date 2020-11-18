@@ -22,7 +22,7 @@
       style="height: 4em; width: 100%"
       :value="area.text"
       aria-label="area text"
-      @input="area.text = $event.target.value"
+      @input="onAreaTextInput($event.target.value)"
     />
   </div>
 </template>
@@ -33,12 +33,15 @@ export { default as DisplaySelect } from '../common/DisplaySelect.vue'
 import { ref } from 'vue'
 import { createAreaState, createFlexState, createGridState } from '../../store'
 export { currentArea } from '../../store.js'
+import { inputSetter } from '../../composables'
 
 export default {
   props: {
     area: { type: Object, required: true },
   },
 }
+
+export const onAreaTextInput = inputSetter((value) => (area.text = value))
 
 export function onUpdateDisplay(value) {
   props.area.display = value

@@ -86,7 +86,7 @@ function ie_areaToCSS_i(area, { repeat }) {
     css += ie_gridToCSS(area, repeat) + '\n'
   }
 
-  const gridRegion = getGridRegion(area) // TODO:
+  const gridRegion = getGridRegion(area)
   if (gridRegion) {
     const { row, col } = gridRegion
     css += `    -ms-grid-row: ${row.start};\n`
