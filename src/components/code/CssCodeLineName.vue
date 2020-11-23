@@ -20,7 +20,7 @@
 import { dragging, currentFocus, isValidLineName, parseGridTemplate } from '../../store.js'
 import { computed } from 'vue'
 
-import { namedTemplateColumns, namedTemplateRows, onCodeInputKeydown } from '../../utils.js'
+import { namedTemplateColumns, namedTemplateRows, onCodeInputKeydown, targetText } from '../../utils.js'
 import { useInputSetter } from '../../composables/index.js'
 
 export default {

@@ -10,7 +10,7 @@
     "lint:fix": "eslint --ext .js,.vue src --fix"
   },
   "dependencies": {
-    "@vueuse/core": "npm:@knightly/vueuse@dev",
+    "@vueuse/core": "4.0.0-rc.2",
     "lz-string": "^1.4.4",
     "pepjs": "0.5.2",
     "vue": "^v3.0.2"

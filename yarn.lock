@@ -411,18 +411,18 @@
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.0.2.tgz#419bd85a2ebdbd4f42963e98c5a1b103452176d9"
   integrity sha512-Zx869zlNoujFOclKIoYmkh8ES2RcS/+Jn546yOiPyZ+3+Ejivnr+fb8l+DdXUEFjo+iVDNR3KyLzg03aBFfZ4Q==
 
-"@vueuse/core@npm:@knightly/vueuse@dev":
-  version "4.0.0-knightly-dev.202011150043"
-  resolved "https://registry.yarnpkg.com/@knightly/vueuse/-/vueuse-4.0.0-knightly-dev.202011150043.tgz#f8f05bc931cb6a963e367311bd2e1a68cea11ad8"
-  integrity sha512-YhF0OEbFqXIBvW0rwqOB1bNohQtjuYTg8zA4ajJzDVWaSylwyn2bdmJnsvKxmvn+AZ0gl8njpZawZIe8ALhxAQ==
+"@vueuse/core@4.0.0-rc.2":
+  version "4.0.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-4.0.0-rc.2.tgz#028d3901d186bed4335579d0e01914f0ac3eb995"
+  integrity sha512-yEKzjPbZMirTg2KnEudXVR8/A3B8bxnR0BftdWNtsDnnRmXDLKWlixivZ/GAxtf6se7z9qAZd/S+WVqJ+fc2pQ==
   dependencies:
-    "@vueuse/shared" "npm:@knightly/vueuse__shared@4.0.0-knightly-dev.202011150043"
+    "@vueuse/shared" "4.0.0-rc.2"
     vue-demi latest
 
-"@vueuse/shared@npm:@knightly/vueuse__shared@4.0.0-knightly-dev.202011150043":
-  version "4.0.0-knightly-dev.202011150043"
-  resolved "https://registry.yarnpkg.com/@knightly/vueuse__shared/-/vueuse__shared-4.0.0-knightly-dev.202011150043.tgz#2a2ac487eae5646a8e2116694babe1f74762dc44"
-  integrity sha512-HGDWg7RYg2q29ZB+HYKWawI83dAPRFWc39QTen0+pRMS/eICTJXuVGpdWET1KhyXPWJWGgqlCcya3uoo/cRgNA==
+"@vueuse/shared@4.0.0-rc.2":
+  version "4.0.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-4.0.0-rc.2.tgz#d2d64b702ba1655d25377a1ab651995fbf78f21c"
+  integrity sha512-i3mhuJA3qwmUxCOdWevRCVFRJjTlQ4V182wpLVDvQA/EWnL7jmwzXvhsX+O5boDg6jxjyZaxuzuPYB6nXNqFaw==
   dependencies:
     vue-demi latest
 
@@ -2725,9 +2725,9 @@ table@^5.2.3:
     string-width "^3.0.0"
 
 terser@^5.0.0:
-  version "5.3.8"
-  resolved "https://registry.yarnpkg.com/terser/-/terser-5.3.8.tgz#991ae8ba21a3d990579b54aa9af11586197a75dd"
-  integrity sha512-zVotuHoIfnYjtlurOouTazciEfL7V38QMAOhGqpXDEg6yT13cF4+fEP9b0rrCEQTn+tT46uxgFsTZzhygk+CzQ==
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/terser/-/terser-5.4.0.tgz#9815c0839072d5c894e22c6fc508fbe9f5e7d7e8"
+  integrity sha512-3dZunFLbCJis9TAF2VnX+VrQLctRUmt1p3W2kCsJuZE4ZgWqh//+1MZ62EanewrqKoUf4zIaDGZAvml4UDc0OQ==
   dependencies:
     commander "^2.20.0"
     source-map "~0.7.2"
