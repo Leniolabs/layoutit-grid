@@ -1,7 +1,6 @@
 <template>
   <div class="grid-settings-container">
     <div class="items gaps">
-      <h2><span>⊞</span> Grid Gap</h2>
       <GapInput :grid="grid" type="row" />
       <GapInput :grid="grid" type="col" />
     </div>

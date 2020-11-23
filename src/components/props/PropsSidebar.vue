@@ -30,7 +30,7 @@ export default {
   gap: 20px 0px;
   grid-template-rows: auto 1fr auto;
   overflow: auto;
-  padding: 0 0 0 14px;
+  padding: 0;
   text-align: left;
   transition: transform 0.2s ease-in;
   user-select: none;

@@ -2,8 +2,6 @@
   <div
     :class="['area-tree']"
     :style="{
-      'border-left': `4px solid ${area.color}`,
-      'border-top': `2px solid ${area.color}`,
       opacity: reordering && reordering.area === area ? 0.2 : 1,
     }"
   >
@@ -154,12 +152,9 @@ export function addArea() {
 <style scoped lang="scss" vars="{ depth }">
 .area-tree {
   margin-left: var(--depth);
-  border-bottom: solid 1px #ddd;
-  background: white;
 }
 
 .area-children {
-  padding-bottom: 3px;
   pointer-events: initial;
   cursor: move;
 }
@@ -181,14 +176,9 @@ export function addArea() {
 }
 
 .area-name {
-  font-size: 13px;
-  color: black;
-  padding: 5px 8px;
-  top: 0;
   width: 100%;
   word-break: break-all;
   position: relative;
-  font-weight: bold;
   &:not(.current) {
     opacity: 0.5;
   }
@@ -197,7 +187,7 @@ export function addArea() {
 /* Create the caret/arrow with a unicode, and style it */
 .caret::before {
   content: '\25B6';
-  color: black;
+  color: #fff;
   display: inline-block;
   margin-right: 6px;
 }
@@ -228,7 +218,7 @@ export function addArea() {
 }
 
 .btn-remove {
-  top: 5px;
+  top: 0;
   height: 16px;
   right: 5px;
   width: 16px;
@@ -238,7 +228,7 @@ export function addArea() {
 }
 
 .btn-add {
-  top: 5px;
+  top: 0;
   height: 16px;
   right: 25px;
   width: 16px;

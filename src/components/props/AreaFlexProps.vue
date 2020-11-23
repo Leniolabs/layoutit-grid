@@ -1,8 +1,6 @@
 <template>
   <div class="grid-settings-container">
     <div class="items">
-      <h2><span style="display: inline-block">⚀</span> Flex Container</h2>
-
       <div class="inner-items">
         <div>
           Flex Direction

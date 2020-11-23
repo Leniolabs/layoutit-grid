@@ -54,10 +54,14 @@ export const onSizeInput = useInputSetter(size)
 <style scoped lang="scss">
 .area-size {
   display: block;
-  margin-right: 10px;
+  //margin-right: 10px;
+  label {
+    display: block;
+    margin-bottom: 3px;
+  }
   .input-container {
     display: grid;
-    grid-template-columns: 100px 90px;
+    grid-template-columns: 120px auto;
     grid-template-rows: 30px;
     gap: 0 8px;
     input {

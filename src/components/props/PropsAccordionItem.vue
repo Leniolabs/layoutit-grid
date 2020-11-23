@@ -1,5 +1,5 @@
 <template>
-  <div class="props-accordion-item">
+  <div class="props-accordion-item" :class="{ active: accordion.active === name }">
     <h1 :class="{ independent }" @click="independent ? (opened = !opened) : (accordion.active = name)">
       {{ (!opened && closedHeading) || heading }}
     </h1>
@@ -33,25 +33,40 @@ export const opened = ref(true)
 .props-accordion-item {
   overflow: hidden;
   margin: 0;
+  opacity: 0.7;
+  &:hover,
+  &.active {
+    opacity: 1;
+  }
+  &.active {
+    background: rgb(35, 36, 31);
+    .props-accordion-content {
+      background: rgb(35, 36, 31);
+    }
+    h1:hover {
+      background: rgb(35, 36, 31);
+    }
+  }
+  &:last-of-type h1 {
+    border-bottom: 1px solid #444;
+  }
 }
 
 h1 {
-  margin: 0 0 0 0;
-  font-size: 0.8em;
   width: 100%;
-  padding: 0.3em 0 0 5px;
-  height: 1.8em;
-  border-bottom: 1px solid #444;
-  background-color: #ddd;
-  color: black;
-  &.independent {
-    background-color: gold;
+  border-top: 1px solid #444;
+  color: #fff;
+  font-size: 15px;
+  margin: 0;
+  padding: 10px 15px;
+  cursor: pointer;
+  &:hover {
+    background: rgb(29, 3, 45);
   }
 }
 
 .props-accordion-content {
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding: 0 15px 10px;
 }
 
 * {

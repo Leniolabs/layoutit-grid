@@ -1,6 +1,6 @@
 <template>
   <div class="placement-select-container">
-    <span>{{ type }}</span>
+    <label>{{ type }}</label>
     <select
       :value="modelValue"
       :class="['placement-select', { focused }]"
@@ -41,10 +41,9 @@ export const options = computed(() => optionsMap[props.type.split('-')[1]])
   display: grid;
   grid-template-columns: 0.75fr 1fr;
   margin-bottom: 5px;
-  span {
-    align-self: center;
-    font-size: 12px;
-    width: 100%;
+  label {
+    display: block;
+    margin-bottom: 3px;
   }
 }
 .placement-select {
