@@ -97,7 +97,7 @@ section {
   pointer-events: none;
   height: 100%;
   position: relative;
-  border: 1px dashed #888; // #2c3e50;
+  border: 1px dashed #ccc; // #2c3e50;
   overflow: hidden;
 
   &.focused {

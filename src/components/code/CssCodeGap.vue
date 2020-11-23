@@ -13,7 +13,9 @@
 
 <script setup="props, { emit }">
 import { computed, nextTick } from 'vue'
-export { onCodeInputKeydown, toCssName } from '../../utils.js'
+import { isValidGapSize } from '../../store.js'
+export { onCodeInputKeydown, toCssName, targetText } from '../../utils.js'
+import { useInputSetter } from '../../composables'
 
 export default {
   props: {
@@ -27,21 +29,7 @@ export const gap = computed({
   set: (value) => (props.grid[props.type].gap = value),
 })
 
-function textFrom(event) {
-  const textNode = event.target.childNodes[0]
-  return textNode && textNode.data
-}
-
-export function onInput(event) {
-  gapSizeChanged(event)
-}
-
-const gapSizeChanged = (event) => {
-  const text = textFrom(event)
-  if (text) {
-    gap.value = text
-  }
-}
+export const onInput = useInputSetter(gap, isValidGapSize, targetText)
 </script>
 
 <style scoped lang="scss">

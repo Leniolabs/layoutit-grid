@@ -27,11 +27,11 @@
 <script setup="props, { emit }">
 export { default as CssCodeTrackSize } from './CssCodeTrackSize.vue'
 export { default as CssCodeLineName } from './CssCodeLineName.vue'
-import { isValidTrackSize } from '../../store.js'
-import { ref, computed } from 'vue'
-import { debounce } from 'lodash-es'
 
-export { namedTemplateColumns, namedTemplateRows, parseGridTemplate } from '../../utils.js'
+import { isValidTrackSize, parseGridTemplate } from '../../store.js'
+import { ref, computed } from 'vue'
+
+export { namedTemplateColumns, namedTemplateRows } from '../../utils.js'
 
 export default {
   props: {

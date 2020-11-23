@@ -1,274 +1,83 @@
-import { ref, computed, watch } from 'vue'
+import { ref, watch } from 'vue'
+import { useRefHistory, useLocalStorage } from '@vueuse/core'
 
-function createTemplateArr(number) {
-  return '1fr '.repeat(number).trim().split(' ')
-}
+export * from './store/grid.js'
+export * from './store/flex.js'
+export * from './store/area.js'
 
-export function gridTemplateToArr(str) {
-  return str.split(/(?!\(.*)\s(?![^(]*?\))/g)
-}
-
-// TODO: review if default parsed value is needed
-
-function internalParseValue(str) {
-  return str.startsWith('minmax') ? str.slice(7, -1) : parseFloat(str, 10)
-}
-export function parseValue(str) {
-  return str ? internalParseValue(str) : 0
-}
-
-function internalParseUnit(str) {
-  return str.startsWith('minmax') ? 'minmax' : str.match(/[\d.\-+]*\s*(.*)/)[1] || ''
-}
-
-export const validGridUnits = ['fr', 'px', '%', 'em', 'auto', 'min-content', 'max-content', 'minmax']
-
-export function parseUnit(str) {
-  return str ? internalParseUnit(str) : 'fr'
-}
-
-export function parseValueUnit(str) {
-  return {
-    value: parseValue(str),
-    unit: parseUnit(str),
-  }
-}
-
-export function isValidTrackSize(str) {
-  const unit = internalParseUnit(str)
-  return validGridUnits.includes(unit) && (unit === 'minmax' || str.replace(unit, '').match(/^[-+]?[0-9]*\.?[0-9]+$/))
-}
-
-export function isValidLineName(str) {
-  return true
-}
-
-export function valueUnitToString({ value, unit }) {
-  switch (unit) {
-    case 'minmax':
-      return `minmax(${value})`
-    case 'min-content':
-    case 'max-content':
-    case 'auto':
-      return unit
-    default:
-      return `${value}${unit}`
-  }
-}
-
-function newLineNames(n) {
-  return lineNamesToState(Array(n).fill(''))
-}
-export function lineNamesToState(names) {
-  return names.map((name) => {
-    return { active: name != '', name }
-  })
-}
-
-function typeIndex(type) {
-  return type === 'row' ? 0 : 1
-}
-
-/*
-{
-  col {
-    sizes,
-    lineNames,
-    gap
-  },
-  row {
-    sizes,
-    lineNames
-    gap
-  }
-  areas
-}
-*/
-
-export function createGridDimension(n) {
-  return {
-    sizes: new Array(n).fill('1fr'),
-    lineNames: newLineNames(n + 1),
-    gap: '0px',
-  }
-}
-
-export function createGridState(r = 2, c = 3) {
-  return {
-    row: createGridDimension(r),
-    col: createGridDimension(c),
-    areas: [],
-  }
-}
-
-export function getRowValue(grid, n) {
-  return parseValue(grid.row.sizes[n])
-}
-
-export function getRowUnit(grid, n) {
-  return parseUnit(grid.row.sizes[n])
-}
-
-export function getColValue(grid, n) {
-  return parseValue(grid.col.sizes[n])
-}
-
-export function getColUnit(grid, n) {
-  return parseUnit(grid.col.sizes[n])
-}
-
-export function setRowValueUnit(grid, n, x) {
-  grid.row.sizes[n] = valueUnitToString(x)
-}
-
-export function setRowValue(grid, n, value) {
-  setRowValueUnit(grid, n, { value, unit: getRowUnit(grid, n) })
-}
-
-export function setColValueUnit(grid, n, x) {
-  grid.col.sizes[n] = valueUnitToString(x)
-}
-
-export function setColValue(grid, n, value) {
-  setColValueUnit(grid, n, { value, unit: getColUnit(grid, n) })
-}
-
-export function addToDimension(dimension, val) {
-  batch(() => {
-    dimension.sizes.push(val)
-    dimension.lineNames.push({ active: false, name: '' })
-  })
-}
-
-export function addCol(grid, colStr) {
-  addToDimension(grid.col, colStr)
-}
-
-export function addRow(grid, rowStr) {
-  addToDimension(grid.row, rowStr)
-}
-
-export function removeFromDimension(grid, type, n) {
-  const { areas } = grid
-  for (let i = 0; i < areas.length; ) {
-    const { gridRegion } = areas[i]
-    if (n + 1 < gridRegion[type].start) {
-      --gridRegion[type].start
-      --gridRegion[type].end
-    } else if (n + 1 < gridRegion[type].end) {
-      --gridRegion[type].end
-    }
-    if (gridRegion[type].end <= gridRegion[type].start) {
-      // delete area if it collapses
-      areas.splice(i, 1)
-    } else {
-      ++i
-    }
-  }
-  batch(() => {
-    grid[type].sizes.splice(n, 1)
-    grid[type].lineNames.splice(n, 1)
-  })
-}
-
-export function removeCol(grid, n) {
-  removeFromDimension(grid, 'col', n)
-}
-
-export function removeRow(grid, n) {
-  removeFromDimension(grid, 'row', n)
-}
-
-// FlexItem { name, color, grow, shrink, basis }
-
-export function createFlexItemState({
-  name = 'default',
-  color = 'rgba(253, 216, 53, 0.3)',
-  grow = 0,
-  shrink = 1,
-  basis = '100%',
-} = {}) {
-  return { name, color, grow, shrink, basis }
-}
-
-export function createFlexState({
-  direction = 'row',
-  wrap = 'nowrap',
-  defaultItem = createFlexItemState(),
-  items = [defaultItem, defaultItem, defaultItem, defaultItem],
-} = {}) {
-  return { direction, wrap, items, defaultItem }
-}
-
-const colors = [
-  'rgba(230, 25, 75, 0.8)',
-  'rgba(60, 180, 75, 0.8)',
-  'rgba(245, 130, 48, 0.8)',
-  'rgba(240, 50, 230, 0.8)',
-  'rgba(0, 128, 128, 0.8)',
-]
-
-export function createAreaState({
-  name = 'area',
-  color = colors[0],
-  grid = null,
-  flex = null,
-  gridRegion = null,
-  parent = null,
-}) {
-  return { name, color, grid, flex, gridRegion, parent }
-}
+import {
+  createAreaState,
+  parseArea,
+  serializeArea,
+  getGridDimension,
+  gridLimitsToGridArea,
+  gridAreaToGridLimits,
+} from './store/area.js'
+import { createGridState, isValidTrackSize } from './store/grid.js'
 
 function createMainAreaState() {
   return createAreaState({
-    name: 'grid-container',
-    color: colors[0],
-    grid: createGridState(3, 4),
+    name: 'container',
+    type: 'div',
+    display: 'grid',
+    grid: createGridState(),
+    justifySelf: 'center',
+    alignSelf: 'start',
+    width: '100%',
+    height: '100%',
   })
 }
 
 export const mainArea = ref(createMainAreaState())
 export const currentArea = ref(mainArea.value)
-export const currentItem = ref(null)
 export const dragging = ref(null)
+export const reordering = ref(null)
 export const currentFocus = ref(null)
 export const currentHover = ref(null)
 export const currentView = ref('editor')
 export const darkmode = ref(false)
 
-function parentify(area, parent = null) {
-  area.parent = parent
-  if (area.grid) {
-    area.grid.areas.forEach((child) => parentify(child, area))
-  }
-  return area
+export const preferredExport = ref('codepen')
+
+const areaNameCounter = ref(1)
+
+export function newAreaName() {
+  let name
+  do {
+    name = 'a' + areaNameCounter.value
+    areaNameCounter.value++
+  } while (!isValidAreaName(name))
+  return name
 }
 
-const parentRemover = (key, value) => (key === 'parent' ? null : value)
+watch(mainArea, (area) => setCurrentArea(area))
 
-function serializeArea(area) {
-  return JSON.stringify({ area: area, version: 1 }, parentRemover)
-}
-function parseArea(area) {
-  return parentify(JSON.parse(area).area)
-}
-
-import { useRefHistory } from '@vueuse/core'
-
-export const { undo, redo, undoStack, redoStack, pause, resume, batch } = useRefHistory(mainArea, {
+export const { undo, redo, clear, canUndo, canRedo, pause, resume, last } = useRefHistory(mainArea, {
   capacity: 100,
   parse: parseArea,
   dump: serializeArea,
   deep: true,
 })
 
-export function isValidAreaName(newName, area = mainArea.value) {
-  const { name, grid } = area
-  return name !== newName && !(grid && !grid.areas.every((a) => isValidAreaName(newName, a)))
-}
-
-export function getRandomColor() {
-  return colors[Math.floor(Math.random() * colors.length)]
+const stateStorage = useLocalStorage('app-state')
+watch(
+  last,
+  () => {
+    stateStorage.value = last.value.snapshot
+    console.log(stateStorage.value)
+  },
+  { deep: true }
+)
+export function loadFromStorage() {
+  if (stateStorage.value) {
+    try {
+      mainArea.value = parseArea(stateStorage.value)
+      clear()
+    } catch (error) {
+      console.log(error)
+      stateStorage.value = undefined
+    }
+  }
 }
 
 export function setCurrentArea(area) {
@@ -278,8 +87,6 @@ export function setCurrentArea(area) {
 export function setMainArea(area) {
   mainArea.value = area
 }
-
-watch(mainArea, (area) => setCurrentArea(area))
 
 export function deselectCurrentArea() {
   setCurrentArea(mainArea.value)
@@ -292,8 +99,8 @@ export function clearArea(area) {
 }
 
 export function removeArea(area) {
-  const { areas } = area.parent.grid
-  areas.splice(areas.indexOf(area), 1)
+  const { children } = area.parent
+  children.splice(children.indexOf(area), 1)
   deselectCurrentArea()
 }
 
@@ -303,11 +110,93 @@ export function restart() {
   // clear()
 }
 
-export function getAreaDepth(area) {
-  const parent = area.parent
-  if (parent) {
-    return getAreaDepth(parent) + 1
-  } else {
-    return 0
+export function isValidAreaName(newName, area = mainArea.value) {
+  const { name, grid } = area
+  return newName && name !== newName && !(grid && !area.children.every((a) => isValidAreaName(newName, a)))
+}
+
+export const isValidFlexBasis = isValidTrackSize
+
+export const isValidGapSize = isValidTrackSize
+
+// This should go in grid.js, we need to check again if we can use sync:pre in the history management before
+
+export function addToDimension(dimension, val) {
+  dimension.sizes.push(val)
+  dimension.lineNames.push({ active: false, name: '' })
+}
+
+export function addCol(grid, colStr) {
+  addToDimension(grid.col, colStr)
+}
+
+export function addRow(grid, rowStr) {
+  addToDimension(grid.row, rowStr)
+}
+
+function reduceLimit(l) {
+  if (l.limit) {
+    if (l.limit > 0) {
+      l.limit--
+    } else {
+      l.limit++
+    }
+  } else if (l.span) {
+    l.span--
   }
+}
+
+export function removeFromDimension(area, type, n) {
+  const { grid, children } = area
+  const toRemove = [],
+    toChange = []
+  for (let i = 0; i < children.length; ++i) {
+    const limits = gridAreaToGridLimits(children[i].gridArea)
+    const dim = getGridDimension(children[i], type, limits)
+    const { start, end } = limits[type]
+    if (limits.valid && !limits[type].auto) {
+      if (n + 1 < dim.start) {
+        reduceLimit(start)
+        reduceLimit(end)
+      } else if (n + 1 < dim.end) {
+        limits[type].span--
+        if (start.limit) {
+          reduceLimit(end)
+        } else {
+          reduceLimit(start)
+        }
+      } else if (n + 1 >= dim.end) {
+        if (start.limit && start.limit < -1) {
+          start.limit++
+        }
+        if (end.limit && end.limit < -1) {
+          end.limit++
+        }
+      }
+      if (limits[type].span === 0) {
+        // delete area if it collapses
+        toRemove.push(i)
+      } else {
+        toChange.push({ i, gridArea: gridLimitsToGridArea(limits) })
+      }
+    } else {
+      ++i
+    }
+  }
+  for (let i = toRemove.length - 1; i >= 0; i--) {
+    area.children.splice(toRemove[i], 1)
+  }
+  for (let i = toChange.length - 1; i >= 0; i--) {
+    children[toChange[i].i].gridArea = toChange[i].gridArea
+  }
+  grid[type].sizes.splice(n, 1)
+  grid[type].lineNames.splice(n, 1)
+}
+
+export function removeCol(area, n) {
+  removeFromDimension(area, 'col', n)
+}
+
+export function removeRow(area, n) {
+  removeFromDimension(area, 'row', n)
 }

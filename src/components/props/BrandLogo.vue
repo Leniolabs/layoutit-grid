@@ -11,7 +11,6 @@
   font-style: italic;
   font-weight: 700;
   letter-spacing: 0.02em;
-  margin-bottom: 15px;
   margin-left: 5px;
   margin-top: 10px;
   color: #fff;

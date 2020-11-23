@@ -1,7 +1,9 @@
 <template>
   <MobileButtons @toggle-props="toggleView('props')" @toggle-code="toggleView('code')" />
   <PropsSidebar :area="mainArea" />
-  <GridEditor :area="mainArea" />
+  <div class="area-editor-container">
+    <AreaEditor :area="mainArea" />
+  </div>
   <SidebarRight>
     <template #body>
       <LiveCode :area="mainArea" :save-design="saveDesign" />
@@ -11,14 +13,13 @@
 
 <script setup>
 export { default as MobileButtons } from './MobileButtons.vue'
-export { default as GridEditor } from './grid/GridEditor.vue'
 export { default as AreaEditor } from './area/AreaEditor.vue'
 export { default as SidebarRight } from './basic/SidebarRight.vue'
 export { default as PropsSidebar } from './props/PropsSidebar.vue'
 export { default as LiveCode } from './code/LiveCode.vue'
 
-import { ref, computed } from 'vue'
-export { mainArea, currentArea, currentView } from '../store.js'
+import { ref, computed, onMounted } from 'vue'
+export { mainArea, loadFromStorage, currentArea, currentView } from '../store.js'
 
 export default {
   props: {
@@ -29,6 +30,8 @@ export default {
 export function toggleView(view) {
   currentView.value = currentView.value === view ? 'editor' : view
 }
+
+onMounted(loadFromStorage)
 </script>
 
 <style lang="scss">
@@ -89,10 +92,10 @@ p {
   -webkit-font-smoothing: antialiased;
   color: #2c3e50;
   background: linear-gradient(#1d032d, #300748);
+  background: #300748;
   height: 100%;
   display: grid;
   grid-template-columns: 220px 1fr 360px;
-  grid-column-gap: 15px;
   @media screen and (max-width: 768px) {
     display: block;
   }
@@ -167,6 +170,11 @@ p {
       }
     }
   }
+}
+
+.area-editor-container {
+  display: grid;
+  overflow: auto;
 }
 
 .mobile-buttons {

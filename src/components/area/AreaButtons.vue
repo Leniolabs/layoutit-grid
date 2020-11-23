@@ -48,7 +48,9 @@ export function subFlex() {
 export function subGrid() {
   clearArea(props.area)
   if (!props.area.grid) {
-    props.area.grid = createGridState(2, 3)
+    props.area.type = 'div'
+    props.area.display = 'grid'
+    props.area.grid = createGridState()
   }
   setCurrentArea(props.area)
 }

@@ -1,5 +1,5 @@
 <template>
-  <CodeEditor type="html" :code="code"><HtmlCodeArea :area="area" :options="options" /></CodeEditor>
+  <CodeEditor type="html"><HtmlCodeArea :area="area" :options="options" /></CodeEditor>
 </template>
 
 <script setup>
@@ -10,7 +10,6 @@ export default {
   props: {
     area: { type: Object, default: null },
     options: { type: Object, default: null },
-    code: { type: String, required: true },
   },
 }
 </script>

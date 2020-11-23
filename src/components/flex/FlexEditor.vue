@@ -4,28 +4,17 @@
       :style="{ 'flex-direction': flex.direction, 'flex-wrap': flex.wrap, display: 'flex', height: '100%' }"
       class="flex-container"
     >
-      <div
-        v-for="(item, i) in flex.items"
-        :key="`section-${i}`"
-        :class="{ selected: i + 1 === currentItem, grayed: !isActive }"
-        :style="{
-          'flex-grow': item.grow,
-          'flex-shrink': item.shrink,
-          'flex-basis': item.basis
-        }"
-        @pointerdown.stop="toggleFlexItem(i + 1)"
-      >{{ i + 1 }}</div>
+      <AreaEditor v-for="(a, i) in area.children" :key="`area-${i}`" :area="a" />
     </section>
   </div>
 </template>
 
 <script setup="props">
 import { computed, toRefs } from 'vue'
-import { mainArea, currentArea, currentItem } from '../../store.js'
+import { mainArea, currentArea } from '../../store.js'
 export { deselectCurrentArea } from '../../store.js'
 import { useIsActiveArea } from '../../composables/area.js'
-
-export { currentItem }
+export { default as AreaEditor } from '../area/AreaEditor.vue'
 
 export default {
   props: {
@@ -37,11 +26,6 @@ export const flex = computed(() => props.area.flex)
 
 const { area } = toRefs(props)
 export const isActive = useIsActiveArea(area)
-
-export function toggleFlexItem(item) {
-  currentArea.value = props.area
-  currentItem.value = item === props.currentItem ? null : item
-}
 </script>
 
 <style scoped lang="scss">

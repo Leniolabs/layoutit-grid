@@ -1,11 +1,11 @@
 <template>
-  <span class="token string">{{ gridArea }};</span>
+  <span class="token string">{{ gridArea }}</span>
 </template>
 
 <script setup="props, { emit }">
-import { dragging, currentArea, isValidAreaName } from '../../store.js'
+import { dragging, currentArea, getGridRegion } from '../../store.js'
 import { computed } from 'vue'
-import { getGridArea, gridTemplateAreas, toCssName } from '../../utils.js'
+import { getGridAreaWithNamedLines, gridTemplateAreas, toCssName } from '../../utils.js'
 
 export default {
   props: {
@@ -18,23 +18,26 @@ export { currentArea }
 
 export const cssAreaName = computed(() => toCssName(props.area.name))
 
-function getGridTemplateAreas(grid) {
-  return grid ? gridTemplateAreas(grid, '\n    ') : undefined
+function getGridTemplateAreas(area) {
+  return area.display === 'grid' ? gridTemplateAreas(area, '\n    ') : undefined
 }
 
-export const templateAreas = computed(() => getGridTemplateAreas(props.area.grid))
+export const templateAreas = computed(() => getGridTemplateAreas(props.area))
 
 export const includeTemplateAreas = computed(() => props.options.templateAreas && templateAreas.value !== undefined)
 
 export const gridArea = computed(() => {
+  const gridRegion = getGridRegion(props.area) // TODO: span
+  if (!gridRegion) {
+    return undefined
+  }
   const { parent } = props.area
-
   if (parent) {
-    return props.options.templateAreas && getGridTemplateAreas(parent.grid)
+    return props.options.templateAreas && getGridTemplateAreas(parent)
       ? cssAreaName.value
-      : getGridArea(props.area, parent.grid)
+      : getGridAreaWithNamedLines(props.area, parent.grid)
   } else {
-    return getGridArea(props.area)
+    return getGridAreaWithNamedLines(props.area)
   }
 })
 </script>

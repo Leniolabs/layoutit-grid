@@ -16,6 +16,8 @@ const units = {
   grid: validGridUnits,
   flex: ['px', '%', 'em'],
   default: ['px', '%', 'em'],
+  size: ['px', '%', 'em', 'initial'],
+  auto: [...validGridUnits, 'initial'],
 }
 
 export default {
@@ -36,6 +38,7 @@ export const options = computed(() => units[props.type])
   border: 0 none;
   border-radius: 2px;
   width: 100%;
+  height: 24px;
   font-size: 14px;
 }
 .unit-select.focused {

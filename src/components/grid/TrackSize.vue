@@ -5,7 +5,7 @@
     contenteditable
     :class="['editor-track-size', 'input', type, { active: isDraggingTrackLine, focused: isFocused }]"
     @pointerdown.stop
-    @input="trackSizeChanged"
+    @input="onInput"
     @focus="currentFocus = { on: 'track', grid, type, track }"
     @blur="currentFocus = null"
   >
@@ -15,9 +15,9 @@
 
 <script setup="props, { emit }">
 import { dragging, currentFocus, isValidTrackSize } from '../../store.js'
-
+import { targetText } from '../../utils.js'
+import { useInputSetter } from '../../composables'
 import { computed } from 'vue'
-import { debounce } from 'lodash-es'
 
 export default {
   props: {
@@ -39,13 +39,7 @@ export const trackSize = computed({
   set: (value) => (props.grid[props.type].sizes[props.track - 1] = value),
 })
 
-export const trackSizeChanged = debounce((value) => {
-  const textNode = value.target.childNodes[0]
-  const text = textNode && textNode.data
-  if (isValidTrackSize(text)) {
-    trackSize.value = text
-  }
-}, 700)
+export const onInput = useInputSetter(trackSize, isValidTrackSize, targetText)
 
 export const isDraggingGrid = computed(() => dragging.value && dragging.value.grid === props.grid)
 

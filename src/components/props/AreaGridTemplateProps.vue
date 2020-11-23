@@ -14,7 +14,7 @@
           @mouseleave="currentHover = null"
         >
           <input
-            :style="{ visibility: unitHasValue(getColUnit(grid, column - 1)) ? 'visible' : 'hidden' }"
+            :style="{ visibility: unitHasValue(getColUnit(grid)) ? 'visible' : 'hidden' }"
             :value="getColValue(grid, column - 1)"
             :class="{
               active: isFocused('col', column),
@@ -26,7 +26,7 @@
             step="0.5"
             @focus="currentFocus = { on: 'track', grid, type: 'col', track: column }"
             @blur="currentFocus = null"
-            @input="setColValue(grid, column - 1, $event.target.value)"
+            @input="onSizeValueInput('col', column - 1, $event.target.value)"
           />
           <UnitSelect
             :value="getColUnit(grid, column - 1)"
@@ -41,12 +41,29 @@
             class="remove-button"
             :aria-label="`remove column ${column}`"
             :disabled="grid.col.sizes.length === 1"
-            @click="removeCol(grid, column - 1)"
+            @click="removeCol(area, column - 1)"
             @mouseover.stop="currentHover = { on: 'track', grid, type: 'col', track: column, action: 'remove' }"
             @mouseleave="currentHover = null"
           >
             <IconRemove />
           </OptionsButton>
+        </div>
+        <div>
+          <input
+            :style="{ visibility: unitHasValue(parseUnit(grid.col.auto)) ? 'visible' : 'hidden' }"
+            :value="parseValue(grid.col.auto)"
+            :type="parseUnit(grid.col.auto) === 'minmax' ? 'text' : 'number'"
+            :aria-label="`grid-auto-columns size`"
+            min="0"
+            step="0.5"
+            @input="onAutoSizeValueInput('col', $event.target.value)"
+          />
+          <UnitSelect
+            :value="parseUnit(grid.col.auto)"
+            type="auto"
+            :aria-label="`grid-auto-columns unit`"
+            @input="grid.col.auto = withChangedUnit(grid.col.auto, $event.target.value)"
+          />
         </div>
       </div>
     </div>
@@ -76,7 +93,7 @@
             step="0.5"
             @focus="currentFocus = { on: 'track', grid, type: 'row', track: row }"
             @blur="currentFocus = null"
-            @input="setRowValue(grid, row - 1, $event.target.value)"
+            @input="onSizeValueInput('row', row - 1, $event.target.value)"
           />
           <UnitSelect
             :value="getRowUnit(grid, row - 1)"
@@ -89,19 +106,31 @@
             class="remove-button"
             :aria-label="`remove row ${row}`"
             :disabled="grid.row.sizes.length === 1"
-            @click="removeRow(grid, row - 1)"
+            @click="removeRow(area, row - 1)"
             @mouseover.stop="currentHover = { on: 'track', grid, type: 'row', track: row, action: 'remove' }"
             @mouseleave="currentHover = null"
           >
             <IconRemove />
           </OptionsButton>
         </div>
+        <div>
+          <input
+            :style="{ visibility: unitHasValue(parseUnit(grid.row.auto)) ? 'visible' : 'hidden' }"
+            :value="parseValue(grid.row.auto)"
+            :type="parseUnit(grid.row.auto) === 'minmax' ? 'text' : 'number'"
+            :aria-label="`grid-auto-rows size`"
+            min="0"
+            step="0.5"
+            @input="onAutoSizeValueInput('row', $event.target.value)"
+          />
+          <UnitSelect
+            :value="parseUnit(grid.row.auto)"
+            type="auto"
+            :aria-label="`grid-auto-rows unit`"
+            @input="grid.row.auto = withChangedUnit(grid.row.auto, $event.target.value)"
+          />
+        </div>
       </div>
-    </div>
-    <div class="items gaps">
-      <h2><span>⊞</span> Grid Gap</h2>
-      <GapInput :grid="grid" type="row" />
-      <GapInput :grid="grid" type="col" />
     </div>
   </div>
 </template>
@@ -110,16 +139,17 @@
 export { default as IconRemove } from '../icons/IconRemove.vue'
 export { default as IconAdd } from '../icons/IconAdd.vue'
 export { default as UnitSelect } from '../common/UnitSelect.vue'
-export { default as GapInput } from '../common/GapInput.vue'
 export { default as OptionsButton } from '../basic/OptionsButton.vue'
+
+import { computed } from 'vue'
 
 export default {
   props: {
-    grid: { type: Object, required: true },
+    area: { type: Object, required: true },
   },
 }
 
-import { toRefs } from 'vue'
+export const grid = computed(() => props.area.grid)
 
 export {
   addCol,
@@ -132,20 +162,23 @@ export {
   getColUnit,
   setColValue,
   removeCol,
+  parseUnit,
+  parseValue,
   dragging,
+  withChangedValue,
+  withChangedUnit,
 } from '../../store.js'
 
 import { setRowValueUnit, setColValueUnit } from '../../store.js'
 import { useGridDimensions } from '../../composables/area.js'
 import { unitMeasureMap } from '../../utils.js'
 export { currentFocus, currentHover } from '../../store.js'
-
-const { grid } = toRefs(props)
+import { debounce } from '../../composables'
 
 export const { colsNumber, rowsNumber } = useGridDimensions(grid)
 
 export function unitHasValue(unit) {
-  return !(unit === 'auto' || unit === 'min-content' || unit === 'max-content')
+  return !(unit === 'initial' || unit === 'auto' || unit === 'min-content' || unit === 'max-content')
 }
 
 // TODO: compute new value using previous size
@@ -155,12 +188,23 @@ function defaultValueForUnit(unit) {
 }
 
 export function onRowUnitInput(unit, row) {
-  setRowValueUnit(props.grid, row, { value: defaultValueForUnit(unit), unit })
+  setRowValueUnit(props.area.grid, row, { value: defaultValueForUnit(unit), unit })
 }
 
 export function onColUnitInput(unit, col) {
-  setColValueUnit(props.grid, col, { value: defaultValueForUnit(unit), unit })
+  setColValueUnit(props.area.grid, col, { value: defaultValueForUnit(unit), unit })
 }
+
+export const onSizeValueInput = debounce((type, track, value) => {
+  if (type === 'row') {
+    setRowValue(grid.value, track, value)
+  } else {
+    setColValue(grid.value, track, value)
+  }
+})
+export const onAutoSizeValueInput = debounce((type, value) => {
+  grid.value[type].auto = withChangedValue(grid.value[type].auto, value)
+})
 
 export function isFocused(type, track) {
   const tf = currentFocus.value
@@ -172,7 +216,7 @@ export function isFocused(type, track) {
 h2 {
   font-family: 'Alegreya Sans', 'Helvetica Neue', Arial, sans-serif;
   margin: 0;
-  font-size: 16px;
+  font-size: 15px;
   padding: 0;
   line-height: 30px;
   display: flex;
@@ -180,12 +224,13 @@ h2 {
   span {
     font-weight: normal;
     margin-right: 6px;
-    height: 34px;
+    height: 30px;
   }
 }
 
 .items {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  margin-top: 0px;
   .items-header {
     display: grid;
     grid-template-columns: auto 55px;
@@ -200,15 +245,16 @@ h2 {
       grid-template-columns: 70px auto 30px;
       grid-gap: 0 8px;
       border-radius: 2px;
-      height: 30px;
-      margin-bottom: 8px;
+      height: 25px;
+      margin-bottom: 2px;
       input {
         text-align: center;
         width: 100%;
         border: 0;
         border-radius: 2px;
-        padding: 0.313em;
-        font-size: 14px;
+        padding: 0.113em;
+        font-size: 12px;
+        height: 24px;
         background: #fff;
         color: #333;
         &.dragging {
@@ -238,18 +284,22 @@ h2 {
 .remove-button {
   background: var(--color-remove);
   //background:transparent;
-  border-radius:4px;
-  opacity:0.5;
-  padding:8px 0;
+  border-radius: 4px;
+  opacity: 0.5;
+  padding: 5px 0;
+  height: 24px;
+  width: 24px;
   //max-width:18px;
   &:hover {
     background: var(--color-remove-active);
     //background:transparent;
-    opacity:1;
+    opacity: 1;
   }
 }
 
 .add-button {
+  height: 24px;
+  padding: 0;
   background: var(--color-add);
   &:hover {
     background: var(--color-add-active);

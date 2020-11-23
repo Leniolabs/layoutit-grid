@@ -15,6 +15,7 @@
       focused,
     }"
     class="grid-section"
+    @pointerdown="$emit('pointerdown', $event)"
   />
 </template>
 
@@ -69,6 +70,7 @@ export default {
     grayed: { type: Boolean, default: false },
     focused: { type: Boolean, default: false },
   },
+  emits: ['pointerdown'],
 }
 
 import { computed } from 'vue'
@@ -92,41 +94,23 @@ export const isDraggingRow = computed(() => isDraggingGrid.value && dragging.val
 
 <style scoped lang="scss">
 section {
+  z-index: -1;
+  pointer-events: initial;
   touch-action: none;
-  background: #fff;
+  background: #ffffffcc;
   height: 100%;
   position: relative;
   &:not(.dragging) {
     cursor: pointer;
   }
-  &.grayed {
-    background: #dddddd;
-  }
+  /*&.grayed {
+    background: #ddddddcc;
+  }*/
   &:not(.dragging):hover {
-    background: #f4faf4;
+    background: #f4faf4cc;
   }
   &.focused {
-    background: #ecf8ec;
+    background: #ecf8eccc;
   }
 }
-
-// Hide draggable elements for grid edges
-/*
-[data-col-start='1'] .col-handle {
-  display: none;
-  .multi-handle {
-    display: none;
-  }
-}
-[data-row-start='1'] .row-handle {
-  display: none;
-  .multi-handle {
-    display: none;
-  }
-}
-
-.grid section section:before {
-  outline: 1px dashed #ccc;
-}
-*/
 </style>

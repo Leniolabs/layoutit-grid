@@ -13,7 +13,7 @@ export { currentView } from '../../store.js'
   overflow: auto;
   text-align: left;
   color: #e9e9e9;
-  padding: 10px 10px 10px 0;
+  padding: 10px 15px 10px 15px;
   transition: transform 0.2s ease-in;
   @media (max-width: 769px) {
     padding: 10px 10px 10px 10px;

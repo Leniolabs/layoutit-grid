@@ -6,7 +6,7 @@
         aria-label="gap value"
         type="number"
         min="0"
-        @input="setGapValue($event.target.value)"
+        @input="onSizeValueInput($event.target.value)"
       />
       <UnitSelect :value="gap.unit" aria-label="gap unit" @input="setGapUnit($event.target.value)" />
     </div>
@@ -18,6 +18,7 @@ export { default as UnitSelect } from './UnitSelect.vue'
 
 import { computed } from 'vue'
 import { parseValueUnit } from '../../store.js'
+import { inputSetter } from '../../composables'
 
 export default {
   props: {
@@ -26,22 +27,23 @@ export default {
   },
 }
 
-export const gap = computed(() => {
-  return parseValueUnit(props.grid[props.type].gap)
+export const gap = computed({
+  get() {
+    return parseValueUnit(props.grid[props.type].gap)
+  },
+  set(value) {
+    props.grid[props.type].gap = value
+  },
 })
-
-export function setGap(g) {
-  props.grid[props.type].gap = g
-}
-
-export function setGapValue(value) {
-  setGap(value + gap.value.unit)
-}
 
 export function setGapUnit(unit) {
   // TODO: Adjust value to avoid jump
-  setGap(gap.value.value + unit)
+  gap.value = gap.value.value + unit
 }
+
+const onSizeValueInput = inputSetter((value) => {
+  gap.value = value + gap.value.unit
+})
 </script>
 
 <style scoped lang="scss">
@@ -55,6 +57,7 @@ export function setGapUnit(unit) {
     input {
       text-align: center;
       font-size: 14px;
+      height: 24px;
       border: 0;
       width: auto;
       background: #fff;
@@ -64,10 +67,10 @@ export function setGapUnit(unit) {
       min-width: 45px;
     }
   }
-  input{
+  input {
     border-radius: 2px 0 0 2px;
   }
-  .unit-select{
+  .unit-select {
     border-radius: 0 2px 2px 0;
   }
   &:nth-child(3) {
