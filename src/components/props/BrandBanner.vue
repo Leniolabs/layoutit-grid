@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="version-container">
     <a
       class="btn-github"
       rel="noopener"
@@ -19,6 +19,10 @@ export { default as HireUs } from './HireUs.vue'
 </script>
 
 <style scoped lang="scss">
+.version-container {
+  padding: 0 10px;
+}
+
 @media screen and (max-width: 768px) {
   .hire-us,
   .version {

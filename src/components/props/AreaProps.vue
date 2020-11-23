@@ -60,9 +60,9 @@
       <AreaBoxProps :area="area" />
     </PropsAccordionItem>
 
-    <PropsAccordionItem v-if="area.parent" name="type" heading="Type" :accordion="accordion">
+    <!--     <PropsAccordionItem v-if="area.parent" name="type" heading="Type" :accordion="accordion">
       <AreaTypeSelect v-if="area.parent" :model-value="area.type" @update:modelValue="onUpdateType" />
-    </PropsAccordionItem>
+    </PropsAccordionItem> -->
   </PropsAccordion>
 </template>
 

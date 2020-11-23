@@ -33,5 +33,9 @@ export const setGridArea = inputSetter((value) => {
   flex-direction: column;
   gap: 10px;
   padding-top: 10px;
+  label {
+    display: block;
+    margin-bottom: 3px;
+  }
 }
 </style>

@@ -38,6 +38,15 @@ export const opened = ref(true)
   &.active {
     opacity: 1;
   }
+  &.active {
+    background: rgb(35, 36, 31);
+    .props-accordion-content {
+      background: rgb(35, 36, 31);
+    }
+    h1:hover {
+      background: rgb(35, 36, 31);
+    }
+  }
   &:last-of-type h1 {
     border-bottom: 1px solid #444;
   }
@@ -57,7 +66,7 @@ h1 {
 }
 
 .props-accordion-content {
-  padding: 0 15px 8px;
+  padding: 0 15px 10px;
 }
 
 * {

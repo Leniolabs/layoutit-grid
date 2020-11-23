@@ -1,6 +1,6 @@
 <template>
   <div class="placement-select-container">
-    <span>{{ type }}</span>
+    <label>{{ type }}</label>
     <div class="radio-toolbar">
       <template v-for="option in options" :key="option">
         <input
@@ -61,9 +61,9 @@ span {
   display: grid;
   grid-template-rows: auto auto;
   margin-bottom: 10px;
-  span {
-    align-self: center;
-    font-size: 12px;
+  label {
+    display: block;
+    margin-bottom: 3px;
   }
 }
 
@@ -73,21 +73,18 @@ span {
   gap: 0px;
 }
 
-.radio-toolbar input[type='radio'] {
-  opacity: 0;
-  position: fixed;
-  width: 0;
+.radio-toolbar input {
+  display: none;
 }
 
 .radio-toolbar label {
   color: #444;
-  display: inline-block;
+  display: block;
+  flex: 1;
   background-color: #ddd;
-  padding: 3px 0px;
+  padding: 5px 0px;
   font-family: sans-serif, Arial;
   font-size: 13px;
-  width: 50px;
-  height: 20px;
   text-align: center;
   // border: 2px solid #444;
   // border-radius: 4px;

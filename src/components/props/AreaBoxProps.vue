@@ -6,11 +6,21 @@
     </div>
     <div class="margin-input">
       <label>margin</label>
-      <input :value="area.margin" aria-label="margin" @input="setMargin($event.target.value)" />
+      <div class="input-grid">
+        <input :value="area.margin" aria-label="margin" @input="setMargin($event.target.value)" />
+        <select id="" name="">
+          px
+        </select>
+      </div>
     </div>
     <div class="padding-input">
       <label>padding</label>
-      <input :value="area.padding" aria-label="padding" @input="setPadding($event.target.value)" />
+      <div class="input-grid">
+        <input :value="area.padding" aria-label="padding" @input="setPadding($event.target.value)" />
+        <select id="" name="">
+          px
+        </select>
+      </div>
     </div>
   </div>
 </template>
@@ -45,8 +55,16 @@ export const setPadding = inputSetter((value) => {
 }
 .margin-input,
 .padding-input {
-  display: grid;
-  grid-template-columns: 65px 1fr;
+  .input-grid {
+    display: grid;
+    grid-template-columns: 120px auto;
+    grid-template-rows: 30px;
+    gap: 0px 8px;
+  }
+  label {
+    display: block;
+    margin-bottom: 3px;
+  }
   input {
     width: 100%;
   }
