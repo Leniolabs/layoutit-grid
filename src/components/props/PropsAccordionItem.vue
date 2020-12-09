@@ -35,7 +35,7 @@ const opened = ref(true)
   &.active {
     opacity: 1;
   }
-  &.active {
+  /*   &.active {
     background: rgb(35, 36, 31);
     .props-accordion-content {
       background: rgb(35, 36, 31);
@@ -43,16 +43,33 @@ const opened = ref(true)
     h1:hover {
       background: rgb(35, 36, 31);
     }
-  }
-  &:last-of-type h1 {
-    border-bottom: 1px solid #444;
+  } */
+  &.tree-item {
+    margin: auto 15px 15px;
+    height: 150px;
+    background: rgb(35, 36, 31);
+    opacity: 1;
+    h1 {
+      position: relative;
+      display: block;
+      color: #bbb;
+      font-weight: 700;
+      font-size: 12px;
+      padding: 8px 5px 5px;
+      user-select: none;
+      text-transform: uppercase;
+      border: 0;
+    }
+    .props-accordion-content {
+      padding: 5px 15px;
+    }
   }
 }
 
 h1 {
   width: 100%;
-  border-top: 1px solid #444;
-  color: #fff;
+  border-top: 1px solid rgba(68, 68, 68, 0.5);
+  color: #eee;
   font-size: 15px;
   margin: 0;
   padding: 10px 15px;
@@ -63,7 +80,10 @@ h1 {
 }
 
 .props-accordion-content {
-  padding: 0 15px 10px;
+  padding: 0 15px 15px;
+  &:empty {
+    padding: 0;
+  }
 }
 
 * {

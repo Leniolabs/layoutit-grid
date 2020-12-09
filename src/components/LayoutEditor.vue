@@ -34,8 +34,8 @@ onMounted(loadFromStorage)
 
 <style lang="scss">
 :root {
-  --color-add: #01579b;
-  --color-add-active: #4f83cc;
+  --color-add: #108043;
+  --color-add-active: #50b83c;
   --color-remove: #c2185b;
   --color-remove-active: #fa5788;
   --color-hire-us: var(--color-remove);
@@ -71,7 +71,7 @@ p {
 .disabled,
 [disabled],
 .area-selection button[disabled] {
-  opacity: 0.6;
+  opacity: 0.7;
   pointer-events: none;
 }
 
@@ -93,7 +93,7 @@ p {
   background: #300748;
   height: 100%;
   display: grid;
-  grid-template-columns: 220px 1fr 360px;
+  grid-template-columns: 260px 1fr 360px;
   @media screen and (max-width: 768px) {
     display: block;
   }

@@ -22,7 +22,7 @@ const props = defineProps({
 })
 defineEmit(['update:modelValue'])
 
-const optionsContent = ['initial', 'start', 'end', 'center', 'stretch', 'space-around', 'space-between', 'space-evenly']
+const optionsContent = ['initial', 'start', 'end', 'center', 'stretch', 'around', 'between', 'evenly']
 const optionsItems = ['initial', 'start', 'end', 'center', 'stretch']
 
 const optionsMap = {

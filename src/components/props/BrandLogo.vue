@@ -7,12 +7,11 @@
 <style scoped lang="scss">
 .brand-logo {
   font-family: 'Alegreya Sans', 'Helvetica Neue', Arial, sans-serif;
-  font-size: 24px;
+  font-size: 22px;
   font-style: italic;
   font-weight: 700;
   letter-spacing: 0.02em;
-  margin-left: 5px;
-  margin-top: 10px;
+  margin: 12px 10px;
   color: #fff;
   text-decoration: none;
   display: inline-block;

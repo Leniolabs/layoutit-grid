@@ -1,5 +1,7 @@
 <template>
-  <div class="gap-input">
+  <div class="area-size">
+    <label>{{ type }}-gap</label>
+
     <div class="input-container">
       <input
         :value="gap.value"
@@ -44,34 +46,73 @@ const onSizeValueInput = inputSetter((value) => {
 </script>
 
 <style scoped lang="scss">
-.gap-input {
-  display: inline-block;
-  margin-right: 10px;
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+.area-size {
+  display: flex;
+  align-items: center;
+  padding: 5px 0 5px 10px;
+
+  label {
+    display: block;
+    flex: 1;
+    max-width: max-content;
+    color: rgb(156, 220, 254);
+    font-size: 13px;
+    text-shadow: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    direction: ltr;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+  }
   .input-container {
     display: grid;
-    grid-template-columns: 45px 40px;
-    grid-template-rows: 30px;
+    grid-template-columns: 1fr 1fr;
+    flex: 1;
     input {
-      text-align: center;
       font-size: 14px;
-      height: 24px;
       border: 0;
-      width: auto;
-      background: #fff;
-      color: #333;
+      width: 100%;
+      background: rgb(35, 36, 31);
+      color: rgb(206, 145, 120);
+      height: 25px;
+      text-align: right;
+      flex: 1;
+      font-size: 13px;
+      text-shadow: none;
+      font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+      direction: ltr;
+      padding: 0;
+      &:hover {
+        color: #eee;
+      }
     }
     .unit-select {
-      min-width: 45px;
+      appearance: none;
+      height: 25px;
+      background: rgb(35, 36, 31);
+      color: rgb(206, 145, 120);
+      flex: 1;
+      font-size: 13px;
+      text-shadow: none;
+      font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+      direction: ltr;
+      cursor: text;
+      text-align: center;
+      padding-left: 3px;
+      &:hover {
+        color: #eee;
+      }
     }
-  }
-  input {
-    border-radius: 2px 0 0 2px;
-  }
-  .unit-select {
-    border-radius: 0 2px 2px 0;
-  }
-  &:nth-child(3) {
-    margin-right: 0;
   }
 }
 </style>

@@ -1,27 +1,18 @@
 <template>
   <PropsAccordion class="area-props" :accordion="accordion">
-    <PropsAccordionItem
-      name="tree"
-      :independent="true"
-      :heading="`Areas`"
-      :closed-heading="`${area.name}`"
-      :accordion="accordion"
-    >
-      <AreaTree :area="mainArea" />
-    </PropsAccordionItem>
     <!--
     <div class="area-type">{{ area.type === 'div' ? area.display : area.type }} props</div>
-    -->
     <PropsAccordionItem name="display" :heading="`Display (${area.display})`" :accordion="accordion">
       <AreaContentProps :area="area" />
     </PropsAccordionItem>
+    -->
 
     <template v-if="area.display === 'grid'">
-      <PropsAccordionItem name="grid-template" heading="Template" :accordion="accordion">
+      <PropsAccordionItem name="grid-template" heading="Explicit Grid" :accordion="accordion">
         <AreaGridTemplateProps :area="area" />
       </PropsAccordionItem>
 
-      <PropsAccordionItem name="grid-gap" heading="Gap" :accordion="accordion">
+      <PropsAccordionItem name="grid-gap" heading="Grid Gap" :accordion="accordion">
         <AreaGridGapProps :area="area" />
       </PropsAccordionItem>
 
@@ -59,7 +50,16 @@
     <PropsAccordionItem name="box" heading="Area Box" :accordion="accordion">
       <AreaBoxProps :area="area" />
     </PropsAccordionItem>
-
+    <PropsAccordionItem
+      name="tree"
+      :independent="true"
+      :heading="`Area Tree`"
+      :closed-heading="`${area.name}`"
+      :accordion="accordion"
+      class="tree-item"
+    >
+      <AreaTree :area="mainArea" />
+    </PropsAccordionItem>
     <!--     <PropsAccordionItem v-if="area.parent" name="type" heading="Type" :accordion="accordion">
       <AreaTypeSelect v-if="area.parent" :model-value="area.type" @update:modelValue="onUpdateType" />
     </PropsAccordionItem> -->

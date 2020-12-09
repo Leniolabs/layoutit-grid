@@ -29,10 +29,7 @@ const options = ['block', 'flex', 'grid']
 
 <style scoped lang="scss">
 .display-select-container {
-  //display: grid;
-  //grid-template-columns: 0.75fr 1fr;
   margin-bottom: 5px;
-
   span {
     align-self: center;
     font-size: 12px;
@@ -58,44 +55,27 @@ const options = ['block', 'flex', 'grid']
 }
 
 .radio-toolbar label {
-  color: #444;
+  color: rgb(206, 145, 120);
   display: block;
   flex: 1;
-  background-color: #ddd;
-  padding: 5px 0px;
+  padding: 5px 0;
   font-family: sans-serif, Arial;
-  font-size: 13px;
   text-align: center;
-  // border: 2px solid #444;
-  // border-radius: 4px;
+  font-size: 13px;
+  text-shadow: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   opacity: 0.7;
-
-  &.long-name {
-    width: 67px;
-    height: 35px;
-    &:last-child {
-      width: 66px;
-    }
-  }
+  cursor: pointer;
+  min-width: 33.333%;
+  max-width: 33.333%;
+  &:hover,
   &.default-value {
     opacity: 1;
-    background-color: #bbb;
-    color: black;
-  }
-
-  &:hover {
-    background-color: #dfd;
+    color: #fff;
   }
 }
-
-.radio-toolbar input[type='radio']:focus + label {
-  // border: 2px solid #444;
-}
-
-.radio-toolbar input[type='radio']:checked + label {
+input[type='radio']:checked + label {
   opacity: 1;
-  background-color: white;
-  color: black;
-  // border-color: #4c4;
+  color: #fff;
 }
 </style>

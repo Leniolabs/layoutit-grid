@@ -67,7 +67,7 @@ function copyToClipBoard() {
   color: #bbb;
   font-weight: 700;
   font-size: 12px;
-  padding: 3px 5px 2px;
+  padding: 8px 5px 5px;
   //border-top-left-radius: 4px;
   //border-top-right-radius: 4px;
   user-select: none;

@@ -127,6 +127,14 @@ function getPermalink() {
     border: solid 1px #2a2a2a;
     &:first-child {
       margin-left: 0;
+      margin-right: 0;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    + .btn-history {
+      margin-left: 0;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
     }
   }
 }
