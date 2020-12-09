@@ -49,12 +49,12 @@
   </div>
 </template>
 
-<script setup="props">
-export { default as IconAdd } from '../icons/IconAdd.vue'
-export { default as IconRemove } from '../icons/IconRemove.vue'
+<script setup>
+import IconAdd from '../icons/IconAdd.vue'
+import IconRemove from '../icons/IconRemove.vue'
 
-import { ref, computed } from 'vue'
-export {
+import { defineProps, ref, computed } from 'vue'
+import {
   mainArea,
   currentArea,
   removeArea,
@@ -65,18 +65,16 @@ export {
 } from '../../store.js'
 
 import { getAreaDepth } from '../../store.js'
-import { getRandomColor } from '../../store/area'
 
-export const depth = computed(() => getAreaDepth(props.area) * 5 + 'px')
+const depth = computed(() => getAreaDepth(props.area) * 5 + 'px')
 
-export default {
-  name: 'AreaTree',
-  props: {
-    area: { type: Object, required: true },
-  },
-}
+// name: 'AreaTree',
 
-export function onDragStart(area, event) {
+const props = defineProps({
+  area: { type: Object, required: true },
+})
+
+function onDragStart(area, event) {
   event.stopPropagation()
   reordering.value = { area, reordering: null, after: true }
 }
@@ -85,7 +83,7 @@ function areaIndex(area) {
   return area.parent.children.findIndex((a) => a === area)
 }
 
-export function onDrop(areaTarget, event) {
+function onDrop(areaTarget, event) {
   event.stopPropagation()
   const areaFrom = reordering.value.area
   const sameParent = areaTarget.parent === areaFrom.parent
@@ -102,14 +100,14 @@ export function onDrop(areaTarget, event) {
   props.area.children = children
 }
 
-export function onDragEnd(a) {
+function onDragEnd(a) {
   reordering.value = null
 }
 
 function afterMiddleHeight(event) {
   return (event.clientY - event.target.offsetTop) / event.target.clientHeight > 0.5
 }
-export function onDragOver(areaTarget, event) {
+function onDragOver(areaTarget, event) {
   event.stopPropagation()
 
   const areaFrom = reordering.value.area
@@ -132,12 +130,12 @@ export function onDragOver(areaTarget, event) {
   }
 }
 
-export const showChildren = ref(false)
+const showChildren = ref(false)
 
-export const currentGrid = computed(() => props.area.grid)
-export const currentFlex = computed(() => props.area.flex)
+const currentGrid = computed(() => props.area.grid)
+const currentFlex = computed(() => props.area.flex)
 
-export function addArea() {
+function addArea() {
   props.area.children.push(
     createAreaState({
       name: newAreaName(),
@@ -149,9 +147,9 @@ export function addArea() {
 }
 </script>
 
-<style scoped lang="scss" vars="{ depth }">
+<style scoped lang="scss">
 .area-tree {
-  margin-left: var(--depth);
+  margin-left: v-bind(depth);
 }
 
 .area-children {
@@ -160,7 +158,7 @@ export function addArea() {
 }
 
 :not(.after).reordering::before {
-  margin-left: var(--depth);
+  margin-left: v-bind(depth);
   height: 10px;
   content: '>';
   opacity: 0;
@@ -168,7 +166,7 @@ export function addArea() {
 }
 
 .reordering.after::after {
-  margin-left: var(--depth);
+  margin-left: v-bind(depth);
   height: 10px;
   color: black;
   opacity: 0;

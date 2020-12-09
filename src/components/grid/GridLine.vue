@@ -34,43 +34,41 @@
   </section>
 </template>
 
-<script setup="props, { emit }">
-export { default as LineName } from './LineName.vue'
-export { dragging, currentFocus } from '../../store.js'
-import { ref, computed } from 'vue'
+<script setup>
+import LineName from './LineName.vue'
+import { dragging, currentFocus } from '../../store.js'
+import { ref, computed, defineProps, defineEmit } from 'vue'
 
-export default {
-  props: {
-    type: { type: String, required: true },
-    pos: { type: Number, required: true },
-    area: { type: Object, required: true },
-    gap: { type: String, default: '0px' },
-  },
-  emits: ['down'],
-}
+const props = defineProps({
+  type: { type: String, required: true },
+  pos: { type: Number, required: true },
+  area: { type: Object, required: true },
+  gap: { type: String, default: '0px' },
+})
+defineEmit(['down'])
 
-export const grid = computed(() => props.area.grid)
+const grid = computed(() => props.area.grid)
 
-export const last = computed(() => props.pos === grid.value[props.type].lineNames.length)
+const last = computed(() => props.pos === grid.value[props.type].lineNames.length)
 
-export const showNumber = computed(() => {
+const showNumber = computed(() => {
   const otherLineNames = grid.value[props.type === 'col' ? 'row' : 'col'].lineNames
   return !(last.value && otherLineNames[0].active)
 })
 
-export const gridArea = computed(() => {
+const gridArea = computed(() => {
   // The first line uses the same track as the second one
   const pos = Math.max(props.pos - 1, 1)
   return props.type === 'row' ? `${pos} / 1 / ${pos + 1} / -1` : `1 / ${pos} / -1 / ${pos + 1}`
 })
 
-export const lineNameRef = ref(null)
-export function toggleLineName() {
+const lineNameRef = ref(null)
+function toggleLineName() {
   lineNameRef.value.toggle()
 }
 </script>
 
-<style scoped lang="scss" vars="{ gap }">
+<style scoped lang="scss">
 section {
   touch-action: none;
   pointer-events: none;
@@ -95,7 +93,7 @@ section {
   }
 
   &.row .line-number {
-    bottom: calc(-7px - 0.5 * var(--gap));
+    bottom: calc(-7px - 0.5 * v-bind(gap));
     left: 0px;
     width: 15px;
     text-align: left;
@@ -116,7 +114,7 @@ section {
   }
 
   &.col .line-number {
-    right: calc(-6.5px - 0.5 * var(--gap));
+    right: calc(-6.5px - 0.5 * v-bind(gap));
     top: 0px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
@@ -141,11 +139,11 @@ section {
     &.col {
       bottom: 0;
       height: 100%;
-      width: calc(var(--gap) + 20px);
-      right: calc(-10px - var(--gap));
+      width: calc(v-bind(gap) + 20px);
+      right: calc(-10px - v-bind(gap));
       &.first {
         right: initial;
-        left: calc(-10px - var(--gap));
+        left: calc(-10px - v-bind(gap));
       }
       &:not(.dragging-something) {
         cursor: col-resize;
@@ -154,11 +152,11 @@ section {
     &.row {
       right: 0;
       width: 100%;
-      height: calc(var(--gap) + 20px);
-      bottom: calc(-10px - var(--gap));
+      height: calc(v-bind(gap) + 20px);
+      bottom: calc(-10px - v-bind(gap));
       &.first {
         bottom: initial;
-        top: calc(-10px - var(--gap));
+        top: calc(-10px - v-bind(gap));
       }
       &:not(.dragging-something) {
         cursor: row-resize;

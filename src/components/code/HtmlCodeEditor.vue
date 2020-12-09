@@ -3,15 +3,14 @@
 </template>
 
 <script setup>
-export { default as CodeEditor } from './CodeEditor.vue'
-export { default as HtmlCodeArea } from './HtmlCodeArea.vue'
+import { defineProps } from 'vue'
+import CodeEditor from './CodeEditor.vue'
+import HtmlCodeArea from './HtmlCodeArea.vue'
 
-export default {
-  props: {
-    area: { type: Object, default: null },
-    options: { type: Object, default: null },
-  },
-}
+defineProps({
+  area: { type: Object, default: null },
+  options: { type: Object, default: null },
+})
 </script>
 
 <style scoped>

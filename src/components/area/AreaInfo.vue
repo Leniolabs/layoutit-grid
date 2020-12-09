@@ -26,25 +26,24 @@
   </section>
 </template>
 
-<script setup="props">
-export { default as AreaName } from './AreaName.vue'
-export { default as AreaButtons } from './AreaButtons.vue'
+<script setup>
+import AreaName from './AreaName.vue'
+import AreaButtons from './AreaButtons.vue'
 
-import { computed, toRefs } from 'vue'
+import { computed, toRefs, defineProps, defineEmit } from 'vue'
 import { getAreaDepth, getGridRegion } from '../../store.js'
 import { useIsMainArea } from '../../composables/area.js'
 
-export default {
-  props: {
-    area: { type: Object, required: true },
-  },
-  emits: ['edit'],
-}
+const props = defineProps({
+  area: { type: Object, required: true },
+})
+
+defineEmit(['edit'])
 
 const { area } = toRefs(props)
-export const isMain = useIsMainArea(area)
+const isMain = useIsMainArea(area)
 
-export const toolbarStart = computed(() => {
+const toolbarStart = computed(() => {
   const gridRegion = getGridRegion(props.area)
   return gridRegion ? (gridRegion.col.start === 1 && gridRegion.row.start === 1 ? getAreaDepth(props.area) - 1 : 0) : 0
 })

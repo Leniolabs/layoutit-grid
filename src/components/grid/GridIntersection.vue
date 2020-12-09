@@ -12,25 +12,23 @@
   </section>
 </template>
 
-<script setup="props, { emit }">
-export { dragging } from '../../store.js'
-import { computed } from 'vue'
+<script setup>
+import { dragging } from '../../store.js'
+import { computed, defineProps, defineEmit } from 'vue'
 
-export default {
-  props: {
-    row: { type: Number, required: true },
-    col: { type: Number, required: true },
-    area: { type: Object, required: true },
-    colgap: { type: String, default: '0px' },
-    rowgap: { type: String, default: '0px' },
-  },
-  emits: ['down'],
-}
+const props = defineProps({
+  row: { type: Number, required: true },
+  col: { type: Number, required: true },
+  area: { type: Object, required: true },
+  colgap: { type: String, default: '0px' },
+  rowgap: { type: String, default: '0px' },
+})
+defineEmit(['down'])
 
-export const grid = computed(() => props.area.grid)
+const grid = computed(() => props.area.grid)
 </script>
 
-<style scoped lang="scss" vars="{ colgap, rowgap }">
+<style scoped lang="scss">
 section {
   touch-action: none;
   pointer-events: none;
@@ -40,11 +38,11 @@ section {
     touch-action: none;
     pointer-events: initial;
     position: absolute;
-    width: calc(20px + var(--colgap));
-    height: calc(20px + var(--rowgap));
+    width: calc(20px + v-bind(colgap));
+    height: calc(20px + v-bind(rowgap));
     border-radius: 50%;
-    left: calc(-10px - var(--colgap));
-    top: calc(-10px - var(--rowgap));
+    left: calc(-10px - v-bind(colgap));
+    top: calc(-10px - v-bind(rowgap));
     &:not(.dragging-something) {
       cursor: move;
     }

@@ -13,9 +13,10 @@
   />
 </template>
 
-<script setup="props">
+<script>
 import { useLineNameWidth } from '../../composables/lineName.js'
-export { parseValue, currentFocus } from '../../store.js'
+import { parseValue, currentFocus } from '../../store.js'
+import { ref, computed, nextTick } from 'vue'
 
 export default {
   props: {
@@ -24,33 +25,35 @@ export default {
     pos: { type: Number, required: true },
     gap: { type: String, default: '0px' },
   },
-}
+  setup(props, { expose }) {
+    const line = computed(() => props.grid[props.type].lineNames[props.pos - 1])
 
-import { ref, computed, nextTick } from 'vue'
+    const lineNameWidth = useLineNameWidth(line, '14px arial', 30)
 
-export const line = computed(() => props.grid[props.type].lineNames[props.pos - 1])
+    const style = computed(() => {
+      const g = parseValue(props.gap)
+      const s = { width: lineNameWidth.value + 'px' }
+      if (props.pos > 1 && props.pos < props.grid[props.type].lineNames.length) {
+        return { ...s, ...(props.type === 'row' ? { bottom: -11 - g / 2 + 'px' } : { right: -2 - g / 2 + 'px' }) }
+      }
+      return s
+    })
 
-export const lineNameWidth = useLineNameWidth(line, '14px arial', 30)
+    const inputElement = ref(null)
 
-export const style = computed(() => {
-  const g = parseValue(props.gap)
-  const s = { width: lineNameWidth.value + 'px' }
-  if (props.pos > 1 && props.pos < props.grid[props.type].lineNames.length) {
-    return { ...s, ...(props.type === 'row' ? { bottom: -11 - g / 2 + 'px' } : { right: -2 - g / 2 + 'px' }) }
-  }
-  return s
-})
+    function focus() {
+      inputElement.value.focus()
+    }
 
-export const inputElement = ref(null)
+    function toggle() {
+      if ((line.value.active = !line.value.active)) {
+        nextTick(focus)
+      }
+    }
 
-function focus() {
-  inputElement.value.focus()
-}
-
-export function toggle() {
-  if ((line.value.active = !line.value.active)) {
-    nextTick(focus)
-  }
+    expose({ focus })
+    return { line, toggle, inputElement, style }
+  },
 }
 </script>
 

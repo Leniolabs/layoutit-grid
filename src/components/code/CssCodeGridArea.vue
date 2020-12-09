@@ -2,31 +2,27 @@
   <span class="token string">{{ gridArea }}</span>
 </template>
 
-<script setup="props, { emit }">
+<script setup>
 import { dragging, currentArea, getGridRegion } from '../../store.js'
-import { computed } from 'vue'
+import { defineProps, computed } from 'vue'
 import { getGridAreaWithNamedLines, gridTemplateAreas, toCssName } from '../../utils.js'
 
-export default {
-  props: {
-    area: { type: Object, required: true },
-    options: { type: Object, required: true },
-  },
-}
+const props = defineProps({
+  area: { type: Object, required: true },
+  options: { type: Object, required: true },
+})
 
-export { currentArea }
-
-export const cssAreaName = computed(() => toCssName(props.area.name))
+const cssAreaName = computed(() => toCssName(props.area.name))
 
 function getGridTemplateAreas(area) {
   return area.display === 'grid' ? gridTemplateAreas(area, '\n    ') : undefined
 }
 
-export const templateAreas = computed(() => getGridTemplateAreas(props.area))
+const templateAreas = computed(() => getGridTemplateAreas(props.area))
 
-export const includeTemplateAreas = computed(() => props.options.templateAreas && templateAreas.value !== undefined)
+const includeTemplateAreas = computed(() => props.options.templateAreas && templateAreas.value !== undefined)
 
-export const gridArea = computed(() => {
+const gridArea = computed(() => {
   const gridRegion = getGridRegion(props.area) // TODO: span
   if (!gridRegion) {
     return undefined

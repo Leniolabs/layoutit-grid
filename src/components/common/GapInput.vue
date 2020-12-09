@@ -13,21 +13,18 @@
   </div>
 </template>
 
-<script setup="props">
-export { default as UnitSelect } from './UnitSelect.vue'
+<script setup>
+import UnitSelect from './UnitSelect.vue'
 
-import { computed } from 'vue'
+import { defineProps, computed } from 'vue'
 import { parseValueUnit } from '../../store.js'
 import { inputSetter } from '../../composables'
 
-export default {
-  props: {
-    grid: { type: Object, required: true },
-    type: { type: String, required: true }, // 'row' or 'col'
-  },
-}
-
-export const gap = computed({
+const props = defineProps({
+  grid: { type: Object, required: true },
+  type: { type: String, required: true }, // 'row' or 'col'
+})
+const gap = computed({
   get() {
     return parseValueUnit(props.grid[props.type].gap)
   },
@@ -36,7 +33,7 @@ export const gap = computed({
   },
 })
 
-export function setGapUnit(unit) {
+function setGapUnit(unit) {
   // TODO: Adjust value to avoid jump
   gap.value = gap.value.value + unit
 }

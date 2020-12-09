@@ -25,25 +25,22 @@
   /></template>
 </template>
 
-<script setup="props">
-import { computed } from 'vue'
+<script setup>
+import { defineProps, computed } from 'vue'
 import { getGridRegion } from '../../store.js'
-export { namedTemplateColumns, namedTemplateRows, toCssName } from '../../utils.js'
+import { namedTemplateColumns, namedTemplateRows, toCssName } from '../../utils.js'
 
-export default {
-  name: 'CssCodeAreaOldSpec',
-  props: {
-    area: { type: Object, default: null },
-    options: { type: Object, default: null },
-  },
-}
+// name: 'CssCodeAreaOldSpec',
+const props = defineProps({
+  area: { type: Object, default: null },
+  options: { type: Object, default: null },
+})
+const cssAreaName = computed(() => toCssName(props.area.name))
 
-export const cssAreaName = computed(() => toCssName(props.area.name))
-
-export const gridAreas = computed(() => (props.area.display === 'grid' ? props.area.children : []))
+const gridAreas = computed(() => (props.area.display === 'grid' ? props.area.children : []))
 
 // TODO:
-export const gridRegion = computed(() => getGridRegion(props.area))
+const gridRegion = computed(() => getGridRegion(props.area))
 </script>
 
 <style scoped lang="scss"></style>

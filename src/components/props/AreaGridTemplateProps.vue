@@ -135,23 +135,20 @@
   </div>
 </template>
 
-<script setup="props">
-export { default as IconRemove } from '../icons/IconRemove.vue'
-export { default as IconAdd } from '../icons/IconAdd.vue'
-export { default as UnitSelect } from '../common/UnitSelect.vue'
-export { default as OptionsButton } from '../basic/OptionsButton.vue'
+<script setup>
+import IconRemove from '../icons/IconRemove.vue'
+import IconAdd from '../icons/IconAdd.vue'
+import UnitSelect from '../common/UnitSelect.vue'
+import OptionsButton from '../basic/OptionsButton.vue'
 
-import { computed } from 'vue'
+import { defineProps, computed } from 'vue'
 
-export default {
-  props: {
-    area: { type: Object, required: true },
-  },
-}
+const props = defineProps({
+  area: { type: Object, required: true },
+})
+const grid = computed(() => props.area.grid)
 
-export const grid = computed(() => props.area.grid)
-
-export {
+import {
   addCol,
   addRow,
   getRowValue,
@@ -167,17 +164,19 @@ export {
   dragging,
   withChangedValue,
   withChangedUnit,
+  currentFocus,
+  currentHover,
+  setRowValueUnit,
+  setColValueUnit,
 } from '../../store.js'
 
-import { setRowValueUnit, setColValueUnit } from '../../store.js'
 import { useGridDimensions } from '../../composables/area.js'
 import { unitMeasureMap } from '../../utils.js'
-export { currentFocus, currentHover } from '../../store.js'
 import { debounce } from '../../composables'
 
-export const { colsNumber, rowsNumber } = useGridDimensions(grid)
+const { colsNumber, rowsNumber } = useGridDimensions(grid)
 
-export function unitHasValue(unit) {
+function unitHasValue(unit) {
   return !(unit === 'initial' || unit === 'auto' || unit === 'min-content' || unit === 'max-content')
 }
 
@@ -187,26 +186,26 @@ function defaultValueForUnit(unit) {
   return unitMeasureMap[unit] || 1
 }
 
-export function onRowUnitInput(unit, row) {
+function onRowUnitInput(unit, row) {
   setRowValueUnit(props.area.grid, row, { value: defaultValueForUnit(unit), unit })
 }
 
-export function onColUnitInput(unit, col) {
+function onColUnitInput(unit, col) {
   setColValueUnit(props.area.grid, col, { value: defaultValueForUnit(unit), unit })
 }
 
-export const onSizeValueInput = debounce((type, track, value) => {
+const onSizeValueInput = debounce((type, track, value) => {
   if (type === 'row') {
     setRowValue(grid.value, track, value)
   } else {
     setColValue(grid.value, track, value)
   }
 })
-export const onAutoSizeValueInput = debounce((type, value) => {
+const onAutoSizeValueInput = debounce((type, value) => {
   grid.value[type].auto = withChangedValue(grid.value[type].auto, value)
 })
 
-export function isFocused(type, track) {
+function isFocused(type, track) {
   const tf = currentFocus.value
   return tf && tf.on === 'track' && tf.grid === grid.value && tf.type === type && tf.track === track
 }

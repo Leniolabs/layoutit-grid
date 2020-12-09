@@ -9,23 +9,20 @@
   </div>
 </template>
 
-<script setup="props">
-import { computed, toRefs } from 'vue'
+<script setup>
+import { defineProps, computed, toRefs } from 'vue'
 import { mainArea, currentArea } from '../../store.js'
-export { deselectCurrentArea } from '../../store.js'
+import { deselectCurrentArea } from '../../store.js'
 import { useIsActiveArea } from '../../composables/area.js'
-export { default as AreaEditor } from '../area/AreaEditor.vue'
+import AreaEditor from '../area/AreaEditor.vue'
 
-export default {
-  props: {
-    area: { type: Object, required: true },
-  },
-}
-
-export const flex = computed(() => props.area.flex)
+const props = defineProps({
+  area: { type: Object, required: true },
+})
+const flex = computed(() => props.area.flex)
 
 const { area } = toRefs(props)
-export const isActive = useIsActiveArea(area)
+const isActive = useIsActiveArea(area)
 </script>
 
 <style scoped lang="scss">

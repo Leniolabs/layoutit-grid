@@ -9,25 +9,22 @@
   >
 </template>
 
-<script setup="props">
-import { computed } from 'vue'
+<script setup>
+import { defineProps, computed } from 'vue'
 import { toCssName, getElementTag } from '../../utils.js'
 
-export default {
-  name: 'HtmlCodeArea',
-  props: {
-    area: { type: Object, required: true },
-    options: { type: Object, required: true },
-    ident: { type: String, default: '' },
-  },
-}
+// name: 'HtmlCodeArea',
+const props = defineProps({
+  area: { type: Object, required: true },
+  options: { type: Object, required: true },
+  ident: { type: String, default: '' },
+})
+const OPEN_TAG = '<'
+const CLOSE_TAG = '</'
+const cssAreaName = computed(() => toCssName(props.area.name))
+const elementTag = computed(() => getElementTag(props.area))
 
-export const OPEN_TAG = '<'
-export const CLOSE_TAG = '</'
-export const cssAreaName = computed(() => toCssName(props.area.name))
-export const elementTag = computed(() => getElementTag(props.area))
-
-export const gridAreas = computed(() => (props.area.display === 'grid' ? props.area.children : []))
+const gridAreas = computed(() => (props.area.display === 'grid' ? props.area.children : []))
 </script>
 
 <style scoped lang="scss"></style>

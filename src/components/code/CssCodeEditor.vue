@@ -9,16 +9,15 @@
 </template>
 
 <script setup>
-export { default as CodeEditor } from './CodeEditor.vue'
-export { default as CssCodeArea } from './CssCodeArea.vue'
-export { default as CssCodeAreaOldSpec } from './CssCodeAreaOldSpec.vue'
+import { defineProps } from 'vue'
+import CodeEditor from './CodeEditor.vue'
+import CssCodeArea from './CssCodeArea.vue'
+import CssCodeAreaOldSpec from './CssCodeAreaOldSpec.vue'
 
-export default {
-  props: {
-    area: { type: Object, default: null },
-    options: { type: Object, default: null },
-  },
-}
+defineProps({
+  area: { type: Object, default: null },
+  options: { type: Object, default: null },
+})
 </script>
 
 <style scoped>

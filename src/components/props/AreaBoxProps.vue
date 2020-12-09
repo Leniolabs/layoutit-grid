@@ -25,23 +25,20 @@
   </div>
 </template>
 
-<script setup="props">
-export { default as AreaSize } from '../common/AreaSize.vue'
-import { computed } from 'vue'
+<script setup>
+import AreaSize from '../common/AreaSize.vue'
+import { defineProps, computed } from 'vue'
 import { inputSetter } from '../../composables'
 import { isValidMargin, isValidPadding } from '../../store.js'
 
-export default {
-  props: {
-    area: { type: Object, required: true },
-  },
-}
-
-export const setMargin = inputSetter((value) => {
+const props = defineProps({
+  area: { type: Object, required: true },
+})
+const setMargin = inputSetter((value) => {
   props.area.margin = value
 }, isValidMargin)
 
-export const setPadding = inputSetter((value) => {
+const setPadding = inputSetter((value) => {
   props.area.padding = value
 }, isValidPadding)
 </script>

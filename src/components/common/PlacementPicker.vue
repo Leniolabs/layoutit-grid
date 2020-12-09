@@ -25,19 +25,17 @@
   </div>
 </template>
 
-<script setup="props">
-import { computed } from 'vue'
+<script setup>
+import { computed, defineProps, defineEmit } from 'vue'
 import { validGridUnits } from '../../store.js'
 
-export default {
-  props: {
-    modelValue: { type: String, default: 'stretch' },
-    type: { type: String, default: 'justify-content' }, // [ justify | align ]-[ content, items, self ]
-    focused: { type: Boolean, default: false },
-    initial: { type: String, default: 'initial' },
-  },
-  emits: ['update:modelValue'],
-}
+const props = defineProps({
+  modelValue: { type: String, default: 'stretch' },
+  type: { type: String, default: 'justify-content' }, // [ justify | align ]-[ content, items, self ]
+  focused: { type: Boolean, default: false },
+  initial: { type: String, default: 'initial' },
+})
+defineEmit(['update:modelValue'])
 
 const optionsContent = ['start', 'stretch', 'center', 'end', 'space-around', 'space-between', 'space-evenly']
 const optionsItems = ['start', 'stretch', 'center', 'end']
@@ -48,7 +46,7 @@ const optionsMap = {
   self: optionsItems,
 }
 
-export const options = computed(() => optionsMap[props.type.split('-')[1]])
+const options = computed(() => optionsMap[props.type.split('-')[1]])
 </script>
 
 <style scoped lang="scss">

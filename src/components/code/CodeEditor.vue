@@ -10,30 +10,25 @@
   </div>
 </template>
 
-<script setup="props">
-import { ref } from 'vue'
+<script setup>
+import { defineProps, ref } from 'vue'
 
 import { useClipboard } from '@vueuse/core'
 
 const { copy } = useClipboard()
 
-export default {
-  props: {
-    type: { type: String, required: true },
-  },
-}
+const props = defineProps({
+  type: { type: String, required: true },
+})
+const copied = ref(0)
 
-export const copied = ref(0)
-
-export function copyToClipBoard() {
+function copyToClipBoard() {
   copy(props.code)
   copied.value++
   setTimeout(() => {
     copied.value--
   }, 2000)
 }
-
-export let codeCopied = false
 </script>
 
 <style scoped lang="scss">

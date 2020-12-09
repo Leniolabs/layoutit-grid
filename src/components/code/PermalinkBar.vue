@@ -6,17 +6,15 @@
   </div>
 </template>
 
-<script setup="props">
-import { computed } from 'vue'
+<script setup>
+import { computed, defineProps, defineEmit } from 'vue'
 
-export default {
-  props: {
-    path: { type: String, required: true },
-  },
-  emits: ['close'],
-}
+const props = defineProps({
+  path: { type: String, required: true },
+})
+defineEmit(['close'])
 
-export const fullPath = computed(() => 'https://' + props.path)
+const fullPath = computed(() => 'https://' + props.path)
 </script>
 
 <style scoped lang="scss">

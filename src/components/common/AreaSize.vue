@@ -15,22 +15,19 @@
   </div>
 </template>
 
-<script setup="props">
-export { default as UnitSelect } from './UnitSelect.vue'
+<script setup>
+import UnitSelect from './UnitSelect.vue'
 
-import { computed } from 'vue'
+import { defineProps, computed } from 'vue'
 import { parseValueUnit } from '../../store.js'
 import { unitMeasureMap } from '../../utils.js'
 import { useInputSetter } from '../../composables'
 
-export default {
-  props: {
-    area: { type: Object, required: true },
-    type: { type: String, required: true }, // 'width' or 'height'
-  },
-}
-
-export const size = computed({
+const props = defineProps({
+  area: { type: Object, required: true },
+  type: { type: String, required: true }, // 'width' or 'height'
+})
+const size = computed({
   get() {
     return parseValueUnit(props.area[props.type])
   },
@@ -39,16 +36,16 @@ export const size = computed({
   },
 })
 
-export function setSizeValue(value) {
+function setSizeValue(value) {
   size.value = value + size.value.unit
 }
 
-export function setSizeUnit(unit) {
+function setSizeUnit(unit) {
   // TODO: Adjust value to avoid jump
   size.value = unitMeasureMap[unit] + unit
 }
 
-export const onSizeInput = useInputSetter(size)
+const onSizeInput = useInputSetter(size)
 </script>
 
 <style scoped lang="scss">

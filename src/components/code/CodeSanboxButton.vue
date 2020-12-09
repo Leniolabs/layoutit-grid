@@ -7,23 +7,20 @@
   </form>
 </template>
 
-<script setup="props">
-export { default as IconCodesandbox } from '../icons/IconCodesandbox.vue'
+<script setup>
+import IconCodesandbox from '../icons/IconCodesandbox.vue'
 
-export { preferredExport } from '../../store.js'
+import { preferredExport } from '../../store.js'
 
 import { areaToCSS, areaToHTML } from '../../generateCode.js'
 
-import { computed } from 'vue'
+import { defineProps, computed } from 'vue'
 
-export default {
-  props: {
-    area: { type: Object, required: true },
-    options: { type: Object, required: true },
-  },
-}
-
-export const expanded = computed(() => preferredExport.value === 'codesandbox')
+defineProps({
+  area: { type: Object, required: true },
+  options: { type: Object, required: true },
+})
+const expanded = computed(() => preferredExport.value === 'codesandbox')
 
 async function compressForCodesandbox(input) {
   const { default: LZString } = await import('lz-string')
@@ -88,7 +85,7 @@ function sendFormData(url, data) {
   })
 }
 
-export async function createCodeSandbox() {
+async function createCodeSandbox() {
   preferredExport.value = 'codesandbox'
   const parameters = await compressForCodesandbox(JSON.stringify(codeSandboxJSON()))
   const response = await sendFormData('https://codesandbox.io/api/v1/sandboxes/define', { parameters, json: 1 })

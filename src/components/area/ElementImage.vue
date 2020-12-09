@@ -15,13 +15,12 @@
   </div>
 </template>
 
-<script setup="props">
-export default {
-  props: {
-    area: { type: Object, required: true },
-    style: { type: Object, required: true },
-  },
-}
+<script setup>
+import { defineProps } from 'vue'
+defineProps({
+  area: { type: Object, required: true },
+  style: { type: Object, required: true },
+})
 </script>
 
 <style scoped lang="scss"></style>

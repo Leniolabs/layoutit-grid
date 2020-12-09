@@ -16,39 +16,35 @@
   >
 </template>
 
-<script setup="props, { emit }">
+<script setup>
 import { dragging, currentFocus, currentHover, isValidTrackSize, parseGridTemplate } from '../../store.js'
-import { computed } from 'vue'
+import { defineProps, computed } from 'vue'
 import { useInputSetter } from '../../composables'
 
 import { namedTemplateColumns, namedTemplateRows, onCodeInputKeydown, targetText } from '../../utils.js'
 
-export default {
-  props: {
-    grid: { type: Object, required: true },
-    type: { type: String, required: true },
-    track: { type: Number, required: true },
-    el: { type: Object, required: true },
-  },
-}
+const props = defineProps({
+  grid: { type: Object, required: true },
+  type: { type: String, required: true },
+  track: { type: Number, required: true },
+  el: { type: Object, required: true },
+})
 
-export { currentFocus, currentHover, onCodeInputKeydown }
-
-export const trackSize = computed({
+const trackSize = computed({
   get: () => props.grid[props.type].sizes[props.track - 1],
   set: (value) => (props.grid[props.type].sizes[props.track - 1] = value),
 })
 
-export const isFocused = computed(() => {
+const isFocused = computed(() => {
   const cf = currentFocus.value
   return cf && cf.on === 'track' && cf.grid === props.grid && cf.type === props.type && cf.track === props.track
 })
 
-export const onInput = useInputSetter(trackSize, isValidTrackSize, targetText)
+const onInput = useInputSetter(trackSize, isValidTrackSize, targetText)
 
-export const isDraggingGrid = computed(() => dragging.value && dragging.value.grid === props.grid)
+const isDraggingGrid = computed(() => dragging.value && dragging.value.grid === props.grid)
 
-export const isDraggingTrackLine = computed(
+const isDraggingTrackLine = computed(
   () =>
     isDraggingGrid.value &&
     (props.track === dragging.value[props.type + 'Line'] || props.track === dragging.value[props.type + 'Line'] - 1)

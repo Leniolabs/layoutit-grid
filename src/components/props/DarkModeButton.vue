@@ -12,17 +12,17 @@
 <script setup>
 import { onMounted, watch } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
-export { default as IconDark } from '../icons/IconDark.vue'
-export { darkmode } from '../../store'
+import IconDark from '../icons/IconDark.vue'
+import { darkmode } from '../../store'
 
 const themeStorage = useLocalStorage('theme', null)
 
-export function toggleDarkmode() {
+function toggleDarkmode() {
   darkmode.value = !darkmode.value
   themeStorage.value = darkmode.value ? 'dark' : 'light'
 }
 
-export function switchToSystemTheme() {
+function switchToSystemTheme() {
   darkmode.value = getSystemTheme() === 'dark'
   themeStorage.value = null
 }

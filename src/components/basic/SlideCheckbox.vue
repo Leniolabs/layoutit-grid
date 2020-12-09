@@ -13,12 +13,11 @@
   </div>
 </template>
 
-<script setup="props">
-export default {
-  props: {
-    modelValue: { type: Boolean, default: false },
-    id: { type: String, required: true },
-  },
-  emits: ['update:modelValue'],
-}
+<script setup>
+import { defineProps, defineEmit } from 'vue'
+defineProps({
+  modelValue: { type: Boolean, default: false },
+  id: { type: String, required: true },
+})
+defineEmit(['update:modelValue'])
 </script>

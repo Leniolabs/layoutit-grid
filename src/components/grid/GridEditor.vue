@@ -48,16 +48,16 @@
   <AreaSelection ref="selection" :area="area" @editstart="(a) => (editingArea = a)" @editend="editingArea = null" />
 </template>
 
-<script setup="props, { el }">
-export { default as GridCell } from './GridCell.vue'
-export { default as GridTrack } from './GridTrack.vue'
-export { default as GridLine } from './GridLine.vue'
-export { default as GridIntersection } from './GridIntersection.vue'
-export { default as AreaSelection } from './AreaSelection.vue'
-export { default as AreaEditor } from '../area/AreaEditor.vue'
-export { default as AreaInfo } from '../area/AreaInfo.vue'
+<script setup>
+import GridCell from './GridCell.vue'
+import GridTrack from './GridTrack.vue'
+import GridLine from './GridLine.vue'
+import GridIntersection from './GridIntersection.vue'
+import AreaSelection from './AreaSelection.vue'
+import AreaEditor from '../area/AreaEditor.vue'
+import AreaInfo from '../area/AreaInfo.vue'
 
-export {
+import {
   currentArea,
   setCurrentArea,
   valueUnitToString,
@@ -66,33 +66,32 @@ export {
   dragging,
   currentFocus,
   currentHover,
+  parseValue,
+  parseUnit,
+  parseValueUnit,
 } from '../../store.js'
-import { parseValue, parseUnit, parseValueUnit } from '../../store'
 import { useIsCurrentArea, useIsActiveArea } from '../../composables/area.js'
 
-import { ref, computed, watch, toRefs, onBeforeUpdate, nextTick } from 'vue'
+import { defineProps, ref, computed, watch, toRefs, onBeforeUpdate, nextTick } from 'vue'
 
-export { gridSections } from '../../utils.js'
+import { gridSections } from '../../utils.js'
 
-export default {
-  props: {
-    area: { type: Object, required: true },
-    computedStyles: { type: Object, default: null },
-    computedGap: {
-      type: Object,
-      default: () => {
-        return { col: '0px', row: '0px' }
-      },
+const props = defineProps({
+  area: { type: Object, required: true },
+  computedStyles: { type: Object, default: null },
+  computedGap: {
+    type: Object,
+    default: () => {
+      return { col: '0px', row: '0px' }
     },
-    implicitGrid: { type: Object, required: true },
   },
-}
+  implicitGrid: { type: Object, required: true },
+})
+const grid = computed(() => props.area.grid)
 
-export const grid = computed(() => props.area.grid)
+const editingArea = ref(null)
 
-export const editingArea = ref(null)
-
-export const areasToShow = computed(() => {
+const areasToShow = computed(() => {
   return props.area.children
     .filter((a) => a !== editingArea.value)
     .flatMap((a) =>
@@ -104,7 +103,7 @@ export const areasToShow = computed(() => {
     )
 })
 
-export const gridLineRefs = ref({ col: [], row: [] })
+const gridLineRefs = ref({ col: [], row: [] })
 onBeforeUpdate(() => {
   gridLineRefs.value = { col: [], row: [] }
 })
@@ -127,12 +126,12 @@ function gridSizesForView(type) {
     .join(' ')
 }
 
-export const gridTemplateRows = computed(() => gridSizesForView('row'))
-export const gridTemplateColumns = computed(() => gridSizesForView('col'))
+const gridTemplateRows = computed(() => gridSizesForView('row'))
+const gridTemplateColumns = computed(() => gridSizesForView('col'))
 
 const { area } = toRefs(props)
-export const isCurrent = useIsCurrentArea(area)
-export const isActive = useIsActiveArea(area)
+const isCurrent = useIsCurrentArea(area)
+const isActive = useIsActiveArea(area)
 
 function tracksFor(type) {
   return grid.value[type].sizes.map((size, i) => {
@@ -142,7 +141,7 @@ function tracksFor(type) {
     }
   })
 }
-export const gridTracks = computed(() => {
+const gridTracks = computed(() => {
   return [...tracksFor('row'), ...tracksFor('col')]
 })
 
@@ -154,11 +153,11 @@ function linesFor(type) {
   }
   return lines
 }
-export const gridLines = computed(() => {
+const gridLines = computed(() => {
   return [...linesFor('row'), ...linesFor('col')]
 })
 
-export const gridIntersections = computed(() => {
+const gridIntersections = computed(() => {
   const rowEnd = grid.value.row.sizes.length
   const colEnd = grid.value.col.sizes.length
   const intersections = []
@@ -176,11 +175,11 @@ function toViewGap(gap) {
   return gap
 }
 
-export const gridGap = computed(() => {
+const gridGap = computed(() => {
   return `${toViewGap(grid.value.row.gap)} ${toViewGap(grid.value.col.gap)}`
 })
 
-export function isFocused(section) {
+function isFocused(section) {
   const c = currentHover.value
   return c && c.on === 'cell' && c.grid === grid.value && c.row === section.row.start && c.col === section.col.start
 }
@@ -223,7 +222,7 @@ function farEnough(a, b, delta = 5) {
   return Math.abs(a.x - b.x) > delta || Math.abs(a.y - b.y) > delta
 }
 
-export function handleLineDown(event, { row, col }) {
+function handleLineDown(event, { row, col }) {
   event.stopPropagation() // TODO: ...
   event.preventDefault()
   if (document.activeElement) {

@@ -4,15 +4,13 @@
   </div>
 </template>
 
-<script setup="props">
-import { computed } from 'vue'
+<script setup>
+import { defineProps, computed } from 'vue'
 
-export default {
-  name: 'AreaProps',
-  props: {
-    accordion: { type: Object, required: true },
-  },
-}
+// name: 'AreaProps',
+defineProps({
+  accordion: { type: Object, required: true },
+})
 </script>
 
 <style scoped lang="scss">

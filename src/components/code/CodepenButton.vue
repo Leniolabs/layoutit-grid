@@ -15,32 +15,29 @@
   </form>
 </template>
 
-<script setup="props">
-export { default as IconCodepen } from '../icons/IconCodepen.vue'
+<script setup>
+import IconCodepen from '../icons/IconCodepen.vue'
 
-export { preferredExport } from '../../store.js'
+import { preferredExport } from '../../store.js'
 
 import { areaToCSS, areaToHTML } from '../../generateCode.js'
 
-import { ref, computed } from 'vue'
+import { defineProps, ref, computed } from 'vue'
 
-export default {
-  props: {
-    area: { type: Object, required: true },
-    options: { type: Object, required: true },
-  },
-}
+const props = defineProps({
+  area: { type: Object, required: true },
+  options: { type: Object, required: true },
+})
+const expanded = computed(() => preferredExport.value === 'codepen')
 
-export const expanded = computed(() => preferredExport.value === 'codepen')
-
-export function onSubmit(event) {
+function onSubmit(event) {
   event.preventDefault()
   document.getElementById('codepenData').value = JSON.stringify(codePenJSON())
   document.getElementById('codepenForm').submit()
   preferredExport.value = 'codepen'
 }
 
-export const codePenJSON = function () {
+const codePenJSON = function () {
   const { repeat, templateAreas, oldSpec } = props.options
   const cssCode = areaToCSS(props.area, { useTemplateAreas: templateAreas, repeat, oldSpec })
   const htmlCode = areaToHTML(props.area)

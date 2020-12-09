@@ -8,8 +8,8 @@
   </select>
 </template>
 
-<script setup="props">
-import { computed } from 'vue'
+<script setup>
+import { computed, defineProps, defineEmit } from 'vue'
 import { validGridUnits } from '../../store.js'
 
 const units = {
@@ -20,16 +20,14 @@ const units = {
   auto: [...validGridUnits, 'initial'],
 }
 
-export default {
-  props: {
-    modelValue: { type: String, default: 'px' },
-    type: { type: String, default: 'default' }, //  default, grid, flex
-    focused: { type: Boolean, default: false },
-  },
-  emits: ['update:modelValue'],
-}
+const props = defineProps({
+  modelValue: { type: String, default: 'px' },
+  type: { type: String, default: 'default' }, //  default, grid, flex
+  focused: { type: Boolean, default: false },
+})
+defineEmit(['update:modelValue'])
 
-export const options = computed(() => units[props.type])
+const options = computed(() => units[props.type])
 </script>
 
 <style scoped lang="scss">

@@ -67,21 +67,22 @@
   </component>
 </template>
 
-<script setup="props">
-export { default as AreaBox } from './AreaBox.vue'
-export { default as PieChart } from '../content/PieChart.vue'
-export { default as ElementImage } from './ElementImage.vue'
-export { default as ElementParagraph } from './ElementParagraph.vue'
-export { default as ElementButton } from './ElementButton.vue'
+<script setup>
+import AreaBox from './AreaBox.vue'
+import PieChart from '../content/PieChart.vue'
+import ElementImage from './ElementImage.vue'
+import ElementParagraph from './ElementParagraph.vue'
+import ElementButton from './ElementButton.vue'
 // GridEditor imported globally due to circular reference with AreaEditor
-// export { default as FlexEditor } from '../flex/FlexEditor.vue'
+// import FlexEditor from '../flex/FlexEditor.vue'
 
-import { ref, computed, watch, nextTick, defineAsyncComponent, toRefs } from 'vue'
+import { ref, computed, watch, nextTick, defineAsyncComponent, toRefs, defineProps, defineEmit } from 'vue'
 import {
   mainArea,
   currentArea,
   setCurrentArea,
   parseUnit,
+  parseValue,
   parseValueUnit,
   getGridArea,
   getGridRegion,
@@ -90,22 +91,20 @@ import {
 } from '../../store.js'
 import { useIsActiveArea } from '../../composables/area.js'
 
-export { currentArea, mainArea }
+// name: 'AreaEditor',
 
-export default {
-  name: 'AreaEditor',
-  props: {
-    area: { type: Object, required: true },
-    item: { type: Number, default: 1 },
-    gridArea: { type: String, default: undefined },
-  },
-  emits: ['edit'],
-}
+const props = defineProps({
+  area: { type: Object, required: true },
+  item: { type: Number, default: 1 },
+  gridArea: { type: String, default: undefined },
+})
+
+defineEmit(['edit'])
 
 const { area } = toRefs(props)
-export const isActive = useIsActiveArea(area)
+const isActive = useIsActiveArea(area)
 
-export const areaType = computed(() => {
+const areaType = computed(() => {
   switch (props.area.type) {
     case 'image':
       return ElementImage
@@ -146,7 +145,7 @@ function computedAlignItem(area) {
   return alignSelf !== 'initial' ? alignSelf : parent.grid ? parent.grid.alignItems : 'initial'
 }
 
-export function gridAreaStyles(area, gridArea) {
+function gridAreaStyles(area, gridArea) {
   return {
     'grid-area': gridArea || area.gridArea,
     'justify-self': computedJustifyItem(area),
@@ -186,7 +185,7 @@ function flexStyles(flex) {
   }
 }
 
-export const displayStyles = computed(() => {
+const displayStyles = computed(() => {
   switch (props.area.display) {
     case 'grid':
       return gridStyles(props.area.grid)
@@ -197,10 +196,10 @@ export const displayStyles = computed(() => {
   }
 })
 
-export const grid = computed(() => props.area.grid)
-export const componentInstance = ref(null)
-export const computedStyles = ref(null)
-export const computedGap = ref({ col: '0px', row: '0px' })
+const grid = computed(() => props.area.grid)
+const componentInstance = ref(null)
+const computedStyles = ref(null)
+const computedGap = ref({ col: '0px', row: '0px' })
 watch(
   grid,
   () => {
@@ -228,8 +227,8 @@ watch(
   { immediate: true, deep: true, flush: 'post' }
 )
 
-export const gridAreas = ref([])
-export const implicitGrid = ref({ rows: 0, cols: 0 })
+const gridAreas = ref([])
+const implicitGrid = ref({ rows: 0, cols: 0 })
 watch(
   props.area,
   () => {

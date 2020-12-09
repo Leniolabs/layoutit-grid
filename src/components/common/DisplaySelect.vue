@@ -16,17 +16,15 @@
   </div>
 </template>
 
-<script setup="props">
-import { computed } from 'vue'
+<script setup>
+import { computed, defineProps, defineEmit } from 'vue'
 
-export default {
-  props: {
-    modelValue: { type: String, default: 'block' },
-  },
-  emits: ['update:modelValue'],
-}
+defineProps({
+  modelValue: { type: String, default: 'block' },
+})
+defineEmit(['update:modelValue'])
 
-export const options = ['block', 'flex', 'grid']
+const options = ['block', 'flex', 'grid']
 </script>
 
 <style scoped lang="scss">

@@ -12,22 +12,20 @@
 </template>
 
 <script setup>
-export { default as MobileButtons } from './MobileButtons.vue'
-export { default as AreaEditor } from './area/AreaEditor.vue'
-export { default as SidebarRight } from './basic/SidebarRight.vue'
-export { default as PropsSidebar } from './props/PropsSidebar.vue'
-export { default as LiveCode } from './code/LiveCode.vue'
+import MobileButtons from './MobileButtons.vue'
+import AreaEditor from './area/AreaEditor.vue'
+import SidebarRight from './basic/SidebarRight.vue'
+import PropsSidebar from './props/PropsSidebar.vue'
+import LiveCode from './code/LiveCode.vue'
 
-import { ref, computed, onMounted } from 'vue'
-export { mainArea, loadFromStorage, currentArea, currentView } from '../store.js'
+import { defineProps, ref, computed, onMounted } from 'vue'
+import { mainArea, loadFromStorage, currentArea, currentView } from '../store.js'
 
-export default {
-  props: {
-    saveDesign: { type: Function, default: null },
-  },
-}
+defineProps({
+  saveDesign: { type: Function, default: null },
+})
 
-export function toggleView(view) {
+function toggleView(view) {
   currentView.value = currentView.value === view ? 'editor' : view
 }
 

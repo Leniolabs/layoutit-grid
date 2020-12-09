@@ -19,11 +19,10 @@
   />
 </template>
 
-<script setup="props, { emit }">
+<script setup>
+import { defineProps, defineEmit } from 'vue'
 import { dragging, setCurrentArea, parseValueUnit, valueUnitToString, pause, resume } from '../../store.js'
 import { useGridDimensions } from '../../composables/area.js'
-
-export { dragging }
 
 function calcValue(prev, prevComp, delta) {
   const sizeAdd = (prev.value * delta) / prevComp.value
@@ -63,33 +62,31 @@ function farEnough(a, b, delta = 5) {
   return Math.abs(a.x - b.x) > delta || Math.abs(a.y - b.y) > delta
 }
 
-export default {
-  props: {
-    section: { type: Object, required: true },
-    area: { type: Object, required: true },
-    grayed: { type: Boolean, default: false },
-    focused: { type: Boolean, default: false },
-  },
-  emits: ['pointerdown'],
-}
+const props = defineProps({
+  section: { type: Object, required: true },
+  area: { type: Object, required: true },
+  grayed: { type: Boolean, default: false },
+  focused: { type: Boolean, default: false },
+})
+defineEmit(['pointerdown'])
 
 import { computed } from 'vue'
 
-export const grid = computed(() => props.area.grid)
+const grid = computed(() => props.area.grid)
 
-export const { colsNumber, rowsNumber } = useGridDimensions(grid)
+const { colsNumber, rowsNumber } = useGridDimensions(grid)
 
-export const isDraggingGrid = computed(() => dragging.value && dragging.value.grid === grid.value)
+const isDraggingGrid = computed(() => dragging.value && dragging.value.grid === grid.value)
 
-export const isDraggingSection = computed(
+const isDraggingSection = computed(
   () =>
     isDraggingGrid.value &&
     (dragging.value.colLine === props.section.col.start || dragging.value.rowLine === props.section.row.start)
 )
 
-export const isDraggingCol = computed(() => isDraggingGrid.value && dragging.value.colLine === props.section.col.start)
+const isDraggingCol = computed(() => isDraggingGrid.value && dragging.value.colLine === props.section.col.start)
 
-export const isDraggingRow = computed(() => isDraggingGrid.value && dragging.value.rowLine === props.section.row.start)
+const isDraggingRow = computed(() => isDraggingGrid.value && dragging.value.rowLine === props.section.row.start)
 </script>
 
 <style scoped lang="scss">

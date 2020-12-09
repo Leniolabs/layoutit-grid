@@ -5,12 +5,11 @@
 </template>
 
 <script setup>
-export default {
-  props: {
-    area: { type: Object, required: true },
-  },
-  emits: ['edit'],
-}
+import { defineProps, defineEmit } from 'vue'
+defineProps({
+  area: { type: Object, required: true },
+})
+defineEmit(['edit'])
 </script>
 
 <style scoped lang="scss">

@@ -27,23 +27,20 @@
   </div>
 </template>
 
-<script setup="props">
-export { default as DisplaySelect } from '../common/DisplaySelect.vue'
+<script setup>
+import DisplaySelect from '../common/DisplaySelect.vue'
 
-import { ref } from 'vue'
+import { defineProps, ref } from 'vue'
 import { createAreaState, createFlexState, createGridState } from '../../store'
-export { currentArea } from '../../store.js'
+import { currentArea } from '../../store.js'
 import { inputSetter } from '../../composables'
 
-export default {
-  props: {
-    area: { type: Object, required: true },
-  },
-}
+const props = defineProps({
+  area: { type: Object, required: true },
+})
+const onAreaTextInput = inputSetter((value) => (area.text = value))
 
-export const onAreaTextInput = inputSetter((value) => (area.text = value))
-
-export function onUpdateDisplay(value) {
+function onUpdateDisplay(value) {
   props.area.display = value
   if (props.area.display === 'flex') {
     if (!props.area.flex) {
@@ -58,7 +55,7 @@ export function onUpdateDisplay(value) {
 }
 
 const counter = ref(1)
-export function addImplicitArea() {
+function addImplicitArea() {
   props.area.children.push(
     createAreaState({
       name: 'a' + counter.value++,
@@ -67,7 +64,7 @@ export function addImplicitArea() {
   )
 }
 
-export function addItems() {
+function addItems() {
   props.area.children.push(
     createAreaState({
       name: '10 photos',

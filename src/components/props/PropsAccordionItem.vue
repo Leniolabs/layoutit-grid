@@ -13,20 +13,17 @@
   </div>
 </template>
 
-<script setup="props">
-import { ref } from 'vue'
+<script setup>
+import { defineProps, ref } from 'vue'
 
-export default {
-  props: {
-    name: { type: String, required: true },
-    heading: { type: String, required: true },
-    closedHeading: { type: String, default: '' },
-    accordion: { type: Object, required: true },
-    independent: { type: Boolean, default: false },
-  },
-}
-
-export const opened = ref(true)
+defineProps({
+  name: { type: String, required: true },
+  heading: { type: String, required: true },
+  closedHeading: { type: String, default: '' },
+  accordion: { type: Object, required: true },
+  independent: { type: Boolean, default: false },
+})
+const opened = ref(true)
 </script>
 
 <style scoped lang="scss">

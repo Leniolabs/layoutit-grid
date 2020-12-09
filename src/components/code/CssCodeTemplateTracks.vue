@@ -24,41 +24,38 @@
   }}</span>
 </template>
 
-<script setup="props, { emit }">
-export { default as CssCodeTrackSize } from './CssCodeTrackSize.vue'
-export { default as CssCodeLineName } from './CssCodeLineName.vue'
+<script setup>
+import CssCodeTrackSize from './CssCodeTrackSize.vue'
+import CssCodeLineName from './CssCodeLineName.vue'
 
 import { isValidTrackSize, parseGridTemplate } from '../../store.js'
-import { ref, computed } from 'vue'
+import { defineProps, ref, computed } from 'vue'
 
-export { namedTemplateColumns, namedTemplateRows } from '../../utils.js'
+import { namedTemplateColumns, namedTemplateRows } from '../../utils.js'
 
-export default {
-  props: {
-    grid: { type: Object, required: true },
-    type: { type: String, required: true },
-    repeat: { type: Boolean, default: false },
-  },
-}
-
-export const isInteractive = computed(() => {
+const props = defineProps({
+  grid: { type: Object, required: true },
+  type: { type: String, required: true },
+  repeat: { type: Boolean, default: false },
+})
+const isInteractive = computed(() => {
   return !(props.repeat && props.grid[props.type].lineNames.every((l) => !l.active))
 })
 
-export const multiline = computed(() => {
+const multiline = computed(() => {
   const { lineNames } = props.grid[props.type]
   return lineNames.some((line) => line.name !== '' && line.active === true)
 })
 
-export function separatorBeforeItem(i) {
+function separatorBeforeItem(i) {
   return multiline.value && i === 0 ? '\n    ' : ''
 }
-export function separatorAfterItem(i) {
+function separatorAfterItem(i) {
   const isLast = i === trackSizesAndLineNames.value.length - 1
   return trackSizesAndLineNames.value[i].type === 'size' && !isLast && multiline.value ? '\n    ' : isLast ? '' : ' '
 }
 
-export const trackSizesAndLineNames = computed(() => {
+const trackSizesAndLineNames = computed(() => {
   const { sizes, lineNames } = props.grid[props.type]
   const items = []
   for (var i = 0; i < lineNames.length; i++) {
@@ -73,7 +70,7 @@ export const trackSizesAndLineNames = computed(() => {
   return items
 })
 
-export function onMove(event, i) {
+function onMove(event, i) {
   switch (event.action) {
     case 'right':
       if (i + 1 < trackSizesAndLineNames.value.length) {

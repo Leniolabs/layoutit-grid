@@ -49,31 +49,29 @@
   </component>
 </template>
 
-<script setup="props">
-export { default as AreaInfo } from './AreaInfo.vue'
-export { default as PieChart } from '../content/PieChart.vue'
-export { default as ElementImage } from './ElementImage.vue'
-export { default as ElementParagraph } from './ElementParagraph.vue'
+<script setup>
+import AreaInfo from './AreaInfo.vue'
+import PieChart from '../content/PieChart.vue'
+import ElementImage from './ElementImage.vue'
+import ElementParagraph from './ElementParagraph.vue'
 // GridEditor imported globally due to circular reference with AreaEditor
-// export { default as FlexEditor } from '../flex/FlexEditor.vue'
+// import FlexEditor from '../flex/FlexEditor.vue'
 
-import { computed, defineAsyncComponent, toRefs } from 'vue'
+import { computed, defineAsyncComponent, toRefs, defineProps, defineEmit } from 'vue'
 import { mainArea, currentArea, setCurrentArea } from '../../store.js'
 import { useIsActiveArea } from '../../composables/area.js'
 
-export default {
-  name: 'ElementPreview',
-  props: {
-    area: { type: Object, required: true },
-    item: { type: Number, default: 1 },
-  },
-  emits: ['edit'],
-}
+// name: 'ElementPreview',
+const props = defineProps({
+  area: { type: Object, required: true },
+  item: { type: Number, default: 1 },
+})
+defineEmit(['edit'])
 
 const { area } = toRefs(props)
-export const isActive = useIsActiveArea(area)
+const isActive = useIsActiveArea(area)
 
-export const areaType = computed(() => {
+const areaType = computed(() => {
   switch (props.area.type) {
     case 'image':
       return ElementImage

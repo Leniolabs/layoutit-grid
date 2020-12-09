@@ -11,18 +11,16 @@
   </div>
 </template>
 
-<script setup="props">
-export { default as PlacementPicker } from '../common/PlacementPicker.vue'
+<script setup>
+import PlacementPicker from '../common/PlacementPicker.vue'
 import { inputSetter } from '../../composables'
 import { isValidGridArea } from '../../store.js'
+import { defineProps } from 'vue'
 
-export default {
-  props: {
-    area: { type: Object, required: true },
-  },
-}
-
-export const setGridArea = inputSetter((value) => {
+const props = defineProps({
+  area: { type: Object, required: true },
+})
+const setGridArea = inputSetter((value) => {
   props.area.gridArea = value
 }, isValidGridArea)
 </script>

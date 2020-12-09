@@ -7,17 +7,16 @@
   </div>
 </template>
 
-<script setup="props">
-import { computed } from 'vue'
+<script setup>
+import { computed, defineProps, defineEmit } from 'vue'
 
-export default {
-  props: {
-    modelValue: { type: String, default: 'box' },
-  },
-  emits: ['update:modelValue'],
-}
+defineProps({
+  modelValue: { type: String, default: 'box' },
+})
 
-export const options = ['div', 'p', 'button', 'image', 'component']
+defineEmit(['update:modelValue'])
+
+const options = ['div', 'p', 'button', 'image', 'component']
 </script>
 
 <style scoped lang="scss">

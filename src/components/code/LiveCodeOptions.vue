@@ -41,14 +41,13 @@
   </div>
 </template>
 
-<script setup="props">
-export { default as SlideCheckbox } from '../basic/SlideCheckbox.vue'
+<script setup>
+import { defineProps } from 'vue'
+import SlideCheckbox from '../basic/SlideCheckbox.vue'
 
-export default {
-  props: {
-    modelValue: { type: Object, required: true },
-  },
-}
+defineProps({
+  modelValue: { type: Object, required: true },
+})
 </script>
 
 <style scoped lang="scss">

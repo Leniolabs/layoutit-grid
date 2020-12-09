@@ -16,31 +16,27 @@
   >
 </template>
 
-<script setup="props, { emit }">
+<script setup>
 import { dragging, currentFocus, isValidLineName, parseGridTemplate } from '../../store.js'
-import { computed } from 'vue'
+import { defineProps, computed } from 'vue'
 
 import { namedTemplateColumns, namedTemplateRows, onCodeInputKeydown, targetText } from '../../utils.js'
 import { useInputSetter } from '../../composables/index.js'
 
-export default {
-  props: {
-    grid: { type: Object, required: true },
-    type: { type: String, required: true },
-    pos: { type: Number, required: true },
-    el: { type: Object, required: true },
-  },
-}
-
-export { currentFocus, onCodeInputKeydown }
+const props = defineProps({
+  grid: { type: Object, required: true },
+  type: { type: String, required: true },
+  pos: { type: Number, required: true },
+  el: { type: Object, required: true },
+})
 
 const line = computed(() => props.grid[props.type].lineNames[props.pos - 1])
-export const lineName = computed({
+const lineName = computed({
   get: () => line.value.name,
   set: (str) => (line.value.name = str),
 })
 
-export const onInput = useInputSetter(lineName, isValidLineName, targetText)
+const onInput = useInputSetter(lineName, isValidLineName, targetText)
 </script>
 
 <style scoped lang="scss">

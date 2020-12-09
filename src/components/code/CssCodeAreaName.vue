@@ -13,22 +13,18 @@
   >
 </template>
 
-<script setup="props, { emit }">
+<script setup>
 import { dragging, currentArea, isValidAreaName } from '../../store.js'
-import { computed, nextTick } from 'vue'
-export { onCodeInputKeydown, toCssName, targetText } from '../../utils.js'
-export { pause, resume } from '../../store.js'
+import { defineProps, computed, nextTick } from 'vue'
+import { onCodeInputKeydown, toCssName, targetText } from '../../utils.js'
+import { pause, resume } from '../../store.js'
 import { useInputSetter } from '../../composables'
 
-export default {
-  props: {
-    area: { type: Object, required: true },
-  },
-}
+const props = defineProps({
+  area: { type: Object, required: true },
+})
 
-export { currentArea }
-
-export const areaName = computed({
+const areaName = computed({
   get: () => toCssName(props.area.name),
   set: (str) => (props.area.name = str),
 })

@@ -28,17 +28,15 @@
   </div>
 </template>
 
-<script setup="props">
-import { computed } from 'vue'
+<script setup>
+import { computed, defineProps, defineEmit } from 'vue'
 
-export default {
-  props: {
-    modelValue: { type: String, default: 'row' },
-  },
-  emits: ['update:modelValue'],
-}
+defineProps({
+  modelValue: { type: String, default: 'row' },
+})
+defineEmit(['update:modelValue'])
 
-export const options = ['row', 'column']
+const options = ['row', 'column']
 </script>
 
 <style scoped lang="scss">

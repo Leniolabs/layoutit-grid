@@ -14,26 +14,21 @@
   </span>
 </template>
 
-<script setup="props, { emit }">
-import { dragging, currentArea } from '../../store.js'
-import { computed } from 'vue'
+<script setup>
+import { dragging, currentArea, currentHover } from '../../store.js'
+import { defineProps, computed } from 'vue'
 import { gridTemplateAreasMatrix } from '../../utils.js'
-export { currentHover } from '../../store.js'
 
-export default {
-  props: {
-    area: { type: Object, required: true },
-    options: { type: Object, required: true },
-  },
-}
-
-export { currentArea }
+const props = defineProps({
+  area: { type: Object, required: true },
+  options: { type: Object, required: true },
+})
 
 function getGridTemplateAreas(area) {
   return area.display === 'grid' ? gridTemplateAreasMatrix(area) : []
 }
 
-export const templateAreas = computed(() => getGridTemplateAreas(props.area))
+const templateAreas = computed(() => getGridTemplateAreas(props.area))
 </script>
 
 <style scoped lang="scss">

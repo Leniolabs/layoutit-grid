@@ -5,18 +5,15 @@
   </div>
 </template>
 
-<script setup="props">
-export { default as PlacementPicker } from '../common/PlacementPicker.vue'
+<script setup>
+import PlacementPicker from '../common/PlacementPicker.vue'
 
-import { computed } from 'vue'
+import { defineProps, computed } from 'vue'
 
-export default {
-  props: {
-    area: { type: Object, required: true },
-  },
-}
-
-export const grid = computed(() => props.area.grid)
+const props = defineProps({
+  area: { type: Object, required: true },
+})
+const grid = computed(() => props.area.grid)
 </script>
 
 <style scoped lang="scss"></style>

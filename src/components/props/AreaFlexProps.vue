@@ -25,16 +25,13 @@
   </div>
 </template>
 
-<script setup="props">
-import { computed } from 'vue'
+<script setup>
+import { defineProps, computed } from 'vue'
 
-export default {
-  props: {
-    area: { type: Object, required: true },
-  },
-}
-
-export const flex = computed(() => props.area.flex)
+const props = defineProps({
+  area: { type: Object, required: true },
+})
+const flex = computed(() => props.area.flex)
 </script>
 
 <style scoped lang="scss">

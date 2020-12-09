@@ -36,17 +36,14 @@
   </div>
 </template>
 
-<script setup="props">
-import { computed } from 'vue'
+<script setup>
+import { defineProps, computed } from 'vue'
 import { isValidFlexBasis } from '../../store.js'
 import { inputSetter } from '../../composables'
 
-export default {
-  props: {
-    area: { type: Object, required: true },
-  },
-}
-
+const props = defineProps({
+  area: { type: Object, required: true },
+})
 const onFlexGrowInput = inputSetter((value) => (props.area.flexGrow = value))
 const onFlexShrinkInput = inputSetter((value) => (props.area.Shrink = value))
 const onFlexBasisInput = inputSetter((value) => (props.area.flexBasis = value), isValidFlexBasis)
