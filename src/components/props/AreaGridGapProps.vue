@@ -1,6 +1,6 @@
 <template>
   <div class="grid-settings-container">
-    <div class="items gaps">
+    <div class="area-flex">
       <GapInput :grid="grid" type="row" />
       <GapInput :grid="grid" type="col" />
     </div>
@@ -22,23 +22,13 @@ export const grid = computed(() => props.area.grid)
 </script>
 
 <style scoped lang="scss">
-h2 {
-  font-family: 'Alegreya Sans', 'Helvetica Neue', Arial, sans-serif;
-  margin: 0;
-  font-size: 15px;
-  padding: 0;
-  line-height: 30px;
-  display: flex;
-  align-items: center;
-  span {
-    font-weight: normal;
-    margin-right: 6px;
-    height: 30px;
-  }
-}
 
-.items {
-  margin-bottom: 10px;
-  margin-top: 0px;
+.area-flex {
+  background: rgb(35, 36, 31);
+  border-radius: 2px;
+  .area-size { 
+    border-bottom: 1px solid rgba(68, 68, 68,0.5); 
+    &:last-of-type { border: 0; }
+  }
 }
 </style>

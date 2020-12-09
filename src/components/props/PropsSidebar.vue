@@ -2,8 +2,8 @@
   <div :class="['sidebar', { active: currentView === 'props' }]">
     <BrandLogo />
     <AreaProps :area="currentArea" />
-    <BrandBanner />
-  </div>
+<!--     <BrandBanner />
+ -->  </div>
 </template>
 
 <script setup="props">
@@ -27,8 +27,7 @@ export default {
   z-index: 20000;
   color: #fff;
   display: grid;
-  gap: 20px 0px;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto 1fr;
   overflow: auto;
   padding: 0;
   text-align: left;
@@ -62,7 +61,7 @@ export default {
   position: fixed;
   top: 0;
   right: 0;
-  opacity: 0.8;
+  opacity: 0.7;
   transition: opacity 0.1s linear;
   &:hover {
     opacity: 0.9;

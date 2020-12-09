@@ -13,39 +13,41 @@
       :class="['area-name', { 'has-display': area.flex || area.grid, current: currentArea === area }]"
       @click="currentArea = area"
     >
-      <span
+
+      <span>.{{ area.name }}</span>
+<!--       <span
         :class="{ caret: area.children.length > 0, 'caret-down': showChildren }"
         @click="showChildren = !showChildren"
-      ></span>
-      {{ area.name }}
+      ></span>       -->
       <button v-if="area.display !== 'block'" aria-label="Add area" class="btn-add" title="Add Area" @click="addArea">
         <IconAdd />
       </button>
       <button aria-label="Remove area" class="btn-remove" title="Remove Area" @click="removeArea(area)">
         <IconRemove />
       </button>
+      <template v-if="showChildren">
+        <div
+          v-for="a in area.children"
+          :key="`area-${a.name}-${depth}`"
+          :class="[
+            'area-children',
+            {
+              reordering: reordering && reordering.target === a,
+              after: reordering && reordering.target === a && reordering.after,
+            },
+          ]"
+          :data-area-name="a.name"
+          :draggable="true"
+          @dragstart="onDragStart(a, $event)"
+          @dragend="onDragEnd(a)"
+          @drop="onDrop(a, $event)"
+          @dragover="onDragOver(a, $event)"
+        >
+          <AreaTree :area="a" />
+        </div>
+      </template>
     </div>
-    <template v-if="showChildren">
-      <div
-        v-for="a in area.children"
-        :key="`area-${a.name}-${depth}`"
-        :class="[
-          'area-children',
-          {
-            reordering: reordering && reordering.target === a,
-            after: reordering && reordering.target === a && reordering.after,
-          },
-        ]"
-        :data-area-name="a.name"
-        :draggable="true"
-        @dragstart="onDragStart(a, $event)"
-        @dragend="onDragEnd(a)"
-        @drop="onDrop(a, $event)"
-        @dragover="onDragOver(a, $event)"
-      >
-        <AreaTree :area="a" />
-      </div>
-    </template>
+
   </div>
 </template>
 
@@ -67,7 +69,7 @@ export {
 import { getAreaDepth } from '../../store.js'
 import { getRandomColor } from '../../store/area'
 
-export const depth = computed(() => getAreaDepth(props.area) * 5 + 'px')
+export const depth = computed(() => getAreaDepth(props.area) * 15 + 'px')
 
 export default {
   name: 'AreaTree',
@@ -132,7 +134,7 @@ export function onDragOver(areaTarget, event) {
   }
 }
 
-export const showChildren = ref(false)
+export const showChildren = ref(true)
 
 export const currentGrid = computed(() => props.area.grid)
 export const currentFlex = computed(() => props.area.flex)
@@ -151,7 +153,20 @@ export function addArea() {
 
 <style scoped lang="scss" vars="{ depth }">
 .area-tree {
-  margin-left: var(--depth);
+  padding-left: var(--depth);
+color: rgb(212, 212, 212);
+    font-size: 13px;
+    text-shadow: none;
+    font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+    direction: ltr;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    line-height: 1.5;
+    tab-size: 4;
+    hyphens: none;
+    margin: 0px;  
 }
 
 .area-children {
@@ -179,23 +194,36 @@ export function addArea() {
   width: 100%;
   word-break: break-all;
   position: relative;
-  &:not(.current) {
+/*   &:not(.current) {
     opacity: 0.5;
-  }
+  } */
 }
 
 /* Create the caret/arrow with a unicode, and style it */
-.caret::before {
-  content: '\25B6';
-  color: #fff;
+.area-name > span::after {
+  content: '{';
+  display: inline-block;
+  margin-left: 6px;
+  color: #eee;
+}
+.area-name::after {
+  content: '}';
   display: inline-block;
   margin-right: 6px;
+  color: #eee;
+}
+.area-name > span {
+  color: rgb(215, 186, 125);
+}
+.area-name .area-name > span {
+  color: rgb(156, 220, 254);
 }
 
-/* Rotate the caret/arrow icon when clicked on (using JavaScript) */
-.caret-down::before {
-  transform: rotate(90deg);
-}
+
+.area-name .area-name:before,
+.area-name .area-name:after,
+.area-name .area-name > span::after { display: none; }
+
 
 .btn-remove,
 .btn-add {
@@ -210,6 +238,7 @@ export function addArea() {
   pointer-events: all;
   border-radius: 2px;
   padding-top: 3px;
+  display: none;
   svg {
     height: 10px;
     width: 10px;

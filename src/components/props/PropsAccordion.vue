@@ -18,6 +18,9 @@ export default {
 <style scoped lang="scss">
 .props-accordion {
   overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  > * { flex: 1; }
 }
 
 * {

@@ -35,7 +35,6 @@ export const setGridArea = inputSetter((value) => {
   padding-top: 10px;
   label {
     display: block;
-    margin-bottom: 3px;
   }
 }
 </style>

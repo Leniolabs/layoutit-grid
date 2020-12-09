@@ -39,8 +39,8 @@ export default {
   emits: ['update:modelValue'],
 }
 
-const optionsContent = ['start', 'stretch', 'center', 'end', 'space-around', 'space-between', 'space-evenly']
-const optionsItems = ['start', 'stretch', 'center', 'end']
+const optionsContent = ['initial','start', 'end', 'center',  'stretch',  'around', 'between', 'evenly']
+const optionsItems = ['initial','start', 'end', 'stretch', 'center']
 
 const optionsMap = {
   content: optionsContent,
@@ -52,18 +52,23 @@ export const options = computed(() => optionsMap[props.type.split('-')[1]])
 </script>
 
 <style scoped lang="scss">
-span {
-  font-size: 14px;
-  padding-left: 5px;
-  margin-bottom: 5px;
-}
 .placement-select-container {
-  display: grid;
-  grid-template-rows: auto auto;
-  margin-bottom: 10px;
-  label {
+  background: rgb(35, 36, 31);
+  padding: 10px 0px 5px 10px;
+  border-bottom: 1px solid rgba(68, 68, 68, 0.5);
+  > label {
     display: block;
-    margin-bottom: 3px;
+    flex: 1 1 0%;
+    max-width: max-content;
+    color: rgb(156, 220, 254);
+    font-size: 13px;
+    text-shadow: none;
+    font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+    direction: ltr;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;    
+    margin-bottom: 5px;
   }
 }
 
@@ -76,46 +81,28 @@ span {
 .radio-toolbar input {
   display: none;
 }
-
 .radio-toolbar label {
-  color: #444;
+  color: rgb(206, 145, 120);
   display: block;
   flex: 1;
-  background-color: #ddd;
-  padding: 5px 0px;
+  padding: 5px 0;
   font-family: sans-serif, Arial;
-  font-size: 13px;
   text-align: center;
-  // border: 2px solid #444;
-  // border-radius: 4px;
+  font-size: 13px;
+  text-shadow: none;
+  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
   opacity: 0.7;
-
-  &.long-name {
-    width: 67px;
-    height: 35px;
-    &:last-child {
-      width: 66px;
-    }
-  }
+  cursor: pointer;
+  min-width: 33.333%;
+  max-width: 33.333%;
+  &:hover,
   &.default-value {
     opacity: 1;
-    background-color: #bbb;
-    color: black;
-  }
-
-  &:hover {
-    background-color: #dfd;
+    color: #fff;
   }
 }
-
-.radio-toolbar input[type='radio']:focus + label {
-  // border: 2px solid #444;
-}
-
-.radio-toolbar input[type='radio']:checked + label {
-  opacity: 1;
-  background-color: white;
-  color: black;
-  // border-color: #4c4;
-}
+  input[type='radio']:checked + label {
+    opacity: 1;
+    color: #fff;
+  }
 </style>
