@@ -62,12 +62,12 @@ input[type='number'] {
 .area-size {
   display: flex;
   align-items: center;
-  padding: 5px 0 5px 10px;
+  padding: 5px 0 5px 15px;
 
   label {
     display: block;
     flex: 1;
-    max-width: max-content;
+    max-width: 80px;
     color: rgb(156, 220, 254);
     font-size: 13px;
     text-shadow: none;
@@ -78,8 +78,7 @@ input[type='number'] {
     word-spacing: normal;
   }
   .input-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
     flex: 1;
     input {
       font-size: 14px;
@@ -112,6 +111,9 @@ input[type='number'] {
       cursor: text;
       text-align: center;
       padding-left: 3px;
+      &:first-child:last-child {
+        text-align-last: center;
+      }
       &:hover {
         color: #eee;
       }

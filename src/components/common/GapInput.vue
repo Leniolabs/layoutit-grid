@@ -64,7 +64,7 @@ input[type='number'] {
   label {
     display: block;
     flex: 1;
-    max-width: max-content;
+    max-width: 80px;
     color: rgb(156, 220, 254);
     font-size: 13px;
     text-shadow: none;
@@ -75,8 +75,7 @@ input[type='number'] {
     word-spacing: normal;
   }
   .input-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
     flex: 1;
     input {
       font-size: 14px;

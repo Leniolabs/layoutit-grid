@@ -32,7 +32,7 @@
     <PropsAccordionItem
       v-if="area.parent && area.parent.display === 'grid'"
       name="self-grid"
-      heading="Self Grid"
+      heading="Self Placement"
       :accordion="accordion"
     >
       <AreaSelfGridProps :area="area" />
