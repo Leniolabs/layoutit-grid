@@ -18,6 +18,10 @@
           : 'repeating-linear-gradient(45deg, white, white 9px, #fafafa 9px, #fafafa 14px)',
       'user-select': 'none',
       'z-index': 0,
+      // Force a minimum width and height so areas are still visible when the
+      // user changes items placement or there are in implicit tracks
+      ...(area.width === 'initial' && { 'min-width': 'max(24px,50%)' }),
+      ...(area.height === 'initial' && { 'min-height': 'max(24px,50%)' }),
       ...displayStyles,
     }"
     :area="area"
