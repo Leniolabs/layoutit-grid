@@ -51,8 +51,8 @@ export default {
       }
     }
 
-    expose({ focus })
-    return { line, toggle, inputElement, style }
+    expose({ focus, toggle })
+    return { line, inputElement, style }
   },
 }
 </script>

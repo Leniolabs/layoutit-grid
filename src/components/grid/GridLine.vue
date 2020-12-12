@@ -34,37 +34,52 @@
   </section>
 </template>
 
-<script setup>
+<script>
 import LineName from './LineName.vue'
 import { dragging, currentFocus } from '../../store.js'
 import { ref, computed, defineProps, defineEmit } from 'vue'
 
-const props = defineProps({
-  type: { type: String, required: true },
-  pos: { type: Number, required: true },
-  area: { type: Object, required: true },
-  gap: { type: String, default: '0px' },
-})
-defineEmit(['down'])
+export default {
+  components: { LineName },
+  props: {
+    type: { type: String, required: true },
+    pos: { type: Number, required: true },
+    area: { type: Object, required: true },
+    gap: { type: String, default: '0px' },
+  },
+  emits: ['down'],
+  setup(props, { expose }) {
+    const grid = computed(() => props.area.grid)
 
-const grid = computed(() => props.area.grid)
+    const last = computed(() => props.pos === grid.value[props.type].lineNames.length)
 
-const last = computed(() => props.pos === grid.value[props.type].lineNames.length)
+    const showNumber = computed(() => {
+      const otherLineNames = grid.value[props.type === 'col' ? 'row' : 'col'].lineNames
+      return !(last.value && otherLineNames[0].active)
+    })
 
-const showNumber = computed(() => {
-  const otherLineNames = grid.value[props.type === 'col' ? 'row' : 'col'].lineNames
-  return !(last.value && otherLineNames[0].active)
-})
+    const gridArea = computed(() => {
+      // The first line uses the same track as the second one
+      const pos = Math.max(props.pos - 1, 1)
+      return props.type === 'row' ? `${pos} / 1 / ${pos + 1} / -1` : `1 / ${pos} / -1 / ${pos + 1}`
+    })
 
-const gridArea = computed(() => {
-  // The first line uses the same track as the second one
-  const pos = Math.max(props.pos - 1, 1)
-  return props.type === 'row' ? `${pos} / 1 / ${pos + 1} / -1` : `1 / ${pos} / -1 / ${pos + 1}`
-})
+    const lineNameRef = ref(null)
+    function toggleLineName() {
+      lineNameRef.value.toggle()
+    }
 
-const lineNameRef = ref(null)
-function toggleLineName() {
-  lineNameRef.value.toggle()
+    expose({ toggleLineName })
+    return {
+      lineNameRef,
+      gridArea,
+      showNumber,
+      last,
+      grid,
+      dragging,
+      currentFocus,
+    }
+  },
 }
 </script>
 
