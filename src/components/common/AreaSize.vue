@@ -21,7 +21,7 @@ import UnitSelect from './UnitSelect.vue'
 import { defineProps, computed } from 'vue'
 import { parseValueUnit } from '../../store.js'
 import { unitMeasureMap } from '../../utils.js'
-import { useInputSetter } from '../../composables'
+import { inputSetter } from '../../composables'
 
 const props = defineProps({
   area: { type: Object, required: true },
@@ -45,7 +45,7 @@ function setSizeUnit(unit) {
   size.value = unitMeasureMap[unit] + unit
 }
 
-const onSizeInput = useInputSetter(size)
+const onSizeInput = inputSetter(setSizeValue)
 </script>
 
 <style scoped lang="scss">
