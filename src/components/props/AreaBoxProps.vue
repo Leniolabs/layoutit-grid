@@ -9,18 +9,12 @@
         <label>margin</label>
         <div class="input-container">
           <input :value="area.margin" aria-label="margin" @input="setMargin($event.target.value)" />
-          <select id="" class="unit-select" name="">
-            <option>px</option>
-          </select>
         </div>
       </div>
       <div class="area-size">
         <label>padding</label>
         <div class="input-container">
           <input :value="area.padding" aria-label="padding" @input="setPadding($event.target.value)" />
-          <select id="" class="unit-select" name="">
-            <option>px</option>
-          </select>
         </div>
       </div>
     </div>
@@ -123,7 +117,7 @@ input[type='number'] {
       background: rgb(35, 36, 31);
       color: rgb(206, 145, 120);
       height: 25px;
-      text-align: right;
+      text-align: center;
       flex: 1;
       font-size: 13px;
       text-shadow: none;
