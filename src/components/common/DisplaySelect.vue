@@ -71,7 +71,7 @@ const options = ['block', 'flex', 'grid']
   &:hover,
   &.default-value {
     opacity: 1;
-    color: #fff;
+    color: rgb(226, 167, 144);
   }
 }
 input[type='radio']:checked + label {

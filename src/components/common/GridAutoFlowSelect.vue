@@ -2,17 +2,19 @@
   <div class="display-select-container">
     <label>grid-auto-flow</label>
     <div class="radio-toolbar">
-      <template v-for="option in options" :key="option">
-        <input
-          :id="`direction-${option}`"
-          :checked="modelValue.includes(option)"
-          type="radio"
-          name="grid-auto-flow-direction"
-          :value="option"
-          @input="$emit('update:modelValue', option + (modelValue.includes('dense') ? ' dense' : ''))"
-        />
-        <label :for="`direction-${option}`">{{ option }}</label>
-      </template>
+      <div class="flow-direction">
+        <template v-for="option in options" :key="option">
+          <input
+            :id="`direction-${option}`"
+            :checked="modelValue.includes(option)"
+            type="radio"
+            name="grid-auto-flow-direction"
+            :value="option"
+            @input="$emit('update:modelValue', option + (modelValue.includes('dense') ? ' dense' : ''))"
+          />
+          <label :for="`direction-${option}`">{{ option }}</label>
+        </template>
+      </div>
       <input
         id="dense"
         :checked="modelValue.includes('dense')"
@@ -40,6 +42,11 @@ const options = ['row', 'column']
 </script>
 
 <style scoped lang="scss">
+.flow-direction {
+  display: flex;
+  flex: 1 1 0%;
+}
+
 .display-select-container {
   border-bottom: 1px solid rgba(68, 68, 68, 0.5);
   background: rgb(35, 36, 31);
@@ -85,9 +92,10 @@ const options = ['row', 'column']
   &:hover,
   &.default-value {
     opacity: 1;
-    color: #fff;
+    color: rgb(226, 167, 144);
   }
 }
+input[type='checkbox']:checked + label,
 input[type='radio']:checked + label {
   opacity: 1;
   color: #fff;
