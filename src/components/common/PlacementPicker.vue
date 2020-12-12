@@ -96,7 +96,7 @@ const options = computed(() => optionsMap[props.type.split('-')[1]])
   &:hover,
   &.default-value {
     opacity: 1;
-    color: #fff;
+    color: rgb(226, 167, 144);
   }
 }
 input[type='radio']:checked + label {
