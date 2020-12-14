@@ -59,8 +59,14 @@ input[type='number'] {
 .area-size {
   display: flex;
   align-items: center;
-  padding: 5px 0 5px 10px;
-
+  padding-left: 10px;
+  &:hover {
+    background: #1C1D19;
+    .input-container .unit-select,
+    .input-container input {
+      background: #1C1D19;
+    }
+  }
   label {
     display: block;
     flex: 1;
@@ -83,7 +89,7 @@ input[type='number'] {
       width: 100%;
       background: rgb(35, 36, 31);
       color: rgb(206, 145, 120);
-      height: 25px;
+      height: 35px;
       text-align: right;
       flex: 1;
       font-size: 13px;
@@ -97,7 +103,7 @@ input[type='number'] {
     }
     .unit-select {
       appearance: none;
-      height: 25px;
+      height: 35px;
       background: rgb(35, 36, 31);
       color: rgb(206, 145, 120);
       flex: 1;

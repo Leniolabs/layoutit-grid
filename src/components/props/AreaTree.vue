@@ -19,7 +19,7 @@
         @click="showChildren = !showChildren"
       ></span>       -->
       <button v-if="area.display !== 'block'" aria-label="Add area" class="btn-add" title="Add Area" @click="addArea">
-        <IconAdd />
+        <IconRemove />
       </button>
       <button aria-label="Remove area" class="btn-remove" title="Remove Area" @click="removeArea(area)">
         <IconRemove />
@@ -221,6 +221,8 @@ function addArea() {
   display: none;
 }
 
+
+
 .btn-remove,
 .btn-add {
   position: absolute;
@@ -230,15 +232,14 @@ function addArea() {
   font-size: 8px;
   padding: 2px;
   cursor: pointer;
-  background: #888;
   pointer-events: all;
-  border-radius: 2px;
+  border-radius: 2px; 
   padding-top: 3px;
-  display: none;
+  background: transparent;
   svg {
     height: 10px;
     width: 10px;
-    fill: white;
+    stroke: rgb(215, 186, 125);
   }
 }
 
@@ -261,6 +262,7 @@ function addArea() {
   svg {
     height: 8px;
     width: 8px;
+    transform: rotate(45deg);
   }
   &:hover {
     background: green;

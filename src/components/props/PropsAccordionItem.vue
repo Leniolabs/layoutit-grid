@@ -35,6 +35,11 @@ const opened = ref(true)
   &.active {
     opacity: 1;
   }
+  &.active {
+    h1 {
+      background: transparent;
+    }
+  }
   /*   &.active {
     background: rgb(35, 36, 31);
     .props-accordion-content {
