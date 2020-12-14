@@ -1,0 +1,433 @@
+diff --git a/node_modules/@vue/compiler-sfc/dist/compiler-sfc.cjs.js b/node_modules/@vue/compiler-sfc/dist/compiler-sfc.cjs.js
+index c051257..9d39c85 100644
+--- a/node_modules/@vue/compiler-sfc/dist/compiler-sfc.cjs.js
++++ b/node_modules/@vue/compiler-sfc/dist/compiler-sfc.cjs.js
+@@ -76,13 +76,13 @@ const cssVarsPlugin = postcss__default.plugin('vue-scoped', opts => (root) => {
+         }
+     });
+ });
+-function genCssVarsCode(vars, bindings, id, isProd) {
++function genCssVarsCode(vars, id, isProd, bindings) {
+     const varsExp = genCssVarsFromList(vars, id, isProd);
+     const exp = CompilerDOM.createSimpleExpression(varsExp, false);
+     const context = CompilerDOM.createTransformContext(CompilerDOM.createRoot([]), {
+         prefixIdentifiers: true,
+-        inline: true,
+-        bindingMetadata: bindings
++        inline: !!bindings,
++        bindingMetadata: bindings || {}
+     });
+     const transformed = CompilerDOM.processExpression(exp, context);
+     const transformedString = transformed.type === 4 /* SIMPLE_EXPRESSION */
+@@ -98,9 +98,9 @@ function genCssVarsCode(vars, bindings, id, isProd) {
+ }
+ // <script setup> already gets the calls injected as part of the transform
+ // this is only for single normal <script>
+-function genNormalScriptCssVarsCode(cssVars, bindings, id, isProd) {
++function genNormalScriptCssVarsCode(cssVars, id, isProd) {
+     return (`\nimport { ${CSS_VARS_HELPER} as _${CSS_VARS_HELPER} } from 'vue'\n` +
+-        `const __injectCSSVars__ = () => {\n${genCssVarsCode(cssVars, bindings, id, isProd)}}\n` +
++        `const __injectCSSVars__ = () => {\n${genCssVarsCode(cssVars, id, isProd)}}\n` +
+         `const __setup__ = __default__.setup\n` +
+         `__default__.setup = __setup__\n` +
+         `  ? (props, ctx) => { __injectCSSVars__();return __setup__(props, ctx) }\n` +
+@@ -173,7 +173,7 @@ function parse(source, { sourceMap = true, filename = 'anonymous.vue', sourceRoo
+         if (node.type !== 1 /* ELEMENT */) {
+             return;
+         }
+-        if (!node.children.length && !hasSrc(node)) {
++        if (!node.children.length && !hasSrc(node) && node.tag !== 'template') {
+             return;
+         }
+         switch (node.tag) {
+@@ -382,7 +382,7 @@ function parseUrl(url) {
+ function parseUriParts(urlString) {
+     // A TypeError is thrown if urlString is not a string
+     // @see https://nodejs.org/api/url.html#url_url_parse_urlstring_parsequerystring_slashesdenotehost
+-    return url.parse(shared.isString(urlString) ? urlString : '');
++    return url.parse(shared.isString(urlString) ? urlString : '', false, true);
+ }
+ 
+ const defaultAssetUrlOptions = {
+@@ -454,9 +454,16 @@ const transformAssetUrl = (node, context, options = defaultAssetUrlOptions) => {
+                 // since they are aliases
+                 if (attr.value.content[0] !== '@' &&
+                     isRelativeUrl(attr.value.content)) {
++                    // Allow for full hostnames provided in options.base
++                    const base = parseUrl(options.base);
++                    const protocol = base.protocol || '';
++                    const host = base.host ? protocol + '//' + base.host : '';
++                    const basePath = base.path || '/';
+                     // when packaged in the browser, path will be using the posix-
+                     // only version provided by rollup-plugin-node-builtins.
+-                    attr.value.content = (path__default.posix || path__default).join(options.base, url.path + (url.hash || ''));
++                    attr.value.content =
++                        host +
++                            (path__default.posix || path__default).join(basePath, url.path + (url.hash || ''));
+                 }
+                 return;
+             }
+@@ -1245,7 +1252,7 @@ function compileScript(sfc, options) {
+             if (needRewrite) {
+                 content = rewriteDefault(content, `__default__`, plugins);
+                 if (cssVars.length) {
+-                    content += genNormalScriptCssVarsCode(cssVars, bindings, scopeId, !!options.isProd);
++                    content += genNormalScriptCssVarsCode(cssVars, scopeId, !!options.isProd);
+                 }
+                 if (hasInheritAttrsFlag) {
+                     content += `__default__.inheritAttrs = false`;
+@@ -1803,7 +1810,7 @@ function compileScript(sfc, options) {
+     if (cssVars.length) {
+         helperImports.add(CSS_VARS_HELPER);
+         helperImports.add('unref');
+-        s.prependRight(startOffset, `\n${genCssVarsCode(cssVars, bindingMetadata, scopeId, !!options.isProd)}\n`);
++        s.prependRight(startOffset, `\n${genCssVarsCode(cssVars, scopeId, !!options.isProd, bindingMetadata)}\n`);
+     }
+     // 9. finalize setup() argument signature
+     let args = `__props`;
+diff --git a/node_modules/@vue/compiler-sfc/dist/compiler-sfc.global.js b/node_modules/@vue/compiler-sfc/dist/compiler-sfc.global.js
+index c5714e4..6117626 100644
+--- a/node_modules/@vue/compiler-sfc/dist/compiler-sfc.global.js
++++ b/node_modules/@vue/compiler-sfc/dist/compiler-sfc.global.js
+@@ -1619,7 +1619,7 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+   }
+ 
+   function hoistStatic(root, context) {
+-      walk(root, context, new Map(), 
++      walk(root, context, 
+       // Root node is unfortunately non-hoistable due to potential parent
+       // fallthrough attributes.
+       isSingleElementRoot(root, root.children[0]));
+@@ -1630,7 +1630,7 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+           child.type === 1 /* ELEMENT */ &&
+           !isSlotOutlet(child));
+   }
+-  function walk(node, context, resultCache, doNotHoistNode = false) {
++  function walk(node, context, doNotHoistNode = false) {
+       let hasHoistedNode = false;
+       // Some transforms, e.g. transformAssetUrls from @vue/compiler-sfc, replaces
+       // static bindings with expressions. These expressions are guaranteed to be
+@@ -1649,7 +1649,7 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+               child.tagType === 0 /* ELEMENT */) {
+               const constantType = doNotHoistNode
+                   ? 0 /* NOT_CONSTANT */
+-                  : getConstantType(child, resultCache);
++                  : getConstantType(child, context);
+               if (constantType > 0 /* NOT_CONSTANT */) {
+                   if (constantType < 3 /* CAN_STRINGIFY */) {
+                       canStringify = false;
+@@ -1671,7 +1671,7 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+                       if ((!flag ||
+                           flag === 512 /* NEED_PATCH */ ||
+                           flag === 1 /* TEXT */) &&
+-                          getGeneratedPropsConstantType(child, resultCache) >=
++                          getGeneratedPropsConstantType(child, context) >=
+                               2 /* CAN_HOIST */) {
+                           const props = getNodeProps(child);
+                           if (props) {
+@@ -1682,7 +1682,7 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+               }
+           }
+           else if (child.type === 12 /* TEXT_CALL */) {
+-              const contentType = getConstantType(child.content, resultCache);
++              const contentType = getConstantType(child.content, context);
+               if (contentType > 0) {
+                   if (contentType < 3 /* CAN_STRINGIFY */) {
+                       canStringify = false;
+@@ -1695,16 +1695,16 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+           }
+           // walk further
+           if (child.type === 1 /* ELEMENT */) {
+-              walk(child, context, resultCache);
++              walk(child, context);
+           }
+           else if (child.type === 11 /* FOR */) {
+               // Do not hoist v-for single child because it has to be a block
+-              walk(child, context, resultCache, child.children.length === 1);
++              walk(child, context, child.children.length === 1);
+           }
+           else if (child.type === 9 /* IF */) {
+               for (let i = 0; i < child.branches.length; i++) {
+                   // Do not hoist v-if single child because it has to be a block
+-                  walk(child.branches[i], context, resultCache, child.branches[i].children.length === 1);
++                  walk(child.branches[i], context, child.branches[i].children.length === 1);
+               }
+           }
+       }
+@@ -1712,13 +1712,14 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+           context.transformHoist(children, context, node);
+       }
+   }
+-  function getConstantType(node, resultCache = new Map()) {
++  function getConstantType(node, context) {
++      const { constantCache } = context;
+       switch (node.type) {
+           case 1 /* ELEMENT */:
+               if (node.tagType !== 0 /* ELEMENT */) {
+                   return 0 /* NOT_CONSTANT */;
+               }
+-              const cached = resultCache.get(node);
++              const cached = constantCache.get(node);
+               if (cached !== undefined) {
+                   return cached;
+               }
+@@ -1734,9 +1735,9 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+                   // non-hoistable expressions that refers to scope variables, e.g. compiler
+                   // injected keys or cached event handlers. Therefore we need to always
+                   // check the codegenNode's props to be sure.
+-                  const generatedPropsType = getGeneratedPropsConstantType(node, resultCache);
++                  const generatedPropsType = getGeneratedPropsConstantType(node, context);
+                   if (generatedPropsType === 0 /* NOT_CONSTANT */) {
+-                      resultCache.set(node, 0 /* NOT_CONSTANT */);
++                      constantCache.set(node, 0 /* NOT_CONSTANT */);
+                       return 0 /* NOT_CONSTANT */;
+                   }
+                   if (generatedPropsType < returnType) {
+@@ -1744,9 +1745,9 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+                   }
+                   // 2. its children.
+                   for (let i = 0; i < node.children.length; i++) {
+-                      const childType = getConstantType(node.children[i], resultCache);
++                      const childType = getConstantType(node.children[i], context);
+                       if (childType === 0 /* NOT_CONSTANT */) {
+-                          resultCache.set(node, 0 /* NOT_CONSTANT */);
++                          constantCache.set(node, 0 /* NOT_CONSTANT */);
+                           return 0 /* NOT_CONSTANT */;
+                       }
+                       if (childType < returnType) {
+@@ -1761,9 +1762,9 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+                       for (let i = 0; i < node.props.length; i++) {
+                           const p = node.props[i];
+                           if (p.type === 7 /* DIRECTIVE */ && p.name === 'bind' && p.exp) {
+-                              const expType = getConstantType(p.exp, resultCache);
++                              const expType = getConstantType(p.exp, context);
+                               if (expType === 0 /* NOT_CONSTANT */) {
+-                                  resultCache.set(node, 0 /* NOT_CONSTANT */);
++                                  constantCache.set(node, 0 /* NOT_CONSTANT */);
+                                   return 0 /* NOT_CONSTANT */;
+                               }
+                               if (expType < returnType) {
+@@ -1777,12 +1778,13 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+                   // nested updates.
+                   if (codegenNode.isBlock) {
+                       codegenNode.isBlock = false;
++                      context.helper(CREATE_VNODE);
+                   }
+-                  resultCache.set(node, returnType);
++                  constantCache.set(node, returnType);
+                   return returnType;
+               }
+               else {
+-                  resultCache.set(node, 0 /* NOT_CONSTANT */);
++                  constantCache.set(node, 0 /* NOT_CONSTANT */);
+                   return 0 /* NOT_CONSTANT */;
+               }
+           case 2 /* TEXT */:
+@@ -1794,7 +1796,7 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+               return 0 /* NOT_CONSTANT */;
+           case 5 /* INTERPOLATION */:
+           case 12 /* TEXT_CALL */:
+-              return getConstantType(node.content, resultCache);
++              return getConstantType(node.content, context);
+           case 4 /* SIMPLE_EXPRESSION */:
+               return node.constType;
+           case 8 /* COMPOUND_EXPRESSION */:
+@@ -1804,7 +1806,7 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+                   if (isString(child) || isSymbol(child)) {
+                       continue;
+                   }
+-                  const childType = getConstantType(child, resultCache);
++                  const childType = getConstantType(child, context);
+                   if (childType === 0 /* NOT_CONSTANT */) {
+                       return 0 /* NOT_CONSTANT */;
+                   }
+@@ -1817,14 +1819,14 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+               return 0 /* NOT_CONSTANT */;
+       }
+   }
+-  function getGeneratedPropsConstantType(node, resultCache) {
++  function getGeneratedPropsConstantType(node, context) {
+       let returnType = 3 /* CAN_STRINGIFY */;
+       const props = getNodeProps(node);
+       if (props && props.type === 15 /* JS_OBJECT_EXPRESSION */) {
+           const { properties } = props;
+           for (let i = 0; i < properties.length; i++) {
+               const { key, value } = properties[i];
+-              const keyType = getConstantType(key, resultCache);
++              const keyType = getConstantType(key, context);
+               if (keyType === 0 /* NOT_CONSTANT */) {
+                   return keyType;
+               }
+@@ -1834,7 +1836,7 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+               if (value.type !== 4 /* SIMPLE_EXPRESSION */) {
+                   return 0 /* NOT_CONSTANT */;
+               }
+-              const valueType = getConstantType(value, resultCache);
++              const valueType = getConstantType(value, context);
+               if (valueType === 0 /* NOT_CONSTANT */) {
+                   return valueType;
+               }
+@@ -1884,6 +1886,7 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+           directives: new Set(),
+           hoists: [],
+           imports: new Set(),
++          constantCache: new Map(),
+           temps: 0,
+           cached: 0,
+           identifiers: Object.create(null),
+@@ -20357,6 +20360,9 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+                       helper(OPEN_BLOCK);
+                       helper(CREATE_BLOCK);
+                   }
++                  else {
++                      helper(CREATE_VNODE);
++                  }
+               }
+               renderExp.arguments.push(createFunctionExpression(createForLoopParams(forNode.parseResult), childBlock, true /* force newline */));
+           };
+@@ -20820,7 +20826,7 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+                   const hasDynamicTextChild = type === 5 /* INTERPOLATION */ ||
+                       type === 8 /* COMPOUND_EXPRESSION */;
+                   if (hasDynamicTextChild &&
+-                      getConstantType(child) === 0 /* NOT_CONSTANT */) {
++                      getConstantType(child, context) === 0 /* NOT_CONSTANT */) {
+                       patchFlag |= 1 /* TEXT */;
+                   }
+                   // pass directly if the only child is a text node
+@@ -20976,7 +20982,7 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+               if (value.type === 20 /* JS_CACHE_EXPRESSION */ ||
+                   ((value.type === 4 /* SIMPLE_EXPRESSION */ ||
+                       value.type === 8 /* COMPOUND_EXPRESSION */) &&
+-                      getConstantType(value) > 0)) {
++                      getConstantType(value, context) > 0)) {
+                   // skip if the prop is a cached handler or has constant value
+                   return;
+               }
+@@ -21497,7 +21503,7 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+                       }
+                       // mark dynamic text with flag so it gets patched inside a block
+                       if (!context.ssr &&
+-                          getConstantType(child) === 0 /* NOT_CONSTANT */) {
++                          getConstantType(child, context) === 0 /* NOT_CONSTANT */) {
+                           callArgs.push(1 /* TEXT */ +
+                               ( ` /* ${PatchFlagNames[1 /* TEXT */]} */` ));
+                       }
+@@ -24944,13 +24950,13 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+           }
+       });
+   });
+-  function genCssVarsCode(vars, bindings, id, isProd) {
++  function genCssVarsCode(vars, id, isProd, bindings) {
+       const varsExp = genCssVarsFromList(vars, id, isProd);
+       const exp = createSimpleExpression(varsExp, false);
+       const context = createTransformContext(createRoot([]), {
+           prefixIdentifiers: true,
+-          inline: true,
+-          bindingMetadata: bindings
++          inline: !!bindings,
++          bindingMetadata: bindings || {}
+       });
+       const transformed = processExpression(exp, context);
+       const transformedString = transformed.type === 4 /* SIMPLE_EXPRESSION */
+@@ -24966,9 +24972,9 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+   }
+   // <script setup> already gets the calls injected as part of the transform
+   // this is only for single normal <script>
+-  function genNormalScriptCssVarsCode(cssVars, bindings, id, isProd) {
++  function genNormalScriptCssVarsCode(cssVars, id, isProd) {
+       return (`\nimport { ${CSS_VARS_HELPER} as _${CSS_VARS_HELPER} } from 'vue'\n` +
+-          `const __injectCSSVars__ = () => {\n${genCssVarsCode(cssVars, bindings, id, isProd)}}\n` +
++          `const __injectCSSVars__ = () => {\n${genCssVarsCode(cssVars, id, isProd)}}\n` +
+           `const __setup__ = __default__.setup\n` +
+           `__default__.setup = __setup__\n` +
+           `  ? (props, ctx) => { __injectCSSVars__();return __setup__(props, ctx) }\n` +
+@@ -25041,7 +25047,7 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+           if (node.type !== 1 /* ELEMENT */) {
+               return;
+           }
+-          if (!node.children.length && !hasSrc(node)) {
++          if (!node.children.length && !hasSrc(node) && node.tag !== 'template') {
+               return;
+           }
+           switch (node.tag) {
+@@ -25250,7 +25256,7 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+   function parseUriParts(urlString) {
+       // A TypeError is thrown if urlString is not a string
+       // @see https://nodejs.org/api/url.html#url_url_parse_urlstring_parsequerystring_slashesdenotehost
+-      return url.parse(isString(urlString) ? urlString : '');
++      return url.parse(isString(urlString) ? urlString : '', false, true);
+   }
+ 
+   const defaultAssetUrlOptions = {
+@@ -25322,9 +25328,16 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+                   // since they are aliases
+                   if (attr.value.content[0] !== '@' &&
+                       isRelativeUrl(attr.value.content)) {
++                      // Allow for full hostnames provided in options.base
++                      const base = parseUrl(options.base);
++                      const protocol = base.protocol || '';
++                      const host = base.host ? protocol + '//' + base.host : '';
++                      const basePath = base.path || '/';
+                       // when packaged in the browser, path will be using the posix-
+                       // only version provided by rollup-plugin-node-builtins.
+-                      attr.value.content = (path__default.posix || path__default).join(options.base, url.path + (url.hash || ''));
++                      attr.value.content =
++                          host +
++                              (path__default.posix || path__default).join(basePath, url.path + (url.hash || ''));
+                   }
+                   return;
+               }
+@@ -30996,7 +31009,7 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+   var SourceMapConsumer$2 = sourceMap.SourceMapConsumer;
+   var SourceMapGenerator$3 = sourceMap.SourceMapGenerator;
+ 
+-  var mergeSourceMap = merge$1;
++  var C__Labs_vueNext_node_modules_mergeSourceMap = merge$1;
+ 
+   /**
+    * Merge old source map and new source map and return merged.
+@@ -31074,7 +31087,7 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+           if (map) {
+               return {
+                   code: result.css.toString(),
+-                  map: mergeSourceMap(map, JSON.parse(result.map.toString())),
++                  map: C__Labs_vueNext_node_modules_mergeSourceMap(map, JSON.parse(result.map.toString())),
+                   errors: [],
+                   dependencies
+               };
+@@ -31104,7 +31117,7 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+       if (map) {
+           return {
+               code: result.css.toString(),
+-              map: mergeSourceMap(map, result.map),
++              map: C__Labs_vueNext_node_modules_mergeSourceMap(map, result.map),
+               errors: [],
+               dependencies: dependencies
+           };
+@@ -31128,7 +31141,7 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+           if (map) {
+               return {
+                   code: result,
+-                  map: mergeSourceMap(map, ref.sourcemap),
++                  map: C__Labs_vueNext_node_modules_mergeSourceMap(map, ref.sourcemap),
+                   errors: [],
+                   dependencies
+               };
+@@ -34397,7 +34410,7 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+               if (needRewrite) {
+                   content = rewriteDefault(content, `__default__`, plugins);
+                   if (cssVars.length) {
+-                      content += genNormalScriptCssVarsCode(cssVars, bindings, scopeId, !!options.isProd);
++                      content += genNormalScriptCssVarsCode(cssVars, scopeId, !!options.isProd);
+                   }
+                   if (hasInheritAttrsFlag) {
+                       content += `__default__.inheritAttrs = false`;
+@@ -34955,7 +34968,7 @@ var VueCompilerSFC = (function (exports, postcss, path, url, require$$0) {
+       if (cssVars.length) {
+           helperImports.add(CSS_VARS_HELPER);
+           helperImports.add('unref');
+-          s.prependRight(startOffset, `\n${genCssVarsCode(cssVars, bindingMetadata, scopeId, !!options.isProd)}\n`);
++          s.prependRight(startOffset, `\n${genCssVarsCode(cssVars, scopeId, !!options.isProd, bindingMetadata)}\n`);
+       }
+       // 9. finalize setup() argument signature
+       let args = `__props`;
