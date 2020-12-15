@@ -5,7 +5,7 @@
       position: 'relative',
       'pointer-events': 'none',
       'touch-action': 'none',
-      'grid-area': gridArea || area.gridArea,
+      'grid-area': gridarea || area.gridArea,
       border: `2px solid ${area.color}`,
       opacity: 0.3,
       'flex-grow': area.flexGrow,
@@ -39,7 +39,7 @@ import { useIsMainArea } from '../../composables/area.js'
 
 defineProps({
   area: { type: Object, required: true },
-  gridArea: { type: String, default: undefined },
+  gridarea: { type: String, default: undefined },
 })
 
 defineEmit(['edit'])

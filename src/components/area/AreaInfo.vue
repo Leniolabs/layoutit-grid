@@ -5,7 +5,7 @@
       position: 'relative',
       'pointer-events': 'none',
       'touch-action': 'none',
-      'grid-area': gridArea,
+      'grid-area': area.gridArea,
       'border-color': area.color,
       'flex-grow': area.flexGrow,
       'flex-shrink': area.flexShrink,

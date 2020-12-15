@@ -7,7 +7,7 @@
       position: 'relative',
       'pointer-events': 'none',
       'touch-action': 'none',
-      ...gridAreaStyles(area, gridArea),
+      ...gridAreaStyles(area, gridarea),
       overflow: 'hidden',
       'touch-action': 'none',
       position: 'relative',
@@ -31,14 +31,14 @@
       :area="area"
       :computed-styles="computedStyles"
       :computed-gap="computedGap"
-      :implicit-grid="implicitGrid"
+      :implicit-grid="explicitAreas.implicitGrid"
     />
 
     <AreaEditor
       v-for="(a, i) in area.children"
       :key="`area-${a.name}`"
       :area="a"
-      :grid-area="gridAreas[i]"
+      :gridarea="explicitAreas.gridAreas[i]"
       @edit="$refs.selection.editArea(a)"
     />
     <!-- Add back when there is special markup for flex 
@@ -46,7 +46,7 @@
     -->
     <template v-if="area.display === 'grid'">
       <template v-for="(a, i) in area.children" :key="`area-info-${a.name}`">
-        <AreaBox :area="a" :grid-area="gridAreas[i]" />
+        <AreaBox :area="a" :gridarea="explicitAreas.gridAreas[i]" />
       </template>
     </template>
     <div v-if="area != mainArea" class="area-info" :style="{ border: `2px solid ${area.color}` }">
@@ -86,7 +86,7 @@ import { useIsActiveArea } from '../../composables/area.js'
 const props = defineProps({
   area: { type: Object, required: true },
   item: { type: Number, default: 1 },
-  gridArea: { type: String, default: undefined },
+  gridarea: { type: String, default: undefined },
 })
 
 defineEmit(['edit'])
@@ -217,17 +217,13 @@ watch(
   { immediate: true, deep: true, flush: 'post' }
 )
 
-const gridAreas = ref([])
-const implicitGrid = ref({ rows: 0, cols: 0 })
-watch(
-  props.area,
-  () => {
-    const g = findImplicitGrid(props.area)
-    gridAreas.value = g.gridAreas
-    implicitGrid.value = g.implicitGrid
-  },
-  { immediate: true }
-)
+const explicitAreas = computed(() => {
+  if (props.area.display === 'grid') {
+    return findImplicitGrid(props.area)
+  } else {
+    return { gridAreas: [], implicitGrid: {} }
+  }
+})
 </script>
 
 <style scoped lang="scss">
