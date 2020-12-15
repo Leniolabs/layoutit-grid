@@ -58,8 +58,12 @@ export function gridToCSS(area, { useTemplateAreas = true, repeat }) {
   grid-template-columns: ${namedTemplateColumns(grid, repeat)};
   grid-template-rows: ${namedTemplateRows(grid, repeat)};
   gap: ${grid.row.gap} ${grid.col.gap};` // TODO: cssGridGap(grid)
-  css += declaration('grid-auto-columns', grid.row.auto, 'initial')
-  css += declaration('grid-auto-rows', grid.col.auto, 'initial')
+  if (grid.row.auto.length) {
+    css += `grid-auto-columns: ${grid.row.auto.join(' ')};`
+  }
+  if (grid.col.auto.length) {
+    css += `grid-auto-rows: ${grid.col.auto.join(' ')};`
+  }
   css += declaration('grid-auto-flow', grid.autoFlow, 'initial')
   css += declaration('justify-content', grid.justifyContent, 'initial')
   css += declaration('align-content', grid.alignContent, 'initial')

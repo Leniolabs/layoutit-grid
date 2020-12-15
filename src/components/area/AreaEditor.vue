@@ -26,22 +26,6 @@
     }"
     :area="area"
   >
-    <!--
-    <div
-      v-if="area.type === 'component'"
-      style="
-        width: 100%;
-        height: 100%;
-        opacity: 0.5;
-        padding: 20px;
-        display: grid;
-        justify-items: center;
-        align-items: center;
-      "
-    >
-      <PieChart />
-    </div>
-    -->
     <GridEditor
       v-if="area.display === 'grid'"
       :area="area"
@@ -67,12 +51,14 @@
     </template>
     <div v-if="area != mainArea" class="area-info" :style="{ border: `2px solid ${area.color}` }">
       <p :style="{ backgroundColor: area.color }" class="area-name" @click="currentArea = area">{{ area.name }}</p>
+      <AreaButtons :area="area" />
     </div>
   </component>
 </template>
 
 <script setup>
 import AreaBox from './AreaBox.vue'
+import AreaButtons from './AreaButtons.vue'
 import PieChart from '../content/PieChart.vue'
 import ElementImage from './ElementImage.vue'
 import ElementParagraph from './ElementParagraph.vue'

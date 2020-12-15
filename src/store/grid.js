@@ -82,7 +82,7 @@ function typeIndex(type) {
 export function createGridDimension(n) {
   return {
     sizes: new Array(n).fill('1fr'),
-    auto: 'initial',
+    auto: [],
     lineNames: newLineNames(n + 1),
     gap: '0px',
   }
@@ -99,6 +99,8 @@ export function createGridState(r = 3, c = 2) {
     alignItems: 'initial',
   }
 }
+
+// TODO: abstract these helpers to work with the dimmension passed as param 'col', 'row'
 
 export function getRowValue(grid, n) {
   return parseValue(grid.row.sizes[n])
@@ -130,6 +132,53 @@ export function setColValueUnit(grid, n, x) {
 
 export function setColValue(grid, n, value) {
   setColValueUnit(grid, n, { value, unit: getColUnit(grid, n) })
+}
+
+export function addImplicitCol(grid, val) {
+  grid.col.auto.push(val)
+}
+
+export function addImplicitRow(grid, val) {
+  grid.row.auto.push(val)
+}
+
+export function getImplicitRowValue(grid, n) {
+  return parseValue(grid.row.auto[n])
+}
+
+export function getImplicitRowUnit(grid, n) {
+  return parseUnit(grid.row.auto[n])
+}
+
+export function getImplicitColValue(grid, n) {
+  return parseValue(grid.col.auto[n])
+}
+
+export function getImplicitColUnit(grid, n) {
+  return parseUnit(grid.col.auto[n])
+}
+
+export function setImplicitRowValueUnit(grid, n, x) {
+  grid.row.auto[n] = valueUnitToString(x)
+}
+
+export function setImplicitRowValue(grid, n, value) {
+  setImplicitRowValueUnit(grid, n, { value, unit: getImplicitRowUnit(grid, n) })
+}
+
+export function setImplicitColValueUnit(grid, n, x) {
+  grid.col.auto[n] = valueUnitToString(x)
+}
+
+export function setImplicitColValue(grid, n, value) {
+  setImplicitColValueUnit(grid, n, { value, unit: getImplicitColUnit(grid, n) })
+}
+
+export function removeImplicitRow(grid, n) {
+  grid.row.auto.splice(n, 1)
+}
+export function removeImplicitCol(grid, n) {
+  grid.col.auto.splice(n, 1)
 }
 
 export function withChangedValue(current, newValue) {

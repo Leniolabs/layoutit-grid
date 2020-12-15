@@ -75,6 +75,7 @@ button {
 
   position: absolute;
   top: 5px;
+  right: 0;
   pointer-events: all;
   vertical-align: top;
 
@@ -120,7 +121,7 @@ button {
   &.btn-subgrid,
   &.btn-remove {
     position: relative;
-    float: left;
+    float: right;
     right: 0;
     top: 0;
     margin-right: 5px;

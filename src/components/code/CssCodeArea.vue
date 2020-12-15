@@ -3,8 +3,8 @@
   <template v-if="area.grid">
     <CssDecl property="display">grid</CssDecl>
     <CssDecl v-if="area.grid.autoFlow !== 'row'" property="grid-auto-flow">{{ area.grid.autoFlow }}</CssDecl>
-    <CssDecl v-if="area.grid.col.auto !== 'initial'" property="grid-auto-columns">{{ area.grid.col.auto }}</CssDecl>
-    <CssDecl v-if="area.grid.row.auto !== 'initial'" property="grid-auto-rows">{{ area.grid.row.auto }}</CssDecl>
+    <CssDecl v-if="area.grid.col.auto.length" property="grid-auto-columns">{{ area.grid.col.auto.join(' ') }}</CssDecl>
+    <CssDecl v-if="area.grid.row.auto.length" property="grid-auto-rows">{{ area.grid.row.auto.join(' ') }}</CssDecl>
     <CssDecl property="grid-template-columns">
       <CssCodeTemplateTracks :grid="area.grid" type="col" :repeat="options.repeat" />
     </CssDecl>

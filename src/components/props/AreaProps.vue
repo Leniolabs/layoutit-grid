@@ -8,8 +8,12 @@
     -->
 
     <template v-if="area.display === 'grid'">
-      <PropsAccordionItem name="grid-template" heading="Explicit Grid" :accordion="accordion">
+      <PropsAccordionItem name="explicit-grid" heading="Explicit Grid" :accordion="accordion">
         <AreaGridTemplateProps :area="area" />
+      </PropsAccordionItem>
+
+      <PropsAccordionItem name="implicit-grid" heading="Implicit Grid" :accordion="accordion">
+        <AreaImplicitGridProps :area="area" />
       </PropsAccordionItem>
 
       <PropsAccordionItem name="grid-gap" heading="Grid Gap" :accordion="accordion">
@@ -73,6 +77,7 @@ import AreaBoxProps from './AreaBoxProps.vue'
 import AreaSelfGridProps from './AreaSelfGridProps.vue'
 import AreaSelfFlexProps from './AreaSelfFlexProps.vue'
 import AreaGridTemplateProps from './AreaGridTemplateProps.vue'
+import AreaImplicitGridProps from './AreaImplicitGridProps.vue'
 import AreaGridGapProps from './AreaGridGapProps.vue'
 import AreaGridItemsPlacementProps from './AreaGridItemsPlacementProps.vue'
 import AreaGridContentPlacementProps from './AreaGridContentPlacementProps.vue'
@@ -87,14 +92,14 @@ import { defineProps, ref, computed, watch } from 'vue'
 const props = defineProps({
   area: { type: Object, required: true },
 })
-const accordion = ref({ active: 'grid-template' })
+const accordion = ref({ active: 'explicit-grid' })
 const currentGrid = computed(() => props.area.grid)
 const currentFlex = computed(() => props.area.flex)
 
 watch(currentArea, () => {
   if (accordion.value.active !== 'tree') {
     if (currentArea.display === 'grid') {
-      accordion.value.active = 'grid-template'
+      accordion.value.active = 'explicit-grid'
     } else {
       accordion.value.active = 'box'
     }
