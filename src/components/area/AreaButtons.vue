@@ -1,24 +1,47 @@
 <template>
-  <button v-show="!hasDisplay" aria-label="Add sub grid" class="btn-subgrid" title="Add Sub Grid" @click="subGrid()" :style="{ background: `${area.color}` }">
+  <button
+    v-show="currentArea === area && !hasDisplay"
+    aria-label="Edit Area"
+    class="btn-edit"
+    title="Edit Area"
+    :style="{ background: `${area.color}` }"
+    @click="$emit('edit')"
+  >
+    <IconEdit />
+  </button>
+  <button
+    v-show="currentArea === area && !hasDisplay"
+    aria-label="Add sub grid"
+    class="btn-subgrid"
+    title="Add Sub Grid"
+    :style="{ background: `${area.color}` }"
+    @click="subGrid()"
+  >
     <IconSubgrid />
   </button>
   <!--button v-show="!hasDisplay" aria-label="Add flex" class="btn-subgrid" @click="subFlex(area)">
     <IconFlex />
   </button-->
-    <button
-      v-show="!hasDisplay"
-      aria-label="Remove area"
-      class="btn-remove"
-      title="Remove Area"
-      @click="removeArea(area)"
-      :style="{ background: `${area.color}` }"
-    >
-      <IconRemove />
-    </button>
-    <button v-show="hasDisplay" aria-label="Clear area" class="btn-remove" title="Clear Area" @click="clearArea(area)" :style="{ background: `${area.color}` }" >
-      <IconClear />
-    </button>
-
+  <button
+    v-show="currentArea === area && !hasDisplay"
+    aria-label="Remove area"
+    class="btn-remove"
+    title="Remove Area"
+    :style="{ background: `${area.color}` }"
+    @click="removeArea(area)"
+  >
+    <IconRemove />
+  </button>
+  <button
+    v-show="currentArea === area && hasDisplay"
+    aria-label="Clear area"
+    class="btn-remove"
+    title="Clear Area"
+    :style="{ background: `${area.color}` }"
+    @click="clearArea(area)"
+  >
+    <IconClear />
+  </button>
 </template>
 
 <script setup>
@@ -26,10 +49,12 @@ import IconRemove from '../icons/IconRemove.vue'
 import IconClear from '../icons/IconClear.vue'
 import IconSubgrid from '../icons/IconSubgrid.vue'
 import IconFlex from '../icons/IconFlex.vue'
+import IconEdit from '../icons/IconEdit.vue'
 
-import { defineProps, computed } from 'vue'
+import { computed, defineProps, defineEmit } from 'vue'
 import {
   mainArea,
+  currentArea,
   setCurrentArea,
   createGridState,
   createFlexState,
@@ -41,6 +66,9 @@ import {
 const props = defineProps({
   area: { type: Object, required: true },
 })
+
+defineEmit(['edit'])
+
 const hasDisplay = computed(() => props.area.grid || props.area.flex)
 
 function subFlex() {
@@ -72,21 +100,23 @@ button {
   pointer-events: all;
   align-items: center;
   padding: 0;
-  justify-content: center;   
-  border-left: 1px solid rgba(238,238,238,0.4);
+  justify-content: center;
+  border-left: 1px solid rgba(238, 238, 238, 0.4);
   position: relative;
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255,255,255,0.15) ;
+    background: rgba(255, 255, 255, 0.15);
     pointer-events: none;
     display: none;
-  }  
-  &:hover:before { display: block; }
+  }
+  &:hover:before {
+    display: block;
+  }
   &.btn-save {
     border-radius: 2px 0 0 2px;
   }
@@ -95,7 +125,12 @@ button {
   }
   &.btn-remove {
     padding-top: 1px;
-    border-bottom-right-radius: 2px;    
+    border-bottom-right-radius: 2px;
+    right: 0;
+  }
+
+  &.btn-edit,
+  &.btn-remove {
     svg {
       height: 0.688rem;
       width: 0.688rem;

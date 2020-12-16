@@ -93,9 +93,9 @@ export function deselectCurrentArea() {
 }
 
 export function clearArea(area) {
+  area.display = 'block'
   area.grid = null
   area.flex = null
-  deselectCurrentArea()
 }
 
 export function removeArea(area) {

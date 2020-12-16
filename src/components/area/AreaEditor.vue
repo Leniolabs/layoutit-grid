@@ -28,30 +28,32 @@
   >
     <GridEditor
       v-if="area.display === 'grid'"
+      ref="gridEditorEl"
       :area="area"
       :computed-styles="computedStyles"
       :computed-gap="computedGap"
       :implicit-grid="explicitAreas.implicitGrid"
+      @editend="editingArea = null"
     />
 
     <AreaEditor
-      v-for="(a, i) in area.children"
+      v-for="(a, i) in areasToShow"
       :key="`area-${a.name}`"
       :area="a"
       :gridarea="explicitAreas.gridAreas[i]"
-      @edit="$refs.selection.editArea(a)"
+      @edit="onEditArea(a)"
     />
     <!-- Add back when there is special markup for flex 
     <FlexEditor v-if="area.display === 'flex'" :area="area" />
     -->
     <template v-if="area.display === 'grid'">
-      <template v-for="(a, i) in area.children" :key="`area-info-${a.name}`">
+      <template v-for="(a, i) in areasToShow" :key="`area-info-${a.name}`">
         <AreaBox :area="a" :gridarea="explicitAreas.gridAreas[i]" />
       </template>
     </template>
     <div v-if="area != mainArea" class="area-info" :style="{ border: `2px solid ${area.color}` }">
       <div :style="{ backgroundColor: area.color }" class="area-name" @click="currentArea = area">{{ area.name }}</div>
-        <AreaButtons :area="area" />
+      <AreaButtons :area="area" @edit="$emit('edit')" />
     </div>
   </component>
 </template>
@@ -93,6 +95,24 @@ defineEmit(['edit'])
 
 const { area } = toRefs(props)
 const isActive = useIsActiveArea(area)
+
+const editingArea = ref(null)
+const areasToShow = computed(() => {
+  return props.area.children.filter((a) => a !== editingArea.value)
+  /*.flatMap((a) =>
+      a.items
+        ? new Array(a.items.count).fill(0).map((_, i) => {
+            return { area: a, item: i + 1 }
+          })
+        : { area: a, item: 1 }
+    )*/
+})
+
+const gridEditorEl = ref(null)
+function onEditArea(area) {
+  editingArea.value = area
+  gridEditorEl.value.editArea(area)
+}
 
 const areaType = computed(() => {
   switch (props.area.type) {
@@ -178,9 +198,9 @@ function flexStyles(flex) {
 const displayStyles = computed(() => {
   switch (props.area.display) {
     case 'grid':
-      return gridStyles(props.area.grid)
+      return props.area.grid ? gridStyles(props.area.grid) : {}
     case 'flex':
-      return flexStyles(props.area.flex)
+      return props.area.flex ? flexStyles(props.area.flex) : {}
     default:
       return {}
   }
@@ -263,7 +283,7 @@ const explicitAreas = computed(() => {
   pointer-events: initial;
   font-size: 13px;
   text-shadow: none;
-  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   direction: ltr;
   text-align: left;
   white-space: pre;
@@ -275,16 +295,18 @@ const explicitAreas = computed(() => {
   align-items: center;
   max-width: max-content;
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255,255,255,0.15) ;
+    background: rgba(255, 255, 255, 0.15);
     pointer-events: none;
     display: none;
-  }  
-  &:hover:before { display: block; }  
+  }
+  &:hover:before {
+    display: block;
+  }
 }
 </style>

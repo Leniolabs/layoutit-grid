@@ -51,7 +51,8 @@ export default {
   props: {
     area: { type: Object, required: true },
   },
-  setup(props, { expose }) {
+  emits: ['editend'],
+  setup(props, { expose, emit }) {
     const selection = ref(null)
     const gridName = ref('')
     const nameInputElement = ref(null)
@@ -66,8 +67,6 @@ export default {
       // TODO: if ! gridRegion
       const gridRegion = getGridRegion(area)
       if (gridRegion) {
-        emit('editstart', area)
-
         gridName.value = area.name
 
         selection.value = {
@@ -167,7 +166,7 @@ export default {
         const sa = selection.value.area
         if (sa) {
           sa.name = toCssName(gridName.value)
-          sa.gridRegion = gridRegionToGridArea(selectionArea(selection.value))
+          sa.gridArea = gridRegionToGridArea(selectionArea(selection.value))
           emit('editend', sa)
         } else {
           props.area.children.push(
@@ -192,7 +191,7 @@ export default {
       selection.value = null
     }
 
-    expose({ cellDown })
+    expose({ cellDown, editArea })
 
     return {
       saveEnabled,
