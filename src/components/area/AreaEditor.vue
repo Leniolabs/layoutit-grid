@@ -50,8 +50,8 @@
       </template>
     </template>
     <div v-if="area != mainArea" class="area-info" :style="{ border: `2px solid ${area.color}` }">
-      <p :style="{ backgroundColor: area.color }" class="area-name" @click="currentArea = area">{{ area.name }}</p>
-      <AreaButtons :area="area" />
+      <div :style="{ backgroundColor: area.color }" class="area-name" @click="currentArea = area">{{ area.name }}</div>
+        <AreaButtons :area="area" />
     </div>
   </component>
 </template>
@@ -250,23 +250,41 @@ const explicitAreas = computed(() => {
   left: 0;
   height: 100%;
   width: 100%;
+  display: flex;
+  align-items: flex-start;
+}
+
+.area-actions {
+  position: absolute;
+  right: 0;
 }
 
 .area-name {
-  position: absolute;
   pointer-events: initial;
   font-size: 13px;
-  font-weight: 500;
-  color: white;
-  /*
-  bottom: -14px;
-  right: 0;
-  border-top-left-radius: 6px;
-  padding: 5px 7px 5px 10px;
-  */
-  top: 0;
-  left: 0;
-  border-bottom-right-radius: 6px;
-  padding: 3px 10px 6px 7px;
+  text-shadow: none;
+  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  direction: ltr;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  color: #fff;
+  padding: 0 8px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  max-width: max-content;
+  &:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.15) ;
+    pointer-events: none;
+    display: none;
+  }  
+  &:hover:before { display: block; }  
 }
 </style>

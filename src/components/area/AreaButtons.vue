@@ -1,22 +1,24 @@
 <template>
-  <button v-show="!hasDisplay" aria-label="Add sub grid" class="btn-subgrid" title="Add Sub Grid" @click="subGrid()">
+  <button v-show="!hasDisplay" aria-label="Add sub grid" class="btn-subgrid" title="Add Sub Grid" @click="subGrid()" :style="{ background: `${area.color}` }">
     <IconSubgrid />
   </button>
   <!--button v-show="!hasDisplay" aria-label="Add flex" class="btn-subgrid" @click="subFlex(area)">
     <IconFlex />
   </button-->
-  <button
-    v-show="!hasDisplay"
-    aria-label="Remove area"
-    class="btn-remove"
-    title="Remove Area"
-    @click="removeArea(area)"
-  >
-    <IconRemove />
-  </button>
-  <button v-show="hasDisplay" aria-label="Clear area" class="btn-remove" title="Clear Area" @click="clearArea(area)">
-    <IconClear />
-  </button>
+    <button
+      v-show="!hasDisplay"
+      aria-label="Remove area"
+      class="btn-remove"
+      title="Remove Area"
+      @click="removeArea(area)"
+      :style="{ background: `${area.color}` }"
+    >
+      <IconRemove />
+    </button>
+    <button v-show="hasDisplay" aria-label="Clear area" class="btn-remove" title="Clear Area" @click="clearArea(area)" :style="{ background: `${area.color}` }" >
+      <IconClear />
+    </button>
+
 </template>
 
 <script setup>
@@ -62,69 +64,43 @@ function subGrid() {
 
 <style scoped lang="scss">
 button {
-  background: var(--color-add);
   border: 0;
-  height: 1.8rem;
-  line-height: 0.5rem;
-  margin-bottom: 5px;
+  height: 28px;
+  min-width: 28px;
   color: #fff;
-  font-size: 0.875rem;
-  display: inline-block;
-  padding: 0.375em;
   cursor: pointer;
-
-  position: absolute;
-  top: 5px;
-  right: 0;
   pointer-events: all;
-  vertical-align: top;
-
+  align-items: center;
+  padding: 0;
+  justify-content: center;   
+  border-left: 1px solid rgba(238,238,238,0.4);
+  position: relative;
+  &:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.15) ;
+    pointer-events: none;
+    display: none;
+  }  
+  &:hover:before { display: block; }
   &.btn-save {
     border-radius: 2px 0 0 2px;
-    &:hover {
-      background: var(--color-add-active);
-    }
   }
   &.btn-subgrid {
-    background: var(--color-add);
-    padding-top: 4px;
-    &:hover {
-      background: var(--color-add-active);
-    }
-    svg {
-      height: 1.125rem;
-      width: 1.125rem;
-      fill: #fff;
-    }
+    padding-top: 2px;
   }
   &.btn-remove {
-    width: 1.8rem;
-    background: var(--color-remove);
-    border-top-right-radius: 2px;
-    border-bottom-right-radius: 2px;
-    &:hover {
-      background: var(--color-remove-active);
-    }
+    padding-top: 1px;
+    border-bottom-right-radius: 2px;    
     svg {
       height: 0.688rem;
       width: 0.688rem;
       fill: #fff;
     }
-  }
-
-  &.btn-save {
-    right: 38px;
-  }
-  &.btn-remove {
-    right: 5px;
-  }
-  &.btn-subgrid,
-  &.btn-remove {
-    position: relative;
-    float: right;
-    right: 0;
-    top: 0;
-    margin-right: 5px;
   }
 }
 </style>

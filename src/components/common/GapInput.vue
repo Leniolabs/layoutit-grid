@@ -97,6 +97,7 @@ input[type='number'] {
       font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
       direction: ltr;
       padding: 0;
+      &:focus,
       &:hover {
         color: #eee;
       }
@@ -114,6 +115,7 @@ input[type='number'] {
       cursor: text;
       text-align: center;
       padding-left: 3px;
+      &:focus,
       &:hover {
         color: #eee;
       }
