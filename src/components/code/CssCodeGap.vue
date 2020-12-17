@@ -5,7 +5,7 @@
     contenteditable
     spellcheck="false"
     :class="['input', { active: false }]"
-    @keydown="onCodeInputKeydown"
+    @keydown="onCodeInputKeydown($event, $emit)"
     @input="onInput"
     >{{ gap }}</span
   >

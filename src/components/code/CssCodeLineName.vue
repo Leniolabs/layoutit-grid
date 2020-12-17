@@ -7,7 +7,7 @@
       contenteditable
       spellcheck="false"
       :class="['input', type, { active: false }]"
-      @keydown="onCodeInputKeydown"
+      @keydown="onCodeInputKeydown($event, $emit)"
       @input="onInput"
       @focus="currentFocus = { on: 'line', grid, type, pos }"
       @blur="currentFocus = null"

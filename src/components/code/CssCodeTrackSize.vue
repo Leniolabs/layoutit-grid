@@ -6,7 +6,7 @@
     contenteditable
     spellcheck="false"
     :class="['input', type, { active: isDraggingTrackLine || isFocused }]"
-    @keydown="onCodeInputKeydown"
+    @keydown="onCodeInputKeydown($event, $emit)"
     @input="onInput"
     @focus="currentFocus = { on: 'track', grid, type, track }"
     @blur="currentFocus = null"

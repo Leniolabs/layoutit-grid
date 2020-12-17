@@ -157,7 +157,7 @@ export function toCssName(name) {
   return CSS.escape(name.replace(/\s/g, '-'))
 }
 
-export function onCodeInputKeydown(event) {
+export function onCodeInputKeydown(event, emit) {
   if (event.code === 'Space') {
     event.preventDefault()
     return
@@ -181,8 +181,8 @@ export function onCodeInputKeydown(event) {
   }
 }
 
-export function targetText(el) {
-  const textNode = el.childNodes[0]
+export function targetText(event) {
+  const textNode = event.target.childNodes[0]
   return textNode && textNode.data
 }
 
