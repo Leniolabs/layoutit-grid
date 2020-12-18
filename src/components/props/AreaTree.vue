@@ -66,7 +66,7 @@ import {
 
 import { getAreaDepth } from '../../store.js'
 
-const depth = computed(() => getAreaDepth(props.area) * 15 + 'px')
+const depth = computed(() => 10 + getAreaDepth(props.area) * 2 + 'px')
 
 // name: 'AreaTree',
 
@@ -221,8 +221,6 @@ function addArea() {
   display: none;
 }
 
-
-
 .btn-remove,
 .btn-add {
   position: absolute;
@@ -233,7 +231,7 @@ function addArea() {
   padding: 2px;
   cursor: pointer;
   pointer-events: all;
-  border-radius: 2px; 
+  border-radius: 2px;
   padding-top: 3px;
   background: transparent;
   svg {
