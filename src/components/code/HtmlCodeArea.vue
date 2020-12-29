@@ -2,7 +2,7 @@
   <span
     >{{ `${ident}${OPEN_TAG}` }}<span class="token tag">{{ elementTag }}</span
     >{{ ' ' }}<span class="token attr-name">class</span>="<span class="token attr-value">{{ cssAreaName }}</span
-    >"><template v-for="a in gridAreas" :key="a.name"
+    >"><template v-for="(a, i) in gridAreas" :key="`${i}-${a.name}`"
       >{{ '\n' }}<HtmlCodeArea :area="a" :options="options" :ident="ident + '  '" /></template
     >{{ `${gridAreas.length > 0 ? '\n' + ident : ''}${CLOSE_TAG}` }}<span class="token tag">{{ elementTag }}</span
     >></span
