@@ -2,7 +2,7 @@
   <div
     :class="['area-tree']"
     :style="{
-      opacity: reordering && reordering.area === area ? 0.2 : 1,
+      opacity: reordering && reordering.area === area ? 0.3 : 1,
     }"
   >
     <!--
@@ -104,8 +104,15 @@ function onDragEnd(a) {
   reordering.value = null
 }
 
+function measure(el) {
+  var rect = el.getBoundingClientRect(),
+    scrollTop = window.pageYOffset || document.documentElement.scrollTop
+  return { top: rect.top + scrollTop, height: rect.height }
+}
+
 function afterMiddleHeight(event) {
-  return (event.clientY - event.target.offsetTop) / event.target.clientHeight > 0.5
+  const { top, height } = measure(event.target)
+  return (event.clientY - top) / height > 0.5
 }
 function onDragOver(areaTarget, event) {
   event.stopPropagation()
@@ -174,15 +181,15 @@ function addArea() {
   margin-left: v-bind(depth);
   height: 10px;
   content: '>';
-  opacity: 0;
-  color: black;
+  opacity: 1;
+  color: rgb(255, 255, 255);
 }
 
 .reordering.after::after {
   margin-left: v-bind(depth);
   height: 10px;
-  color: black;
-  opacity: 0;
+  color: rgb(255, 255, 255);
+  opacity: 1;
   content: '>';
 }
 
