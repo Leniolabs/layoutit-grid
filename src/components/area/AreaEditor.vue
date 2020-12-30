@@ -12,10 +12,11 @@
       'touch-action': 'none',
       position: 'relative',
       outline: area === currentArea ? `2px solid ${area.color}` : 'none',
-      background:
-        area.display === 'block' && area.parent
+      background: '#ffffff',
+      /*
+        (area.display === 'block' && area.parent)
           ? '#ffffff88'
-          : 'repeating-linear-gradient(45deg, white, white 9px, #fafafa 9px, #fafafa 14px)',
+          : 'repeating-linear-gradient(45deg, white, white 9px, #fafafa 9px, #fafafa 14px)',*/
       'user-select': 'none',
       'z-index': 0,
       // Force a minimum width and height so areas are still visible when the
