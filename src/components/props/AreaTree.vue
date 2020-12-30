@@ -13,11 +13,13 @@
       :class="['area-name', { 'has-display': area.flex || area.grid, current: currentArea === area }]"
       @click="currentArea = area"
     >
-      <span>.{{ area.name }}</span>
-      <!--       <span
+      <span class="name">.{{ area.name }}</span>
+      <span
+        v-if="area.children.length > 0"
         :class="{ caret: area.children.length > 0, 'caret-down': showChildren }"
         @click="showChildren = !showChildren"
-      ></span>       -->
+        >{{ showChildren ? ' &lt; ' : ' &gt; ' }}</span
+      >
       <button v-if="area.display !== 'block'" aria-label="Add area" class="btn-add" title="Add Area" @click="addArea">
         <IconRemove />
       </button>
@@ -203,7 +205,7 @@ function addArea() {
 }
 
 /* Create the caret/arrow with a unicode, and style it */
-.area-name > span::after {
+.area-name > span.name::after {
   content: '{';
   display: inline-block;
   margin-left: 6px;
@@ -215,16 +217,16 @@ function addArea() {
   margin-right: 6px;
   color: #eee;
 }
-.area-name > span {
+.area-name > span.name {
   color: rgb(215, 186, 125);
 }
-.area-name .area-name > span {
+.area-name .area-name > span.name {
   color: rgb(156, 220, 254);
 }
 
 .area-name .area-name:before,
 .area-name .area-name:after,
-.area-name .area-name > span::after {
+.area-name .area-name > span.name::after {
   display: none;
 }
 
