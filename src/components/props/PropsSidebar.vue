@@ -2,16 +2,13 @@
   <div :class="['sidebar', { active: currentView === 'props' }]">
     <BrandLogo />
     <AreaProps :area="currentArea" />
-    <!--     <BrandBanner />
- -->
+ 
   </div>
 </template>
 
 <script setup>
 import BrandLogo from './BrandLogo.vue'
-import IconGithub from '../icons/IconGithub.vue'
 import AreaProps from './AreaProps.vue'
-import BrandBanner from '../props/BrandBanner.vue'
 
 import { defineProps, computed } from 'vue'
 import { currentArea, currentView } from '../../store.js'
@@ -56,14 +53,5 @@ defineProps({
   }
 }
 
-.btn-github {
-  position: fixed;
-  top: 0;
-  right: 0;
-  opacity: 0.7;
-  transition: opacity 0.1s linear;
-  &:hover {
-    opacity: 0.9;
-  }
-}
+
 </style>

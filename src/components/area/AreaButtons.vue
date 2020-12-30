@@ -1,5 +1,5 @@
 <template>
-  <button
+<!--   <button
     v-show="currentArea === area && !hasDisplay"
     aria-label="Edit Area"
     class="btn-edit"
@@ -8,7 +8,7 @@
     @click="$emit('edit')"
   >
     <IconEdit />
-  </button>
+  </button> -->
   <button
     v-show="currentArea === area && !hasDisplay"
     aria-label="Add sub grid"

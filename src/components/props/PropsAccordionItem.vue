@@ -51,7 +51,9 @@ const opened = ref(true)
   } */
   &.tree-item {
     margin: auto 15px 15px;
-    height: 150px;
+    min-height: 150px;
+    max-height: 250px;
+    overflow: auto;
     background: rgb(35, 36, 31);
     opacity: 1;
     h1 {
@@ -60,7 +62,7 @@ const opened = ref(true)
       color: #bbb;
       font-weight: 700;
       font-size: 12px;
-      padding: 8px 5px 5px;
+      padding: 8px;
       user-select: none;
       text-transform: uppercase;
       border: 0;

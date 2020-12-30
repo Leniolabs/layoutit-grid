@@ -1,11 +1,25 @@
 <template>
   <div :class="['code-sidebar', { active: currentView === 'code' }]">
+    <a
+      class="btn-github"
+      rel="noopener"
+      target="_blank"
+      aria-label="View source on GitHub"
+      href="https://github.com/Leniolabs/layoutit-grid"
+    >
+      <IconGithub/>
+    </a>
     <slot name="body" />
+    <BrandBanner />
+
   </div>
 </template>
 
 <script setup>
 import { currentView } from '../../store.js'
+import BrandBanner from '../props/BrandBanner.vue'
+import IconGithub from '../icons/IconGithub.vue'
+
 </script>
 
 <style scoped lang="scss">
@@ -35,6 +49,16 @@ import { currentView } from '../../store.js'
   flex-direction: column;
   > div {
     flex: 1;
+  }
+}
+.btn-github {
+  position: fixed;
+  top: 0;
+  right: 0;
+  opacity: 0.7;
+  transition: opacity 0.1s linear;
+  &:hover {
+    opacity: 0.9;
   }
 }
 </style>

@@ -1,13 +1,6 @@
 <template>
   <div class="version-container">
-    <a
-      class="btn-github"
-      rel="noopener"
-      target="_blank"
-      aria-label="View source on GitHub"
-      href="https://github.com/Leniolabs/layoutit-grid"
-    >
-    </a>
+
     <VersionLabel />
     <HireUs />
   </div>
@@ -21,6 +14,8 @@ import HireUs from './HireUs.vue'
 <style scoped lang="scss">
 .version-container {
   padding: 0 10px;
+    max-height: 60px;
+    margin-top: 20px;  
 }
 
 @media screen and (max-width: 768px) {
