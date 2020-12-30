@@ -37,7 +37,7 @@ const opened = ref(true)
     opacity: 1;
   }
   &.active {
-    max-height: 300px;
+    max-height: 370px;
     h1 {
       background: transparent;
     }
