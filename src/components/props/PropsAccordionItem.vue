@@ -29,6 +29,7 @@ const opened = ref(true)
 <style scoped lang="scss">
 .props-accordion-item {
   overflow: hidden;
+  overflow-y: scroll;
   margin: 0;
   opacity: 0.7;
   &:hover,
@@ -36,6 +37,7 @@ const opened = ref(true)
     opacity: 1;
   }
   &.active {
+    max-height: 300px;
     h1 {
       background: transparent;
     }
@@ -87,9 +89,9 @@ h1 {
 }
 
 .props-accordion-content {
-  padding: 0 15px 15px;
+  margin: 0 15px 15px;
   &:empty {
-    padding: 0;
+    margin: 0;
   }
 }
 
