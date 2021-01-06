@@ -8,7 +8,7 @@
         >Hire us!</a
       ></span
     >
-    <span class="version-text">v1.3.4</span>
+    <span class="version-text">v2.0.0</span>
   </div>
 </template>
 
