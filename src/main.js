@@ -1,9 +1,12 @@
-import 'pepjs'
 import { createApp } from 'vue'
 import App from './App.vue'
 import GridEditor from './components/grid/GridEditor.vue'
 import FlexEditor from './components/flex/FlexEditor.vue'
 import { registerServiceWorker } from './registerServiceWorker'
+
+if (!window.PointerEvent) {
+  import('pepjs')
+}
 
 const app = createApp(App)
 
