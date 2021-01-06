@@ -64,7 +64,6 @@ watch(
   last,
   () => {
     stateStorage.value = last.value.snapshot
-    console.log(stateStorage.value)
   },
   { deep: true }
 )

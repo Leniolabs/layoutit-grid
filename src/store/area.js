@@ -200,7 +200,6 @@ export function parseArea(json) {
     }
     return value
   })
-  console.log(design)
   return parentify(rewireAreas(design.version ? design.area : design))
 }
 
