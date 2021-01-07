@@ -80,8 +80,8 @@ import {
   getGridArea,
   getGridRegion,
   gridAreaToGridLimits,
-  findImplicitGrid,
 } from '../../store.js'
+import { findImplicitGrid } from '../../utils/grid.js'
 import { useIsActiveArea } from '../../composables/area.js'
 
 // name: 'AreaEditor',
