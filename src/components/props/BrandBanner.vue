@@ -1,20 +1,17 @@
 <template>
   <div class="version-container">
-
-    <VersionLabel />
     <HireUs />
   </div>
 </template>
 
 <script setup>
-import VersionLabel from './VersionLabel.vue'
 import HireUs from './HireUs.vue'
 </script>
 
 <style scoped lang="scss">
 .version-container {
-  padding: 0 10px;
-    max-height: 60px;
+  padding: 0;
+    max-height: 35px;
     margin-top: 20px;  
 }
 

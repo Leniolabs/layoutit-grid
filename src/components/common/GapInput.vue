@@ -59,7 +59,7 @@ input[type='number'] {
 .area-size {
   display: flex;
   align-items: center;
-  padding-left: 10px;
+  padding: 0 10px;
   &:hover {
     background: #1C1D19;
     .input-container .unit-select,
@@ -97,6 +97,7 @@ input[type='number'] {
       font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
       direction: ltr;
       padding: 0;
+      padding-top: 1px;
       &:focus,
       &:hover {
         color: #eee;
@@ -112,7 +113,7 @@ input[type='number'] {
       text-shadow: none;
       font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
       direction: ltr;
-      cursor: text;
+      cursor: pointer;
       text-align: center;
       padding-left: 3px;
       &:focus,

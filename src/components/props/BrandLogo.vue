@@ -1,9 +1,13 @@
 <template>
   <a href="https://layoutit.com/" rel="noopener" target="_blank" class="brand-logo">
-    <img src="/img/icons/icon-128x128.png" alt />Layoutit!
+    <img src="/img/icons/icon-128x128.png" alt />Layoutit! <VersionLabel/>
+    
   </a>
 </template>
+<script setup>
+import VersionLabel from './VersionLabel.vue'
 
+</script>
 <style scoped lang="scss">
 .brand-logo {
   font-family: 'Alegreya Sans', 'Helvetica Neue', Arial, sans-serif;

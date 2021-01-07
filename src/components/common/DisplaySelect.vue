@@ -68,11 +68,12 @@ const options = ['block', 'flex', 'grid']
   cursor: pointer;
   min-width: 33.333%;
   max-width: 33.333%;
+  position: relative;
   &:hover {
     opacity: 1;
   }
   &.default-value {
-    &:after { content: "*"; }
+    &:after { content: "*"; position: absolute; right: 0; }
   }
 }
 input[type='radio']:checked + label {
