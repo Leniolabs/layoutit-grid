@@ -98,7 +98,7 @@ const currentFlex = computed(() => props.area.flex)
 
 watch(currentArea, () => {
   if (accordion.value.active !== 'tree') {
-    if (currentArea.display === 'grid') {
+    if (currentArea.value.display === 'grid') {
       accordion.value.active = 'explicit-grid'
     } else {
       accordion.value.active = 'box'
