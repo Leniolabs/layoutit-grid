@@ -5,7 +5,6 @@
         <h2>grid-template-columns</h2>
       </div>
       <div v-for="column in colsNumber" :key="column" class="area-size">
-        <label>{{ column }}:</label>
         <div
           :data-col="column"
           class="input-container"
@@ -27,16 +26,21 @@
             @blur="currentFocus = null"
             @input="onSizeValueInput('col', column - 1, $event.target.value)"
           />
-          <UnitSelect
-            :value="getColUnit(grid, column - 1)"
-            type="grid"
-            :focused="
-              isFocused('col', column) || (dragging && (dragging.colLine === column || dragging.colLine === column + 1))
-            "
-            class="unit-select"
-            :aria-label="`column ${column} unit`"
-            @input="onColUnitInput($event.target.value, column - 1)"
-          />
+          <div class="select-container">
+            <UnitSelect
+              :value="getColUnit(grid, column - 1)"
+              type="grid"
+              :focused="
+                isFocused('col', column) || (dragging && (dragging.colLine === column || dragging.colLine === column + 1))
+              "
+              class="unit-select"
+              :aria-label="`column ${column} unit`"
+              @input="onColUnitInput($event.target.value, column - 1)"
+            />
+            <svg class="select-icon" fill="none" stroke="#0E1A27" stroke-width="8" stroke-dashoffset="0" stroke-dasharray="200 20" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polyline fill="none" points="70,10 20,50 70,90 "></polyline></svg>
+
+          </div>
+
           <OptionsButton
             class="remove-button"
             :aria-label="`remove column ${column}`"
@@ -58,8 +62,6 @@
         <h2>grid-template-rows</h2>
       </div>
       <div v-for="row in rowsNumber" :key="row" class="area-size">
-        <label>{{ row }}:</label>
-
         <div
           :data-row="row"
           class="input-container"
@@ -81,13 +83,18 @@
             @blur="currentFocus = null"
             @input="onSizeValueInput('row', row - 1, $event.target.value)"
           />
-          <UnitSelect
-            :value="getRowUnit(grid, row - 1)"
-            type="grid"
-            :focused="isFocused('row', row) || (dragging && (dragging.rowLine === row || dragging.rowLine === row + 1))"
-            :aria-label="`row ${row} unit`"
-            @input="onRowUnitInput($event.target.value, row - 1)"
-          />
+          <div class="select-container">
+            <UnitSelect
+              :value="getRowUnit(grid, row - 1)"
+              type="grid"
+              :focused="isFocused('row', row) || (dragging && (dragging.rowLine === row || dragging.rowLine === row + 1))"
+              :aria-label="`row ${row} unit`"
+              @input="onRowUnitInput($event.target.value, row - 1)"
+            />
+            <svg class="select-icon" fill="none" stroke="#0E1A27" stroke-width="8" stroke-dashoffset="0" stroke-dasharray="200 20" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polyline fill="none" points="70,10 20,50 70,90 "></polyline></svg>
+          </div>
+
+
           <OptionsButton
             class="remove-button"
             :aria-label="`remove row ${row}`"
@@ -184,6 +191,9 @@ function isFocused(type, track) {
 </script>
 
 <style scoped lang="scss">
+
+
+
 h2 {
   display: block;
   flex: 1;
@@ -226,6 +236,7 @@ input[type='number'] {
   align-items: center;
   padding: 0 10px;
   border-bottom: 1px solid rgba(68, 68, 68, 0.5);
+  position: relative;
   &:hover {
     background: #1c1d19;
     .input-container .unit-select,
@@ -235,6 +246,42 @@ input[type='number'] {
   }
   &:last-of-type {
     border: 0;
+  }  
+  .select-container {
+      flex: 1;
+      padding-left: 3px;
+
+    .unit-select {
+      appearance: none;
+      height: 38px;
+      background: rgb(35, 36, 31);
+      color: rgb(206, 145, 120);
+      font-size: 13px;
+      text-shadow: none;
+      font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+      direction: ltr;
+      cursor: pointer;
+      text-align: center;
+      &:focus,
+      &:hover {
+        color: #eee;
+      }
+    }    
+    .select-icon {
+      stroke: #ce9178;
+      width: 12px;
+      position: absolute;
+      right: 40px;
+      top: 12.5px;
+      transform: rotate(-90deg);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+    &:hover {
+      .select-icon {
+        stroke: #eee;
+      }
+    }
   }
   label {
     display: block;
@@ -260,7 +307,7 @@ input[type='number'] {
       width: 100%;
       background: rgb(35, 36, 31);
       color: rgb(206, 145, 120);
-      height: 35px;
+      height: 38px;
       text-align: right;
       flex: 1;
       font-size: 13px;
@@ -274,24 +321,7 @@ input[type='number'] {
         color: #eee;
       }
     }
-    .unit-select {
-      appearance: none;
-      height: 35px;
-      background: rgb(35, 36, 31);
-      color: rgb(206, 145, 120);
-      flex: 1;
-      font-size: 13px;
-      text-shadow: none;
-      font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-      direction: ltr;
-      cursor: pointer;
-      text-align: center;
-      padding-left: 3px;
-      &:focus,
-      &:hover {
-        color: #eee;
-      }
-    }
+
   }
 }
 
@@ -311,7 +341,7 @@ button,
   color: rgb(215, 186, 125);
   //color: rgb(156, 220, 254);
 
-  height: 35px;
+  height: 38px;
   display: flex;
   align-items: center;
   &.remove-button[disabled] {

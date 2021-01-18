@@ -253,7 +253,7 @@ input[type='number'] {
       width: 100%;
       background: rgb(35, 36, 31);
       color: rgb(206, 145, 120);
-      height: 35px;
+      height: 38px;
       text-align: right;
       flex: 1;
       font-size: 13px;
@@ -269,7 +269,7 @@ input[type='number'] {
     }
     .unit-select {
       appearance: none;
-      height: 35px;
+      height: 38px;
       background: rgb(35, 36, 31);
       color: rgb(206, 145, 120);
       flex: 1;
@@ -304,7 +304,7 @@ button,
   color: rgb(215, 186, 125);
   //color: rgb(156, 220, 254);
 
-  height: 35px;
+  height: 38px;
   display: flex;
   align-items: center;
   &.remove-button[disabled] {
@@ -330,5 +330,7 @@ button,
 
 .add-button {
   height: 30px;
+    text-align: center;
+
 }
 </style>

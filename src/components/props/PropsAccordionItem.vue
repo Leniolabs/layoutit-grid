@@ -70,7 +70,8 @@ const opened = ref(true)
       border: 0;
     }
     .props-accordion-content {
-      padding: 5px 15px;
+      padding: 5px 15px 5px 0;
+      margin-left: 0;
     }
   }
 }
