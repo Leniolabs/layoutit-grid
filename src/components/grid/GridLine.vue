@@ -17,6 +17,7 @@
       :class="[
         'line-number',
         {
+          compact: area.padding !== '0',
           dragging: dragging && dragging.grid === grid && dragging[type + 'Line'] === pos,
           focused: currentFocus && currentFocus.on === 'line' && currentFocus.type === type && currentFocus.pos === pos,
         },
@@ -109,7 +110,6 @@ section {
 
   &.row .line-number {
     bottom: calc(-7px - 0.5 * v-bind(gap));
-    left: 0px;
     width: 15px;
     text-align: left;
     border-bottom-left-radius: 0;
@@ -117,34 +117,53 @@ section {
     border-top-right-radius: 5px;
     border-top-left-radius: 0;
     padding-left: 4px;
+    left: 0;
+    &.compact {
+      left: 1px;
+    }
   }
   &.row.first .line-number {
     border-top-right-radius: 0px;
     bottom: auto;
     top: 0px;
+    &.compact {
+      top: 1px;
+    }
   }
   &.row.last .line-number {
-    bottom: 0px;
     border-bottom-right-radius: 0px;
+    bottom: 0px;
+    &.compact {
+      bottom: 1px;
+    }
   }
 
   &.col .line-number {
     right: calc(-6.5px - 0.5 * v-bind(gap));
-    top: 0px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
     height: 16px;
+    top: 0px;
+    &.compact {
+      top: 1px;
+    }
   }
   &.col.first .line-number {
     border-bottom-left-radius: 0px;
     right: auto;
     left: 0px;
+    &.compact {
+      left: 1px;
+    }
   }
   &.col.last .line-number {
     border-bottom-right-radius: 0px;
     right: 0px;
+    &.compact {
+      right: 1px;
+    }
   }
 
   .line-handle {

@@ -7,6 +7,7 @@
       type,
       {
         darkmode,
+        compact: area.padding === '0',
         'row-first': type === 'row' && pos === 1,
         'col-first': type === 'col' && pos === 1,
         'row-last': type === 'row' && pos === grid.row.sizes.length,
@@ -137,20 +138,20 @@ section {
     border-bottom: initial;
   }
 
-  &.row-first {
+  &.row-first.compact {
     border-top: initial;
   }
 
-  &.row-last {
+  &.row-last.compact {
     border-bottom: initial;
   }
 
   &:not(.darkmode) {
-    &.col-first {
+    &.col-first.compact {
       border-left: initial;
     }
 
-    &.col-last {
+    &.col-last.compact {
       border-right: initial;
     }
   }

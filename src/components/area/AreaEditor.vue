@@ -13,8 +13,8 @@
       position: 'relative',
       outline: area === currentArea ? `2px solid ${area.color}` : 'none',
       background:
-        area.display === 'block' && area.parent
-          ? '#ffffff'
+        area.display === 'block' && area.parent && area.padding === '0'
+          ? '#ffffff00'
           : 'repeating-linear-gradient(45deg, white, white 9px, #fafafa 9px, #fafafa 14px)',
       'user-select': 'none',
       'z-index': 0,
@@ -55,6 +55,7 @@
       <div :style="{ backgroundColor: area.color }" class="area-name" @click="currentArea = area">{{ area.name }}</div>
       <AreaButtons :area="area" @edit="$emit('edit')" />
     </div>
+    <div v-if="area.display === 'block' && area.padding !== '0'" class="padding-box"></div>
   </component>
 </template>
 
@@ -308,5 +309,12 @@ const explicitAreas = computed(() => {
   &:hover:before {
     display: block;
   }
+}
+
+.padding-box {
+  width: 100%;
+  height: 100%;
+  outline: 1px dashed #ccc;
+  background: white;
 }
 </style>
