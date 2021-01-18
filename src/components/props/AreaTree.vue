@@ -9,11 +9,8 @@
     <div v-if="currentArea !== area" class="area-name">{{ area.name }}</div>
     <div v-else></div>-->
 
-    <div
-      :class="['area-name', { 'has-display': area.flex || area.grid, current: currentArea === area }]"
-      @click="currentArea = area"
-    >
-      <span class="name">.{{ area.name }}</span>
+    <div :class="['area-name', { 'has-display': area.flex || area.grid, current: currentArea === area }]">
+      <span class="name" @pointerdown="currentArea = area">.{{ area.name }}</span>
       <span
         v-if="area.children.length > 0"
         :class="{ caret: area.children.length > 0, 'caret-down': showChildren }"
@@ -78,6 +75,7 @@ const props = defineProps({
 
 function onDragStart(area, event) {
   event.stopPropagation()
+  currentArea.value = area
   reordering.value = { area, reordering: null, after: true }
 }
 
