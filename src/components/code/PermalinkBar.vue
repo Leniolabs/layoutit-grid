@@ -48,7 +48,7 @@ div {
       left: 0px;
       z-index: 100000;
       right: 0px;
-      top: 40px;
+      top: 38px;
       bottom: 0px;
     }
   }
