@@ -94,7 +94,7 @@ section {
   z-index: -1;
   pointer-events: initial;
   touch-action: none;
-  background: #ffffffcc;
+  background: #ffffff;
   height: 100%;
   position: relative;
   &:not(.dragging) {
