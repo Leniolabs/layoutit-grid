@@ -1,4 +1,4 @@
-import { getGridRegion } from './store.js'
+import { getGridRegion } from './utils/grid.js'
 import { generateNamedTemplate } from './store/area.js'
 
 export const unitMeasureMap = {

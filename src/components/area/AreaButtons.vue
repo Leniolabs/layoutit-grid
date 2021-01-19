@@ -1,5 +1,5 @@
 <template>
-<!--   <button
+  <!--   <button
     v-show="currentArea === area && !hasDisplay"
     aria-label="Edit Area"
     class="btn-edit"
@@ -33,7 +33,7 @@
     <IconRemove />
   </button>
   <button
-    v-show="currentArea === area && hasDisplay"
+    v-show="currentArea === area && hasDisplay && area.children.length === 0"
     aria-label="Clear area"
     class="btn-remove"
     title="Clear Area"
