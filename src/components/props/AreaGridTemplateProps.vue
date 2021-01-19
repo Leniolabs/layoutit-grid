@@ -185,8 +185,6 @@ function isFocused(type, track) {
 
 <style scoped lang="scss">
 
-
-
 h2 {
   display: block;
   flex: 1;
@@ -214,52 +212,28 @@ h2 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 6px;
+  + .area-size { margin-top: 6px; }
   > * { flex: 1; max-width: max-content; }
 }
 
 .area-size {
   display: flex;
   align-items: center;
-  //padding: 0 10px;
-  //border-bottom: 1px solid rgba(68, 68, 68, 0.5);
   position: relative;
   margin-bottom: 6px;
-  &:last-of-type {
-    border: 0;
-  }  
-   .unit-select {
-      height: 30px;
-      background: #fafafa;
-      color: #333;
-      font-size: 14px;
-      text-shadow: none;
-      //font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-      direction: ltr;
-      cursor: pointer;
-      text-align: center;
-      flex: 1;
-      margin-right: 5px;
-      border-radius: 2px;
-
-      &:focus,
-      &:hover {
-      }
-    }  
-  label {
-    display: block;
-    flex: 1;
-    max-width: max-content;
-    color: rgb(215, 186, 125);
-    font-size: 13px;
+  .unit-select {
+    height: 30px;
+    background: #fafafa;
+    color: #333;
+    font-size: 14px;
     text-shadow: none;
-    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
     direction: ltr;
-    text-align: left;
-    white-space: pre;
-    word-spacing: normal;
-    opacity: 0.8;
-  }
+    cursor: pointer;
+    text-align: center;
+    flex: 1;
+    margin-right: 5px;
+    border-radius: 2px;
+  }  
   .input-container {
     display: flex;
     flex: 1;
@@ -274,18 +248,13 @@ h2 {
       flex: 1;
       font-size: 14px;
       text-shadow: none;
-      //font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
       direction: ltr;
       padding: 0;
       padding-top: 1px;
       flex: 1;
       margin-right: 5px;
       border-radius: 2px;
-      &:focus,
-      &:hover {
-      }
     }
-
   }
 }
 

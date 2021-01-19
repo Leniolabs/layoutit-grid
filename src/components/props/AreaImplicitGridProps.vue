@@ -3,9 +3,9 @@
     <div class="items columns">
       <div class="items-header">
         <h2>grid-auto-columns</h2>
+        <OptionsButton class="add-button" @click="addImplicitCol(grid, '1fr')">Add</OptionsButton>
       </div>
       <div v-for="column in colsNumber" :key="column" class="area-size">
-        <label>{{ column }}:</label>
         <div
           :data-col="column"
           class="input-container"
@@ -48,17 +48,13 @@
           </OptionsButton>
         </div>
       </div>
-      <div class="area-size">
-        <OptionsButton class="add-button" @click="addImplicitCol(grid, '1fr')">add +</OptionsButton>
-      </div>
     </div>
     <div class="items rows">
       <div class="items-header">
         <h2>grid-auto-rows</h2>
+        <OptionsButton class="add-button" @click="addImplicitRow(grid, '1fr')">Add</OptionsButton>
       </div>
       <div v-for="row in rowsNumber" :key="row" class="area-size">
-        <label>{{ row }}:</label>
-
         <div
           :data-row="row"
           class="input-container"
@@ -97,9 +93,6 @@
             <IconRemove />
           </OptionsButton>
         </div>
-      </div>
-      <div class="area-size">
-        <OptionsButton class="add-button" @click="addImplicitRow(grid, '1fr')">add +</OptionsButton>
       </div>
     </div>
   </div>
@@ -176,12 +169,15 @@ function isFocused(type, track) {
 }
 </script>
 
+
 <style scoped lang="scss">
+
 h2 {
   display: block;
   flex: 1;
   max-width: max-content;
-  color: rgb(156, 220, 254);
+  color: #eee;
+  font-weight: normal;
   font-size: 13px;
   text-shadow: none;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
@@ -190,100 +186,62 @@ h2 {
   white-space: pre;
   word-spacing: normal;
   margin: 0;
-  font-weight: normal;
-  padding-left: 10px;
-  margin-bottom: 5px;
 }
 
 .items {
-  background: rgb(35, 36, 31);
-  padding: 10px 0 0;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   &:last-of-type {
     margin-bottom: 0;
   }
 }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.items-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  &:first-child:last-child { margin-bottom: -10px; }
+  > * { flex: 1; max-width: max-content; }
 }
 
-/* Firefox */
-input[type='number'] {
-  -moz-appearance: textfield;
-}
 .area-size {
   display: flex;
   align-items: center;
-  padding: 0 10px;
-  border-bottom: 1px solid rgba(68, 68, 68, 0.5);
-  &:hover {
-    background: #1c1d19;
-    .input-container .unit-select,
-    .input-container input {
-      background: #1c1d19;
-    }
-  }
-  &:last-of-type {
-    border: 0;
-  }
-  label {
-    display: block;
-    flex: 1;
-    max-width: max-content;
-    color: rgb(215, 186, 125);
-    font-size: 13px;
+  position: relative;
+  margin-bottom: 6px;
+   .unit-select {
+    height: 30px;
+    background: #fafafa;
+    color: #333;
+    font-size: 14px;
     text-shadow: none;
-    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
     direction: ltr;
-    text-align: left;
-    white-space: pre;
-    word-spacing: normal;
-    opacity: 0.8;
-  }
+    cursor: pointer;
+    text-align: center;
+    flex: 1;
+    margin-right: 5px;
+    border-radius: 2px;
+  }  
   .input-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 30px;
+    display: flex;
     flex: 1;
     input {
-      font-size: 14px;
       border: 0;
       width: 100%;
-      background: rgb(35, 36, 31);
-      color: rgb(206, 145, 120);
-      height: 38px;
-      text-align: right;
+      max-width: 80px;
+      background: #fafafa;
+      color: #333;
+      height: 30px;
+      text-align: center;
       flex: 1;
-      font-size: 13px;
+      font-size: 14px;
       text-shadow: none;
-      font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
       direction: ltr;
       padding: 0;
       padding-top: 1px;
-      &:focus,
-      &:hover {
-        color: #eee;
-      }
-    }
-    .unit-select {
-      appearance: none;
-      height: 38px;
-      background: rgb(35, 36, 31);
-      color: rgb(206, 145, 120);
       flex: 1;
-      font-size: 13px;
-      text-shadow: none;
-      font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-      direction: ltr;
-      cursor: pointer;
-      text-align: center;
-      padding-left: 3px;
-      &:focus,
-      &:hover {
-        color: #eee;
-      }
+      margin-right: 5px;
+      border-radius: 2px;
     }
   }
 }
@@ -296,27 +254,27 @@ button,
   height: auto;
   font-size: 13px;
   text-shadow: none;
-  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   direction: ltr;
   text-align: left;
   white-space: pre;
   word-spacing: normal;
-  color: rgb(215, 186, 125);
-  //color: rgb(156, 220, 254);
-
-  height: 38px;
+  max-width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
+  flex: 1;
+  justify-content: center;
+  border-radius: 2px;
   &.remove-button[disabled] {
     opacity: 0.5;
   }
   &.remove-button {
-    opacity: 0.8;
-    justify-content: flex-end;
+    background: var(--color-remove);
   }
   svg {
     width: 10px;
-    stroke: rgb(206, 145, 120);
+    stroke: #fff;
+    stroke-width: 20px;
   }
   &:hover {
     background: transparent;
@@ -330,7 +288,7 @@ button,
 
 .add-button {
   height: 30px;
-    text-align: center;
-
+  max-width: 50px;
+  background: #01579b;
 }
 </style>
