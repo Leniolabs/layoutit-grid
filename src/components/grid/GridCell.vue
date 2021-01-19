@@ -16,12 +16,13 @@
     }"
     class="grid-section"
     @pointerdown="$emit('pointerdown', $event)"
+    @mouseover="overArea = null"
   />
 </template>
 
 <script setup>
 import { defineProps, defineEmit } from 'vue'
-import { dragging, setCurrentArea, parseValueUnit, valueUnitToString, pause, resume } from '../../store.js'
+import { dragging, setCurrentArea, parseValueUnit, valueUnitToString, pause, resume, overArea } from '../../store.js'
 import { useGridDimensions } from '../../composables/area.js'
 
 function calcValue(prev, prevComp, delta) {
