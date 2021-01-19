@@ -52,7 +52,14 @@
       </template>
     </template>
     <div v-if="area != mainArea" class="area-info" :style="{ border: `2px solid ${area.color}` }">
-      <div :style="{ backgroundColor: area.color }" class="area-name" @click="currentArea = area">{{ area.name }}</div>
+      <div
+        :style="{ backgroundColor: area.color }"
+        class="area-name"
+        @click="currentArea = area"
+        @mouseover="overArea = area"
+      >
+        {{ area.name }}
+      </div>
       <AreaButtons :area="area" @edit="$emit('edit')" />
     </div>
     <div v-if="area.display === 'block' && area.padding !== '0'" class="padding-box"></div>
@@ -73,6 +80,7 @@ import { ref, computed, watch, nextTick, defineAsyncComponent, toRefs, definePro
 import {
   mainArea,
   currentArea,
+  overArea,
   setCurrentArea,
   parseUnit,
   parseValue,

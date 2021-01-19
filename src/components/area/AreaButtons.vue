@@ -9,39 +9,41 @@
   >
     <IconEdit />
   </button> -->
-  <button
-    v-show="currentArea === area && !hasDisplay"
-    aria-label="Add sub grid"
-    class="btn-subgrid"
-    title="Add Sub Grid"
-    :style="{ background: `${area.color}` }"
-    @click="subGrid()"
-  >
-    <IconSubgrid />
-  </button>
-  <!--button v-show="!hasDisplay" aria-label="Add flex" class="btn-subgrid" @click="subFlex(area)">
-    <IconFlex />
-  </button-->
-  <button
-    v-show="currentArea === area && !hasDisplay"
-    aria-label="Remove area"
-    class="btn-remove"
-    title="Remove Area"
-    :style="{ background: `${area.color}` }"
-    @click="removeArea(area)"
-  >
-    <IconRemove />
-  </button>
-  <button
-    v-show="currentArea === area && hasDisplay && area.children.length === 0"
-    aria-label="Clear area"
-    class="btn-remove"
-    title="Clear Area"
-    :style="{ background: `${area.color}` }"
-    @click="clearArea(area)"
-  >
-    <IconClear />
-  </button>
+  <template v-if="currentArea === area || overArea === area">
+    <button
+      v-show="!hasDisplay"
+      aria-label="Add sub grid"
+      class="btn-subgrid"
+      title="Add Sub Grid"
+      :style="{ background: `${area.color}` }"
+      @click="subGrid()"
+    >
+      <IconSubgrid />
+    </button>
+    <!--button v-show="!hasDisplay" aria-label="Add flex" class="btn-subgrid" @click="subFlex(area)">
+      <IconFlex />
+    </button-->
+    <button
+      v-show="!hasDisplay"
+      aria-label="Remove area"
+      class="btn-remove"
+      title="Remove Area"
+      :style="{ background: `${area.color}` }"
+      @click="removeArea(area)"
+    >
+      <IconRemove />
+    </button>
+    <button
+      v-show="hasDisplay && area.children.length === 0"
+      aria-label="Clear area"
+      class="btn-remove"
+      title="Clear Area"
+      :style="{ background: `${area.color}` }"
+      @click="clearArea(area)"
+    >
+      <IconClear />
+    </button>
+  </template>
 </template>
 
 <script setup>
@@ -55,6 +57,7 @@ import { computed, defineProps, defineEmit } from 'vue'
 import {
   mainArea,
   currentArea,
+  overArea,
   setCurrentArea,
   createGridState,
   createFlexState,

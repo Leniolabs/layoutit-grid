@@ -30,6 +30,7 @@ function createMainAreaState() {
 
 export const mainArea = ref(createMainAreaState())
 export const currentArea = ref(mainArea.value)
+export const overArea = ref(null)
 export const dragging = ref(null)
 export const reordering = ref(null)
 export const currentFocus = ref(null)
