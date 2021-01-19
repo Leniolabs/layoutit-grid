@@ -93,7 +93,7 @@ const gridArea = computed(() => {
 const singleLine = computed(() => areaIsSingleLineInCSS(props.area))
 
 const areasToInclude = computed(() =>
-  props.area.children.filter((area) => !areaIsSingleLineInCSS(area) && area.gridArea === 'auto')
+  props.area.children.filter((area) => !(areaIsSingleLineInCSS(area) && area.gridArea === 'auto'))
 )
 </script>
 
