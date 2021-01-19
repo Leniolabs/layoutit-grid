@@ -31,7 +31,7 @@ const opened = ref(true)
   overflow: hidden;
   overflow-y: scroll;
   margin: 0;
-  opacity: 0.7;
+  opacity: 0.8;
   &:hover,
   &.active {
     opacity: 1;
@@ -90,7 +90,7 @@ h1 {
 }
 
 .props-accordion-content {
-  margin: 0 15px 15px;
+  margin: 0 10px 15px 15px;
   &:empty {
     margin: 0;
   }

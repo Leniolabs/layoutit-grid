@@ -55,7 +55,7 @@ import IconGithub from '../icons/IconGithub.vue'
   position: fixed;
   top: 0;
   right: 0;
-  opacity: 0.7;
+  opacity: 0.8;
   transition: opacity 0.1s linear;
   &:hover {
     opacity: 0.9;

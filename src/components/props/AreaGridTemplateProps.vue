@@ -3,6 +3,7 @@
     <div class="items columns">
       <div class="items-header">
         <h2>grid-template-columns</h2>
+        <OptionsButton class="add-button" @click="addCol(grid, '1fr')">Add</OptionsButton>
       </div>
       <div v-for="column in colsNumber" :key="column" class="area-size">
         <div
@@ -26,7 +27,6 @@
             @blur="currentFocus = null"
             @input="onSizeValueInput('col', column - 1, $event.target.value)"
           />
-          <div class="select-container">
             <UnitSelect
               :value="getColUnit(grid, column - 1)"
               type="grid"
@@ -37,9 +37,7 @@
               :aria-label="`column ${column} unit`"
               @input="onColUnitInput($event.target.value, column - 1)"
             />
-            <svg class="select-icon" fill="none" stroke="#0E1A27" stroke-width="8" stroke-dashoffset="0" stroke-dasharray="200 20" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polyline fill="none" points="70,10 20,50 70,90 "></polyline></svg>
-
-          </div>
+      
 
           <OptionsButton
             class="remove-button"
@@ -53,13 +51,12 @@
           </OptionsButton>
         </div>
       </div>
-      <div class="area-size">
-        <OptionsButton class="add-button" @click="addCol(grid, '1fr')">add +</OptionsButton>
-      </div>
+
     </div>
     <div class="items rows">
       <div class="items-header">
         <h2>grid-template-rows</h2>
+        <OptionsButton class="add-button" @click="addRow(grid, '1fr')">Add</OptionsButton>
       </div>
       <div v-for="row in rowsNumber" :key="row" class="area-size">
         <div
@@ -83,7 +80,6 @@
             @blur="currentFocus = null"
             @input="onSizeValueInput('row', row - 1, $event.target.value)"
           />
-          <div class="select-container">
             <UnitSelect
               :value="getRowUnit(grid, row - 1)"
               type="grid"
@@ -91,8 +87,7 @@
               :aria-label="`row ${row} unit`"
               @input="onRowUnitInput($event.target.value, row - 1)"
             />
-            <svg class="select-icon" fill="none" stroke="#0E1A27" stroke-width="8" stroke-dashoffset="0" stroke-dasharray="200 20" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polyline fill="none" points="70,10 20,50 70,90 "></polyline></svg>
-          </div>
+
 
 
           <OptionsButton
@@ -107,9 +102,7 @@
           </OptionsButton>
         </div>
       </div>
-      <div class="area-size">
-        <OptionsButton class="add-button" @click="addRow(grid, '1fr')">add +</OptionsButton>
-      </div>
+
     </div>
   </div>
 </template>
@@ -198,7 +191,8 @@ h2 {
   display: block;
   flex: 1;
   max-width: max-content;
-  color: rgb(156, 220, 254);
+  color: #eee;
+  font-weight: normal;
   font-size: 13px;
   text-shadow: none;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
@@ -207,82 +201,51 @@ h2 {
   white-space: pre;
   word-spacing: normal;
   margin: 0;
-  font-weight: normal;
-  padding-left: 10px;
-  margin-bottom: 5px;
 }
 
 .items {
-  background: rgb(35, 36, 31);
-  padding: 10px 0 0;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   &:last-of-type {
     margin-bottom: 0;
   }
 }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.items-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  > * { flex: 1; max-width: max-content; }
 }
 
-/* Firefox */
-input[type='number'] {
-  -moz-appearance: textfield;
-}
 .area-size {
   display: flex;
   align-items: center;
-  padding: 0 10px;
-  border-bottom: 1px solid rgba(68, 68, 68, 0.5);
+  //padding: 0 10px;
+  //border-bottom: 1px solid rgba(68, 68, 68, 0.5);
   position: relative;
-  &:hover {
-    background: #1c1d19;
-    .input-container .unit-select,
-    .input-container input {
-      background: #1c1d19;
-    }
-  }
+  margin-bottom: 6px;
   &:last-of-type {
     border: 0;
   }  
-  .select-container {
-      flex: 1;
-      padding-left: 3px;
-
-    .unit-select {
-      appearance: none;
-      height: 38px;
-      background: rgb(35, 36, 31);
-      color: rgb(206, 145, 120);
-      font-size: 13px;
+   .unit-select {
+      height: 30px;
+      background: #fafafa;
+      color: #333;
+      font-size: 14px;
       text-shadow: none;
-      font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+      //font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
       direction: ltr;
       cursor: pointer;
       text-align: center;
+      flex: 1;
+      margin-right: 5px;
+      border-radius: 2px;
+
       &:focus,
       &:hover {
-        color: #eee;
       }
-    }    
-    .select-icon {
-      stroke: #ce9178;
-      width: 12px;
-      position: absolute;
-      right: 40px;
-      top: 12.5px;
-      transform: rotate(-90deg);
-      opacity: 0.8;
-      pointer-events: none;
-    }
-    &:hover {
-      .select-icon {
-        stroke: #eee;
-      }
-    }
-  }
+    }  
   label {
     display: block;
     flex: 1;
@@ -298,27 +261,28 @@ input[type='number'] {
     opacity: 0.8;
   }
   .input-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 30px;
+    display: flex;
     flex: 1;
     input {
-      font-size: 14px;
       border: 0;
       width: 100%;
-      background: rgb(35, 36, 31);
-      color: rgb(206, 145, 120);
-      height: 38px;
-      text-align: right;
+      max-width: 80px;
+      background: #fafafa;
+      color: #333;
+      height: 30px;
+      text-align: center;
       flex: 1;
-      font-size: 13px;
+      font-size: 14px;
       text-shadow: none;
-      font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+      //font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
       direction: ltr;
       padding: 0;
       padding-top: 1px;
+      flex: 1;
+      margin-right: 5px;
+      border-radius: 2px;
       &:focus,
       &:hover {
-        color: #eee;
       }
     }
 
@@ -333,27 +297,27 @@ button,
   height: auto;
   font-size: 13px;
   text-shadow: none;
-  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   direction: ltr;
   text-align: left;
   white-space: pre;
   word-spacing: normal;
-  color: rgb(215, 186, 125);
-  //color: rgb(156, 220, 254);
-
-  height: 38px;
+  max-width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
+  flex: 1;
+  justify-content: center;
+  border-radius: 2px;
   &.remove-button[disabled] {
     opacity: 0.5;
   }
   &.remove-button {
-    opacity: 0.8;
-    justify-content: flex-end;
+    background: var(--color-remove);
   }
   svg {
     width: 10px;
-    stroke: rgb(206, 145, 120);
+    stroke: #fff;
+    stroke-width: 20px;
   }
   &:hover {
     background: transparent;
@@ -367,5 +331,7 @@ button,
 
 .add-button {
   height: 30px;
+  max-width: 50px;
+  background: #01579b;
 }
 </style>

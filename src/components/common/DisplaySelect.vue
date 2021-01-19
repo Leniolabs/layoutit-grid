@@ -64,7 +64,7 @@ const options = ['block', 'flex', 'grid']
   font-size: 13px;
   text-shadow: none;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-  opacity: 0.7;
+  opacity: 0.8;
   cursor: pointer;
   min-width: 33.333%;
   max-width: 33.333%;

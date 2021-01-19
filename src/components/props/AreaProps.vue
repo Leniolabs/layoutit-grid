@@ -1,6 +1,11 @@
 <template>
   <PropsAccordion class="area-props" :accordion="accordion">
-    <div class="current-area">{{ area.name }}</div>
+    <div class="props-accordion-item">
+      <h1>
+      Editing:
+      <span>.{{ area.name }}</span> 
+      </h1>
+      </div>
 
     <!--
     <div class="area-type">{{ area.type === 'div' ? area.display : area.type }} props</div>
@@ -126,13 +131,21 @@ function onUpdateType(type) {
 </script>
 
 <style scoped lang="scss">
-.current-area {
-  font-size: 14px;
-  font-weight: 700;
-  color: #d7ba7d;
-  background: rgb(35, 36, 31);
-  margin: 15px;
-  padding: 10px;
+.props-accordion-item h1 {
+width: 100%;
+    border-top: 1px solid rgba(68, 68, 68, 0.5);
+    color: #eee;
+    font-size: 15px;
+    margin: 0;
+    padding: 10px 15px;
+    cursor: pointer;
+    opacity: 0.8;
+    span {
+          font-weight: normal;
+    font-size: 13px;
+    text-shadow: none;
+    font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+    }
 }
 
 .area-type {

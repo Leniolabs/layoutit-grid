@@ -71,7 +71,7 @@ p {
 .disabled,
 [disabled],
 .area-selection button[disabled] {
-  opacity: 0.7;
+  opacity: 0.8;
   pointer-events: none;
 }
 
