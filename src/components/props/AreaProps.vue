@@ -1,5 +1,7 @@
 <template>
   <PropsAccordion class="area-props" :accordion="accordion">
+    <div class="current-area">{{ area.name }}</div>
+
     <!--
     <div class="area-type">{{ area.type === 'div' ? area.display : area.type }} props</div>
     <PropsAccordionItem name="display" :heading="`Display (${area.display})`" :accordion="accordion">
@@ -124,6 +126,15 @@ function onUpdateType(type) {
 </script>
 
 <style scoped lang="scss">
+.current-area {
+  font-size: 14px;
+  font-weight: 700;
+  color: #d7ba7d;
+  background: rgb(35, 36, 31);
+  margin: 15px;
+  padding: 10px;
+}
+
 .area-type {
   font-size: 14px;
   font-weight: 700;

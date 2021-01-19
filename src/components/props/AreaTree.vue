@@ -10,7 +10,9 @@
     <div v-else></div>-->
 
     <div :class="['area-name', { 'has-display': area.flex || area.grid, current: currentArea === area }]">
-      <span class="name" @pointerdown="currentArea = area">.{{ area.name }}</span>
+      <span :class="['name', { current: currentArea === area }]" @pointerdown="currentArea = area"
+        >.{{ area.name }}</span
+      >
       <span
         v-if="area.children.length > 0"
         :class="{ caret: area.children.length > 0, 'caret-down': showChildren }"
@@ -197,9 +199,6 @@ function addArea() {
   width: 100%;
   word-break: break-all;
   position: relative;
-  /*   &:not(.current) {
-    opacity: 0.5;
-  } */
 }
 
 /* Create the caret/arrow with a unicode, and style it */
@@ -217,15 +216,23 @@ function addArea() {
 }
 .area-name > span.name {
   color: rgb(215, 186, 125);
-}
-.area-name .area-name > span.name {
-  color: rgb(156, 220, 254);
+  &.current {
+    color: white;
+  }
 }
 
-.area-name .area-name:before,
-.area-name .area-name:after,
-.area-name .area-name > span.name::after {
-  display: none;
+:not(.has-display) {
+  &.area-name > span.name {
+    color: rgb(156, 220, 254);
+    &.current {
+      color: white;
+    }
+  }
+  &.area-name:before,
+  &.area-name:after,
+  &.area-name > span.name::after {
+    display: none;
+  }
 }
 
 .btn-remove,
