@@ -206,13 +206,13 @@ function addArea() {
   content: '{';
   display: inline-block;
   margin-left: 6px;
-  color: #eee;
+  color: #fff;
 }
 .area-name::after {
   content: '}';
   display: inline-block;
   margin-right: 6px;
-  color: #eee;
+  color: #fff;
 }
 .area-name > span.name {
   color: rgb(215, 186, 125);

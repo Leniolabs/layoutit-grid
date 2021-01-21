@@ -54,8 +54,8 @@ function copyToClipBoard() {
   background: #777;
 }
 .code-container {
-  background: #23241f;
-  border: solid 1px #2a2a2a;
+  background: #151515;
+  border: solid 1px #23241f;
   height: max-content;
   overflow: auto;
   margin-bottom: 10px;

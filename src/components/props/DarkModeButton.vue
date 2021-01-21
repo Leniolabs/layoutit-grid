@@ -49,9 +49,9 @@ function getSystemTheme() {
 <style scoped lang="scss">
 button.btn-dark {
   margin-bottom: 10px;
-  background: #23241f;
-  border: solid 1px #2a2a2a;
-  color: #eee;
+  background: #151515;
+  border: solid 1px #23241f;
+  color: #fff;
   border-radius: 25px;
   cursor: pointer;
   width: 42px;

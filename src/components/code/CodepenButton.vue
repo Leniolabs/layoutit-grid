@@ -72,14 +72,14 @@ ${cssCode}
 .button {
   border: 0;
   border-radius: 50px;
-  color: #eee;
+  color: #fff;
   cursor: pointer;
   font-family: inherit;
   font-size: 1em;
   text-align: center;
   letter-spacing: 0.2px;
   margin: 0 auto;
-  background: #23241f;
+  background: #151515;
   user-select: none;
   border: solid 1px transparent;
   display: flex;

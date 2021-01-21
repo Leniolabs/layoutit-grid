@@ -63,7 +63,7 @@ const setGridArea = inputSetter((value) => {
     padding-right: 15px;
     &:focus,
     &:hover {
-      color: #eee;
+      color: #fff;
     }    
   }
 }

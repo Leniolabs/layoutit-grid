@@ -98,15 +98,15 @@ async function createCodeSandbox() {
 .button {
   border: 0;
   border-radius: 50px;
-  color: #eee;
+  color: #fff;
   cursor: pointer;
   font-family: inherit;
   font-size: 1em;
   text-align: center;
   margin: 0 auto;
-  background: #23241f;
+  background: #151515;
   user-select: none;
-  border: solid 1px #2a2a2a;
+  border: solid 1px #23241f;
   display: flex;
   align-items: center;
   &:hover {

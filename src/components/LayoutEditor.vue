@@ -91,6 +91,7 @@ p {
   color: #2c3e50;
   background: linear-gradient(#1d032d, #300748);
   background: #300748;
+  background: #1e1e1e;
   height: 100%;
   display: grid;
   grid-template-columns: 260px 1fr 360px;

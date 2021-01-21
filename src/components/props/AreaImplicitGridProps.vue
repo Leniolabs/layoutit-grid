@@ -176,7 +176,7 @@ h2 {
   display: block;
   flex: 1;
   max-width: max-content;
-  color: #eee;
+  color: #9cdcfe;
   font-weight: normal;
   font-size: 13px;
   text-shadow: none;
@@ -279,7 +279,7 @@ button,
   &:hover {
     background: transparent;
     opacity: 1;
-    color: #eee;
+    color: #fff;
     svg {
       stroke: #fff;
     }

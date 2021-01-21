@@ -103,7 +103,7 @@ input[type='number'] {
       padding-top: 1px;      
       &:focus,
       &:hover {
-        color: #eee;
+        color: #fff;
       }
     }
     .unit-select {
@@ -124,7 +124,7 @@ input[type='number'] {
       }
       &:focus,
       &:hover {
-        color: #eee;
+        color: #fff;
       }
     }
   }

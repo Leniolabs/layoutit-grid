@@ -134,12 +134,11 @@ function onUpdateType(type) {
 .props-accordion-item h1 {
 width: 100%;
     border-top: 1px solid rgba(68, 68, 68, 0.5);
-    color: #eee;
+    color: #fff;
     font-size: 15px;
     margin: 0;
     padding: 10px 15px;
     cursor: pointer;
-    opacity: 0.8;
     span {
           font-weight: normal;
     font-size: 13px;

@@ -109,12 +109,12 @@ function getPermalink() {
   }
   .btn-trash {
     padding: 12px;
-    background: #23241f;
-    border: solid 1px #2a2a2a;
+    background: #151515;
+    border: solid 1px #23241f;
   }
   .btn-link {
     padding: 10px;
-    background: #23241f;
+    background: #151515;
     border: solid 1px transparent;
     &:hover {
       background: #000;
@@ -123,8 +123,8 @@ function getPermalink() {
   .btn-history {
     padding: 10px;
     max-width: 42px;
-    background: #23241f;
-    border: solid 1px #2a2a2a;
+    background: #151515;
+    border: solid 1px #23241f;
     &:first-child {
       margin-left: 0;
       margin-right: 0;

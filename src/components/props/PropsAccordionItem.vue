@@ -38,6 +38,7 @@ const opened = ref(true)
   }
   &.active {
     max-height: 370px;
+    background: #151515;
     h1 {
       background: transparent;
     }
@@ -56,8 +57,9 @@ const opened = ref(true)
     min-height: 150px;
     max-height: 250px;
     overflow: auto;
-    background: rgb(35, 36, 31);
+    background: #151515;
     opacity: 1;
+    display: none;
     h1 {
       position: relative;
       display: block;
@@ -79,7 +81,7 @@ const opened = ref(true)
 h1 {
   width: 100%;
   border-top: 1px solid rgba(68, 68, 68, 0.5);
-  color: #eee;
+  color: #fff;
   font-size: 15px;
   margin: 0;
   padding: 10px 15px;
