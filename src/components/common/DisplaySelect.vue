@@ -55,29 +55,31 @@ const options = ['block', 'flex', 'grid']
 }
 
 .radio-toolbar label {
-  color: rgb(206, 145, 120);
-  display: block;
-  flex: 1;
-  padding: 5px 0;
-  font-family: sans-serif, Arial;
-  text-align: center;
-  font-size: 13px;
-  text-shadow: none;
-  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-  opacity: 0.8;
-  cursor: pointer;
-  min-width: 33.333%;
-  max-width: 33.333%;
-  position: relative;
+    background: #1e1e1e;
+    display: block;
+    flex: 1;
+    font-family: sans-serif, Arial;
+    text-align: center;
+    font-size: 13px;
+    text-shadow: none;
+    font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+    opacity: 1;
+    cursor: pointer;
+    position: relative;
+    margin: 0 10px 10px 0;
+    border: solid 1px #23241f;
+    line-height: 30px;
   &:hover {
     opacity: 1;
   }
   &.default-value {
-    &:after { content: "*"; position: absolute; right: 0; }
+    &:after { content: "*"; }
   }
 }
 input[type='radio']:checked + label {
   opacity: 1;
   color: #fff;
+      background: #01579b;
+    border-radius: 2px;
 }
 </style>

@@ -53,26 +53,14 @@ const opened = ref(true)
     }
   } */
   &.tree-item {
-    margin: auto 15px 15px;
+    margin: auto 0 0;
     min-height: 150px;
-    max-height: 250px;
+    max-height: 300px;
     overflow: auto;
     background: #151515;
     opacity: 1;
-    display: none;
-    h1 {
-      position: relative;
-      display: block;
-      color: #bbb;
-      font-weight: 700;
-      font-size: 12px;
-      padding: 8px;
-      user-select: none;
-      text-transform: uppercase;
-      border: 0;
-    }
     .props-accordion-content {
-      padding: 5px 15px 5px 0;
+      padding: 5px 15px 5px 10px;
       margin-left: 0;
     }
   }
@@ -87,7 +75,7 @@ h1 {
   padding: 10px 15px;
   cursor: pointer;
   &:hover {
-    background: rgb(29, 3, 45);
+    background: #151515;
   }
 }
 

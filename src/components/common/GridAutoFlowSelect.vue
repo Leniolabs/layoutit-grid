@@ -2,8 +2,7 @@
   <div class="display-select-container">
     <label>grid-auto-flow</label>
     <div class="radio-toolbar">
-      <div class="flow-direction">
-        <template v-for="option in options" :key="option">
+         <template v-for="option in options" :key="option">
           <input
             :id="`direction-${option}`"
             :checked="modelValue.includes(option)"
@@ -14,7 +13,6 @@
           />
           <label :for="`direction-${option}`">{{ option }}</label>
         </template>
-      </div>
       <input
         id="dense"
         :checked="modelValue.includes('dense')"
@@ -42,15 +40,9 @@ const options = ['row', 'column']
 </script>
 
 <style scoped lang="scss">
-.flow-direction {
-  display: flex;
-  flex: 1 1 0%;
-}
 
 .display-select-container {
-  border-bottom: 1px solid rgba(68, 68, 68, 0.5);
-  background: rgb(35, 36, 31);
-  padding: 10px 0px 5px 10px;
+  margin-bottom: 10px;
   > label {
     display: block;
     flex: 1 1 0%;
@@ -76,30 +68,32 @@ const options = ['row', 'column']
   display: none;
 }
 .radio-toolbar label {
-  color: rgb(206, 145, 120);
-  display: block;
-  flex: 1;
-  padding: 5px 0;
-  font-family: sans-serif, Arial;
-  text-align: center;
-  font-size: 13px;
-  text-shadow: none;
-  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-  opacity: 0.8;
-  cursor: pointer;
-  min-width: 33.333%;
-  max-width: 33.333%;
-  position: relative;
+    background: #1e1e1e;
+    display: block;
+    flex: 1;
+    font-family: sans-serif, Arial;
+    text-align: center;
+    font-size: 13px;
+    text-shadow: none;
+    font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+    opacity: 1;
+    cursor: pointer;
+    position: relative;
+    margin: 0 10px 0 0;
+    border: solid 1px #23241f;
+    line-height: 30px;
   &:hover {
     opacity: 1;
   }
   &.default-value {
-    &:after { content: "*"; position: absolute; right: 0; }
+    &:after { content: "*"; }
   }
 }
 input[type='checkbox']:checked + label,
 input[type='radio']:checked + label {
   opacity: 1;
   color: #fff;
+      background: #01579b;
+    border-radius: 2px;
 }
 </style>

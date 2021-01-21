@@ -143,6 +143,7 @@ width: 100%;
           font-weight: normal;
     font-size: 13px;
     text-shadow: none;
+        color: #d7ba7d;
     font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
     }
 }
