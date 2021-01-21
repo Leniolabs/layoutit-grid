@@ -39,6 +39,7 @@ const opened = ref(true)
   &.active {
     max-height: 370px;
     background: #151515;
+    padding-bottom: 10px;
     h1 {
       background: transparent;
     }
@@ -59,6 +60,7 @@ const opened = ref(true)
     overflow: auto;
     background: #151515;
     opacity: 1;
+    display: none;
     .props-accordion-content {
       padding: 5px 15px 5px 10px;
       margin-left: 0;

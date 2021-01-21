@@ -245,7 +245,7 @@ export default {
     line-height: 0.5rem;
     margin-bottom: 5px;
     color: #fff;
-    font-size: 0.875rem;
+    font-size: 13px;
     display: inline-block;
     padding: 0.375em;
     cursor: pointer;
@@ -276,9 +276,9 @@ export default {
         background: var(--color-remove-active);
       }
       svg {
-        height: 0.688rem;
-        width: 0.688rem;
-        fill: #fff;
+width: 10px;
+    stroke: #fff;
+    stroke-width: 20px;
       }
     }
   }
@@ -288,7 +288,7 @@ export default {
     pointer-events: all;
     vertical-align: top;
     &.btn-save {
-      right: 38px;
+      right: 34px;
     }
     &.btn-remove {
       right: 5px;

@@ -1,18 +1,24 @@
 <template>
-  <div class="area-size">
-    <label>{{ type }}</label>
-    <div class="input-container">
-      <input
-        v-if="size.unit !== 'initial'"
-        :value="size.value"
-        aria-label="size value"
-        type="number"
-        min="0"
-        @input="onSizeInput($event.target.value)"
-      />
-      <UnitSelect type="size" :value="size.unit" aria-label="size unit" @input="setSizeUnit($event.target.value)" />
+<div>
+  <div class="items-header">
+        <label>{{ type }}</label>
+      </div>
+    <div class="area-size">
+
+      <div class="input-container">
+        <input
+          v-if="size.unit !== 'initial'"
+          :value="size.value"
+          aria-label="size value"
+          type="number"
+          min="0"
+          @input="onSizeInput($event.target.value)"
+        />
+        <UnitSelect type="size" :value="size.unit" aria-label="size unit" @input="setSizeUnit($event.target.value)" />
+      </div>
     </div>
   </div>
+    
 </template>
 
 <script setup>
@@ -49,84 +55,122 @@ const onSizeInput = inputSetter(setSizeValue)
 </script>
 
 <style scoped lang="scss">
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+
+label {
+  display: block;
+  flex: 1;
+  max-width: max-content;
+  color: #9cdcfe;
+  font-weight: normal;
+  font-size: 13px;
+  text-shadow: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  direction: ltr;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
   margin: 0;
 }
 
-/* Firefox */
-input[type='number'] {
-  -moz-appearance: textfield;
+.items {
+  margin-bottom: 15px;
+  &:last-of-type {
+    margin-bottom: 0;
+  }
 }
+
+.items-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  + .area-size { margin-top: 6px; }
+  > * { flex: 1; max-width: max-content; }
+}
+
 .area-size {
   display: flex;
   align-items: center;
-  padding: 0 15px;
-  &:hover {
-    background: #1C1D19;
-    .input-container .unit-select,
-    .input-container input {
-      background: #1C1D19;
-    }
-  }
-  label {
-    display: block;
-    flex: 1;
-    max-width: 80px;
-    color: rgb(156, 220, 254);
-    font-size: 13px;
+  position: relative;
+  margin-bottom: 6px;
+  .unit-select {
+    height: 30px;
+    background: #fafafa;
+    color: #333;
+    font-size: 14px;
     text-shadow: none;
-    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
     direction: ltr;
-    text-align: left;
-    white-space: pre;
-    word-spacing: normal;
-  }
+    cursor: pointer;
+    text-align: center;
+    flex: 1;
+    margin-right: 5px;
+    border-radius: 2px;
+  }  
   .input-container {
     display: flex;
     flex: 1;
     input {
-      font-size: 14px;
       border: 0;
       width: 100%;
-      background: rgb(35, 36, 31);
-      color: rgb(206, 145, 120);
-      height: 38px;
-      text-align: right;
+      background: #fafafa;
+      color: #333;
+      height: 30px;
+      text-align: center;
       flex: 1;
-      font-size: 13px;
+      font-size: 14px;
       text-shadow: none;
-      font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
       direction: ltr;
       padding: 0;
-      padding-top: 1px;      
-      &:focus,
-      &:hover {
-        color: #fff;
-      }
-    }
-    .unit-select {
-      appearance: none;
-      height: 38px;
-      background: rgb(35, 36, 31);
-      color: rgb(206, 145, 120);
+      padding-top: 1px;
       flex: 1;
-      font-size: 13px;
-      text-shadow: none;
-      font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-      direction: ltr;
-      cursor: pointer;
-      text-align: center;
-      padding-left: 3px;
-      &:first-child:last-child {
-        text-align-last: center;
-      }
-      &:focus,
-      &:hover {
-        color: #fff;
-      }
+      margin-right: 5px;
+      border-radius: 2px;
     }
   }
+}
+
+button,
+.add-button {
+  background: transparent;
+  margin: 0;
+  padding: 0;
+  height: auto;
+  font-size: 13px;
+  text-shadow: none;
+  direction: ltr;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  max-width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+  border-radius: 2px;
+  &.remove-button[disabled] {
+    opacity: 0.5;
+  }
+  &.remove-button {
+    background: var(--color-remove);
+  }
+  svg {
+    width: 10px;
+    stroke: #fff;
+    stroke-width: 20px;
+  }
+  &:hover {
+    background: transparent;
+    opacity: 1;
+    color: #fff;
+    svg {
+      stroke: #fff;
+    }
+  }
+}
+
+.add-button {
+  height: 30px;
+  max-width: 50px;
+  background: #01579b;
 }
 </style>
