@@ -3,7 +3,7 @@
     <SlideCheckbox id="checkbox-repeat" v-model="modelValue.repeat">
       Apply CSS
       <strong>
-        <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/repeat" rel="noreferrer" target="_blank">repeat</a>
+        <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/repeat" rel="noreferrer" target="_blank">repeat()</a>
       </strong>
       function.
     </SlideCheckbox>
@@ -29,7 +29,7 @@
       (IE 10/11).
     </SlideCheckbox>
     <div v-if="modelValue.oldSpec" class="checkbox-warning">
-      <strong>Warning:</strong> the legacy grid specification does not support
+      Warning: the legacy grid specification does not support
       <a
         target="_blank"
         rel="noreferrer"
@@ -51,6 +51,17 @@ defineProps({
 </script>
 
 <style scoped lang="scss">
+
+
+.output-settings {
+  margin: auto 0 0 0;
+  width: 100%;
+  font-size: 13px;
+  user-select: none;
+  cursor: pointer;
+  a {
+    color: #9cdcfe;
+  }
 .checkbox-warning {
   color: #333;
   margin-bottom: 10px;
@@ -59,20 +70,20 @@ defineProps({
   border-radius: 2px;
   background-color: #fdd835;
   width: 100%;
-  font-size: 14px;
+  font-size: 13px;
   .auto-placement-link {
     font-weight: 600;
   }
-}
-
-.output-settings {
-  margin: auto 0 0 0;
-  width: 100%;
-  font-size: 14px;
-  user-select: none;
   a {
-    color: #3094b4;
+    color: #333;
   }
+}  
+  strong { 
+    font-weight: normal; 
+        font-size: 13px;
+    text-shadow: none;
+    font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+    }
   .slide-checkbox {
     padding-bottom: 5px;
  

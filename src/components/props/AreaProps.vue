@@ -15,14 +15,14 @@
     -->
 
     <template v-if="area.display === 'grid'">
-      <PropsAccordionItem name="explicit-grid" heading="Explicit Grid" :accordion="accordion">
+      <PropsAccordionItem name="explicit-grid" heading="Grid Layout" :accordion="accordion">
         <AreaGridTemplateProps :area="area" />
       </PropsAccordionItem>
 
-      <PropsAccordionItem name="implicit-grid" heading="Implicit Grid" :accordion="accordion">
+ <!--      <PropsAccordionItem name="implicit-grid" heading="Implicit Grid" :accordion="accordion">
         <AreaImplicitGridProps :area="area" />
       </PropsAccordionItem>
-
+ -->
       <PropsAccordionItem name="grid-gap" heading="Grid Gap" :accordion="accordion">
         <AreaGridGapProps :area="area" />
       </PropsAccordionItem>

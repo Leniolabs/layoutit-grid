@@ -37,7 +37,7 @@ const opened = ref(true)
     opacity: 1;
   }
   &.active {
-    max-height: 370px;
+    //max-height: 370px;
     background: #151515;
     padding-bottom: 10px;
     h1 {
