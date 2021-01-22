@@ -1,12 +1,10 @@
 <template>
   <PropsAccordion class="area-props" :accordion="accordion">
-    <div class="props-accordion-item">
-      <h1>
-      Area:
-      <span>.{{ area.name }}</span> 
-      </h1>
-      </div>
-
+ 
+    <PropsAccordionItem name="box" :heading="`Area: .${area.name}`" :accordion="accordion">
+ 
+      <AreaBoxProps :area="area" />
+    </PropsAccordionItem>
     <!--
     <div class="area-type">{{ area.type === 'div' ? area.display : area.type }} props</div>
     <PropsAccordionItem name="display" :heading="`Display (${area.display})`" :accordion="accordion">
@@ -15,14 +13,14 @@
     -->
 
     <template v-if="area.display === 'grid'">
-      <PropsAccordionItem name="explicit-grid" heading="Explicit Grid" :accordion="accordion">
+      <PropsAccordionItem name="explicit-grid" heading="Grid Layout" :accordion="accordion">
         <AreaGridTemplateProps :area="area" />
       </PropsAccordionItem>
 
-      <PropsAccordionItem name="implicit-grid" heading="Implicit Grid" :accordion="accordion">
+ <!--      <PropsAccordionItem name="implicit-grid" heading="Implicit Grid" :accordion="accordion">
         <AreaImplicitGridProps :area="area" />
       </PropsAccordionItem>
-
+ -->
       <PropsAccordionItem name="grid-gap" heading="Grid Gap" :accordion="accordion">
         <AreaGridGapProps :area="area" />
       </PropsAccordionItem>
@@ -58,9 +56,7 @@
       <AreaSelfFlexProps :area="area" />
     </PropsAccordionItem>
 
-    <PropsAccordionItem name="box" heading="Area Box" :accordion="accordion">
-      <AreaBoxProps :area="area" />
-    </PropsAccordionItem>
+
     <PropsAccordionItem
       name="tree"
       :independent="true"

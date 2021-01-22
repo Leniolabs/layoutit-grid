@@ -3,7 +3,6 @@
     <input
       :id="id"
       :checked="modelValue"
-      class="input-switch"
       type="checkbox"
       @input="$emit('update:modelValue', $event.target.checked)"
     />
@@ -21,3 +20,12 @@ defineProps({
 })
 defineEmit(['update:modelValue'])
 </script>
+
+<style lang="scss" scoped>
+input {
+  position: relative;
+  top: 1px;
+  opacity : 0.8;
+  &:checked { opacity: 1; }
+}
+</style>
