@@ -1,6 +1,12 @@
 <template>
   <span
-    :class="['area-tree']"
+    :class="[
+      'area-tree',
+      {
+        reordering: reordering && reordering.target === area,
+        after: reordering && reordering.target === area && reordering.after,
+      },
+    ]"
     :style="{
       opacity: reordering && reordering.area === area ? 0.3 : 1,
     }"
@@ -9,20 +15,14 @@
     >"><span
       v-for="(a, i) in gridAreas"
       :key="`${i}-${a.name}`"
-      :class="[
-        'area-children',
-        {
-          reordering: reordering && reordering.target === a,
-          after: reordering && reordering.target === a && reordering.after,
-        },
-      ]"
+      :class="['area-children']"
       :data-area-name="a.name"
       :draggable="true"
       @dragstart="onDragStart(a, $event)"
       @dragend="onDragEnd(a)"
       @drop="onDrop(a, $event)"
       @dragover="onDragOver(a, $event)"
-      >{{ '\n' }} <HtmlCodeArea :area="a" :options="options" :ident="ident + '  '" /></span
+      >{{ '\n' }}<HtmlCodeArea :area="a" :options="options" :ident="ident + '  '" /></span
     >{{ `${gridAreas.length > 0 ? '\n' + ident : ''}${CLOSE_TAG}` }}<span class="token tag">{{ elementTag }}</span
     >></span
   >
@@ -51,7 +51,8 @@ const elementTag = computed(() => getElementTag(props.area))
 const gridAreas = computed(() => (props.area.display === 'grid' ? props.area.children : []))
 
 function onDragStart(area, event) {
-  console.log('start')
+  // WIP, we will enable this feature once we expose flex and block displays
+  return
   event.stopPropagation()
   currentArea.value = area
   reordering.value = { area, reordering: null, after: true }
@@ -123,9 +124,5 @@ function onDragOver(areaTarget, event) {
 .token.tag,
 .token.attr-name {
   cursor: pointer;
-}
-
-.area-tree {
-  position: relative;
 }
 </style>
