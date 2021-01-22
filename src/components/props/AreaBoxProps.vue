@@ -1,33 +1,30 @@
 <template>
   <div class="layout-props">
-      <AreaSize :area="area" type="width" />
-      <AreaSize :area="area" type="height" />
+    <AreaSize :area="area" type="width" />
+    <AreaSize :area="area" type="height" />
 
-      
-      <div>
-        <div class="items-header">
-          <label>margin</label>
-        </div>
-        <div class="area-size">
-          <div class="input-container">
+    <div v-if="false">
+      <div class="items-header">
+        <label>margin</label>
+      </div>
+      <div class="area-size">
+        <div class="input-container">
           <input :value="area.margin" aria-label="margin" @input="setMargin($event.target.value)" />
           <select name="" class="unit-select"></select>
-          </div>
-        </div>        
-      </div>
-      <div>
-        <div class="items-header">
-          <label>padding</label>
         </div>
-        <div class="area-size">
-          <div class="input-container">
-            <input :value="area.padding" aria-label="padding" @input="setPadding($event.target.value)" />
-            <select name="" class="unit-select"></select>
-
-          </div>
-        </div>        
       </div>
-
+    </div>
+    <div v-if="false">
+      <div class="items-header">
+        <label>padding</label>
+      </div>
+      <div class="area-size">
+        <div class="input-container">
+          <input :value="area.padding" aria-label="padding" @input="setPadding($event.target.value)" />
+          <select name="" class="unit-select"></select>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -50,7 +47,6 @@ const setPadding = inputSetter((value) => {
 </script>
 
 <style scoped lang="scss">
-
 label {
   display: block;
   flex: 1;
@@ -78,8 +74,13 @@ label {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  + .area-size { margin-top: 6px; }
-  > * { flex: 1; max-width: max-content; }
+  + .area-size {
+    margin-top: 6px;
+  }
+  > * {
+    flex: 1;
+    max-width: max-content;
+  }
 }
 
 .area-size {
@@ -99,7 +100,7 @@ label {
     flex: 1;
     margin-right: 5px;
     border-radius: 2px;
-  }  
+  }
   .input-container {
     display: flex;
     flex: 1;

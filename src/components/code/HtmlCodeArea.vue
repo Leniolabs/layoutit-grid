@@ -1,5 +1,5 @@
 <template>
-  <span
+  <span class="html-area" @click.stop="currentArea = area"
     >{{ `${ident}${OPEN_TAG}` }}<span class="token tag">{{ elementTag }}</span
     >{{ ' ' }}<span class="token attr-name">class</span>="<span class="token attr-value">{{ cssAreaName }}</span
     >"><template v-for="(a, i) in gridAreas" :key="`${i}-${a.name}`"
@@ -12,6 +12,7 @@
 <script setup>
 import { defineProps, computed } from 'vue'
 import { toCssName, getElementTag } from '../../utils.js'
+import { currentArea } from '../../store.js'
 
 // name: 'HtmlCodeArea',
 const props = defineProps({
@@ -27,4 +28,9 @@ const elementTag = computed(() => getElementTag(props.area))
 const gridAreas = computed(() => (props.area.display === 'grid' ? props.area.children : []))
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.token.tag,
+.token.attr-name {
+  cursor: pointer;
+}
+</style>
