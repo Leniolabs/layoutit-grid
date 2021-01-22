@@ -1,12 +1,10 @@
 <template>
   <PropsAccordion class="area-props" :accordion="accordion">
-    <div class="props-accordion-item">
-      <h1>
-      Area:
-      <span>.{{ area.name }}</span> 
-      </h1>
-      </div>
-
+ 
+    <PropsAccordionItem name="box" :heading="`Area: .${area.name}`" :accordion="accordion">
+ 
+      <AreaBoxProps :area="area" />
+    </PropsAccordionItem>
     <!--
     <div class="area-type">{{ area.type === 'div' ? area.display : area.type }} props</div>
     <PropsAccordionItem name="display" :heading="`Display (${area.display})`" :accordion="accordion">
@@ -58,9 +56,7 @@
       <AreaSelfFlexProps :area="area" />
     </PropsAccordionItem>
 
-    <PropsAccordionItem name="box" heading="Area Box" :accordion="accordion">
-      <AreaBoxProps :area="area" />
-    </PropsAccordionItem>
+
     <PropsAccordionItem
       name="tree"
       :independent="true"
