@@ -3,7 +3,23 @@
     <div class="items columns">
       <div class="items-header">
         <h2>grid-template-columns</h2>
-        <OptionsButton class="add-button" @click="addCol(grid, '1fr')"><svg fill="none" stroke="#fff" stroke-width="12" stroke-dashoffset="0" stroke-dasharray="0" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" data-v-72c511f8="" data-v-0da319cf-s=""><line x1="15" y1="15" x2="85" y2="85"></line> <line x1="85" y1="15" x2="15" y2="85"></line></svg></OptionsButton>
+        <OptionsButton class="add-button" @click="addCol(grid, '1fr')"
+          ><svg
+            fill="none"
+            stroke="#fff"
+            stroke-width="12"
+            stroke-dashoffset="0"
+            stroke-dasharray="0"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 100 100"
+            data-v-72c511f8=""
+            data-v-0da319cf-s=""
+          >
+            <line x1="15" y1="15" x2="85" y2="85"></line>
+            <line x1="85" y1="15" x2="15" y2="85"></line></svg
+        ></OptionsButton>
       </div>
       <div v-for="column in colsNumber" :key="column" class="area-size">
         <div
@@ -27,17 +43,16 @@
             @blur="currentFocus = null"
             @input="onSizeValueInput('col', column - 1, $event.target.value)"
           />
-            <UnitSelect
-              :value="getColUnit(grid, column - 1)"
-              type="grid"
-              :focused="
-                isFocused('col', column) || (dragging && (dragging.colLine === column || dragging.colLine === column + 1))
-              "
-              class="unit-select"
-              :aria-label="`column ${column} unit`"
-              @input="onColUnitInput($event.target.value, column - 1)"
-            />
-      
+          <UnitSelect
+            :value="getColUnit(grid, column - 1)"
+            type="grid"
+            :focused="
+              isFocused('col', column) || (dragging && (dragging.colLine === column || dragging.colLine === column + 1))
+            "
+            class="unit-select"
+            :aria-label="`column ${column} unit`"
+            @input="onColUnitInput($event.target.value, column - 1)"
+          />
 
           <OptionsButton
             class="remove-button"
@@ -53,13 +68,90 @@
       </div>
       <div class="items-header">
         <h2>grid-auto-columns</h2>
-        <OptionsButton class="add-button" @click="addCol(grid, '1fr')"><svg fill="none" stroke="#fff" stroke-width="12" stroke-dashoffset="0" stroke-dasharray="0" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" data-v-72c511f8="" data-v-0da319cf-s=""><line x1="15" y1="15" x2="85" y2="85"></line> <line x1="85" y1="15" x2="15" y2="85"></line></svg></OptionsButton>
+        <OptionsButton class="add-button" @click="addImplicitCol(grid, '1fr')"
+          ><svg
+            fill="none"
+            stroke="#fff"
+            stroke-width="12"
+            stroke-dashoffset="0"
+            stroke-dasharray="0"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 100 100"
+            data-v-72c511f8=""
+            data-v-0da319cf-s=""
+          >
+            <line x1="15" y1="15" x2="85" y2="85"></line>
+            <line x1="85" y1="15" x2="15" y2="85"></line></svg
+        ></OptionsButton>
+      </div>
+      <div v-for="column in autoColsNumber" :key="column" class="area-size">
+        <div
+          :data-col="column"
+          class="input-container"
+          @mouseover="currentHover = { on: 'track', grid, type: 'implicit-col', track: column }"
+          @mouseleave="currentHover = null"
+        >
+          <input
+            :style="{ visibility: unitHasValue(getImplicitColUnit(grid)) ? 'visible' : 'hidden' }"
+            :value="getImplicitColValue(grid, column - 1)"
+            :class="{
+              active: isFocused('col', column),
+              dragging: dragging && (dragging.colLine === column || dragging.colLine === column + 1),
+            }"
+            :type="getImplicitColUnit(grid, column - 1) === 'minmax' ? 'text' : 'number'"
+            :aria-label="`column ${column} size`"
+            min="0"
+            step="0.5"
+            @focus="currentFocus = { on: 'track', grid, type: 'implicit-col', track: column }"
+            @blur="currentFocus = null"
+            @input="onImplicitSizeValueInput('col', column - 1, $event.target.value)"
+          />
+          <UnitSelect
+            :value="getImplicitColUnit(grid, column - 1)"
+            type="grid"
+            :focused="
+              isFocused('col', column) || (dragging && (dragging.colLine === column || dragging.colLine === column + 1))
+            "
+            class="unit-select"
+            :aria-label="`column ${column} unit`"
+            @input="onImplicitColUnitInput($event.target.value, column - 1)"
+          />
+          <OptionsButton
+            class="remove-button"
+            :aria-label="`remove column ${column}`"
+            @click="removeImplicitCol(grid, column - 1)"
+            @mouseover.stop="
+              currentHover = { on: 'track', grid, type: 'implicit-col', track: column, action: 'remove' }
+            "
+            @mouseleave="currentHover = null"
+          >
+            <IconRemove />
+          </OptionsButton>
+        </div>
       </div>
     </div>
     <div class="items rows">
       <div class="items-header">
         <h2>grid-template-rows</h2>
-        <OptionsButton class="add-button" @click="addRow(grid, '1fr')"><svg fill="none" stroke="#fff" stroke-width="12" stroke-dashoffset="0" stroke-dasharray="0" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" data-v-72c511f8="" data-v-0da319cf-s=""><line x1="15" y1="15" x2="85" y2="85"></line> <line x1="85" y1="15" x2="15" y2="85"></line></svg></OptionsButton>
+        <OptionsButton class="add-button" @click="addRow(grid, '1fr')"
+          ><svg
+            fill="none"
+            stroke="#fff"
+            stroke-width="12"
+            stroke-dashoffset="0"
+            stroke-dasharray="0"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 100 100"
+            data-v-72c511f8=""
+            data-v-0da319cf-s=""
+          >
+            <line x1="15" y1="15" x2="85" y2="85"></line>
+            <line x1="85" y1="15" x2="15" y2="85"></line></svg
+        ></OptionsButton>
       </div>
       <div v-for="row in rowsNumber" :key="row" class="area-size">
         <div
@@ -83,15 +175,13 @@
             @blur="currentFocus = null"
             @input="onSizeValueInput('row', row - 1, $event.target.value)"
           />
-            <UnitSelect
-              :value="getRowUnit(grid, row - 1)"
-              type="grid"
-              :focused="isFocused('row', row) || (dragging && (dragging.rowLine === row || dragging.rowLine === row + 1))"
-              :aria-label="`row ${row} unit`"
-              @input="onRowUnitInput($event.target.value, row - 1)"
-            />
-
-
+          <UnitSelect
+            :value="getRowUnit(grid, row - 1)"
+            type="grid"
+            :focused="isFocused('row', row) || (dragging && (dragging.rowLine === row || dragging.rowLine === row + 1))"
+            :aria-label="`row ${row} unit`"
+            @input="onRowUnitInput($event.target.value, row - 1)"
+          />
 
           <OptionsButton
             class="remove-button"
@@ -107,7 +197,63 @@
       </div>
       <div class="items-header">
         <h2>grid-auto-rows</h2>
-        <OptionsButton class="add-button" @click="addCol(grid, '1fr')"><svg fill="none" stroke="#fff" stroke-width="12" stroke-dashoffset="0" stroke-dasharray="0" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" data-v-72c511f8="" data-v-0da319cf-s=""><line x1="15" y1="15" x2="85" y2="85"></line> <line x1="85" y1="15" x2="15" y2="85"></line></svg></OptionsButton>
+        <OptionsButton class="add-button" @click="addImplicitRow(grid, '1fr')"
+          ><svg
+            fill="none"
+            stroke="#fff"
+            stroke-width="12"
+            stroke-dashoffset="0"
+            stroke-dasharray="0"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 100 100"
+            data-v-72c511f8=""
+            data-v-0da319cf-s=""
+          >
+            <line x1="15" y1="15" x2="85" y2="85"></line>
+            <line x1="85" y1="15" x2="15" y2="85"></line></svg
+        ></OptionsButton>
+      </div>
+      <div v-for="row in autoRowsNumber" :key="row" class="area-size">
+        <div
+          :data-row="row"
+          class="input-container"
+          @mouseover="currentHover = { on: 'track', grid, type: 'implicit-row', track: row }"
+          @mouseleave="currentHover = null"
+        >
+          <input
+            :style="{ visibility: unitHasValue(getImplicitRowUnit(grid, row - 1)) ? 'visible' : 'hidden' }"
+            :value="getImplicitRowValue(grid, row - 1)"
+            :class="{
+              active: isFocused('row', row),
+              dragging: dragging && (dragging.rowLine === row || dragging.rowLine === row + 1),
+            }"
+            :type="getImplicitRowUnit(grid, row - 1) === 'minmax' ? 'text' : 'number'"
+            :aria-label="`row ${row} size`"
+            min="0"
+            step="0.5"
+            @focus="currentFocus = { on: 'track', grid, type: 'implicit-row', track: row }"
+            @blur="currentFocus = null"
+            @input="onImplicitSizeValueInput('row', row - 1, $event.target.value)"
+          />
+          <UnitSelect
+            :value="getImplicitRowUnit(grid, row - 1)"
+            type="grid"
+            :focused="isFocused('row', row) || (dragging && (dragging.rowLine === row || dragging.rowLine === row + 1))"
+            :aria-label="`row ${row} unit`"
+            @input="onImplicitRowUnitInput($event.target.value, row - 1)"
+          />
+          <OptionsButton
+            class="remove-button"
+            :aria-label="`remove row ${row}`"
+            @click="removeImplicitRow(grid, row - 1)"
+            @mouseover.stop="currentHover = { on: 'track', grid, type: 'implicit-row', track: row, action: 'remove' }"
+            @mouseleave="currentHover = null"
+          >
+            <IconRemove />
+          </OptionsButton>
+        </div>
       </div>
     </div>
   </div>
@@ -146,6 +292,18 @@ import {
   currentHover,
   setRowValueUnit,
   setColValueUnit,
+  addImplicitCol,
+  addImplicitRow,
+  getImplicitRowValue,
+  getImplicitRowUnit,
+  setImplicitRowValue,
+  removeImplicitRow,
+  getImplicitColValue,
+  getImplicitColUnit,
+  setImplicitColValue,
+  removeImplicitCol,
+  setImplicitRowValueUnit,
+  setImplicitColValueUnit,
 } from '../../store.js'
 
 import { useGridDimensions } from '../../composables/area.js'
@@ -153,6 +311,9 @@ import { unitMeasureMap } from '../../utils.js'
 import { debounce } from '../../composables'
 
 const { colsNumber, rowsNumber } = useGridDimensions(grid)
+
+const autoColsNumber = computed(() => grid.value.col.auto.length)
+const autoRowsNumber = computed(() => grid.value.row.auto.length)
 
 function unitHasValue(unit) {
   return !(unit === 'initial' || unit === 'auto' || unit === 'min-content' || unit === 'max-content')
@@ -187,10 +348,25 @@ function isFocused(type, track) {
   const tf = currentFocus.value
   return tf && tf.on === 'track' && tf.grid === grid.value && tf.type === type && tf.track === track
 }
+
+function onImplicitRowUnitInput(unit, row) {
+  setImplicitRowValueUnit(props.area.grid, row, { value: defaultValueForUnit(unit), unit })
+}
+
+function onImplicitColUnitInput(unit, col) {
+  setImplicitColValueUnit(props.area.grid, col, { value: defaultValueForUnit(unit), unit })
+}
+
+const onImplicitSizeValueInput = debounce((type, track, value) => {
+  if (type === 'row') {
+    setImplicitRowValue(grid.value, track, value)
+  } else {
+    setImplicitColValue(grid.value, track, value)
+  }
+})
 </script>
 
 <style scoped lang="scss">
-
 h2 {
   display: block;
   flex: 1;
@@ -218,8 +394,13 @@ h2 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  + .area-size { margin-top: 6px; }
-  > * { flex: 1; max-width: max-content; }
+  + .area-size {
+    margin-top: 6px;
+  }
+  > * {
+    flex: 1;
+    max-width: max-content;
+  }
 }
 
 .area-size {
@@ -239,7 +420,7 @@ h2 {
     flex: 1;
     margin-right: 5px;
     border-radius: 2px;
-  }  
+  }
   .input-container {
     display: flex;
     flex: 1;

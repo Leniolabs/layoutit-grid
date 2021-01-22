@@ -1,8 +1,6 @@
 <template>
   <PropsAccordion class="area-props" :accordion="accordion">
- 
     <PropsAccordionItem name="box" :heading="`Area: .${area.name}`" :accordion="accordion">
- 
       <AreaBoxProps :area="area" />
     </PropsAccordionItem>
     <!--
@@ -17,10 +15,6 @@
         <AreaGridTemplateProps :area="area" />
       </PropsAccordionItem>
 
- <!--      <PropsAccordionItem name="implicit-grid" heading="Implicit Grid" :accordion="accordion">
-        <AreaImplicitGridProps :area="area" />
-      </PropsAccordionItem>
- -->
       <PropsAccordionItem name="grid-gap" heading="Grid Gap" :accordion="accordion">
         <AreaGridGapProps :area="area" />
       </PropsAccordionItem>
@@ -56,7 +50,6 @@
       <AreaSelfFlexProps :area="area" />
     </PropsAccordionItem>
 
-
     <PropsAccordionItem
       name="tree"
       :independent="true"
@@ -80,7 +73,6 @@ import AreaBoxProps from './AreaBoxProps.vue'
 import AreaSelfGridProps from './AreaSelfGridProps.vue'
 import AreaSelfFlexProps from './AreaSelfFlexProps.vue'
 import AreaGridTemplateProps from './AreaGridTemplateProps.vue'
-import AreaImplicitGridProps from './AreaImplicitGridProps.vue'
 import AreaGridGapProps from './AreaGridGapProps.vue'
 import AreaGridItemsPlacementProps from './AreaGridItemsPlacementProps.vue'
 import AreaGridContentPlacementProps from './AreaGridContentPlacementProps.vue'
@@ -128,20 +120,20 @@ function onUpdateType(type) {
 
 <style scoped lang="scss">
 .props-accordion-item h1 {
-width: 100%;
-    border-top: 1px solid rgba(68, 68, 68, 0.5);
-    color: #fff;
-    font-size: 15px;
-    margin: 0;
-    padding: 10px 15px;
-    cursor: pointer;
-    span {
-          font-weight: normal;
+  width: 100%;
+  border-top: 1px solid rgba(68, 68, 68, 0.5);
+  color: #fff;
+  font-size: 15px;
+  margin: 0;
+  padding: 10px 15px;
+  cursor: pointer;
+  span {
+    font-weight: normal;
     font-size: 13px;
     text-shadow: none;
-        color: #d7ba7d;
-    font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
-    }
+    color: #d7ba7d;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
 }
 
 .area-type {
