@@ -41,7 +41,9 @@
             class="remove-button"
             :aria-label="`remove column ${column}`"
             @click="removeImplicitCol(grid, column - 1)"
-            @mouseover.stop="currentHover = { on: 'track', grid, type: 'col', track: column, action: 'remove' }"
+            @mouseover.stop="
+              currentHover = { on: 'track', grid, type: 'implicit-col', track: column, action: 'remove' }
+            "
             @mouseleave="currentHover = null"
           >
             <IconRemove />
@@ -87,7 +89,7 @@
             class="remove-button"
             :aria-label="`remove row ${row}`"
             @click="removeImplicitRow(grid, row - 1)"
-            @mouseover.stop="currentHover = { on: 'track', grid, type: 'row', track: row, action: 'remove' }"
+            @mouseover.stop="currentHover = { on: 'track', grid, type: 'implicit-row', track: row, action: 'remove' }"
             @mouseleave="currentHover = null"
           >
             <IconRemove />
@@ -169,9 +171,7 @@ function isFocused(type, track) {
 }
 </script>
 
-
 <style scoped lang="scss">
-
 h2 {
   display: block;
   flex: 1;
@@ -200,8 +200,13 @@ h2 {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 6px;
-  &:first-child:last-child { margin-bottom: -10px; }
-  > * { flex: 1; max-width: max-content; }
+  &:first-child:last-child {
+    margin-bottom: -10px;
+  }
+  > * {
+    flex: 1;
+    max-width: max-content;
+  }
 }
 
 .area-size {
@@ -209,7 +214,7 @@ h2 {
   align-items: center;
   position: relative;
   margin-bottom: 6px;
-   .unit-select {
+  .unit-select {
     height: 30px;
     background: #fafafa;
     color: #333;
@@ -221,7 +226,7 @@ h2 {
     flex: 1;
     margin-right: 5px;
     border-radius: 2px;
-  }  
+  }
   .input-container {
     display: flex;
     flex: 1;
