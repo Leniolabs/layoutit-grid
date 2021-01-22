@@ -276,9 +276,9 @@ export default {
         background: var(--color-remove-active);
       }
       svg {
-width: 10px;
-    stroke: #fff;
-    stroke-width: 20px;
+        width: 10px;
+        stroke: #fff;
+        stroke-width: 20px;
       }
     }
   }

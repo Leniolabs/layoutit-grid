@@ -10,14 +10,12 @@
       <IconGithub/>
     </a>
     <slot name="body" />
-    <BrandBanner />
 
   </div>
 </template>
 
 <script setup>
 import { currentView } from '../../store.js'
-import BrandBanner from '../props/BrandBanner.vue'
 import IconGithub from '../icons/IconGithub.vue'
 
 </script>
@@ -27,7 +25,7 @@ import IconGithub from '../icons/IconGithub.vue'
   overflow: auto;
   text-align: left;
   color: #e9e9e9;
-  padding: 10px 15px 10px 15px;
+  padding: 10px 15px 15px 15px;
   transition: transform 0.2s ease-in;
   @media (max-width: 769px) {
     padding: 10px 10px 10px 10px;

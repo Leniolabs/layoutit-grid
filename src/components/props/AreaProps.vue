@@ -2,7 +2,7 @@
   <PropsAccordion class="area-props" :accordion="accordion">
     <div class="props-accordion-item">
       <h1>
-      Editing:
+      Area:
       <span>.{{ area.name }}</span> 
       </h1>
       </div>

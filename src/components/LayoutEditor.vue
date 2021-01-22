@@ -37,7 +37,7 @@ onMounted(loadFromStorage)
   --color-add: #108043;
   --color-add-active: #50b83c;
   --color-remove: #c2185b;
-  --color-remove-active: #fa5788;
+  --color-remove-active: #951246;
   --color-hire-us: var(--color-remove);
   --color-hire-us-active: var(--color-remove-active);
   --color-darkmode: var(--color-add);
@@ -129,7 +129,7 @@ p {
     }
 
     .line-number {
-      color: #888;
+      color: #aaa;
       background: #300548;
       &.dragging,
       &.focused {
@@ -145,7 +145,7 @@ p {
     .editor-track-size {
       &.row,
       &.col {
-        color: #888;
+        color: #aaa;
       }
     }
 

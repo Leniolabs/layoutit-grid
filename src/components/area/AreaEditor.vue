@@ -322,7 +322,7 @@ const explicitAreas = computed(() => {
 .padding-box {
   width: 100%;
   height: 100%;
-  outline: 1px dashed #ccc;
+  outline: 1px dashed #bbb;
   background: white;
 }
 </style>

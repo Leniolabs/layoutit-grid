@@ -10,9 +10,8 @@ import HireUs from './HireUs.vue'
 
 <style scoped lang="scss">
 .version-container {
-  padding: 0;
-    max-height: 38px;
-    margin-top: 20px;  
+  padding: 15px;
+  margin-top: auto;  
 }
 
 @media screen and (max-width: 768px) {

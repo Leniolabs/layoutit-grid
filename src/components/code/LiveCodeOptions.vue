@@ -26,7 +26,7 @@
           >legacy grid spec</a
         >
       </strong>
-      (for IE 10/11).
+      (IE 10/11).
     </SlideCheckbox>
     <div v-if="modelValue.oldSpec" class="checkbox-warning">
       <strong>Warning:</strong> the legacy grid specification does not support
@@ -75,6 +75,7 @@ defineProps({
   }
   .slide-checkbox {
     padding-bottom: 5px;
+ 
     &:last-child {
       padding-bottom: 0;
     }

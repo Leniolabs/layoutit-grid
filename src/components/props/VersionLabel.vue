@@ -1,5 +1,5 @@
 <template>
-  <div class="version">v2.0.0
+  <div class="version">v2.0
   </div>
 </template>
 
@@ -11,5 +11,7 @@
   font-family: monospace;
   font-size: 0.7rem;
   font-style: normal;
+  position: relative;
+  top: -2px;
 }
 </style>

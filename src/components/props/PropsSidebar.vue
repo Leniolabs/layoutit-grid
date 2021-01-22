@@ -2,13 +2,15 @@
   <div :class="['sidebar', { active: currentView === 'props' }]">
     <BrandLogo />
     <AreaProps :area="currentArea" />
- 
+     <BrandBanner />
+
   </div>
 </template>
 
 <script setup>
 import BrandLogo from './BrandLogo.vue'
 import AreaProps from './AreaProps.vue'
+import BrandBanner from '../props/BrandBanner.vue'
 
 import { defineProps, computed } from 'vue'
 import { currentArea, currentView } from '../../store.js'
@@ -22,13 +24,13 @@ defineProps({
 .sidebar {
   z-index: 20000;
   color: #fff;
-  display: grid;
-  grid-template-rows: auto 1fr;
   overflow: auto;
   padding: 0;
   text-align: left;
   transition: transform 0.2s ease-in;
   user-select: none;
+  display: flex;
+  flex-direction: column;
   @media screen and (max-width: 768px) {
     transform: translateX(-15em);
     position: fixed;

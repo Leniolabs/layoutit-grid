@@ -96,7 +96,7 @@ section {
     font-size: 10px;
     width: 14px;
     border-radius: 3px;
-    color: #888;
+    color: #aaa;
     background: #fff;
     line-height: 15px;
     text-align: center;

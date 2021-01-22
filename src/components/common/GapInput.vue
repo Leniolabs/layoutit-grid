@@ -155,12 +155,8 @@ button,
     stroke-width: 20px;
   }
   &:hover {
-    background: transparent;
     opacity: 1;
-    color: #fff;
-    svg {
-      stroke: #fff;
-    }
+    background: var(--color-remove-active);
   }
 }
 
@@ -168,5 +164,8 @@ button,
   height: 30px;
   max-width: 50px;
   background: #01579b;
+  &:hover {
+    background: #0165b4;
+  }
 }
 </style>
