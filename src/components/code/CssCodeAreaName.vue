@@ -7,7 +7,7 @@
     :class="['input', { active: false }]"
     @keydown="onCodeInputKeydown($event, $emit)"
     @input="onInput"
-    @focus="pause"
+    @focus=";(currentArea = area), pause()"
     @blur="resume(true)"
     >{{ areaName }}</span
   >

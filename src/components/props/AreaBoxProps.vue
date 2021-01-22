@@ -14,7 +14,7 @@
         </div>
       </div>
     </div>
-    <div>
+    <div v-if="false">
       <div class="items-header">
         <label>padding</label>
       </div>
