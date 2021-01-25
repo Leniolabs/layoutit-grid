@@ -37,8 +37,8 @@ const props = defineProps({
 })
 defineEmit(['update:modelValue'])
 
-const optionsContent = ['initial', 'stretch', 'start', 'center', 'end',  'around', 'between', 'evenly']
-const optionsItems = ['initial', 'stretch', 'start', 'center', 'end']
+const optionsContent = [ 'stretch', 'start', 'center', 'end',  'around', 'between', 'evenly']
+const optionsItems = [ 'stretch', 'start', 'center', 'end']
 
 const optionsMap = {
   content: optionsContent,
@@ -92,8 +92,7 @@ const options = computed(() => optionsMap[props.type.split('-')[1]])
     margin: 0 10px 10px 0;
     border: solid 1px #23241f;
     line-height: 30px;
-    
-  &:first-of-type { min-width: 50%; max-width: 50%; }
+    padding: 0 10px;
   &:hover {
     opacity: 1;
   }

@@ -168,4 +168,7 @@ button,
     background: #0165b4;
   }
 }
+.layout-props {
+  padding-top: 10px;
+}
 </style>
