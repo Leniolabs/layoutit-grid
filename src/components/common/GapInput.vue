@@ -69,7 +69,8 @@ h2 {
 }
 
 .items {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+  padding-top: 10px;
   &:last-of-type {
     margin-bottom: 0;
   }

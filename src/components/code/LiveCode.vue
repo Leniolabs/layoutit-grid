@@ -10,9 +10,6 @@
     <SidebarButton aria-label="Restart" class="btn-trash" @click="restart">
       <IconTrash />
     </SidebarButton>
-    <DarkModeButton />
-  </div>
-  <div class="buttons">
     <CodepenButton :area="area" :options="options" />
     <CodeSanboxButton :area="area" :options="options" />
     <SidebarButton :disabled="!saveDesign" class="btn-link" aria-label="Get Shareable Link" @click="getPermalink">
@@ -20,8 +17,8 @@
     </SidebarButton>
   </div>
   <div class="code-grid">
-    <CssCodeEditor :area="area" :options="options" />
     <HtmlCodeEditor :area="area" :options="options" />
+    <CssCodeEditor :area="area" :options="options" />
   </div>
   <LiveCodeOptions v-model="options" />
 </template>
@@ -96,7 +93,7 @@ function getPermalink() {
   display: flex;
   user-select: none;
   > * {
-    margin-right: 10px;
+    margin-right: 6px;
   }
   > button {
     max-width: max-content;
@@ -104,7 +101,10 @@ function getPermalink() {
     height: 42px;
     transition: all 0.2s ease-in-out;
     &:hover {
-      background: #444;
+      background: #23241f;
+    }
+    &[disabled] {
+      opacity: 0.35;
     }
   }
   .btn-trash {

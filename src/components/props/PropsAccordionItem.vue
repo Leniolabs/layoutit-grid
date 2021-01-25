@@ -38,10 +38,8 @@ const opened = ref(true)
   }
   &.active {
     //max-height: 370px;
-    background: #151515;
     padding-bottom: 10px;
     h1 {
-      background: transparent;
     }
   }
   /*   &.active {

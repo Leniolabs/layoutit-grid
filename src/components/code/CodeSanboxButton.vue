@@ -109,15 +109,17 @@ async function createCodeSandbox() {
   border: solid 1px #23241f;
   display: flex;
   align-items: center;
+      transition: all 0.2s ease-in-out;
+
   &:hover {
-    background: #333;
+    background: #23241f;
   }
   span {
     margin-left: 10px;
   }
   padding: 10px;
   &.expanded {
-    padding: 10px 20px;
+   //padding: 10px 20px;
   }
 }
 </style>
