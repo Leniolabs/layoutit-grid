@@ -74,7 +74,6 @@ const options = ['row', 'column']
   font-size: 13px;
   text-shadow: none;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-  opacity: 1;
   cursor: pointer;
   position: relative;
   margin: 0 6px 0 0;
@@ -91,7 +90,10 @@ const options = ['row', 'column']
     width: 20px;
   }
   &:hover {
-    opacity: 1;
+    color: #fff;
+    svg {
+      stroke: #fff;
+    }      
   }
   &.dense-label {
     background: transparent;

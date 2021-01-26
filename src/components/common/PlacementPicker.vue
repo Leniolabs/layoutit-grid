@@ -93,7 +93,6 @@ const options = computed(() => optionsMap[props.type.split('-')[1]])
   font-size: 13px;
   text-shadow: none;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-  opacity: 1;
   cursor: pointer;
   position: relative;
   margin: 0 6px 6px 0;
@@ -111,7 +110,10 @@ const options = computed(() => optionsMap[props.type.split('-')[1]])
     width: 20px;
   }
   &:hover {
-    opacity: 1;
+    color: #fff;
+    svg {
+      stroke: #fff;
+    }    
   }
   &.default-value {
     opacity: 1;

@@ -59,7 +59,6 @@ const options = ['block', 'flex', 'grid']
   font-size: 13px;
   text-shadow: none;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-  opacity: 1;
   cursor: pointer;
   position: relative;
   margin: 0 6px 6px 0;
@@ -76,7 +75,10 @@ const options = ['block', 'flex', 'grid']
     width: 20px;
   }
   &:hover {
-    opacity: 1;
+    color: #fff;
+    svg {
+      stroke: #fff;
+    }      
   }
   &.default-value {
     opacity: 1;
