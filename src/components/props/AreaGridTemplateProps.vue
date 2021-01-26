@@ -427,7 +427,8 @@ h2 {
     cursor: pointer;
     text-align: center;
     flex: 1;
-    margin-right: 4px;
+    padding-left: 5px;
+    margin-right: 5px;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
