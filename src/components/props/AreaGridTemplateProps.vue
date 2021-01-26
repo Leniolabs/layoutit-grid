@@ -48,7 +48,8 @@
               :value="getColUnit(grid, column - 1)"
               type="grid"
               :focused="
-                isFocused('col', column) || (dragging && (dragging.colLine === column || dragging.colLine === column + 1))
+                isFocused('col', column) ||
+                (dragging && (dragging.colLine === column || dragging.colLine === column + 1))
               "
               class="unit-select"
               :aria-label="`column ${column} unit`"
@@ -58,7 +59,6 @@
             <OptionsButton
               class="remove-button"
               :aria-label="`remove column ${column}`"
-              :disabled="grid.col.sizes.length === 1"
               @click="removeCol(area, column - 1)"
               @mouseover.stop="currentHover = { on: 'track', grid, type: 'col', track: column, action: 'remove' }"
               @mouseleave="currentHover = null"
@@ -115,7 +115,8 @@
               :value="getImplicitColUnit(grid, column - 1)"
               type="grid"
               :focused="
-                isFocused('col', column) || (dragging && (dragging.colLine === column || dragging.colLine === column + 1))
+                isFocused('col', column) ||
+                (dragging && (dragging.colLine === column || dragging.colLine === column + 1))
               "
               class="unit-select"
               :aria-label="`column ${column} unit`"
@@ -135,7 +136,6 @@
           </div>
         </div>
       </div>
-
     </div>
     <div class="items rows">
       <div class="items">
@@ -184,7 +184,9 @@
             <UnitSelect
               :value="getRowUnit(grid, row - 1)"
               type="grid"
-              :focused="isFocused('row', row) || (dragging && (dragging.rowLine === row || dragging.rowLine === row + 1))"
+              :focused="
+                isFocused('row', row) || (dragging && (dragging.rowLine === row || dragging.rowLine === row + 1))
+              "
               :aria-label="`row ${row} unit`"
               @input="onRowUnitInput($event.target.value, row - 1)"
             />
@@ -192,7 +194,6 @@
             <OptionsButton
               class="remove-button"
               :aria-label="`remove row ${row}`"
-              :disabled="grid.row.sizes.length === 1"
               @click="removeRow(area, row - 1)"
               @mouseover.stop="currentHover = { on: 'track', grid, type: 'row', track: row, action: 'remove' }"
               @mouseleave="currentHover = null"
@@ -248,7 +249,9 @@
             <UnitSelect
               :value="getImplicitRowUnit(grid, row - 1)"
               type="grid"
-              :focused="isFocused('row', row) || (dragging && (dragging.rowLine === row || dragging.rowLine === row + 1))"
+              :focused="
+                isFocused('row', row) || (dragging && (dragging.rowLine === row || dragging.rowLine === row + 1))
+              "
               :aria-label="`row ${row} unit`"
               @input="onImplicitRowUnitInput($event.target.value, row - 1)"
             />
@@ -506,7 +509,8 @@ button,
 
 .area-size.area-auto-cols .input-container,
 .area-size.area-auto-rows .input-container {
-  input, select {
+  input,
+  select {
     background: #151515;
     color: #eee;
     border: 1px solid #232420;
@@ -516,9 +520,9 @@ button,
     -webkit-appearance: none;
     margin: 0;
   }
-  input[type=number] {
+  input[type='number'] {
     -moz-appearance: textfield;
     padding-right: 12px;
-  }  
+  }
 }
 </style>

@@ -169,10 +169,10 @@ function _serializeGrid({ col, row, ...gridData }) {
   return {
     ...gridData,
     gap: row.gap + ' ' + col.gap,
-    templateColumns: _serializeTemplate(col),
-    templateRows: _serializeTemplate(row),
-    autoColumns: col.auto.join(' '),
-    autoRows: row.auto.join(' '),
+    ...(col.sizes.length && { templateColumns: _serializeTemplate(col) }),
+    ...(row.sizes.length && { templateRows: _serializeTemplate(row) }),
+    ...(col.auto.length && { autoColumns: col.auto.join(' ') }),
+    ...(row.auto.length && { autoRows: row.auto.join(' ') }),
   }
 }
 export function serializeArea(area) {
@@ -206,10 +206,10 @@ export function parseArea(json) {
   const design = JSON.parse(json, (key, value) => {
     if (key === 'grid' && value) {
       const { gap, templateColumns, templateRows, autoColumns, autoRows, ...gridData } = value
-      const [colSizes, colLineNames] = parseGridTemplate(templateColumns)
-      const [rowSizes, rowLineNames] = parseGridTemplate(templateRows)
-      const colAutoSizes = parseAutoSizes(autoColumns)
-      const rowAutoSizes = parseAutoSizes(autoRows)
+      const [colSizes, colLineNames] = templateColumns ? parseGridTemplate(templateColumns) : [[], ['']]
+      const [rowSizes, rowLineNames] = templateRows ? parseGridTemplate(templateRows) : [[], ['']]
+      const colAutoSizes = autoColumns ? parseAutoSizes(autoColumns) : []
+      const rowAutoSizes = autoRows ? parseAutoSizes(autoRows) : []
       const gridGap = value.gap.split(' ')
       const grid = {
         row: { sizes: rowSizes, lineNames: lineNamesToState(rowLineNames), gap: gridGap[0], auto: rowAutoSizes },

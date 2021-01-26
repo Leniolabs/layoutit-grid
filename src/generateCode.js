@@ -54,16 +54,21 @@ export function areaToCSS(area, { parentGrid, useTemplateAreas = true, validTemp
 
 export function gridToCSS(area, { useTemplateAreas = true, repeat }) {
   const { grid } = area
-  let css = `  display: grid;
-  grid-template-columns: ${namedTemplateColumns(grid, repeat)};
-  grid-template-rows: ${namedTemplateRows(grid, repeat)};
-  gap: ${grid.row.gap} ${grid.col.gap};` // TODO: cssGridGap(grid)
+  let css = `  display: grid;`
+  if (grid.col.sizes.length) {
+    css += `\n  grid - template - columns: ${namedTemplateColumns(grid, repeat)};`
+  }
   if (grid.row.auto.length) {
-    css += `grid-auto-columns: ${grid.row.auto.join(' ')};`
+    css += `\n  grid-auto-columns: ${grid.row.auto.join(' ')};`
+  }
+  if (grid.row.sizes.length) {
+    css += `\n  grid - template - rows: ${namedTemplateRows(grid, repeat)};`
   }
   if (grid.col.auto.length) {
-    css += `grid-auto-rows: ${grid.col.auto.join(' ')};`
+    css += `\n  grid-auto-rows: ${grid.col.auto.join(' ')};`
   }
+  css += `\n  gap: ${grid.row.gap} ${grid.col.gap};` // TODO: cssGridGap(grid)
+
   css += declaration('grid-auto-flow', grid.autoFlow, 'initial')
   css += declaration('justify-content', grid.justifyContent, 'initial')
   css += declaration('align-content', grid.alignContent, 'initial')

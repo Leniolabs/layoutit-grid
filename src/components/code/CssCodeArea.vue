@@ -5,10 +5,10 @@
     <CssDecl v-if="area.grid.autoFlow !== 'row'" property="grid-auto-flow">{{ area.grid.autoFlow }}</CssDecl>
     <CssDecl v-if="area.grid.col.auto.length" property="grid-auto-columns">{{ area.grid.col.auto.join(' ') }}</CssDecl>
     <CssDecl v-if="area.grid.row.auto.length" property="grid-auto-rows">{{ area.grid.row.auto.join(' ') }}</CssDecl>
-    <CssDecl property="grid-template-columns">
+    <CssDecl v-if="area.grid.col.sizes.length" property="grid-template-columns">
       <CssCodeTemplateTracks :grid="area.grid" type="col" :repeat="options.repeat" />
     </CssDecl>
-    <CssDecl property="grid-template-rows">
+    <CssDecl v-if="area.grid.row.sizes.length" property="grid-template-rows">
       <CssCodeTemplateTracks :grid="area.grid" type="row" :repeat="options.repeat" />
     </CssDecl>
     <CssDecl property="gap">
@@ -68,7 +68,9 @@ const props = defineProps({
 const cssAreaName = computed(() => props.area.name)
 
 function getGridTemplateAreas(area) {
-  return area.display === 'grid' ? gridTemplateAreas(area, '\n    ') : undefined
+  return area.display === 'grid' && area.grid.col.sizes.length && area.grid.row.sizes.length
+    ? gridTemplateAreas(area, '\n    ')
+    : undefined
 }
 
 const templateAreas = computed(() => getGridTemplateAreas(props.area))
