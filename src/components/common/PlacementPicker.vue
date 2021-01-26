@@ -18,7 +18,9 @@
             'long-name': option.includes('space'),
           }"
           :for="`items-placement-${type}-${option}`"
-          >{{ option }}</label
+          ><component :is="optionIcons[option]" v-if="optionIcons[option]" /><template v-else>{{
+            option
+          }}</template></label
         >
       </template>
     </div>
@@ -28,6 +30,9 @@
 <script setup>
 import { computed, defineProps, defineEmit } from 'vue'
 import { validGridUnits } from '../../store.js'
+import IconStart from '../icons/IconStart.vue'
+import IconCenter from '../icons/IconCenter.vue'
+import IconEnd from '../icons/IconEnd.vue'
 
 const props = defineProps({
   modelValue: { type: String, default: 'stretch' },
@@ -37,13 +42,19 @@ const props = defineProps({
 })
 defineEmit(['update:modelValue'])
 
-const optionsContent = [ 'stretch', 'start', 'center', 'end',  'around', 'between', 'evenly']
-const optionsItems = [ 'stretch', 'start', 'center', 'end']
+const optionsContent = ['stretch', 'start', 'center', 'end', 'around', 'between', 'evenly']
+const optionsItems = ['stretch', 'start', 'center', 'end']
 
 const optionsMap = {
   content: optionsContent,
   items: optionsItems,
   self: optionsItems,
+}
+
+const optionIcons = {
+  start: IconStart,
+  center: IconCenter,
+  end: IconEnd,
 }
 
 const options = computed(() => optionsMap[props.type.split('-')[1]])
@@ -78,32 +89,34 @@ const options = computed(() => optionsMap[props.type.split('-')[1]])
   display: none;
 }
 .radio-toolbar label {
-    background: #1e1e1e;
-    display: block;
-    flex: 1;
-    font-family: sans-serif, Arial;
-    text-align: center;
-    font-size: 13px;
-    text-shadow: none;
-    font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
-    opacity: 1;
-    cursor: pointer;
-    position: relative;
-    margin: 0 10px 10px 0;
-    border: solid 1px #23241f;
-    line-height: 30px;
-    padding: 0 10px;
+  background: #1e1e1e;
+  display: block;
+  flex: 1;
+  font-family: sans-serif, Arial;
+  text-align: center;
+  font-size: 13px;
+  text-shadow: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  opacity: 1;
+  cursor: pointer;
+  position: relative;
+  margin: 0 10px 10px 0;
+  border: solid 1px #23241f;
+  line-height: 30px;
+  padding: 0 10px;
   &:hover {
     opacity: 1;
   }
   &.default-value {
-    &:after { content: "*"; }
+    &:after {
+      content: '*';
+    }
   }
 }
 input[type='radio']:checked + label {
   opacity: 1;
   color: #fff;
-    background: #01579b;
-    border-radius: 2px;
+  background: #01579b;
+  border-radius: 2px;
 }
 </style>
