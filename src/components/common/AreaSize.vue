@@ -102,8 +102,11 @@ label {
     cursor: pointer;
     text-align: center;
     flex: 1;
-    margin-right: 4px;
+    margin-right: 0px;
     border-radius: 2px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding-left: 5px;
   }  
   .input-container {
     display: flex;
@@ -122,8 +125,13 @@ label {
       padding: 0;
       padding-top: 1px;
       flex: 1;
-      margin-right: 4px;
+      margin-right: 0px;
       border-radius: 2px;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      padding-left: 5px;
+      border-right: 1px solid #aaa;
+
     }
   }
 }

@@ -30,7 +30,7 @@ const setGridArea = inputSetter((value) => {
 <style scoped lang="scss">
 
 .layout-props {
-  padding-top: 10px;
+  padding-top: 8px;
 }
 
 </style>

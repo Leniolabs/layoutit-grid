@@ -41,7 +41,7 @@ const options = ['row', 'column']
 
 <style scoped lang="scss">
 .display-select-container {
-  padding-top: 10px;
+  padding-top: 8px;
   margin-bottom: 10px;
   > label {
     display: block;

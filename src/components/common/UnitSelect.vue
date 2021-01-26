@@ -35,6 +35,7 @@ const options = computed(() => units[props.type])
   background: #fff;
   border: 0 none;
   border-radius: 2px;
+  
   width: 100%;
   height: 24px;
   font-size: 14px;

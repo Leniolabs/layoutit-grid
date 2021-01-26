@@ -71,7 +71,7 @@ h2 {
 
 .items {
   margin-bottom: 10px;
-  padding-top: 10px;
+  padding-top: 8px;
   &:last-of-type {
     margin-bottom: 0;
   }
@@ -100,8 +100,11 @@ h2 {
     cursor: pointer;
     text-align: center;
     flex: 1;
-    margin-right: 4px;
+    margin-right: 0px;
     border-radius: 2px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding-left: 5px;
   }  
   .input-container {
     display: flex;
@@ -120,8 +123,11 @@ h2 {
       padding: 0;
       padding-top: 1px;
       flex: 1;
-      margin-right: 4px;
+      margin-right: 0px;
       border-radius: 2px;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-right: 1px solid #aaa;
     }
   }
 }
