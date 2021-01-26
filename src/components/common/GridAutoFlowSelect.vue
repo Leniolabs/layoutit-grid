@@ -68,8 +68,6 @@ const options = ['row', 'column']
   display: none;
 }
 .radio-toolbar label {
-  background: #1e1e1e;
-  display: block;
   flex: 1;
   font-family: sans-serif, Arial;
   text-align: center;
@@ -79,9 +77,19 @@ const options = ['row', 'column']
   opacity: 1;
   cursor: pointer;
   position: relative;
-  margin: 0 10px 0 0;
+  margin: 0 6px 0 0;
   border: solid 1px #23241f;
+  background: #151515;
   line-height: 30px;
+  display: flex;
+  align-items: center;  
+  text-align: center;
+  justify-content: center;
+  color: #aaa;
+  svg {
+    stroke: #aaa;
+    width: 20px;
+  }
   &:hover {
     opacity: 1;
   }
@@ -98,5 +106,8 @@ input[type='radio']:checked + label {
   color: #fff;
   background: #01579b;
   border-radius: 2px;
+  svg {
+    color: #fff;
+  }
 }
 </style>
