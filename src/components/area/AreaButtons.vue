@@ -127,7 +127,7 @@ button {
     padding-top: 2px;
   }
   &.btn-remove {
-    padding-top: 1px;
+    padding-top: 0;
     border-bottom-right-radius: 2px;
     right: 0;
   }

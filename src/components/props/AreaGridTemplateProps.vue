@@ -448,7 +448,7 @@ h2 {
       text-shadow: none;
       direction: ltr;
       padding: 0;
-      padding-top: 1px;
+      padding-top: 0;
       flex: 1;
       border-radius: 2px;
       border-top-right-radius: 0;

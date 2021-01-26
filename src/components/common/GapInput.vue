@@ -121,7 +121,7 @@ h2 {
       text-shadow: none;
       direction: ltr;
       padding: 0;
-      padding-top: 1px;
+      padding-top: 0;
       flex: 1;
       margin-right: 0px;
       border-radius: 2px;
