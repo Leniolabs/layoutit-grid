@@ -93,6 +93,10 @@ const options = ['row', 'column']
   &:hover {
     opacity: 1;
   }
+  &.dense-label {
+    background: transparent;
+    border: 0;
+  }
   &.default-value {
     opacity: 1;
     color: #fff;
@@ -106,6 +110,9 @@ input[type='radio']:checked + label {
   color: #fff;
   background: #01579b;
   border-radius: 2px;
+  &.dense-label {
+    background: transparent;
+  }  
   svg {
     color: #fff;
   }

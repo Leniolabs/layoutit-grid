@@ -1,7 +1,8 @@
 <template>
 <div>
       <div class="items-header">
-        <h2>{{ type }}-gap</h2>
+        <h2 v-if="type === 'col'">column-gap</h2>
+        <h2 v-if="type === 'row'">row-gap</h2>
       </div>
   <div class="area-size">
 
