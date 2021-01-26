@@ -108,9 +108,10 @@ const options = computed(() => optionsMap[props.type.split('-')[1]])
     opacity: 1;
   }
   &.default-value {
-    &:after {
-      content: '*';
-    }
+    opacity: 1;
+    color: #fff;
+    background: #01579b;
+    border-radius: 2px;
   }
 }
 input[type='radio']:checked + label {
