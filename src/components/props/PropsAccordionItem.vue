@@ -38,7 +38,7 @@ const opened = ref(true)
   }
   &.active {
     //max-height: 370px;
-    padding-bottom: 10px;
+    //padding-bottom: 10px;
     h1 {
     }
   }

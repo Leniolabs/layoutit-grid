@@ -427,7 +427,7 @@ h2 {
     cursor: pointer;
     text-align: center;
     flex: 1;
-    margin-right: 5px;
+    margin-right: 4px;
     border-radius: 2px;
   }
   .input-container {
@@ -448,7 +448,7 @@ h2 {
       padding: 0;
       padding-top: 1px;
       flex: 1;
-      margin-right: 5px;
+      margin-right: 4px;
       border-radius: 2px;
     }
   }

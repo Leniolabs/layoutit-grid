@@ -22,7 +22,7 @@ defineEmit(['edit'])
   font-size: 16px;
   float: left;
   font-family: 'Alegreya Sans', 'Helvetica Neue', Arial, sans-serif;
-  margin-right: 5px;
+  margin-right: 4px;
   pointer-events: all;
 }
 
