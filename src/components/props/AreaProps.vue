@@ -26,6 +26,10 @@
       <PropsAccordionItem name="grid-content-placement" heading="Content Placement" :accordion="accordion">
         <AreaGridContentPlacementProps :area="area" />
       </PropsAccordionItem>
+
+      <PropsAccordionItem name="grid-settings" heading="Settings" :accordion="accordion">
+       
+      </PropsAccordionItem>      
     </template>
 
     <PropsAccordionItem v-if="area.display === 'flex'" name="flex-props" heading="Flex Props" :accordion="accordion">

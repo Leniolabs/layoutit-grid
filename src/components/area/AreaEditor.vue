@@ -303,6 +303,9 @@ const explicitAreas = computed(() => {
   display: flex;
   align-items: center;
   max-width: max-content;
+  &:first-child:last-child {
+    border-bottom-right-radius: 2px;
+  }  
   &:before {
     content: '';
     position: absolute;

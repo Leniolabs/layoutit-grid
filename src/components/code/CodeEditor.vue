@@ -58,11 +58,10 @@ function copyToClipBoard() {
   border: solid 1px #23241f;
   height: max-content;
   overflow: auto;
-  margin-bottom: 0px;
+  margin-bottom: 5px;
   max-height: 211px;
   + .code-container { 
-    border-top: 0; 
-    margin-bottom: 10px; 
+    margin-bottom: 0px; 
     max-height: calc(100vh - 390px);
   }
 }
@@ -134,7 +133,7 @@ code::selection {
 }
 
 pre {
-  padding: 0.5em 1em 1em;
+  padding: 0.2em 1em 1em;
   overflow: auto;
 }
 
