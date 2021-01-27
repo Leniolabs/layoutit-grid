@@ -208,7 +208,7 @@ export default {
 
 <style scoped lang="scss">
 .area-selection {
-  pointer-events: initial;
+  pointer-events: none;
   touch-action: none;
   background: #fff;
   height: 100%;
@@ -224,6 +224,7 @@ export default {
     display: none;
   }
   input {
+    pointer-events: initial;
     position: absolute;
     top: 50%;
     left: 0;
