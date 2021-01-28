@@ -131,7 +131,14 @@ watch(currentArea, () => {
     if (currentArea.value.display === 'grid') {
       accordion.value.active = 'explicit-grid'
     } else {
-      accordion.value.active = 'box'
+      const { parent } = currentArea.value
+      if (parent && parent.display === 'grid') {
+        accordion.value.active = 'self-grid'
+      } else if (parent && parent.display === 'flex') {
+        accordion.value.active = 'self-flex'
+      } else {
+        accordion.value.active = 'box'
+      }
     }
   }
 })

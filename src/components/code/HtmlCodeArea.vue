@@ -10,18 +10,10 @@
     :style="{
       opacity: reordering && reordering.area === area ? 0.3 : 1,
     }"
+    @click.stop="currentArea = area"
     >{{ `${ident}${OPEN_TAG}` }}<span class="token tag">{{ elementTag }}</span
     >{{ ' ' }}<span class="token attr-name">class</span>="<span class="token attr-value">{{ cssAreaName }}</span
-    >"><span
-      v-for="(a, i) in gridAreas"
-      :key="`${i}-${a.name}`"
-      :class="['area-children']"
-      :data-area-name="a.name"
-      :draggable="true"
-      @dragstart="onDragStart(a, $event)"
-      @dragend="onDragEnd(a)"
-      @drop="onDrop(a, $event)"
-      @dragover="onDragOver(a, $event)"
+    >"><span v-for="(a, i) in gridAreas" :key="`${i}-${a.name}`" :class="['area-children']" :data-area-name="a.name"
       >{{ '\n' }}<HtmlCodeArea :area="a" :options="options" :ident="ident + '  '" /></span
     >{{ `${gridAreas.length > 0 ? '\n' + ident : ''}${CLOSE_TAG}` }}<span class="token tag">{{ elementTag }}</span
     >></span
@@ -36,6 +28,13 @@ import { currentArea, reordering } from '../../store.js'
 // <!--span class="drop-target" v-if="reordering && reordering.target === a && ! reordering.after">{{'>\n'}}</span-->
 // <!--span class="drop-target" v-if="reordering && reordering.target === a && reordering.after">{{'\n>'}}</span-->
 //  @click.stop="currentArea = area"
+/*
+      :draggable="true"
+      @dragstart="onDragStart(a, $event)"
+      @dragend="onDragEnd(a)"
+      @drop="onDrop(a, $event)"
+      @dragover="onDragOver(a, $event)"
+*/
 
 // name: 'HtmlCodeArea',
 const props = defineProps({
