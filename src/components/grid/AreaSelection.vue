@@ -162,21 +162,19 @@ export default {
 
     function saveSelection() {
       if (saveEnabled.value) {
-        const { color } = selection.value
         const sa = selection.value.area
         if (sa) {
           sa.name = toCssName(gridName.value)
           sa.gridArea = gridRegionToGridArea(selectionArea(selection.value))
           emit('editend', sa)
         } else {
-          props.area.children.push(
-            createAreaState({
-              name: toCssName(gridName.value),
-              gridArea: gridRegionToGridArea(selectionArea(selection.value)),
-              color,
-              parent: props.area,
-            })
-          )
+          const newArea = createAreaState({
+            name: gridName.value,
+            gridArea: gridRegionToGridArea(selectionArea(selection.value)),
+            color: selection.value.color,
+            parent: props.area,
+          })
+          props.area.children.push(newArea)
         }
 
         gridName.value = ''

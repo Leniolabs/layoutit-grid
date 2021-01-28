@@ -56,13 +56,13 @@ export function gridToCSS(area, { useTemplateAreas = true, repeat }) {
   const { grid } = area
   let css = `  display: grid;`
   if (grid.col.sizes.length) {
-    css += `\n  grid - template - columns: ${namedTemplateColumns(grid, repeat)};`
+    css += `\n  grid-template-columns: ${namedTemplateColumns(grid, repeat)};`
   }
   if (grid.row.auto.length) {
     css += `\n  grid-auto-columns: ${grid.row.auto.join(' ')};`
   }
   if (grid.row.sizes.length) {
-    css += `\n  grid - template - rows: ${namedTemplateRows(grid, repeat)};`
+    css += `\n  grid-template-rows: ${namedTemplateRows(grid, repeat)};`
   }
   if (grid.col.auto.length) {
     css += `\n  grid-auto-rows: ${grid.col.auto.join(' ')};`

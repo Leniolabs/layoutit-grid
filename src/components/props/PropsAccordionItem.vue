@@ -2,6 +2,7 @@
   <div class="props-accordion-item" :class="{ active: accordion.active === name }">
     <h1 :class="{ independent }" @click="independent ? (opened = !opened) : (accordion.active = name)">
       {{ (!opened && closedHeading) || heading }}
+      <slot name="buttons"></slot>
     </h1>
     <div
       v-if="independent || accordion.active === name"
@@ -68,6 +69,7 @@ const opened = ref(true)
 
 h1 {
   width: 100%;
+  position: relative;
   border-top: 1px solid rgba(68, 68, 68, 0.5);
   color: #fff;
   font-size: 15px;
