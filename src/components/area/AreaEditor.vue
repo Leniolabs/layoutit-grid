@@ -12,10 +12,7 @@
       'touch-action': 'none',
       position: 'relative',
       outline: area === currentArea ? `2px solid ${area.color}` : 'none',
-      background:
-        area.display === 'block' && area.parent && area.padding === '0'
-          ? '#ffffff00'
-          : '#ffffff',
+      background: area.display === 'block' && area.parent && area.padding === '0' ? '#ffffff00' : '#ffffff',
       'user-select': 'none',
       'z-index': 0,
       // Force a minimum width and height so areas are still visible when the
@@ -51,7 +48,8 @@
         <AreaBox :area="a" :gridarea="explicitAreas.gridAreas[i]" />
       </template>
     </template>
-    <div v-if="area != mainArea" class="area-info" :style="{ border: `2px solid ${area.color}` }">
+    <div v-if="area != mainArea" class="area-info" :style="{ border: `2px solid ${area.color}` }" />
+    <div v-if="area != mainArea" class="area-info" :style="{ top: toolbarStart * 28 + 'px' }">
       <div
         :style="{ backgroundColor: area.color }"
         class="area-name"
@@ -87,6 +85,7 @@ import {
   parseValueUnit,
   getGridArea,
   getGridRegion,
+  getAreaDepth,
   gridAreaToGridLimits,
 } from '../../store.js'
 import { findImplicitGrid } from '../../utils/grid.js'
@@ -253,6 +252,11 @@ const explicitAreas = computed(() => {
     return { gridAreas: [], implicitGrid: {} }
   }
 })
+
+const toolbarStart = computed(() => {
+  const gridRegion = getGridRegion(props.area)
+  return gridRegion ? (gridRegion.col.start === 1 && gridRegion.row.start === 1 ? getAreaDepth(props.area) - 1 : 0) : 0
+})
 </script>
 
 <style scoped lang="scss">
@@ -305,7 +309,7 @@ const explicitAreas = computed(() => {
   max-width: max-content;
   &:first-child:last-child {
     border-bottom-right-radius: 2px;
-  }  
+  }
   &:before {
     content: '';
     position: absolute;
