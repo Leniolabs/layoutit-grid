@@ -33,6 +33,7 @@ const opened = ref(true)
   overflow-y: scroll;
   margin: 0;
   opacity: 0.8;
+  &:first-of-type { opacity: 1; }
   &:hover,
   &.active {
     opacity: 1;

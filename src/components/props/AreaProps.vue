@@ -3,14 +3,16 @@
     <PropsAccordionItem name="box" :heading="`Area: .${area.name}`" :accordion="accordion">
       <template #buttons>
         <div class="area-action-buttons">
-          <OptionsButton class="add-button" @click="addImplicitArea"><IconAdd /></OptionsButton>
+          <OptionsButton class="add-area-button" @click="addImplicitArea">
+            <IconAddArea/>
+          </OptionsButton>
           <template v-if="area.parent">
             <OptionsButton v-show="area.display === 'block'" class="remove-button" @click="removeArea(area)"
               ><IconRemove
             /></OptionsButton>
             <OptionsButton
               v-show="area.display !== 'block' && area.children.length === 0"
-              class="remove-button"
+              class="remove-button clear"
               @click="clearArea(area)"
               ><IconClear
             /></OptionsButton>
@@ -100,6 +102,7 @@ import PropsAccordion from './PropsAccordion.vue'
 import PropsAccordionItem from './PropsAccordionItem.vue'
 import OptionsButton from '../basic/OptionsButton.vue'
 import IconAdd from '../icons/IconAdd.vue'
+import IconAddArea from '../icons/IconAddArea.vue'
 import IconClear from '../icons/IconClear.vue'
 import IconRemove from '../icons/IconRemove.vue'
 
@@ -250,21 +253,38 @@ button,
   flex: 1;
   justify-content: center;
   border-radius: 2px;
+  margin-top: 2px;
+  opacity: 0.8;
   &.remove-button[disabled] {
     opacity: 0.5;
   }
-  &.remove-button {
-    background: var(--color-remove);
+  &.remove-button.clear {
+    svg {
+      width: 15px;
+    fill: #FFF;
+      stroke: transparent;
+    }
   }
   svg {
     width: 10px;
-    stroke: #eee;
+    stroke: #FFF;
     stroke-width: 20px;
+
   }
   &:hover {
     opacity: 1;
-    background: var(--color-remove-active);
+    background: transparent;
   }
+}
+
+.add-area-button {
+  svg {
+    stroke: #fff;
+    width: 20px;
+    stroke-width: 6px;
+  }
+  &:hover {
+  }  
 }
 
 .add-button {
@@ -273,7 +293,6 @@ button,
     transform: rotate(45deg);
   }
   &:hover {
-    background: #0165b4;
   }
 }
 </style>
