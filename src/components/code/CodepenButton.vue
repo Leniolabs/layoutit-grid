@@ -10,8 +10,8 @@
     <input id="codepenData" type="hidden" name="data" />
     <button type="submit" :class="['button', 'codepen-btn', { expanded }]" title="Create CodePen">
       <IconCodepen />
-<!--       <span v-if="expanded">CodePen</span>
- -->    </button>
+      <span v-if="expanded">CodePen</span>
+     </button>
   </form>
 </template>
 
@@ -72,27 +72,25 @@ ${cssCode}
 .button {
   border: 0;
   border-radius: 50px;
-  color: #fff;
+  color: #eee;
   cursor: pointer;
   font-family: inherit;
-  font-size: 1em;
+  font-size: 14px;
   text-align: center;
-  letter-spacing: 0.2px;
   margin: 0 auto;
   background: #151515;
   user-select: none;
-  border: solid 1px transparent;
+  border: 1px solid #23241f;
   display: flex;
   align-items: center;
   transition: all 0.2s ease-in-out;
-  text-shadow: rgba(0, 0, 0, 0.3) 0 1px 1px;
+  padding: 10px 15px;
   &:hover {
     background: #23241f;
   }
   span {
     margin-left: 10px;
   }
-  padding: 10px;
   &.expanded {
     //padding: 10px 20px;
   }

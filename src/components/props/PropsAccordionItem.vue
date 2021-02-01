@@ -82,6 +82,20 @@ h1 {
   }
 }
 
+.area-actions-sidebar h1 {
+  color: #d7ba7d;
+  font-size: 13px;
+  text-shadow: none;
+  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  direction: ltr;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal; 
+  word-break: normal;
+  line-height: 1.5;
+  font-weight: normal;
+}
+
 .props-accordion-content {
   margin: 0 10px 15px 15px;
   &:empty {

@@ -58,7 +58,7 @@ function copyToClipBoard() {
   border: solid 1px #23241f;
   height: max-content;
   overflow: auto;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
   max-height: 211px;
   + .code-container { 
     margin-bottom: 0px; 

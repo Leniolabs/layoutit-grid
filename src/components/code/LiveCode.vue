@@ -10,11 +10,13 @@
     <SidebarButton aria-label="Restart" class="btn-trash" @click="restart">
       <IconTrash />
     </SidebarButton>
-    <CodepenButton :area="area" :options="options" />
-    <CodeSanboxButton :area="area" :options="options" />
     <SidebarButton :disabled="!saveDesign" class="btn-link" aria-label="Get Shareable Link" @click="getPermalink">
       <IconLink />
     </SidebarButton>
+  </div>
+  <div class="buttons">
+    <CodepenButton :area="area" :options="options" />
+    <CodeSanboxButton :area="area" :options="options" />
   </div>
   <div class="code-grid">
     <HtmlCodeEditor :area="area" :options="options" />
@@ -94,6 +96,7 @@ function getPermalink() {
   user-select: none;
   > * {
     margin-right: 6px;
+    margin-bottom: 6px;
   }
   > button {
     max-width: max-content;

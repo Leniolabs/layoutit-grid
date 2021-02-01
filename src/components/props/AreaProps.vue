@@ -1,10 +1,10 @@
 <template>
   <PropsAccordion class="area-props" :accordion="accordion">
-    <PropsAccordionItem name="box" :heading="`Area: .${area.name}`" :accordion="accordion">
+    <PropsAccordionItem class="area-actions-sidebar" name="box" :heading="`.${area.name}`" :accordion="accordion">
       <template #buttons>
         <div class="area-action-buttons">
           <OptionsButton class="add-area-button" @click="addImplicitArea">
-            <IconAddArea/>
+            <IconAdd/>
           </OptionsButton>
           <template v-if="area.parent">
             <OptionsButton v-show="area.display === 'block'" class="remove-button" @click="removeArea(area)"
@@ -33,10 +33,8 @@
     <template v-if="area.display === 'grid'">
       <PropsAccordionItem name="explicit-grid" heading="Grid Layout" :accordion="accordion">
         <AreaGridTemplateProps :area="area" />
-      </PropsAccordionItem>
-
-      <PropsAccordionItem name="grid-gap" heading="Grid Gap" :accordion="accordion">
         <AreaGridGapProps :area="area" />
+
       </PropsAccordionItem>
 
       <PropsAccordionItem name="grid-items-placement" heading="Items Placement" :accordion="accordion">
@@ -181,6 +179,20 @@ function onUpdateType(type) {
   }
 }
 
+.area-actions-sidebar h1 {
+  color: #d7ba7d;
+  font-size: 13px;
+  text-shadow: none;
+  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  direction: ltr;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal; 
+  word-break: normal;
+  line-height: 1.5;
+  font-weight: normal;
+}
+
 .area-type {
   font-size: 14px;
   font-weight: 700;
@@ -277,15 +289,7 @@ button,
   }
 }
 
-.add-area-button {
-  svg {
-    stroke: #fff;
-    width: 20px;
-    stroke-width: 6px;
-  }
-  &:hover {
-  }  
-}
+
 
 .add-button {
   height: 30px;
