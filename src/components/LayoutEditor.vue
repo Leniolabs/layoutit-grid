@@ -96,9 +96,8 @@ p {
   display: grid;
   grid-template-columns: 260px 1fr 360px;
   @media screen and (max-width: 768px) {
-    display: block;
+    grid-template-columns: auto;
   }
-
   &.darkmode {
     .grid {
       background: repeating-linear-gradient(45deg, transparent, transparent 9px, #1d032d 9px, #1d032d 14px);

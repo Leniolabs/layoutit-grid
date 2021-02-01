@@ -32,7 +32,7 @@ defineProps({
   display: flex;
   flex-direction: column;
   @media screen and (max-width: 768px) {
-    transform: translateX(-15em);
+    transform: translateX(-100%);
     position: fixed;
     padding: 0px 12px;
     bottom: 0;
