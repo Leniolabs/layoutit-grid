@@ -218,18 +218,14 @@ export default {
   right: 0;
   border: 2px solid;
   background: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   &:before {
     display: none;
   }
   input {
     pointer-events: initial;
-    position: absolute;
-    top: 50%;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    transform: translate(0, -50%);
-    width: 100%;
     text-align: center;
     border: 0;
     font-size: 30px;
