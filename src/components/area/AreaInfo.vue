@@ -50,9 +50,6 @@ const toolbarStart = computed(() => {
 </script>
 
 <style scoped lang="scss">
-.area-box {
-  // outline: 1px solid red;
-}
 .area-info {
   position: absolute;
   top: 5px;

@@ -283,6 +283,7 @@ const toolbarStart = computed(() => {
   left: 0;
   height: 100%;
   width: 100%;
+  padding: 2px;
   display: flex;
   align-items: flex-start;
 }

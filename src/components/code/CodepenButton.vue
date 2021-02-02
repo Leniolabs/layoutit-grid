@@ -10,7 +10,7 @@
     <input id="codepenData" type="hidden" name="data" />
     <button type="submit" :class="['button', 'codepen-btn', { expanded }]" title="Create CodePen">
       <IconCodepen />
-      <span v-if="expanded">CodePen</span>
+      <span v-if="expanded">Create CodePen</span>
      </button>
   </form>
 </template>
