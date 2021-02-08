@@ -6,7 +6,7 @@
       'pointer-events': 'none',
       'touch-action': 'none',
       'grid-area': gridarea || area.gridArea,
-      border: `2px solid ${area.color}`,
+      border: `2px solid ${areaDisplayColor(area)}`,
       opacity: 0.3,
       'flex-grow': area.flexGrow,
       'flex-shrink': area.flexShrink,
@@ -34,7 +34,7 @@ import AreaName from './AreaName.vue'
 import AreaButtons from './AreaButtons.vue'
 
 import { computed, toRefs, defineProps, defineEmit } from 'vue'
-import { getAreaDepth } from '../../store.js'
+import { getAreaDepth, areaDisplayColor } from '../../store.js'
 import { useIsMainArea } from '../../composables/area.js'
 
 defineProps({

@@ -271,3 +271,7 @@ export function getAreaDepth(area) {
     return 0
   }
 }
+
+export function areaDisplayColor(area) {
+  return area.gridArea === 'auto' ? 'lightgray' : area.color
+}

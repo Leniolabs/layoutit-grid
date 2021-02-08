@@ -11,7 +11,7 @@
       overflow: 'hidden',
       'touch-action': 'none',
       position: 'relative',
-      outline: area === currentArea ? `2px solid ${area.color}` : 'none',
+      outline: area === currentArea ? `2px solid ${areaDisplayColor(area)}` : 'none',
       background: area.display === 'block' && area.parent && area.padding === '0' ? '#ffffff00' : '#ffffff',
       'user-select': 'none',
       'z-index': 0,
@@ -48,7 +48,7 @@
         <AreaBox :area="a" :gridarea="explicitAreas.gridAreas[i]" />
       </template>
     </template>
-    <div v-if="area != mainArea" class="area-info" :style="{ border: `2px solid ${area.color}` }" />
+    <div v-if="area != mainArea" class="area-info" :style="{ border: `2px solid ${areaDisplayColor(area)}` }" />
     <div v-if="area != mainArea" class="area-info" :style="{ top: toolbarStart * 28 + 'px' }">
       <div
         :style="{ backgroundColor: area.color }"
@@ -86,6 +86,7 @@ import {
   getGridArea,
   getGridRegion,
   getAreaDepth,
+  areaDisplayColor,
   gridAreaToGridLimits,
 } from '../../store.js'
 import { findImplicitGrid } from '../../utils/grid.js'
