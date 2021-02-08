@@ -41,7 +41,9 @@ export function areaToCSS(area, { parentGrid, templateAreas = true, validTemplat
   if (grid) {
     const validTemplateAreas = gridTemplateAreas(area) !== undefined
     area.children.forEach((area) => {
-      css += '\n' + areaToCSS(area, { parentGrid: grid, templateAreas, validTemplateAreas, repeat })
+      if (!(areaIsSingleLineInCSS(area) && area.gridArea === 'auto')) {
+        css += '\n' + areaToCSS(area, { parentGrid: grid, templateAreas, validTemplateAreas, repeat })
+      }
     })
   }
 
