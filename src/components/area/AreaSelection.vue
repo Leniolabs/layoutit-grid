@@ -13,7 +13,14 @@
     <button aria-label="Remove selection" class="btn-remove" title="Remove Selection" @click="closeSelection">
       <IconRemove />
     </button>
-    <button :disabled="!saveEnabled" class="btn-save" aria-label="Save area" @click="saveSelection">Save</button>
+    <button
+      :class="{ disabled: !saveEnabled }"
+      class="btn-save"
+      aria-label="Save area"
+      @click="saveEnabled ? saveSelection() : nameInputElement.focus()"
+    >
+      Save
+    </button>
   </section>
 </template>
 
@@ -246,7 +253,7 @@ export default {
     cursor: pointer;
     &.btn-save {
       border-radius: 2px 0 0 2px;
-      &:hover {
+      &:hover:not(.disabled) {
         background: var(--color-add-active);
       }
     }
