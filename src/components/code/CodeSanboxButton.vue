@@ -31,8 +31,7 @@ async function compressForCodesandbox(input) {
 }
 
 function codeSandboxJSON() {
-  const { repeat, templateAreas, oldSpec } = props.options
-  const cssCode = areaToCSS(props.area, { useTemplateAreas: templateAreas, repeat, oldSpec })
+  const cssCode = areaToCSS(props.area, props.options)
   const htmlCode = areaToHTML(props.area)
 
   const containerClass = 'container'
@@ -109,7 +108,7 @@ async function createCodeSandbox() {
   border: solid 1px #23241f;
   display: flex;
   align-items: center;
-      transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 
   &:hover {
     background: #23241f;
@@ -119,7 +118,7 @@ async function createCodeSandbox() {
   }
   padding: 10px;
   &.expanded {
-   //padding: 10px 20px;
+    //padding: 10px 20px;
   }
 }
 </style>

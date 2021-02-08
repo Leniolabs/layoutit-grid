@@ -13,13 +13,13 @@ function declaration(name, value, def) {
   return value !== def ? `\n  ${name}: ${value};` : ''
 }
 
-export function areaToCSS(area, { parentGrid, useTemplateAreas = true, validTemplateAreas = true, repeat, oldSpec }) {
+export function areaToCSS(area, { parentGrid, templateAreas = true, validTemplateAreas = true, repeat, oldSpec }) {
   const { name, grid } = area
   const singleLine = areaIsSingleLineInCSS(area)
   const cssName = toCssName(name)
   let css = `.${cssName} {${singleLine ? '' : '\n'}`
   if (grid) {
-    css += gridToCSS(area, { useTemplateAreas, repeat })
+    css += gridToCSS(area, { templateAreas, repeat })
   }
 
   if (area.parent && area.parent.display === 'grid') {
@@ -27,7 +27,7 @@ export function areaToCSS(area, { parentGrid, useTemplateAreas = true, validTemp
     css += declaration('align-self', area.alignSelf, 'initial')
     const gridArea = getGridAreaWithNamedLines(area, parentGrid)
     if (gridArea) {
-      css += `${singleLine ? ' ' : '\n  '}grid-area: ${useTemplateAreas && validTemplateAreas ? cssName : gridArea};`
+      css += `${singleLine ? ' ' : '\n  '}grid-area: ${templateAreas && validTemplateAreas ? cssName : gridArea};`
     }
   }
 
@@ -41,7 +41,7 @@ export function areaToCSS(area, { parentGrid, useTemplateAreas = true, validTemp
   if (grid) {
     const validTemplateAreas = gridTemplateAreas(area) !== undefined
     area.children.forEach((area) => {
-      css += '\n' + areaToCSS(area, { parentGrid: grid, useTemplateAreas, validTemplateAreas, repeat })
+      css += '\n' + areaToCSS(area, { parentGrid: grid, templateAreas, validTemplateAreas, repeat })
     })
   }
 
@@ -52,7 +52,7 @@ export function areaToCSS(area, { parentGrid, useTemplateAreas = true, validTemp
   return css
 }
 
-export function gridToCSS(area, { useTemplateAreas = true, repeat }) {
+export function gridToCSS(area, { templateAreas = true, repeat }) {
   const { grid } = area
   let css = `  display: grid;`
   if (grid.col.sizes.length) {
@@ -74,10 +74,10 @@ export function gridToCSS(area, { useTemplateAreas = true, repeat }) {
   css += declaration('align-content', grid.alignContent, 'initial')
   css += declaration('justify-items', grid.justifyItems, 'initial')
   css += declaration('align-items', grid.alignItems, 'initial')
-  if (useTemplateAreas) {
-    const templateAreas = gridTemplateAreas(area, '\n    ')
-    if (templateAreas) {
-      css += `\n  grid-template-areas:\n    ${templateAreas};`
+  if (templateAreas) {
+    const templateAreasCode = gridTemplateAreas(area, '\n    ')
+    if (templateAreasCode) {
+      css += `\n  grid-template-areas:\n    ${templateAreasCode};`
     }
   }
   return css

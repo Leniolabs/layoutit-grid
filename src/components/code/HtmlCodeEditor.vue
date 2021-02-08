@@ -1,16 +1,23 @@
 <template>
-  <CodeEditor type="html"><HtmlCodeArea :area="area" :options="options" /></CodeEditor>
+  <CodeEditor type="html" :get-code="getCode">
+    <HtmlCodeArea :area="area" :options="options" />
+  </CodeEditor>
 </template>
 
 <script setup>
 import { defineProps } from 'vue'
+import { areaToHTML } from '../../generateCode.js'
 import CodeEditor from './CodeEditor.vue'
 import HtmlCodeArea from './HtmlCodeArea.vue'
 
-defineProps({
+const props = defineProps({
   area: { type: Object, default: null },
   options: { type: Object, default: null },
 })
+
+function getCode() {
+  return areaToHTML(props.area)
+}
 </script>
 
 <style scoped>

@@ -11,7 +11,7 @@
     <button type="submit" :class="['button', 'codepen-btn', { expanded }]" title="Create CodePen">
       <IconCodepen />
       <span v-if="expanded">Create CodePen</span>
-     </button>
+    </button>
   </form>
 </template>
 
@@ -38,8 +38,7 @@ function onSubmit(event) {
 }
 
 const codePenJSON = function () {
-  const { repeat, templateAreas, oldSpec } = props.options
-  const cssCode = areaToCSS(props.area, { useTemplateAreas: templateAreas, repeat, oldSpec })
+  const cssCode = areaToCSS(props.area, props.options)
   const htmlCode = areaToHTML(props.area)
 
   const containerClass = 'container'

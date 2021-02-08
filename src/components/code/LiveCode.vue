@@ -68,8 +68,7 @@ const options = ref({
 })
 
 const cssCode = computed(() => {
-  const { repeat, templateAreas, oldSpec } = options.value
-  return areaToCSS(props.area, { useTemplateAreas: templateAreas, repeat, oldSpec })
+  return areaToCSS(props.area, options.value)
 })
 
 const htmlCode = computed(() => {

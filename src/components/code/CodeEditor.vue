@@ -19,11 +19,12 @@ const { copy } = useClipboard()
 
 const props = defineProps({
   type: { type: String, required: true },
+  getCode: { type: Function, required: true },
 })
 const copied = ref(0)
 
 function copyToClipBoard() {
-  copy(props.code)
+  copy(props.getCode())
   copied.value++
   setTimeout(() => {
     copied.value--
@@ -60,8 +61,8 @@ function copyToClipBoard() {
   overflow: auto;
   margin-bottom: 6px;
   max-height: 211px;
-  + .code-container { 
-    margin-bottom: 0px; 
+  + .code-container {
+    margin-bottom: 0px;
     max-height: calc(100vh - 390px);
   }
 }
