@@ -251,8 +251,16 @@ export function parseArea(json) {
   return parentify(rewireAreas(design.version ? design.area : design))
 }
 
+const remainingColors = []
 export function getRandomColor() {
-  return colors[Math.floor(Math.random() * colors.length)]
+  if (remainingColors.length === 0) {
+    remainingColors.push(...colors)
+  }
+  return remainingColors.splice(randomIndex(remainingColors), 1)[0]
+}
+
+function randomIndex(array) {
+  return Math.floor(Math.random() * array.length)
 }
 
 export function getAreaDepth(area) {
