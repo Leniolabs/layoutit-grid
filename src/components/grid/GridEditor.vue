@@ -6,7 +6,7 @@
     :section="section"
     :grayed="!isActive"
     :focused="isFocused(section)"
-    @pointerdown="(event) => selectionEl.cellDown(event)"
+    @pointerdown="$emit('celldown', $event)"
   />
 
   <GridTrack
@@ -44,8 +44,6 @@
     :rowgap="computedGap.row"
     @down="handleLineDown"
   />
-
-  <AreaSelection ref="selectionEl" :area="area" @editend="$emit('editend')" />
 </template>
 
 <script>
@@ -53,7 +51,6 @@ import GridCell from './GridCell.vue'
 import GridTrack from './GridTrack.vue'
 import GridLine from './GridLine.vue'
 import GridIntersection from './GridIntersection.vue'
-import AreaSelection from './AreaSelection.vue'
 
 import {
   currentArea,
@@ -75,7 +72,7 @@ import { defineProps, ref, computed, watch, toRefs, onBeforeUpdate, nextTick } f
 import { gridSections } from '../../utils.js'
 
 export default {
-  components: { GridCell, GridTrack, GridLine, GridIntersection, AreaSelection },
+  components: { GridCell, GridTrack, GridLine, GridIntersection },
   props: {
     area: { type: Object, required: true },
     computedStyles: { type: Object, default: null },
@@ -87,7 +84,7 @@ export default {
     },
     implicitGrid: { type: Object, required: true },
   },
-  emits: ['editend'],
+  emits: ['celldown'],
   setup(props, { expose }) {
     const grid = computed(() => props.area.grid)
 
@@ -283,15 +280,7 @@ export default {
       window.addEventListener('pointerup', handleUp)
     }
 
-    const selectionEl = ref(null)
-    function editArea(area) {
-      selectionEl.value.editArea(area)
-    }
-
-    expose({ editArea })
-
     return {
-      selectionEl,
       grid,
       gridLineRefs,
       gridSizesForView,

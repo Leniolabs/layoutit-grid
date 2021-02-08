@@ -25,12 +25,11 @@
   >
     <GridEditor
       v-if="area.display === 'grid'"
-      ref="gridEditorEl"
       :area="area"
       :computed-styles="computedStyles"
       :computed-gap="computedGap"
       :implicit-grid="explicitAreas.implicitGrid"
-      @editend="editingArea = null"
+      @celldown="(event) => selectionEl.cellDown(event)"
     />
 
     <AreaEditor
@@ -61,6 +60,8 @@
       <AreaButtons :area="area" @edit="$emit('edit')" />
     </div>
     <div v-if="area.display === 'block' && area.padding !== '0'" class="padding-box"></div>
+
+    <AreaSelection v-if="area.display === 'grid'" ref="selectionEl" :area="area" @editend="editingArea = null" />
   </component>
 </template>
 
@@ -71,6 +72,7 @@ import PieChart from '../content/PieChart.vue'
 import ElementImage from './ElementImage.vue'
 import ElementParagraph from './ElementParagraph.vue'
 import ElementButton from './ElementButton.vue'
+import AreaSelection from './AreaSelection.vue'
 // GridEditor imported globally due to circular reference with AreaEditor
 // import FlexEditor from '../flex/FlexEditor.vue'
 
@@ -117,10 +119,10 @@ const areasToShow = computed(() => {
     )*/
 })
 
-const gridEditorEl = ref(null)
+const selectionEl = ref(null)
 function onEditArea(area) {
   editingArea.value = area
-  gridEditorEl.value.editArea(area)
+  selectionEl.value.editArea(area)
 }
 
 const areaType = computed(() => {
