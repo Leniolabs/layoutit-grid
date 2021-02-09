@@ -4,19 +4,18 @@
       <template #buttons>
         <div class="area-action-buttons">
           <OptionsButton class="add-area-button" @click="addImplicitArea">
-            <IconAdd/>
+            <IconAdd />
           </OptionsButton>
-          <template v-if="area.parent">
-            <OptionsButton v-show="area.display === 'block'" class="remove-button" @click="removeArea(area)"
-              ><IconRemove
-            /></OptionsButton>
-            <OptionsButton
-              v-show="area.display !== 'block' && area.children.length === 0"
-              class="remove-button clear"
-              @click="clearArea(area)"
-              ><IconClear
-            /></OptionsButton>
-          </template>
+          <OptionsButton v-show="area.display === 'block'" class="remove-button" @click="removeArea(area)"
+            ><IconRemove
+          /></OptionsButton>
+          <OptionsButton
+            v-show="area.display !== 'block'"
+            :disabled="area.children.length > 0 || !area.parent"
+            class="remove-button clear"
+            @click="clearArea(area)"
+            ><IconClear
+          /></OptionsButton>
         </div>
       </template>
       <template #default>
@@ -34,7 +33,6 @@
       <PropsAccordionItem name="explicit-grid" heading="Grid Layout" :accordion="accordion">
         <AreaGridTemplateProps :area="area" />
         <AreaGridGapProps :area="area" />
-
       </PropsAccordionItem>
 
       <PropsAccordionItem name="grid-items-placement" heading="Items Placement" :accordion="accordion">
@@ -183,11 +181,11 @@ function onUpdateType(type) {
   color: #d7ba7d;
   font-size: 13px;
   text-shadow: none;
-  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   direction: ltr;
   text-align: left;
   white-space: pre;
-  word-spacing: normal; 
+  word-spacing: normal;
   word-break: normal;
   line-height: 1.5;
   font-weight: normal;
@@ -273,23 +271,20 @@ button,
   &.remove-button.clear {
     svg {
       width: 15px;
-    fill: #FFF;
+      fill: #fff;
       stroke: transparent;
     }
   }
   svg {
     width: 10px;
-    stroke: #FFF;
+    stroke: #fff;
     stroke-width: 20px;
-
   }
   &:hover {
     opacity: 1;
     background: transparent;
   }
 }
-
-
 
 .add-button {
   height: 30px;
