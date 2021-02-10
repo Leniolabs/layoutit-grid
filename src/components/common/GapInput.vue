@@ -1,24 +1,22 @@
 <template>
-<div>
-      <div class="items-header">
-        <h2 v-if="type === 'col'">column-gap</h2>
-        <h2 v-if="type === 'row'">row-gap</h2>
+  <div>
+    <div class="items-header">
+      <h2 v-if="type === 'col'">column-gap</h2>
+      <h2 v-if="type === 'row'">row-gap</h2>
+    </div>
+    <div class="area-size">
+      <div class="input-container">
+        <input
+          :value="gap.value"
+          aria-label="gap value"
+          type="number"
+          min="0"
+          @input="setGapValue($event.target.value)"
+        />
+        <UnitSelect :value="gap.unit" aria-label="gap unit" @input="setGapUnit($event.target.value)" />
       </div>
-  <div class="area-size">
-
-    <div class="input-container">
-      <input
-        :value="gap.value"
-        aria-label="gap value"
-        type="number"
-        min="0"
-        @input="onSizeValueInput($event.target.value)"
-      />
-      <UnitSelect :value="gap.unit" aria-label="gap unit" @input="setGapUnit($event.target.value)" />
-    </div> 
+    </div>
   </div>
-</div>
-
 </template>
 
 <script setup>
@@ -46,13 +44,12 @@ function setGapUnit(unit) {
   gap.value = gap.value.value + unit
 }
 
-const onSizeValueInput = inputSetter((value) => {
+function setGapValue(value) {
   gap.value = value + gap.value.unit
-})
+}
 </script>
 
 <style scoped lang="scss">
-
 h2 {
   display: block;
   flex: 1;
@@ -81,8 +78,13 @@ h2 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  + .area-size { margin-top: 6px; }
-  > * { flex: 1; max-width: max-content; }
+  + .area-size {
+    margin-top: 6px;
+  }
+  > * {
+    flex: 1;
+    max-width: max-content;
+  }
 }
 
 .area-size {
@@ -105,7 +107,7 @@ h2 {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     padding-left: 5px;
-  }  
+  }
   .input-container {
     display: flex;
     flex: 1;

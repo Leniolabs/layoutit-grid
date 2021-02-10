@@ -1,6 +1,6 @@
 import { useDebounceFn } from '@vueuse/core'
 
-export function debounce(fn, ms = 700) {
+export function debounce(fn, ms = 400) {
   return useDebounceFn(fn, ms)
 }
 

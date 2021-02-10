@@ -239,6 +239,7 @@ export default {
     color: #300548;
     font-family: 'Alegreya Sans', 'Helvetica Neue', Arial, sans-serif;
     background: transparent;
+    width: 100%;
   }
   button {
     background: var(--color-add);

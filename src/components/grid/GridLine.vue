@@ -176,19 +176,16 @@ section {
       width: calc(v-bind(gap) + 20px);
       right: calc(-10px - v-bind(gap));
       &.first {
+        width: 14px;
         right: initial;
-        left: calc(-10px - v-bind(gap));
+        left: 0;
+      }
+      &.last {
+        width: 14px;
+        right: 0;
       }
       &:not(.dragging-something) {
         cursor: col-resize;
-      }
-      &.first {
-        cursor: initial;
-        pointer-events: none;
-      }
-      &.last {
-        cursor: initial;
-        pointer-events: none;
       }
     }
     &.row {
@@ -198,19 +195,15 @@ section {
       bottom: calc(-10px - v-bind(gap));
       &.first {
         bottom: initial;
-        top: calc(-10px - v-bind(gap));
+        top: 0;
+        height: 14px;
+      }
+      &.last {
+        bottom: 0;
+        height: 14px;
       }
       &:not(.dragging-something) {
         cursor: row-resize;
-      }
-
-      &.first {
-        cursor: initial;
-        pointer-events: none;
-      }
-      &.last {
-        cursor: initial;
-        pointer-events: none;
       }
     }
 
