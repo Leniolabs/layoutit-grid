@@ -50,22 +50,50 @@ const props = defineProps({
   area: { type: Object, required: true },
   saveDesign: { type: Function, default: null },
 })
-const storedPreferredExport = useLocalStorage('preferred-export')
-watch(preferredExport, () => {
-  storedPreferredExport.value = preferredExport.value
-})
-onMounted(() => {
-  const preferred = storedPreferredExport.value
-  if (preferred) {
-    preferredExport.value = preferred
-  }
-})
+
+function useStored(source, key, parse = (x) => x) {
+  const stored = useLocalStorage(key)
+  watch(source, () => {
+    stored.value = source.value
+  })
+  onMounted(() => {
+    const val = stored.value
+    if (val !== undefined) {
+      source.value = parse(val)
+    }
+  })
+  return source
+}
+function useOption(key, initial) {
+  return useStored(ref(initial), (x) => x === 'true')
+}
+
+useStored(preferredExport, 'layoutit-grid-preferred-export')
+
+const templateAreas = useOption('layoutit-grid-option-template-areas', true)
+const oldSpec = useLocalStorage('layoutit-grid-option-old-spec', false)
+const repeat = useLocalStorage('layoutit-grid-option-repeat', false)
 
 const options = ref({
-  templateAreas: true,
-  oldSpec: false,
-  repeat: false,
+  templateAreas: templateAreas.value,
+  oldSpec: oldSpec.value,
+  repeat: repeat.value,
 })
+watch(
+  options,
+  () => {
+    if (templateAreas.value !== options.value.templateAreas) {
+      templateAreas.value = options.value.templateAreas
+    }
+    if (oldSpec.value !== options.value.oldSpec) {
+      oldSpec.value = options.value.oldSpec
+    }
+    if (repeat.value !== options.value.repeat) {
+      repeat.value = options.value.repeat
+    }
+  },
+  { deep: true }
+)
 
 const cssCode = computed(() => {
   return areaToCSS(props.area, options.value)

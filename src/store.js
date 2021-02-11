@@ -60,7 +60,7 @@ export const { undo, redo, clear, canUndo, canRedo, pause, resume, last } = useR
   deep: true,
 })
 
-const stateStorage = useLocalStorage('app-state')
+const stateStorage = useLocalStorage('layoutit-grid-app-state')
 watch(
   last,
   () => {

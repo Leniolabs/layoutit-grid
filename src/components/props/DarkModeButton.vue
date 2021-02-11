@@ -15,7 +15,7 @@ import { useLocalStorage } from '@vueuse/core'
 import IconDark from '../icons/IconDark.vue'
 import { darkmode } from '../../store'
 
-const themeStorage = useLocalStorage('theme', null)
+const themeStorage = useLocalStorage('layoutit-grid-theme', null)
 
 function toggleDarkmode() {
   darkmode.value = !darkmode.value
