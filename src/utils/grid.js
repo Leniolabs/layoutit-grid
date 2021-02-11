@@ -163,16 +163,13 @@ export function getGridRegion(area, limits) {
   return undefined // This is an auto placed grid area
 }
 
-// Old naive version
-/*
-export function gridAreaToGridRegion(gridArea) {
+export function explicitGridAreaToGridRegion(gridArea) {
   const p = gridArea.split('/')
   return {
     row: { start: parseInt(p[0]), end: parseInt(p[2]) },
     col: { start: parseInt(p[1]), end: parseInt(p[3]) },
   }
 }
-*/
 
 function toValidLineNumber(l, rd) {
   return l > 0 ? l : l - (rd + 1) - 1

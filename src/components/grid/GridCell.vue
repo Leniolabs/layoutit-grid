@@ -16,13 +16,14 @@
     }"
     class="grid-section"
     @pointerdown="$emit('pointerdown', $event)"
-    @mouseover="overArea = null"
+    @mouseover="onMouseOver"
   />
 </template>
 
 <script setup>
 import { defineProps, defineEmit } from 'vue'
 import { dragging, setCurrentArea, parseValueUnit, valueUnitToString, pause, resume, overArea } from '../../store.js'
+import { explicitGridAreaToGridRegion } from '../../utils/grid.js'
 import { useGridDimensions } from '../../composables/area.js'
 
 function calcValue(prev, prevComp, delta) {
@@ -68,6 +69,7 @@ const props = defineProps({
   area: { type: Object, required: true },
   grayed: { type: Boolean, default: false },
   focused: { type: Boolean, default: false },
+  explicitAreas: { type: Object, required: true },
 })
 defineEmit(['pointerdown'])
 
@@ -88,6 +90,21 @@ const isDraggingSection = computed(
 const isDraggingCol = computed(() => isDraggingGrid.value && dragging.value.colLine === props.section.col.start)
 
 const isDraggingRow = computed(() => isDraggingGrid.value && dragging.value.rowLine === props.section.row.start)
+
+const gridRegions = computed(() => props.explicitAreas.gridAreas.map(explicitGridAreaToGridRegion))
+
+function onMouseOver() {
+  const { children } = props.area
+  const { row, col } = props.section
+  for (let i = children.length - 1; i >= 0; i--) {
+    const r = gridRegions.value[i]
+    if (r.row.start <= row.start && r.row.end >= row.end && r.col.start <= col.start && r.col.end >= col.end) {
+      overArea.value = children[i]
+      return
+    }
+  }
+  overArea.value = props.area
+}
 </script>
 
 <style scoped lang="scss">

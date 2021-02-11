@@ -6,6 +6,7 @@
     :section="section"
     :grayed="!isActive"
     :focused="isFocused(section)"
+    :explicit-areas="explicitAreas"
     @pointerdown="$emit('celldown', $event)"
   />
 
@@ -82,7 +83,7 @@ export default {
         return { col: '0px', row: '0px' }
       },
     },
-    implicitGrid: { type: Object, required: true },
+    explicitAreas: { type: Object, required: true },
   },
   emits: ['celldown'],
   setup(props, { expose }) {

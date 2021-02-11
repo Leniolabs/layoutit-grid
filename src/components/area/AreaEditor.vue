@@ -31,7 +31,7 @@
       :area="area"
       :computed-styles="computedStyles"
       :computed-gap="computedGap"
-      :implicit-grid="explicitAreas.implicitGrid"
+      :explicit-areas="explicitAreas"
       @celldown="(event) => selectionEl.cellDown(event)"
     />
 
@@ -52,12 +52,7 @@
     </template>
     <div v-if="area != mainArea" class="area-info" :style="{ border: `2px solid ${areaDisplayColor(area)}` }" />
     <div v-if="area != mainArea" class="area-info" :style="{ top: toolbarStart * 28 + 'px' }">
-      <div
-        :style="{ backgroundColor: area.color }"
-        class="area-name"
-        @click="currentArea = area"
-        @mouseover="overArea = area"
-      >
+      <div :style="{ backgroundColor: area.color }" class="area-name" @click="currentArea = area">
         {{ area.name }}
       </div>
       <AreaButtons :area="area" @edit="$emit('edit')" />
