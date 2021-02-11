@@ -141,5 +141,5 @@ function areasToHTML(area, ident = 0) {
 
 export function areaToHTML(area, ident = 0) {
   const tag = getElementTag(area)
-  return `<${tag} class="${toCssName(area.name)}">${areasToHTML(area, ident + 1)}</tag>`
+  return `<${tag} class="${toCssName(area.name)}">${areasToHTML(area, ident + 1)}</${tag}>`
 }

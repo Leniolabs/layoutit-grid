@@ -16,7 +16,7 @@ import { areaToCSS, areaToHTML } from '../../generateCode.js'
 
 import { defineProps, computed } from 'vue'
 
-defineProps({
+const props = defineProps({
   area: { type: Object, required: true },
   options: { type: Object, required: true },
 })
