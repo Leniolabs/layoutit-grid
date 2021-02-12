@@ -2,8 +2,7 @@
   <div :class="['sidebar', { active: currentView === 'props' }]">
     <BrandLogo />
     <AreaProps :area="currentArea" />
-     <BrandBanner />
-
+    <BrandBanner />
   </div>
 </template>
 
@@ -54,6 +53,4 @@ defineProps({
     display: none;
   }
 }
-
-
 </style>

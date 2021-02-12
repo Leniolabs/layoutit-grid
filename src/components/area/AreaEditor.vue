@@ -25,6 +25,7 @@
       ...displayStyles,
     }"
     :area="area"
+    @mouseleave="!area.parent && (overArea = null)"
   >
     <GridEditor
       v-if="area.display === 'grid'"
