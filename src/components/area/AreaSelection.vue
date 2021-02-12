@@ -28,7 +28,14 @@
 import IconRemove from '../icons/IconRemove.vue'
 
 import { gridRegionToGridArea, createSection, toCssName } from '../../utils.js'
-import { createAreaState, setCurrentArea, getRandomColor, isValidAreaName, getGridRegion } from '../../store.js'
+import {
+  createAreaState,
+  setCurrentArea,
+  getRandomColor,
+  isValidAreaName,
+  getGridRegion,
+  overArea,
+} from '../../store.js'
 
 import { ref, computed } from 'vue'
 
@@ -99,7 +106,7 @@ export default {
       )
     })
 
-    function sectionFromEvent() {
+    function sectionFromEvent(event) {
       const el = document.elementFromPoint(event.clientX, event.clientY)
       if (el) {
         const { colStart, rowStart } = el.dataset
@@ -174,6 +181,7 @@ export default {
           sa.name = toCssName(gridName.value)
           sa.gridArea = gridRegionToGridArea(selectionArea(selection.value))
           emit('editend', sa)
+          overArea.value = sa
         } else {
           const newArea = createAreaState({
             name: gridName.value,
@@ -182,6 +190,7 @@ export default {
             parent: props.area,
           })
           props.area.children.push(newArea)
+          overArea.value = newArea
         }
 
         gridName.value = ''

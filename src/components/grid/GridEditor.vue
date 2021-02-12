@@ -6,8 +6,8 @@
     :section="section"
     :grayed="!isActive"
     :focused="isFocused(section)"
-    :explicit-areas="explicitAreas"
     @pointerdown="$emit('celldown', $event)"
+    @overcell="onOverCell"
   />
 
   <GridTrack
@@ -65,12 +65,14 @@ import {
   parseValue,
   parseUnit,
   parseValueUnit,
+  overArea,
 } from '../../store.js'
 import { useIsCurrentArea, useIsActiveArea } from '../../composables/area.js'
 
 import { defineProps, ref, computed, watch, toRefs, onBeforeUpdate, nextTick } from 'vue'
 
 import { gridSections } from '../../utils.js'
+import { explicitGridAreaToGridRegion } from '../../utils/grid.js'
 
 export default {
   components: { GridCell, GridTrack, GridLine, GridIntersection },
@@ -281,6 +283,20 @@ export default {
       window.addEventListener('pointerup', handleUp)
     }
 
+    const gridRegions = computed(() => props.explicitAreas.gridAreas.map(explicitGridAreaToGridRegion))
+
+    function onOverCell({ row, col }) {
+      const { children } = props.area
+      for (let i = children.length - 1; i >= 0; i--) {
+        const r = gridRegions.value[i]
+        if (r.row.start <= row && r.row.end > row && r.col.start <= col && r.col.end > col) {
+          overArea.value = children[i]
+          return
+        }
+      }
+      overArea.value = props.area
+    }
+
     return {
       grid,
       gridLineRefs,
@@ -296,6 +312,7 @@ export default {
       isFocused,
       handleLineDown,
       gridSections,
+      onOverCell,
     }
   },
 }

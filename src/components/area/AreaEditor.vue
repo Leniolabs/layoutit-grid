@@ -25,6 +25,7 @@
       ...displayStyles,
     }"
     :area="area"
+    :data-area-name="area.name"
     @mouseleave="!area.parent && (overArea = null)"
   >
     <GridEditor

@@ -29,6 +29,7 @@
     <div
       :class="['line-handle', type, { first: pos === 1, last, 'dragging-something': dragging }]"
       @pointerdown.stop="$emit('down', $event, { [type]: pos })"
+      @pointermove="onMove"
     />
 
     <LineName ref="lineNameRef" :grid="grid" :pos="pos" :type="type" :gap="gap" />
@@ -37,7 +38,7 @@
 
 <script>
 import LineName from './LineName.vue'
-import { dragging, currentFocus } from '../../store.js'
+import { dragging, currentFocus, overArea } from '../../store.js'
 import { ref, computed, defineProps, defineEmit } from 'vue'
 
 export default {
@@ -48,7 +49,7 @@ export default {
     area: { type: Object, required: true },
     gap: { type: String, default: '0px' },
   },
-  emits: ['down'],
+  emits: ['down', 'overcell'],
   setup(props, { expose }) {
     const grid = computed(() => props.area.grid)
 
@@ -70,6 +71,21 @@ export default {
       lineNameRef.value.toggle()
     }
 
+    function onMove(event) {
+      if (dragging.value) {
+        return
+      }
+      const lineEl = event.target
+      lineEl.style.pointerEvents = 'none'
+      const cellEl = document.elementFromPoint(event.clientX, event.clientY)
+      lineEl.style.pointerEvents = 'initial'
+      const { colStart, rowStart } = cellEl.dataset
+      if (colStart !== undefined && rowStart !== undefined) {
+        emit('overcell', { col: colStart, row: rowStart })
+        return
+      }
+    }
+
     expose({ toggleLineName })
     return {
       lineNameRef,
@@ -78,6 +94,7 @@ export default {
       last,
       grid,
       dragging,
+      onMove,
       currentFocus,
     }
   },
