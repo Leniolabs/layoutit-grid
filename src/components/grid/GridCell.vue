@@ -122,7 +122,7 @@ section {
     background: #ddddddcc;
   }*/
   &:not(.dragging):hover {
-    background: #f4faf4cc;
+    background: #f6fbf6;
   }
   &.focused {
     background: #ecf8eccc;

@@ -70,7 +70,7 @@ function copyToClipBoard() {
 .header {
   position: relative;
   display: block;
-  color: #bbb;
+  color: #aaa;
   font-weight: 700;
   font-size: 12px;
   padding: 8px;
@@ -83,7 +83,7 @@ function copyToClipBoard() {
   top: 6px;
   right: 0;
   position: absolute;
-  color: #bbb;
+  color: #aaa;
   background-color: Transparent;
   background-repeat: no-repeat;
   font-weight: 700;
@@ -134,7 +134,7 @@ code::selection {
 }
 
 pre {
-  padding: 0.2em 1em 1em;
+  padding: 0.2em 0.2em 1em 1em;
   overflow: auto;
 }
 

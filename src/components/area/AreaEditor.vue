@@ -332,7 +332,7 @@ const toolbarStart = computed(() => {
 .padding-box {
   width: 100%;
   height: 100%;
-  outline: 1px dashed #bbb;
+  outline: 1px dashed #aaa;
   background: white;
 }
 </style>

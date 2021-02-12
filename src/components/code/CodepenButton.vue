@@ -74,7 +74,7 @@ ${cssCode}
   color: #eee;
   cursor: pointer;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 15px;
   text-align: center;
   margin: 0 auto;
   background: #151515;

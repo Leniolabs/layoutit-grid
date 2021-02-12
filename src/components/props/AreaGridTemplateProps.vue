@@ -68,7 +68,7 @@
           </div>
         </div>
       </div>
-      <div class="items">
+      <div class="items items-auto">
         <div class="items-header">
           <h2>grid-auto-columns</h2>
           <OptionsButton class="add-button" @click="addImplicitCol(grid, '1fr')"
@@ -203,7 +203,7 @@
           </div>
         </div>
       </div>
-      <div class="items">
+      <div class="items items-auto">
         <div class="items-header">
           <h2>grid-auto-rows</h2>
           <OptionsButton class="add-button" @click="addImplicitRow(grid, '1fr')"
@@ -399,6 +399,9 @@ h2 {
   margin-bottom: 6px;
   &:last-of-type {
     margin-bottom: 0;
+  }
+  .items-header:only-child h2 {
+    opacity: 0.6;
   }
 }
 

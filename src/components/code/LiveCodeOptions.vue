@@ -64,7 +64,6 @@ defineProps({
   }
 .checkbox-warning {
   color: #333;
-  margin-bottom: 10px;
   margin-top: 5px;
   padding: 6px 10px;
   border-radius: 2px;

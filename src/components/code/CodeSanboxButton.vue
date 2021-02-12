@@ -2,7 +2,7 @@
   <form>
     <button :class="['button', { expanded }]" type="button" title="Create CodeSandbox" @click="createCodeSandbox">
       <IconCodesandbox />
-      <span v-if="expanded">CodeSandbox</span>
+      <span v-if="expanded">Create CodeSandbox</span>
     </button>
   </form>
 </template>
@@ -97,10 +97,10 @@ async function createCodeSandbox() {
 .button {
   border: 0;
   border-radius: 50px;
-  color: #fff;
+  color: #eee;
   cursor: pointer;
   font-family: inherit;
-  font-size: 1em;
+  font-size: 15px;
   text-align: center;
   margin: 0 auto;
   background: #151515;
@@ -109,6 +109,7 @@ async function createCodeSandbox() {
   display: flex;
   align-items: center;
   transition: all 0.2s ease-in-out;
+  padding: 10px 15px;
 
   &:hover {
     background: #23241f;
