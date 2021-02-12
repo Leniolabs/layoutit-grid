@@ -1,6 +1,6 @@
 <template>
   <GridCell
-    v-for="(section, i) in gridSections(grid)"
+    v-for="(section, i) in gridCells"
     :key="`section-${i}`"
     :area="area"
     :section="section"
@@ -33,6 +33,7 @@
     :pos="line.pos"
     :gap="computedGap[line.type]"
     @down="handleLineDown"
+    @overcell="onOverCell"
   />
 
   <GridIntersection
@@ -71,7 +72,7 @@ import { useIsCurrentArea, useIsActiveArea } from '../../composables/area.js'
 
 import { defineProps, ref, computed, watch, toRefs, onBeforeUpdate, nextTick } from 'vue'
 
-import { gridSections } from '../../utils.js'
+import { createSection } from '../../utils.js'
 import { explicitGridAreaToGridRegion } from '../../utils/grid.js'
 
 export default {
@@ -90,6 +91,17 @@ export default {
   emits: ['celldown'],
   setup(props, { expose }) {
     const grid = computed(() => props.area.grid)
+
+    const gridCells = computed(() => {
+      const { cols, rows, ri, ci } = props.explicitAreas.implicitGrid
+      const sections = []
+      for (let c = 1; c <= cols; c++) {
+        for (let r = 1; r <= rows; r++) {
+          sections.push(createSection({ col: c - (ci - 1), row: r - (ri - 1) }))
+        }
+      }
+      return sections
+    })
 
     const gridLineRefs = ref({ col: [], row: [] })
     onBeforeUpdate(() => {
@@ -311,7 +323,7 @@ export default {
       gridGap,
       isFocused,
       handleLineDown,
-      gridSections,
+      gridCells,
       onOverCell,
     }
   },

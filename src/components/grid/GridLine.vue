@@ -50,7 +50,7 @@ export default {
     gap: { type: String, default: '0px' },
   },
   emits: ['down', 'overcell'],
-  setup(props, { expose }) {
+  setup(props, { expose, emit }) {
     const grid = computed(() => props.area.grid)
 
     const last = computed(() => props.pos === grid.value[props.type].lineNames.length)
@@ -81,7 +81,7 @@ export default {
       lineEl.style.pointerEvents = 'initial'
       const { colStart, rowStart } = cellEl.dataset
       if (colStart !== undefined && rowStart !== undefined) {
-        emit('overcell', { col: colStart, row: rowStart })
+        emit('overcell', { col: +colStart, row: +rowStart })
         return
       }
     }
