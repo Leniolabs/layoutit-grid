@@ -34,7 +34,8 @@
       <IconRemove />
     </button>
     <button
-      v-show="hasDisplay && area.children.length === 0"
+      v-show="hasDisplay"
+      :disabled="area.children.length > 0"
       aria-label="Clear area"
       class="btn-remove"
       title="Clear Area"
