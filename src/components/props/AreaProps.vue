@@ -18,9 +18,6 @@
           /></OptionsButton>
         </div>
       </template>
-      <template #default>
-        <AreaBoxProps :area="area" />
-      </template>
     </PropsAccordionItem>
     <!--
     <div class="area-type">{{ area.type === 'div' ? area.display : area.type }} props</div>
@@ -66,6 +63,11 @@
       <AreaSelfFlexProps :area="area" />
     </PropsAccordionItem>
 
+    <PropsAccordionItem name="area-box" heading="Area Box" :accordion="accordion">
+      <AreaBoxProps :area="area" />
+    </PropsAccordionItem>
+
+    <!--
     <PropsAccordionItem
       name="tree"
       :independent="true"
@@ -76,14 +78,17 @@
     >
       <AreaTree :area="mainArea" />
     </PropsAccordionItem>
-    <!--     <PropsAccordionItem v-if="area.parent" name="type" heading="Type" :accordion="accordion">
+    -->
+    <!--     
+    <PropsAccordionItem v-if="area.parent" name="type" heading="Type" :accordion="accordion">
       <AreaTypeSelect v-if="area.parent" :model-value="area.type" @update:modelValue="onUpdateType" />
-    </PropsAccordionItem> -->
+    </PropsAccordionItem> 
+    -->
   </PropsAccordion>
 </template>
 
 <script setup>
-import AreaTree from './AreaTree.vue'
+// import AreaTree from './AreaTree.vue'
 import AreaContentProps from './AreaContentProps.vue'
 import AreaBoxProps from './AreaBoxProps.vue'
 import AreaSelfGridProps from './AreaSelfGridProps.vue'
