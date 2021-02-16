@@ -237,9 +237,18 @@ function onUpdateType(type) {
 .area-action-buttons {
   position: absolute;
   display: flex;
-  gap: 5px;
-  right: 11px;
-  top: 2px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  justify-content: center;
+  align-items: center;
+  button {
+    margin: 0;
+    width: 40px;
+    height: 40px;
+    max-width: initial;
+    border-left: 1px solid rgba(68, 68, 68, 0.5);
+  }
 }
 
 button,
@@ -264,8 +273,7 @@ button,
   justify-content: center;
   border-radius: 2px;
   margin-top: 2px;
-  opacity: 0.8;
-  &.remove-button[disabled] {
+  &[disabled] svg {
     opacity: 0.5;
   }
   &.remove-button.clear {

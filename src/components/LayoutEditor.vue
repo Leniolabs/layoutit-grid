@@ -94,7 +94,7 @@ p {
   background: #1e1e1e;
   height: 100%;
   display: grid;
-  grid-template-columns: 260px 1fr 360px;
+  grid-template-columns: 275px 1fr 360px;
   @media screen and (max-width: 768px) {
     grid-template-columns: auto;
   }

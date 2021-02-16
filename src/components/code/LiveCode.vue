@@ -8,7 +8,7 @@
       <IconRedo />
     </SidebarButton>
     <SidebarButton aria-label="Restart" class="btn-trash" @click="restart">
-      <IconTrash />
+      <IconRefresh />
     </SidebarButton>
     <SidebarButton :disabled="!saveDesign" class="btn-link" aria-label="Get Shareable Link" @click="getPermalink">
       <IconLink />
@@ -27,6 +27,7 @@
 
 <script setup>
 import IconTrash from '../icons/IconTrash.vue'
+import IconRefresh from '../icons/IconRefresh.vue'
 import IconLink from '../icons/IconLink.vue'
 import IconUndo from '../icons/IconUndo.vue'
 import IconRedo from '../icons/IconRedo.vue'
@@ -130,6 +131,9 @@ function getPermalink() {
     padding: 0.625em 1em;
     height: 42px;
     transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;    
     &:hover {
       background: #23241f;
     }
@@ -138,9 +142,11 @@ function getPermalink() {
     }
   }
   .btn-trash {
-    padding: 12px;
+    padding: 10px;
     background: #151515;
     border: solid 1px #23241f;
+    max-width: 42px;
+
   }
   .btn-link {
     padding: 10px;
