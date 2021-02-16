@@ -134,7 +134,7 @@ code::selection {
 }
 
 pre {
-  padding: 0.2em 0.2em 1em 1em;
+  padding: 0 0.2em 1em 1em;
   overflow: auto;
 }
 

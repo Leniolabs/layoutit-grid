@@ -1,6 +1,6 @@
 <template>
   <div class="placement-select-container">
-    <label>{{ type }}</label>
+    <label>{{ type }}: <span>{{modelValue}}</span></label>
     <div class="radio-toolbar">
       <template v-for="option in options" :key="option">
         <input
@@ -17,11 +17,20 @@
             'default-value': option === (initial === 'initial' ? 'stretch' : initial) && modelValue === 'initial',
             'long-name': option.includes('space'),
           }"
-          :for="`items-placement-${type}-${option}`"
-          ><component :is="optionIcons[option]" v-if="optionIcons[option]" /><template v-else>{{
-            option
-          }}</template></label
-        >
+          :for="`items-placement-${type}-${option}`">
+          <template v-if="type === 'justify-items'">
+            <component :is="optionIconsJustify[option]" v-if="optionIconsJustify[option]" />
+          </template>
+          <template v-if="type === 'justify-content'">
+            <component :is="optionIconsJustify[option]" v-if="optionIconsJustify[option]" />
+          </template>          
+          <template v-if="type === 'align-items'">
+            <component :is="optionIconsAlign[option]" v-if="optionIconsAlign[option]" />
+          </template>
+          <template v-if="type === 'align-content'">
+            <component :is="optionIconsAlign[option]" v-if="optionIconsAlign[option]" />
+          </template>          
+        </label>
       </template>
     </div>
   </div>
@@ -30,9 +39,21 @@
 <script setup>
 import { computed, defineProps, defineEmit } from 'vue'
 import { validGridUnits } from '../../store.js'
-import IconStart from '../icons/IconStart.vue'
-import IconCenter from '../icons/IconCenter.vue'
-import IconEnd from '../icons/IconEnd.vue'
+import IconJustifyStart from '../icons/IconJustifyStart.vue'
+import IconJustifyStretch from '../icons/IconJustifyStretch.vue'
+import IconJustifyCenter from '../icons/IconJustifyCenter.vue'
+import IconJustifyEnd from '../icons/IconJustifyEnd.vue'
+import IconJustifyAround from '../icons/IconJustifyAround.vue'
+import IconJustifyBetween from '../icons/IconJustifyBetween.vue'
+import IconJustifyEvenly from '../icons/IconJustifyEvenly.vue'
+
+import IconAlignStart from '../icons/IconAlignStart.vue'
+import IconAlignStretch from '../icons/IconAlignStretch.vue'
+import IconAlignCenter from '../icons/IconAlignCenter.vue'
+import IconAlignEnd from '../icons/IconAlignEnd.vue'
+import IconAlignAround from '../icons/IconAlignAround.vue'
+import IconAlignBetween from '../icons/IconAlignBetween.vue'
+import IconAlignEvenly from '../icons/IconAlignEvenly.vue'
 
 const props = defineProps({
   modelValue: { type: String, default: 'stretch' },
@@ -51,10 +72,24 @@ const optionsMap = {
   self: optionsItems,
 }
 
-const optionIcons = {
-  start: IconStart,
-  center: IconCenter,
-  end: IconEnd,
+const optionIconsJustify = {
+  stretch: IconJustifyStretch,
+  start: IconJustifyStart,
+  center: IconJustifyCenter,
+  end: IconJustifyEnd,
+  around: IconJustifyAround,
+  between: IconJustifyBetween,
+  evenly: IconJustifyEvenly  
+}
+
+const optionIconsAlign = {
+  stretch: IconAlignStretch,
+  start: IconAlignStart,
+  center: IconAlignCenter,
+  end: IconAlignEnd,
+  around: IconAlignAround,
+  between: IconAlignBetween,
+  evenly: IconAlignEvenly
 }
 
 const options = computed(() => optionsMap[props.type.split('-')[1]])
@@ -76,6 +111,9 @@ const options = computed(() => optionsMap[props.type.split('-')[1]])
     white-space: pre;
     word-spacing: normal;
     margin-bottom: 5px;
+    span {
+      color: #ce9178;
+    }    
   }
 }
 
@@ -95,19 +133,25 @@ const options = computed(() => optionsMap[props.type.split('-')[1]])
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   cursor: pointer;
   position: relative;
-  margin: 0 6px 6px 0;
+  margin: 0 0 6px 0;
   border: solid 1px #23241f;
+  border-right: 0;
   background: #151515;
-  line-height: 30px;
-  padding: 0 8px;
+  height: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   color: #aaa;
+  &:last-child { border-right: solid 1px #23241f; }
+
   svg {
     stroke: #aaa;
     width: 20px;
+    stroke-width: 5px;  
+    rect {
+      fill: transparent;
+    }  
   }
   &:hover {
     color: #fff;
@@ -120,6 +164,7 @@ const options = computed(() => optionsMap[props.type.split('-')[1]])
     color: #fff;
     background: #01579b;
     border-radius: 2px;
+    svg { stroke: #fff; }
   }
 }
 input[type='radio']:checked + label {
@@ -131,4 +176,7 @@ input[type='radio']:checked + label {
     stroke: #fff;
   }
 }
+    rect {
+      fill: transparent;
+    }  
 </style>

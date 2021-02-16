@@ -30,29 +30,18 @@ const opened = ref(true)
 <style scoped lang="scss">
 .props-accordion-item {
   overflow: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   margin: 0;
-  opacity: 0.8;
-  &:first-of-type { opacity: 1; }
+  opacity: 0.65;
+  transition: opacity 0.1s ease-in;
+  &:first-of-type { 
+    opacity: 1; 
+    h1:hover { background: transparent; }
+  }
   &:hover,
   &.active {
     opacity: 1;
   }
-  &.active {
-    //max-height: 370px;
-    //padding-bottom: 10px;
-    h1 {
-    }
-  }
-  /*   &.active {
-    background: rgb(35, 36, 31);
-    .props-accordion-content {
-      background: rgb(35, 36, 31);
-    }
-    h1:hover {
-      background: rgb(35, 36, 31);
-    }
-  } */
   &.tree-item {
     margin: auto 0 0;
     min-height: 150px;
@@ -62,7 +51,7 @@ const opened = ref(true)
     opacity: 1;
     display: none;
     .props-accordion-content {
-      padding: 5px 15px 5px 10px;
+      padding: 5px 15px 5px 15px;
       margin-left: 0;
     }
   }
