@@ -1,19 +1,27 @@
 <template>
   <div class="version">
-    <select>
-      <option selected>v2.0</option>
-      <option>v1.0</option>
+    <select @change="onChange">
+      <option selected>v2</option>
+      <option>v1</option>
     </select>
   </div>
 </template>
 
+<script setup>
+function onChange(event) {
+  if (event.target.value === 'v1') {
+    event.target.value = 'v2'
+    window.location.href = 'https://grid-v1.layoutit.com'
+  }
+}
+</script>
 <style scoped lang="scss">
 .version {
   float: left;
   position: relative;
   margin: 15px 0 15px -2px;
   &:after {
-    content: "";
+    content: '';
     width: 0;
     height: 0;
     border-style: solid;
@@ -22,7 +30,7 @@
     top: 9px;
     right: 8px;
     border-color: #555 transparent transparent transparent;
-  }  
+  }
   select {
     color: #aaa;
     font-weight: 700;
