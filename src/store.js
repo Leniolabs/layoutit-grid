@@ -12,6 +12,7 @@ import {
   getGridDimension,
   gridLimitsToGridArea,
   gridAreaToGridLimits,
+  getRandomColor,
 } from './store/area.js'
 import { createGridState, isValidTrackSize } from './store/grid.js'
 

@@ -9,7 +9,7 @@
   >
     <template #buttons>
       <div class="area-action-buttons">
-        <OptionsButton class="add-area-button" @click="addImplicitArea(area)">
+        <OptionsButton v-show="area.display === 'grid'" class="add-area-button" @click="addImplicitArea(area)">
           <IconAdd />
         </OptionsButton>
         <OptionsButton v-show="area.display === 'block'" class="remove-button" @click="removeArea(area)"
