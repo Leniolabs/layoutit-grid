@@ -67,6 +67,10 @@
       <AreaTypeSelect v-if="area.parent" :model-value="area.type" @update:modelValue="onUpdateType" />
     </PropsAccordionItem> 
     -->
+
+    <PropsAccordionItem v-if="area.children.length" name="children" heading="Children" :accordion="accordion">
+      <AreaAccordionItem v-for="a in area.children" :key="`child:${a.name}`" :area="a" :accordion="accordion" />
+    </PropsAccordionItem>
   </PropsAccordion>
 </template>
 

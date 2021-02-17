@@ -4,6 +4,8 @@
     :name="`area:${area.name}`"
     :heading="`.${area.name}`"
     :accordion="accordion"
+    :independent="true"
+    @click="currentArea = area"
   >
     <template #buttons>
       <div class="area-action-buttons">
