@@ -1,24 +1,7 @@
 <template>
   <PropsAccordion class="area-props" :accordion="accordion">
-    <PropsAccordionItem class="area-actions-sidebar" name="box" :heading="`.${area.name}`" :accordion="accordion">
-      <template #buttons>
-        <div class="area-action-buttons">
-          <OptionsButton class="add-area-button" @click="addImplicitArea">
-            <IconAdd />
-          </OptionsButton>
-          <OptionsButton v-show="area.display === 'block'" class="remove-button" @click="removeArea(area)"
-            ><IconRemove
-          /></OptionsButton>
-          <OptionsButton
-            v-show="area.display !== 'block'"
-            :disabled="area.children.length > 0 || !area.parent"
-            class="remove-button clear"
-            @click="clearArea(area)"
-            ><IconClear
-          /></OptionsButton>
-        </div>
-      </template>
-    </PropsAccordionItem>
+    <AreaAccordionItem v-for="a in areaPath" :key="a.name" :area="a" :accordion="accordion" />
+
     <!--
     <div class="area-type">{{ area.type === 'div' ? area.display : area.type }} props</div>
     <PropsAccordionItem name="display" :heading="`Display (${area.display})`" :accordion="accordion">
@@ -89,6 +72,7 @@
 
 <script setup>
 // import AreaTree from './AreaTree.vue'
+import AreaAccordionItem from './AreaAccordionItem.vue'
 import AreaContentProps from './AreaContentProps.vue'
 import AreaBoxProps from './AreaBoxProps.vue'
 import AreaSelfGridProps from './AreaSelfGridProps.vue'
@@ -109,8 +93,6 @@ import IconRemove from '../icons/IconRemove.vue'
 
 import { currentArea, mainArea } from '../../store.js'
 import { defineProps, ref, computed, watch } from 'vue'
-import { createAreaState, clearArea, removeArea } from '../../store.js'
-import { getRandomColor } from '../../store/area'
 
 const props = defineProps({
   area: { type: Object, required: true },
@@ -119,16 +101,12 @@ const accordion = ref({ active: 'explicit-grid' })
 const currentGrid = computed(() => props.area.grid)
 const currentFlex = computed(() => props.area.flex)
 
-const counter = ref(1)
-function addImplicitArea() {
-  props.area.children.push(
-    createAreaState({
-      name: 'a' + counter.value++,
-      parent: props.area,
-      color: getRandomColor(),
-    })
-  )
+function concatenateParents(area, list = [area]) {
+  const { parent } = area
+  return parent ? concatenateParents(parent, [parent, ...list]) : list
 }
+
+const areaPath = computed(() => concatenateParents(props.area))
 
 watch(currentArea, () => {
   if (accordion.value.active !== 'tree') {
@@ -237,74 +215,5 @@ function onUpdateType(type) {
 .items {
   font-size: 11px;
   margin-bottom: 10px;
-}
-
-.area-action-buttons {
-  position: absolute;
-  display: flex;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  justify-content: center;
-  align-items: center;
-  button {
-    margin: 0;
-    width: 40px;
-    height: 40px;
-    max-width: initial;
-    border-left: 1px solid rgba(68, 68, 68, 0.5);
-  }
-}
-
-button,
-.add-button,
-.remove-button {
-  background: transparent;
-  margin: 0;
-  padding: 0;
-  height: auto;
-  font-size: 13px;
-  text-shadow: none;
-  direction: ltr;
-  text-align: left;
-  white-space: pre;
-  word-spacing: normal;
-  max-width: 30px;
-  width: 50px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  flex: 1;
-  justify-content: center;
-  border-radius: 2px;
-  margin-top: 2px;
-  &[disabled] svg {
-    opacity: 0.5;
-  }
-  &.remove-button.clear {
-    svg {
-      width: 15px;
-      fill: #fff;
-      stroke: transparent;
-    }
-  }
-  svg {
-    width: 10px;
-    stroke: #fff;
-    stroke-width: 20px;
-  }
-  &:hover {
-    opacity: 1;
-    background: transparent;
-  }
-}
-
-.add-button {
-  height: 30px;
-  svg {
-    transform: rotate(45deg);
-  }
-  &:hover {
-  }
 }
 </style>

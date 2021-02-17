@@ -200,3 +200,14 @@ export function removeCol(area, n) {
 export function removeRow(area, n) {
   removeFromDimension(area, 'row', n)
 }
+
+const counter = ref(1)
+export function addImplicitArea(area) {
+  area.children.push(
+    createAreaState({
+      name: 'a' + counter.value++,
+      parent: area,
+      color: getRandomColor(),
+    })
+  )
+}
