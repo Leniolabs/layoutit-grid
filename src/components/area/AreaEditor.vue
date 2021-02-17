@@ -28,14 +28,18 @@
     :data-area-name="area.name"
     @mouseleave="!area.parent && (overArea = null)"
   >
-    <GridEditor
-      v-if="area.display === 'grid'"
-      :area="area"
-      :computed-styles="computedStyles"
-      :computed-gap="computedGap"
-      :explicit-areas="explicitAreas"
-      @celldown="(event) => selectionEl.cellDown(event)"
-    />
+    <template v-if="area.display === 'grid'">
+      <GridCell
+        v-for="(section, i) in gridCells"
+        :key="`section-${i}`"
+        :area="area"
+        :section="section"
+        :grayed="!isActive"
+        :focused="isFocused(section)"
+        @pointerdown="selectionEl.cellDown($event)"
+        @overcell="onOverCell"
+      />
+    </template>
 
     <AreaEditor
       v-for="(a, i) in areasToShow"
@@ -61,11 +65,20 @@
     </div>
     <div v-if="area.display === 'block' && area.padding !== '0'" class="padding-box"></div>
 
+    <GridEditor
+      v-if="area.display === 'grid'"
+      :area="area"
+      :computed-styles="computedStyles"
+      :computed-gap="computedGap"
+      @overcell="onOverCell"
+    />
+
     <AreaSelection v-if="area.display === 'grid'" ref="selectionEl" :area="area" @editend="editingArea = null" />
   </component>
 </template>
 
 <script setup>
+import GridCell from '../grid/GridCell.vue'
 import AreaBox from './AreaBox.vue'
 import AreaButtons from './AreaButtons.vue'
 import PieChart from '../content/PieChart.vue'
@@ -80,6 +93,8 @@ import { ref, computed, watch, nextTick, defineAsyncComponent, toRefs, definePro
 import {
   mainArea,
   currentArea,
+  currentHover,
+  currentFocus,
   overArea,
   setCurrentArea,
   parseUnit,
@@ -91,8 +106,9 @@ import {
   areaDisplayColor,
   gridAreaToGridLimits,
 } from '../../store.js'
-import { findImplicitGrid } from '../../utils/grid.js'
+import { findImplicitGrid, explicitGridAreaToGridRegion } from '../../utils/grid.js'
 import { useIsActiveArea } from '../../composables/area.js'
+import { createSection } from '../../utils.js'
 
 // name: 'AreaEditor',
 
@@ -260,6 +276,39 @@ const toolbarStart = computed(() => {
   const gridRegion = getGridRegion(props.area)
   return gridRegion ? (gridRegion.col.start === 1 && gridRegion.row.start === 1 ? getAreaDepth(props.area) - 1 : 0) : 0
 })
+
+const gridCells = computed(() => {
+  if (!props.area.grid) {
+    return []
+  }
+  const { cols, rows, ri, ci } = explicitAreas.value.implicitGrid
+  const sections = []
+  for (let c = 1; c <= cols; c++) {
+    for (let r = 1; r <= rows; r++) {
+      sections.push(createSection({ col: c - (ci - 1), row: r - (ri - 1) }))
+    }
+  }
+  return sections
+})
+
+const gridRegions = computed(() => explicitAreas.value.gridAreas.map(explicitGridAreaToGridRegion))
+
+function onOverCell({ row, col }) {
+  const { children } = props.area
+  for (let i = children.length - 1; i >= 0; i--) {
+    const r = gridRegions.value[i]
+    if (r.row.start <= row && r.row.end > row && r.col.start <= col && r.col.end > col) {
+      overArea.value = children[i]
+      return
+    }
+  }
+  overArea.value = props.area
+}
+
+function isFocused(section) {
+  const c = currentHover.value
+  return c && c.on === 'cell' && c.grid === grid.value && c.row === section.row.start && c.col === section.col.start
+}
 </script>
 
 <style scoped lang="scss">

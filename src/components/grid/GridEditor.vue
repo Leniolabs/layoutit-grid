@@ -1,15 +1,4 @@
 <template>
-  <GridCell
-    v-for="(section, i) in gridCells"
-    :key="`section-${i}`"
-    :area="area"
-    :section="section"
-    :grayed="!isActive"
-    :focused="isFocused(section)"
-    @pointerdown="$emit('celldown', $event)"
-    @overcell="onOverCell"
-  />
-
   <GridTrack
     v-for="track in gridTracks"
     :key="`track-${track.type}-${track.pos}`"
@@ -33,7 +22,7 @@
     :pos="line.pos"
     :gap="computedGap[line.type]"
     @down="handleLineDown"
-    @overcell="onOverCell"
+    @overcell="$emit('overcell', $event)"
   />
 
   <GridIntersection
@@ -49,7 +38,6 @@
 </template>
 
 <script>
-import GridCell from './GridCell.vue'
 import GridTrack from './GridTrack.vue'
 import GridLine from './GridLine.vue'
 import GridIntersection from './GridIntersection.vue'
@@ -61,22 +49,16 @@ import {
   pause,
   resume,
   dragging,
-  currentFocus,
-  currentHover,
   parseValue,
   parseUnit,
   parseValueUnit,
-  overArea,
 } from '../../store.js'
 import { useIsCurrentArea, useIsActiveArea } from '../../composables/area.js'
 
 import { defineProps, ref, computed, watch, toRefs, onBeforeUpdate, nextTick } from 'vue'
 
-import { createSection } from '../../utils.js'
-import { explicitGridAreaToGridRegion } from '../../utils/grid.js'
-
 export default {
-  components: { GridCell, GridTrack, GridLine, GridIntersection },
+  components: { GridTrack, GridLine, GridIntersection },
   props: {
     area: { type: Object, required: true },
     computedStyles: { type: Object, default: null },
@@ -86,22 +68,10 @@ export default {
         return { col: '0px', row: '0px' }
       },
     },
-    explicitAreas: { type: Object, required: true },
   },
-  emits: ['celldown'],
+  emits: ['overcell'],
   setup(props, { expose }) {
     const grid = computed(() => props.area.grid)
-
-    const gridCells = computed(() => {
-      const { cols, rows, ri, ci } = props.explicitAreas.implicitGrid
-      const sections = []
-      for (let c = 1; c <= cols; c++) {
-        for (let r = 1; r <= rows; r++) {
-          sections.push(createSection({ col: c - (ci - 1), row: r - (ri - 1) }))
-        }
-      }
-      return sections
-    })
 
     const gridLineRefs = ref({ col: [], row: [] })
     onBeforeUpdate(() => {
@@ -178,11 +148,6 @@ export default {
     const gridGap = computed(() => {
       return `${toViewGap(grid.value.row.gap)} ${toViewGap(grid.value.col.gap)}`
     })
-
-    function isFocused(section) {
-      const c = currentHover.value
-      return c && c.on === 'cell' && c.grid === grid.value && c.row === section.row.start && c.col === section.col.start
-    }
 
     function calcValue(prev, prevComp, delta) {
       const sizeAdd = (prev.value * delta) / prevComp.value
@@ -295,20 +260,6 @@ export default {
       window.addEventListener('pointerup', handleUp)
     }
 
-    const gridRegions = computed(() => props.explicitAreas.gridAreas.map(explicitGridAreaToGridRegion))
-
-    function onOverCell({ row, col }) {
-      const { children } = props.area
-      for (let i = children.length - 1; i >= 0; i--) {
-        const r = gridRegions.value[i]
-        if (r.row.start <= row && r.row.end > row && r.col.start <= col && r.col.end > col) {
-          overArea.value = children[i]
-          return
-        }
-      }
-      overArea.value = props.area
-    }
-
     return {
       grid,
       gridLineRefs,
@@ -321,10 +272,7 @@ export default {
       gridLines,
       gridIntersections,
       gridGap,
-      isFocused,
       handleLineDown,
-      gridCells,
-      onOverCell,
     }
   },
 }
