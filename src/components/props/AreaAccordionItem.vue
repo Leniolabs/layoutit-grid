@@ -6,6 +6,7 @@
     :accordion="accordion"
     :independent="true"
     @click="currentArea = area"
+    :style="{'border-left': `2px solid ${area.color}`}"
   >
     <template #buttons>
       <div class="area-action-buttons">

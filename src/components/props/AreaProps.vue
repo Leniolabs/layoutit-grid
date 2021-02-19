@@ -1,8 +1,8 @@
 <template>
   <PropsAccordion class="area-props" :accordion="accordion">
     <AreaAccordionItem v-for="a in areaPath" :key="a.name" :area="a" :accordion="accordion" />
-
-    <!--
+    
+        <!--
     <div class="area-type">{{ area.type === 'div' ? area.display : area.type }} props</div>
     <PropsAccordionItem name="display" :heading="`Display (${area.display})`" :accordion="accordion">
       <AreaContentProps :area="area" />
