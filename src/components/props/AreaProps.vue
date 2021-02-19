@@ -68,9 +68,9 @@
     </PropsAccordionItem> 
     -->
 
-    <PropsAccordionItem v-if="area.children.length" name="children" heading="Children" :accordion="accordion">
+    <template v-if="area.children.length" >
       <AreaAccordionItem v-for="a in area.children" :key="`child:${a.name}`" :area="a" :accordion="accordion" />
-    </PropsAccordionItem>
+    </template>
   </PropsAccordion>
 </template>
 
@@ -205,11 +205,11 @@ function onUpdateType(type) {
   height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #300748;
+  background: #666;
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #491988;
+  background: #666;
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
