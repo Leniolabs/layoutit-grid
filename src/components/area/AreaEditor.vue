@@ -41,6 +41,14 @@
       />
     </template>
 
+    <GridEditor
+      v-if="area.display === 'grid'"
+      :area="area"
+      :computed-styles="computedStyles"
+      :computed-gap="computedGap"
+      @overcell="onOverCell"
+    />
+
     <AreaEditor
       v-for="(a, i) in areasToShow"
       :key="`area-${a.name}`"
@@ -65,20 +73,23 @@
     </div>
     <div v-if="area.display === 'block' && area.padding !== '0'" class="padding-box"></div>
 
-    <GridEditor
-      v-if="area.display === 'grid'"
-      :area="area"
-      :computed-styles="computedStyles"
-      :computed-gap="computedGap"
-      @overcell="onOverCell"
-    />
-
     <AreaSelection v-if="area.display === 'grid'" ref="selectionEl" :area="area" @editend="editingArea = null" />
+
+    <template v-if="area.display === 'grid'">
+      <GridTrack
+        v-for="track in gridTracks"
+        :key="`track-${track.type}-${track.pos}`"
+        :area="area"
+        :type="track.type"
+        :pos="track.pos"
+      />
+    </template>
   </component>
 </template>
 
 <script setup>
 import GridCell from '../grid/GridCell.vue'
+import GridTrack from '../grid/GridTrack.vue'
 import AreaBox from './AreaBox.vue'
 import AreaButtons from './AreaButtons.vue'
 import PieChart from '../content/PieChart.vue'
@@ -309,6 +320,21 @@ function isFocused(section) {
   const c = currentHover.value
   return c && c.on === 'cell' && c.grid === grid.value && c.row === section.row.start && c.col === section.col.start
 }
+
+function tracksFor(type) {
+  const { grid } = props.area
+  return grid
+    ? grid[type].sizes.map((size, i) => {
+        return {
+          type,
+          pos: i + 1,
+        }
+      })
+    : []
+}
+const gridTracks = computed(() => {
+  return [...tracksFor('row'), ...tracksFor('col')]
+})
 </script>
 
 <style scoped lang="scss">

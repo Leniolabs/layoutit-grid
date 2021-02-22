@@ -1,12 +1,4 @@
 <template>
-  <GridTrack
-    v-for="track in gridTracks"
-    :key="`track-${track.type}-${track.pos}`"
-    :area="area"
-    :type="track.type"
-    :pos="track.pos"
-  />
-
   <GridLine
     v-for="line in gridLines"
     :ref="
@@ -38,7 +30,6 @@
 </template>
 
 <script>
-import GridTrack from './GridTrack.vue'
 import GridLine from './GridLine.vue'
 import GridIntersection from './GridIntersection.vue'
 
@@ -58,7 +49,7 @@ import { useIsCurrentArea, useIsActiveArea } from '../../composables/area.js'
 import { defineProps, ref, computed, watch, toRefs, onBeforeUpdate, nextTick } from 'vue'
 
 export default {
-  components: { GridTrack, GridLine, GridIntersection },
+  components: { GridLine, GridIntersection },
   props: {
     area: { type: Object, required: true },
     computedStyles: { type: Object, default: null },
@@ -102,18 +93,6 @@ export default {
     const { area } = toRefs(props)
     const isCurrent = useIsCurrentArea(area)
     const isActive = useIsActiveArea(area)
-
-    function tracksFor(type) {
-      return grid.value[type].sizes.map((size, i) => {
-        return {
-          type,
-          pos: i + 1,
-        }
-      })
-    }
-    const gridTracks = computed(() => {
-      return [...tracksFor('row'), ...tracksFor('col')]
-    })
 
     function linesFor(type) {
       const end = grid.value[type].lineNames.length
@@ -268,7 +247,6 @@ export default {
       gridTemplateColumns,
       isCurrent,
       isActive,
-      gridTracks,
       gridLines,
       gridIntersections,
       gridGap,
