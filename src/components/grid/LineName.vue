@@ -60,6 +60,7 @@ export default {
 <style scoped lang="scss">
 .row,
 .col {
+  z-index: 1;
   pointer-events: initial;
   background: #bbe5b3;
   border: 1px solid green;
