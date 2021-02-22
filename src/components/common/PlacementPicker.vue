@@ -147,10 +147,11 @@ const options = computed(() => optionsMap[props.type.split('-')[1]])
 
   svg {
     stroke: #aaa;
+      fill: #eee;
     width: 20px;
     stroke-width: 5px;  
     rect {
-      fill: transparent;
+      fill: #aaa;
     }  
   }
   &:hover {
@@ -177,6 +178,6 @@ input[type='radio']:checked + label {
   }
 }
     rect {
-      fill: transparent;
+      fill: #aaa;
     }  
 </style>

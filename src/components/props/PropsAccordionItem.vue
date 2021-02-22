@@ -32,7 +32,7 @@ const opened = ref(true)
   overflow: hidden;
   overflow-y: auto;
   margin: 0;
-  opacity: 0.65;
+  opacity: 1;
   transition: opacity 0.1s ease-in;
   &:first-of-type { 
     opacity: 1; 
@@ -42,32 +42,30 @@ const opened = ref(true)
   &.active {
     opacity: 1;
   }
-  &.tree-item {
-    margin: auto 0 0;
-    min-height: 150px;
-    max-height: 300px;
-    overflow: auto;
-    background: #151515;
-    opacity: 1;
-    display: none;
-    .props-accordion-content {
-      padding: 5px 15px 5px 15px;
-      margin-left: 0;
+  h1 {
+    width: 100%;
+    position: relative;
+    color: #fff;
+    font-size: 15px;
+    margin: 0;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(68, 68, 68, 0.5);
+    opacity: 0.6;
+    &.independent {
+      border-top: 1px solid rgba(68, 68, 68, 0.5);
+      opacity: 1;
+    }
+    &:hover {
+      background: #151515;
     }
   }
-}
-
-h1 {
-  width: 100%;
-  position: relative;
-  border-top: 1px solid rgba(68, 68, 68, 0.5);
-  color: #fff;
-  font-size: 15px;
-  margin: 0;
-  padding: 10px 15px;
-  cursor: pointer;
-  &:hover {
-    background: #151515;
+  &.active h1 {
+    border-bottom: 0;
+    opacity: 1;
+    &:hover {
+      background: transparent;
+    }
   }
 }
 
