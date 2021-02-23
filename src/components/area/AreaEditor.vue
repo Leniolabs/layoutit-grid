@@ -29,6 +29,7 @@
     @mouseleave="!area.parent && (overArea = null)"
   >
     <template v-if="area.display === 'grid'">
+      <!-- Grid Cells and Tracks can be refactored back into GridEditor -->
       <GridCell
         v-for="(section, i) in gridCells"
         :key="`section-${i}`"
@@ -39,15 +40,15 @@
         @pointerdown="selectionEl.cellDown($event)"
         @overcell="onOverCell"
       />
+      <GridTrack
+        v-for="track in gridTracks"
+        :key="`track-${track.type}-${track.pos}`"
+        :area="area"
+        :type="track.type"
+        :pos="track.pos"
+      />
+      <GridEditor :area="area" :computed-styles="computedStyles" :computed-gap="computedGap" @overcell="onOverCell" />
     </template>
-
-    <GridEditor
-      v-if="area.display === 'grid'"
-      :area="area"
-      :computed-styles="computedStyles"
-      :computed-gap="computedGap"
-      @overcell="onOverCell"
-    />
 
     <AreaEditor
       v-for="(a, i) in areasToShow"
@@ -74,16 +75,6 @@
     <div v-if="area.display === 'block' && area.padding !== '0'" class="padding-box"></div>
 
     <AreaSelection v-if="area.display === 'grid'" ref="selectionEl" :area="area" @editend="editingArea = null" />
-
-    <template v-if="area.display === 'grid'">
-      <GridTrack
-        v-for="track in gridTracks"
-        :key="`track-${track.type}-${track.pos}`"
-        :area="area"
-        :type="track.type"
-        :pos="track.pos"
-      />
-    </template>
   </component>
 </template>
 

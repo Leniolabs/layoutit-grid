@@ -91,44 +91,43 @@ section {
   pointer-events: none;
   height: 100%;
   position: relative;
-  // border: 1px dashed #aaa; // #2c3e50;
+  border: 1px dashed #aaa; // #2c3e50;
   overflow: hidden;
-
   &.focused {
     background: #27ae6011;
   }
   &.remove-action {
     background: #ac1e3d11;
   }
-
   &.darkmode {
     border: 1px dashed #888;
   }
-
   &.row.focused,
   &.row.dragging-prev,
   &.row.focused-prev {
     border-top: 1px solid #27ae60;
+    z-index: 1;
   }
   &.row.focused,
   &.row-no-gap.row.focused-track-next,
   &.row.dragging-next,
   &.row.focused-next {
     border-bottom: 1px solid #27ae60;
+    z-index: 1;
   }
-
   &.col.focused,
   &.col.dragging-prev,
   &.col.focused-prev {
     border-left: 1px solid #27ae60;
+    z-index: 1;
   }
   &.col.focused,
   &.col-no-gap.col.focused-track-next,
   &.col.dragging-next,
   &.col.focused-next {
     border-right: 1px solid #27ae60;
+    z-index: 1;
   }
-
   &.row {
     border-left: initial;
     border-right: initial;
@@ -137,25 +136,20 @@ section {
     border-top: initial;
     border-bottom: initial;
   }
-
   &.row-first.compact {
     border-top: initial;
   }
-
   &.row-last.compact {
     border-bottom: initial;
   }
-
   &:not(.darkmode) {
     &.col-first.compact {
       border-left: initial;
     }
-
     &.col-last.compact {
       border-right: initial;
     }
   }
-
   &:not(.row-first).row-no-gap {
     border-top: initial;
   }

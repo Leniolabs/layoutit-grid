@@ -226,28 +226,5 @@ section {
 
     overflow: hidden;
   }
-
-  :not(.first, .last) {
-    &.line-handle:after {
-      content: '';
-      position: absolute;
-      z-index: -1;
-    }
-
-    &.line-handle.row:after {
-      border-top: 1px dashed #aaa;
-      left: 0;
-      right: 0;
-      top: 50%;
-      transform: translate(0, -50%);
-    }
-    &.line-handle.col:after {
-      border-left: 1px dashed #aaa;
-      top: 0;
-      bottom: 0;
-      left: 50%;
-      transform: translate(-50%);
-    }
-  }
 }
 </style>
