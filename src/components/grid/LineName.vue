@@ -52,7 +52,7 @@ export default {
     }
 
     expose({ focus, toggle })
-    return { line, inputElement, style }
+    return { line, inputElement, style, currentFocus }
   },
 }
 </script>
