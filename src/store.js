@@ -216,3 +216,13 @@ export function addImplicitArea(area) {
     })
   )
 }
+
+export function keyMonitor(event) {
+  switch (event.key) {
+    case 'Escape':
+      if (currentArea.value !== mainArea.value) {
+        deselectCurrentArea()
+      }
+      break
+  }
+}
