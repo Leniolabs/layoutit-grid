@@ -225,6 +225,11 @@ export function keyMonitor(event) {
         removeArea(currentArea.value)
       }
       break
+    case 'r':
+      if (currentArea?.value?.grid) {
+        addRow(currentArea.value.grid, '1fr')
+      }
+      break
     case 'Escape':
       if (currentArea.value !== mainArea.value) {
         deselectCurrentArea()

@@ -91,8 +91,12 @@ export default {
     )
 
     const handleInput = (e) => {
-      if (e.key === 'Backspace' || e.key === 'Delete') {
-        e.stopPropagation() // Don't do anything to the input value
+      switch (e.key) {
+        case 'Backspace':
+        case 'Delete':
+        case 'r':
+          e.stopPropagation() // Don't do anything to the input value
+          break
       }
     }
 
