@@ -217,12 +217,27 @@ export function addImplicitArea(area) {
   )
 }
 
+export function subGrid(area) {
+  clearArea(area)
+  if (!area.grid) {
+    area.type = 'div'
+    area.display = 'grid'
+    area.grid = createGridState()
+  }
+  setCurrentArea(area)
+}
+
 export function keyMonitor(event) {
   switch (event.key) {
     case 'Backspace':
     case 'Delete':
-      if (currentArea?.value?.name !== 'container') {
+      if (currentArea.value !== mainArea.value) {
         removeArea(currentArea.value)
+      }
+      break
+    case 'g':
+      if (currentArea.value !== mainArea.value) {
+        subGrid(currentArea.value)
       }
       break
     case 'r':

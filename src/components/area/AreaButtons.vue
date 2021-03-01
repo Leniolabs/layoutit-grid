@@ -16,7 +16,7 @@
       class="btn-subgrid"
       title="Add Sub Grid"
       :style="{ background: `${area.color}` }"
-      @click="subGrid()"
+      @click="subGrid(area)"
     >
       <IconSubgrid />
     </button>
@@ -64,6 +64,7 @@ import {
   deselectCurrentArea,
   clearArea,
   removeArea,
+  subGrid,
 } from '../../store.js'
 
 const props = defineProps({
@@ -78,16 +79,6 @@ function subFlex() {
   clearArea(props.area)
   if (!area.flex) {
     props.area.flex = createFlexState()
-  }
-  setCurrentArea(props.area)
-}
-
-function subGrid() {
-  clearArea(props.area)
-  if (!props.area.grid) {
-    props.area.type = 'div'
-    props.area.display = 'grid'
-    props.area.grid = createGridState()
   }
   setCurrentArea(props.area)
 }
