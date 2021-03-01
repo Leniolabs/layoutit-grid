@@ -95,6 +95,7 @@ export default {
         case 'Backspace':
         case 'Delete':
         case 'r':
+        case 'c':
           e.stopPropagation() // Don't do anything to the input value
           break
       }

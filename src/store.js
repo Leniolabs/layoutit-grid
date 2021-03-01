@@ -230,6 +230,11 @@ export function keyMonitor(event) {
         addRow(currentArea.value.grid, '1fr')
       }
       break
+    case 'c':
+      if (currentArea?.value?.grid) {
+        addCol(currentArea.value.grid, '1fr')
+      }
+      break
     case 'Escape':
       if (currentArea.value !== mainArea.value) {
         deselectCurrentArea()
