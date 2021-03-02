@@ -126,6 +126,9 @@ function getPermalink() {
     margin-right: 6px;
     margin-bottom: 6px;
   }
+  svg {
+    width: 20px;
+  }
   > button {
     max-width: max-content;
     padding: 0.625em 1em;
@@ -133,7 +136,7 @@ function getPermalink() {
     transition: all 0.2s ease-in-out;
     display: flex;
     align-items: center;
-    justify-content: center;    
+    justify-content: center;
     &:hover {
       background: #23241f;
     }
@@ -146,7 +149,6 @@ function getPermalink() {
     background: #151515;
     border: solid 1px #23241f;
     max-width: 42px;
-
   }
   .btn-link {
     padding: 10px;

@@ -97,8 +97,8 @@ function subGrid() {
 <style scoped lang="scss">
 button {
   border: 0;
-  height: 28px;
-  min-width: 28px;
+  height: 30px;
+  min-width: 30px;
   color: #fff;
   cursor: pointer;
   pointer-events: all;
@@ -136,9 +136,9 @@ button {
   &.btn-edit,
   &.btn-remove {
     svg {
-      height: 0.688rem;
-      width: 0.688rem;
-      fill: #fff;
+      width: 10px;
+      stroke: #fff;
+      stroke-width: 20px;
     }
   }
 }

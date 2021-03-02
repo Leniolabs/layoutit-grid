@@ -66,7 +66,7 @@
       </template>
     </template>
     <div v-if="area != mainArea" class="area-info" :style="{ border: `2px solid ${areaDisplayColor(area)}` }" />
-    <div v-if="area != mainArea" class="area-info" :style="{ top: toolbarStart * 28 + 'px' }">
+    <div v-if="area != mainArea" class="area-info" :style="{ top: toolbarStart * 30 + 'px' }">
       <div :style="{ backgroundColor: area.color }" class="area-name" @click="currentArea = area">
         {{ area.name }}
       </div>
@@ -373,10 +373,11 @@ const gridTracks = computed(() => {
   word-spacing: normal;
   color: #fff;
   padding: 0 8px;
-  height: 28px;
+  height: 30px;
   display: flex;
   align-items: center;
   max-width: max-content;
+  position: relative;
   &:first-child:last-child {
     border-bottom-right-radius: 2px;
   }

@@ -10,13 +10,20 @@
       @keyup.enter="saveSelection"
       @pointerdown.stop
     />
-    <button aria-label="Remove selection" class="btn-remove" title="Remove Selection" @click="closeSelection">
+    <button
+      :style="{ 'background-color': selection.color }"
+      aria-label="Remove selection"
+      class="btn-remove"
+      title="Remove Selection"
+      @click="closeSelection"
+    >
       <IconRemove />
     </button>
     <button
       :class="{ disabled: !saveEnabled }"
       class="btn-save"
       aria-label="Save area"
+      :style="{ 'background-color': selection.color }"
       @click="saveEnabled ? saveSelection() : nameInputElement.focus()"
     >
       Save
@@ -253,16 +260,31 @@ export default {
   button {
     background: var(--color-add);
     border: 0;
-    height: 1.8rem;
-    line-height: 0.5rem;
-    margin-bottom: 5px;
+    height: 30px;
     color: #fff;
     font-size: 13px;
     display: inline-block;
     padding: 0.375em;
     cursor: pointer;
+    position: relative;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    &:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.15);
+      pointer-events: none;
+      display: none;
+    }
+    &:hover:not(.disabled):before {
+      display: block;
+    }
     &.btn-save {
-      border-radius: 2px 0 0 2px;
+      border-bottom-left-radius: 2px;
+      padding: 0 10px;
       &:hover:not(.disabled) {
         background: var(--color-add-active);
       }
@@ -280,10 +302,9 @@ export default {
       }
     }
     &.btn-remove {
-      width: 1.8rem;
+      width: 30px;
       background: var(--color-remove);
-      border-top-right-radius: 2px;
-      border-bottom-right-radius: 2px;
+      border-left: 1px solid rgba(238, 238, 238, 0.4);
       &:hover {
         background: var(--color-remove-active);
       }
@@ -296,14 +317,14 @@ export default {
   }
   button {
     position: absolute;
-    top: 5px;
+    top: 0;
     pointer-events: all;
     vertical-align: top;
     &.btn-save {
-      right: 34px;
+      right: 30px;
     }
     &.btn-remove {
-      right: 5px;
+      right: 0;
     }
   }
 }

@@ -34,7 +34,7 @@ onMounted(loadFromStorage)
 
 <style lang="scss">
 :root {
-  --color-add: #108043;
+  --color-add: #0165b4;
   --color-add-active: #50b83c;
   --color-remove: #c2185b;
   --color-remove-active: #951246;
