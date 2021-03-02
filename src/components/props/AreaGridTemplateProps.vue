@@ -400,8 +400,12 @@ h2 {
   &:last-of-type {
     margin-bottom: 0;
   }
-  .items-header:only-child h2 {
+  .items-header:only-child h2,
+  .items-header:only-child button {
     opacity: 0.6;
+  }
+  .items-header:only-child button:hover {
+    opacity: 1;
   }
 }
 
