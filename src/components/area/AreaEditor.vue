@@ -335,8 +335,8 @@ const gridTracks = computed(() => {
   touch-action: none;
   height: 100%;
   cursor: pointer;
-  /*
   background: rgba(255, 255, 255, 0.7);
+  /*
   &.grayed {
     background: #dddddd;
   }
