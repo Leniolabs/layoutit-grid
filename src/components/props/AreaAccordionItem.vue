@@ -5,8 +5,8 @@
     :heading="`.${area.name}`"
     :accordion="accordion"
     :independent="true"
+    :style="{ 'border-left': `2px solid ${area.color}` }"
     @click="currentArea = area"
-    :style="{'border-left': `2px solid ${area.color}`}"
   >
     <template #buttons>
       <div class="area-action-buttons">
@@ -18,7 +18,7 @@
         /></OptionsButton>
         <OptionsButton
           v-show="area.display !== 'block'"
-          :disabled="area.children.length > 0 || !area.parent"
+          :disabled="!area.parent"
           class="remove-button clear"
           @click="clearArea(area)"
           ><IconClear

@@ -93,7 +93,10 @@ export function deselectCurrentArea() {
   setCurrentArea(mainArea.value)
 }
 
+// This function will be removed once we migrate to display types (block, flex, grid)
 export function clearArea(area) {
+  area.children = []
+
   area.display = 'block'
   area.grid = null
   area.flex = null
