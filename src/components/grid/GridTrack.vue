@@ -156,5 +156,11 @@ section {
   &:not(.col-first).col-no-gap {
     border-left: initial;
   }
+  &.col-last {
+    border-right: 1px dashed #aaa !important;
+  }
+  &.row-last {
+    border-bottom: 1px dashed #aaa !important;
+  }
 }
 </style>

@@ -2,14 +2,12 @@
   <div :class="['sidebar', { active: currentView === 'props' }]">
     <BrandLogo />
     <AreaProps :area="currentArea" />
-    <BrandBanner />
   </div>
 </template>
 
 <script setup>
 import BrandLogo from './BrandLogo.vue'
 import AreaProps from './AreaProps.vue'
-import BrandBanner from '../props/BrandBanner.vue'
 
 import { defineProps, computed } from 'vue'
 import { currentArea, currentView } from '../../store.js'

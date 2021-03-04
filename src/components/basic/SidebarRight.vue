@@ -7,17 +7,17 @@
       aria-label="View source on GitHub"
       href="https://github.com/Leniolabs/layoutit-grid"
     >
-      <IconGithub/>
+      <IconGithub />
     </a>
     <slot name="body" />
-
+    <BrandBanner />
   </div>
 </template>
 
 <script setup>
 import { currentView } from '../../store.js'
 import IconGithub from '../icons/IconGithub.vue'
-
+import BrandBanner from '../props/BrandBanner.vue'
 </script>
 
 <style scoped lang="scss">
@@ -46,7 +46,7 @@ import IconGithub from '../icons/IconGithub.vue'
   display: flex;
   flex-direction: column;
   > div {
-    flex: 1;
+    //flex: 1;
   }
 }
 .btn-github {

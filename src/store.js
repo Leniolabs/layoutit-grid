@@ -26,6 +26,7 @@ function createMainAreaState() {
     alignSelf: 'start',
     width: '100%',
     height: '100%',
+    color: '#1e1e1e',
   })
 }
 

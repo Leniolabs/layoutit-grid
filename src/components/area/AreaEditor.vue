@@ -15,7 +15,7 @@
       background:
         area.display === 'block' && area.parent
           ? '#ffffff'
-          : 'repeating-linear-gradient(45deg, white, white 9px, #fafafa 9px, #fafafa 14px)',
+          : 'repeating-linear-gradient(45deg, white, white 9px, #f6f6f6 9px, #f6f6f6 14px)',
       'user-select': 'none',
       'z-index': 0,
       // Force a minimum width and height so areas are still visible when the
