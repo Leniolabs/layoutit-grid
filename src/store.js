@@ -281,6 +281,7 @@ function keyHandler(event) {
 }
 
 export function keyMonitor(event) {
-  if (event.ctrlKey || event.metaKey) ctrlMetaKeyHandler(event)
+  if (event.target.nodeName === 'INPUT' && event.key !== 'Escape') return
+  else if (event.ctrlKey || event.metaKey) ctrlMetaKeyHandler(event)
   else keyHandler(event)
 }

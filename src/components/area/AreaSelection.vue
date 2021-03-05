@@ -13,7 +13,6 @@
       placeholder="Area Name"
       aria-label="area name"
       @keyup.enter="saveSelection"
-      @keyup="handleInput"
       @pointerdown.stop
     />
     <button
@@ -89,17 +88,6 @@ export default {
     const gridArea = computed(() =>
       selection.value ? gridRegionToGridArea(selectionArea(selection.value)) : 'initial'
     )
-
-    const handleInput = (e) => {
-      switch (e.key) {
-        case 'Backspace':
-        case 'Delete':
-        case 'r':
-        case 'c':
-          e.stopPropagation() // Don't do anything to the input value
-          break
-      }
-    }
 
     function editArea(area) {
       // TODO: if ! gridRegion
@@ -239,7 +227,6 @@ export default {
       saveSelection,
       closeSelection,
       nameInputElement,
-      handleInput,
     }
   },
 }
