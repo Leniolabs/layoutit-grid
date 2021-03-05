@@ -19,7 +19,8 @@ import PropsSidebar from './props/PropsSidebar.vue'
 import LiveCode from './code/LiveCode.vue'
 
 import { defineProps, ref, computed, onMounted, onUnmounted } from 'vue'
-import { mainArea, loadFromStorage, currentArea, currentView, keyMonitor } from '../store.js'
+import { mainArea, loadFromStorage, currentArea, currentView } from '../store.js'
+import { keyMonitor } from '../utils/keyMonitor'
 
 defineProps({
   saveDesign: { type: Function, default: null },
