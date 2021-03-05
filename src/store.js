@@ -227,9 +227,13 @@ export function subGrid(area) {
   setCurrentArea(area)
 }
 
+function enabledShortcuts(key) {
+  return ['z', 'y', 'r'].some((el) => el === key)
+}
+
 function ctrlMetaKeyHandler(event) {
   const key = event.key.toLowerCase()
-  if (key !== 'z' && key !== 'y') return
+  if (!enabledShortcuts(key)) return
 
   event.preventDefault()
 
@@ -242,9 +246,10 @@ function ctrlMetaKeyHandler(event) {
       }
       break
     case 'y':
-      if (canRedo) {
-        redo()
-      }
+      if (canRedo) redo()
+      break
+    case 'r':
+      restart()
       break
   }
 }

@@ -31,10 +31,10 @@ function toggleView(view) {
 
 onMounted(() => {
   loadFromStorage()
-  addEventListener('keyup', keyMonitor)
+  addEventListener('keydown', keyMonitor)
 })
 
-onUnmounted(() => removeEventListener('keyup', keyMonitor))
+onUnmounted(() => removeEventListener('keydown', keyMonitor))
 </script>
 
 <style lang="scss">
