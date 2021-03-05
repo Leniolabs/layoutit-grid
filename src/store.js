@@ -229,14 +229,21 @@ export function subGrid(area) {
 
 function ctrlMetaKeyHandler(event) {
   const key = event.key.toLowerCase()
-  if (key !== 'z') return
+  if (key !== 'z' && key !== 'y') return
 
   event.preventDefault()
 
   switch (key) {
     case 'z':
-      if (canUndo) {
+      if (event.shiftKey && canRedo) {
+        redo()
+      } else if (canUndo) {
         undo()
+      }
+      break
+    case 'y':
+      if (canRedo) {
+        redo()
       }
       break
   }
