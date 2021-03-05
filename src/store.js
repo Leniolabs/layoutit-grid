@@ -227,7 +227,22 @@ export function subGrid(area) {
   setCurrentArea(area)
 }
 
-export function keyMonitor(event) {
+function ctrlMetaKeyHandler(event) {
+  const key = event.key.toLowerCase()
+  if (key !== 'z') return
+
+  event.preventDefault()
+
+  switch (key) {
+    case 'z':
+      if (canUndo) {
+        undo()
+      }
+      break
+  }
+}
+
+function keyHandler(event) {
   switch (event.key) {
     case 'Backspace':
     case 'Delete':
@@ -256,4 +271,9 @@ export function keyMonitor(event) {
       }
       break
   }
+}
+
+export function keyMonitor(event) {
+  if (event.ctrlKey || event.metaKey) ctrlMetaKeyHandler(event)
+  else keyHandler(event)
 }
