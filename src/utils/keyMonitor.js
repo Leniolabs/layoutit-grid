@@ -37,9 +37,9 @@ function ctrlMetaKeyHandler(event) {
 }
 
 function keyHandler(event) {
-  switch (event.key) {
-    case 'Backspace':
-    case 'Delete':
+  switch (event.key.toLowerCase()) {
+    case 'backspace':
+    case 'delete':
       if (currentArea.value !== mainArea.value) {
         removeArea(currentArea.value)
       }
@@ -59,7 +59,7 @@ function keyHandler(event) {
         addCol(currentArea.value.grid, '1fr')
       }
       break
-    case 'Escape':
+    case 'escape':
       if (currentArea.value !== mainArea.value) {
         deselectCurrentArea()
       }
