@@ -14,12 +14,12 @@
     "@vueuse/core": "^4.0.10",
     "lz-string": "1.4.4",
     "pepjs": "0.5.2",
-    "vue": "3.0.5",
+    "vue": "3.0.6",
     "vue-demi": "0.5.4"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "1.0.4",
-    "@vue/compiler-sfc": "3.0.5",
+    "@vitejs/plugin-vue": "1.1.5",
+    "@vue/compiler-sfc": "3.0.6",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^6.15.0",
@@ -30,7 +30,7 @@
     "patch-package": "6.2.2",
     "prettier": "^2.2.1",
     "sass": "1.29.0",
-    "vite": "2.0.0-beta.49"
+    "vite": "2.0.5"
   },
   "bugs": {
     "url": "https://github.com/leniolabs/layoutit-grid/issues"

@@ -1,0 +1,3677 @@
+diff --git a/node_modules/@vue/compiler-sfc/dist/compiler-sfc.cjs.js b/node_modules/@vue/compiler-sfc/dist/compiler-sfc.cjs.js
+index b251026..05f11dd 100644
+--- a/node_modules/@vue/compiler-sfc/dist/compiler-sfc.cjs.js
++++ b/node_modules/@vue/compiler-sfc/dist/compiler-sfc.cjs.js
+@@ -80,13 +80,13 @@ const cssVarsPlugin = opts => {
+     };
+ };
+ cssVarsPlugin.postcss = true;
+-function genCssVarsCode(vars, bindings, id, isProd) {
++function genCssVarsCode(vars, id, isProd, bindings) {
+     const varsExp = genCssVarsFromList(vars, id, isProd);
+     const exp = CompilerDOM.createSimpleExpression(varsExp, false);
+     const context = CompilerDOM.createTransformContext(CompilerDOM.createRoot([]), {
+         prefixIdentifiers: true,
+-        inline: true,
+-        bindingMetadata: bindings
++        inline: !!bindings,
++        bindingMetadata: bindings || {}
+     });
+     const transformed = CompilerDOM.processExpression(exp, context);
+     const transformedString = transformed.type === 4 /* SIMPLE_EXPRESSION */
+@@ -102,9 +102,9 @@ function genCssVarsCode(vars, bindings, id, isProd) {
+ }
+ // <script setup> already gets the calls injected as part of the transform
+ // this is only for single normal <script>
+-function genNormalScriptCssVarsCode(cssVars, bindings, id, isProd) {
++function genNormalScriptCssVarsCode(cssVars, id, isProd) {
+     return (`\nimport { ${CSS_VARS_HELPER} as _${CSS_VARS_HELPER} } from 'vue'\n` +
+-        `const __injectCSSVars__ = () => {\n${genCssVarsCode(cssVars, bindings, id, isProd)}}\n` +
++        `const __injectCSSVars__ = () => {\n${genCssVarsCode(cssVars, id, isProd)}}\n` +
+         `const __setup__ = __default__.setup\n` +
+         `__default__.setup = __setup__\n` +
+         `  ? (props, ctx) => { __injectCSSVars__();return __setup__(props, ctx) }\n` +
+@@ -145,7 +145,8 @@ function parse(source, { sourceMap = true, filename = 'anonymous.vue', sourceRoo
+         scriptSetup: null,
+         styles: [],
+         customBlocks: [],
+-        cssVars: []
++        cssVars: [],
++        slotted: false
+     };
+     const errors = [];
+     const ast = compiler.parse(source, {
+@@ -245,6 +246,9 @@ function parse(source, { sourceMap = true, filename = 'anonymous.vue', sourceRoo
+     if (descriptor.cssVars.length) {
+         warnExperimental(`v-bind() CSS variable injection`, 231);
+     }
++    // check if the SFC uses :slotted
++    const slottedRE = /(?:::v-|:)slotted\(/;
++    descriptor.slotted = descriptor.styles.some(s => s.scoped && slottedRE.test(s.content));
+     const result = {
+         descriptor,
+         errors
+@@ -662,7 +666,7 @@ function compileTemplate(options) {
+         return doCompileTemplate(options);
+     }
+ }
+-function doCompileTemplate({ filename, id, scoped, inMap, source, ssr = false, ssrCssVars, isProd = false, compiler = ssr ? CompilerSSR__namespace : CompilerDOM__namespace, compilerOptions = {}, transformAssetUrls }) {
++function doCompileTemplate({ filename, id, scoped, slotted, inMap, source, ssr = false, ssrCssVars, isProd = false, compiler = ssr ? CompilerSSR__namespace : CompilerDOM__namespace, compilerOptions = {}, transformAssetUrls }) {
+     const errors = [];
+     let nodeTransforms = [];
+     if (shared.isObject(transformAssetUrls)) {
+@@ -694,6 +698,7 @@ function doCompileTemplate({ filename, id, scoped, inMap, source, ssr = false, s
+             ? genCssVarsFromList(ssrCssVars, shortId, isProd)
+             : '',
+         scopeId: scoped ? longId : undefined,
++        slotted,
+         ...compilerOptions,
+         nodeTransforms: nodeTransforms.concat(compilerOptions.nodeTransforms || []),
+         filename,
+@@ -1177,6 +1182,7 @@ function preprocess$1(options, preprocessor) {
+ 
+ const defaultExportRE = /((?:^|\n|;)\s*)export(\s*)default/;
+ const namedDefaultExportRE = /((?:^|\n|;)\s*)export(.+)as(\s*)default/;
++const exportDefaultClassRE = /((?:^|\n|;)\s*)export\s+default\s+class\s+([\w$]+)/;
+ /**
+  * Utility for rewriting `export default` in a script block into a variable
+  * declaration so that we can inject things into it
+@@ -1185,7 +1191,16 @@ function rewriteDefault(input, as, parserPlugins) {
+     if (!hasDefaultExport(input)) {
+         return input + `\nconst ${as} = {}`;
+     }
+-    const replaced = input.replace(defaultExportRE, `$1const ${as} =`);
++    let replaced;
++    const classMatch = input.match(exportDefaultClassRE);
++    if (classMatch) {
++        replaced =
++            input.replace(exportDefaultClassRE, '$1class $2') +
++                `\nconst ${as} = ${classMatch[2]}`;
++    }
++    else {
++        replaced = input.replace(defaultExportRE, `$1const ${as} =`);
++    }
+     if (!hasDefaultExport(replaced)) {
+         return replaced;
+     }
+@@ -1269,7 +1284,7 @@ function compileScript(sfc, options) {
+             if (needRewrite) {
+                 content = rewriteDefault(content, `__default__`, plugins);
+                 if (cssVars.length) {
+-                    content += genNormalScriptCssVarsCode(cssVars, bindings, scopeId, !!options.isProd);
++                    content += genNormalScriptCssVarsCode(cssVars, scopeId, !!options.isProd);
+                 }
+                 if (hasInheritAttrsFlag) {
+                     content += `__default__.inheritAttrs = false`;
+@@ -1831,7 +1846,7 @@ function compileScript(sfc, options) {
+     if (cssVars.length) {
+         helperImports.add(CSS_VARS_HELPER);
+         helperImports.add('unref');
+-        s.prependRight(startOffset, `\n${genCssVarsCode(cssVars, bindingMetadata, scopeId, !!options.isProd)}\n`);
++        s.prependRight(startOffset, `\n${genCssVarsCode(cssVars, scopeId, !!options.isProd, bindingMetadata)}\n`);
+     }
+     // 9. finalize setup() argument signature
+     let args = `__props`;
+diff --git a/node_modules/@vue/compiler-sfc/dist/compiler-sfc.global.js b/node_modules/@vue/compiler-sfc/dist/compiler-sfc.global.js
+index 2f99560..0240b28 100644
+--- a/node_modules/@vue/compiler-sfc/dist/compiler-sfc.global.js
++++ b/node_modules/@vue/compiler-sfc/dist/compiler-sfc.global.js
+@@ -492,9 +492,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+   const CAPITALIZE = Symbol(`capitalize` );
+   const TO_HANDLER_KEY = Symbol(`toHandlerKey` );
+   const SET_BLOCK_TRACKING = Symbol(`setBlockTracking` );
+-  const PUSH_SCOPE_ID = Symbol(`pushScopeId` );
+-  const POP_SCOPE_ID = Symbol(`popScopeId` );
+-  const WITH_SCOPE_ID = Symbol(`withScopeId` );
++  const SET_SCOPE_ID = Symbol(`setScopeId` );
+   const WITH_CTX = Symbol(`withCtx` );
+   const UNREF = Symbol(`unref` );
+   const IS_REF = Symbol(`isRef` );
+@@ -527,9 +525,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       [CAPITALIZE]: `capitalize`,
+       [TO_HANDLER_KEY]: `toHandlerKey`,
+       [SET_BLOCK_TRACKING]: `setBlockTracking`,
+-      [PUSH_SCOPE_ID]: `pushScopeId`,
+-      [POP_SCOPE_ID]: `popScopeId`,
+-      [WITH_SCOPE_ID]: `withScopeId`,
++      [SET_SCOPE_ID]: `setScopeId`,
+       [WITH_CTX]: `withCtx`,
+       [UNREF]: `unref`,
+       [IS_REF]: `isRef`
+@@ -1698,7 +1694,14 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+           }
+           // walk further
+           if (child.type === 1 /* ELEMENT */) {
++              const isComponent = child.tagType === 1 /* COMPONENT */;
++              if (isComponent) {
++                  context.scopes.vSlot++;
++              }
+               walk(child, context);
++              if (isComponent) {
++                  context.scopes.vSlot--;
++              }
+           }
+           else if (child.type === 11 /* FOR */) {
+               // Do not hoist v-for single child because it has to be a block
+@@ -1861,7 +1864,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       return flag ? parseInt(flag, 10) : undefined;
+   }
+ 
+-  function createTransformContext(root, { filename = '', prefixIdentifiers = false, hoistStatic = false, cacheHandlers = false, nodeTransforms = [], directiveTransforms = {}, transformHoist = null, isBuiltInComponent = NOOP, isCustomElement = NOOP, expressionPlugins = [], scopeId = null, ssr = false, ssrCssVars = ``, bindingMetadata = EMPTY_OBJ, inline = false, isTS = false, onError = defaultOnError }) {
++  function createTransformContext(root, { filename = '', prefixIdentifiers = false, hoistStatic = false, cacheHandlers = false, nodeTransforms = [], directiveTransforms = {}, transformHoist = null, isBuiltInComponent = NOOP, isCustomElement = NOOP, expressionPlugins = [], scopeId = null, slotted = true, ssr = false, ssrCssVars = ``, bindingMetadata = EMPTY_OBJ, inline = false, isTS = false, onError = defaultOnError }) {
+       const nameMatch = filename.replace(/\?.*$/, '').match(/([^/\\]+)\.\w+$/);
+       const context = {
+           // options
+@@ -1876,6 +1879,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+           isCustomElement,
+           expressionPlugins,
+           scopeId,
++          slotted,
+           ssr,
+           ssrCssVars,
+           bindingMetadata,
+@@ -5431,10 +5435,9 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       const context = createCodegenContext(ast, options);
+       if (options.onContextCreated)
+           options.onContextCreated(context);
+-      const { mode, push, prefixIdentifiers, indent, deindent, newline, scopeId, ssr } = context;
++      const { mode, push, prefixIdentifiers, indent, deindent, newline, ssr } = context;
+       const hasHelpers = ast.helpers.length > 0;
+       const useWithBlock = !prefixIdentifiers && mode !== 'module';
+-      const genScopeId = scopeId != null && mode === 'module';
+       const isSetupInlined = !!options.inline;
+       // preambles
+       // in setup() inline mode, the preamble is generated in a sub context
+@@ -5443,7 +5446,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+           ? createCodegenContext(ast, options)
+           : context;
+       if (mode === 'module') {
+-          genModulePreamble(ast, preambleContext, genScopeId, isSetupInlined);
++          genModulePreamble(ast, preambleContext, isSetupInlined);
+       }
+       else {
+           genFunctionPreamble(ast, preambleContext);
+@@ -5458,15 +5461,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       const signature = options.isTS
+           ? args.map(arg => `${arg}: any`).join(',')
+           : args.join(', ');
+-      if (genScopeId) {
+-          if (isSetupInlined) {
+-              push(`${PURE_ANNOTATION}_withId(`);
+-          }
+-          else {
+-              push(`const ${functionName} = ${PURE_ANNOTATION}_withId(`);
+-          }
+-      }
+-      if (isSetupInlined || genScopeId) {
++      if (isSetupInlined) {
+           push(`(${signature}) => {`);
+       }
+       else {
+@@ -5525,9 +5520,6 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       }
+       deindent();
+       push(`}`);
+-      if (genScopeId) {
+-          push(`)`);
+-      }
+       return {
+           ast,
+           code: context.code,
+@@ -5582,13 +5574,11 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       newline();
+       push(`return `);
+   }
+-  function genModulePreamble(ast, context, genScopeId, inline) {
+-      const { push, helper, newline, scopeId, optimizeImports, runtimeModuleName } = context;
+-      if (genScopeId) {
+-          ast.helpers.push(WITH_SCOPE_ID);
+-          if (ast.hoists.length) {
+-              ast.helpers.push(PUSH_SCOPE_ID, POP_SCOPE_ID);
+-          }
++  function genModulePreamble(ast, context, inline) {
++      const { push, newline, optimizeImports, runtimeModuleName, scopeId, mode } = context;
++      const genScopeId = scopeId != null && mode === 'module';
++      if (genScopeId && ast.hoists.length) {
++          ast.helpers.push(SET_SCOPE_ID);
+       }
+       // generate import statements for helpers
+       if (ast.helpers.length) {
+@@ -5620,10 +5610,6 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+           genImports(ast.imports, context);
+           newline();
+       }
+-      if (genScopeId) {
+-          push(`const _withId = ${PURE_ANNOTATION}${helper(WITH_SCOPE_ID)}("${scopeId}")`);
+-          newline();
+-      }
+       genHoists(ast.hoists, context);
+       newline();
+       if (!inline) {
+@@ -5651,7 +5637,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       // push scope Id before initializing hoisted vnodes so that these vnodes
+       // get the proper scopeId as well.
+       if (genScopeId) {
+-          push(`${helper(PUSH_SCOPE_ID)}("${scopeId}")`);
++          push(`${helper(SET_SCOPE_ID)}("${scopeId}")`);
+           newline();
+       }
+       hoists.forEach((exp, i) => {
+@@ -5662,7 +5648,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+           }
+       });
+       if (genScopeId) {
+-          push(`${helper(POP_SCOPE_ID)}()`);
++          push(`${helper(SET_SCOPE_ID)}(null)`);
+           newline();
+       }
+       context.pure = false;
+@@ -5933,14 +5919,10 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       genNodeListAsArray(node.elements, context);
+   }
+   function genFunctionExpression(node, context) {
+-      const { push, indent, deindent, scopeId, mode } = context;
++      const { push, indent, deindent } = context;
+       const { params, returns, body, newline, isSlot } = node;
+-      // slot functions also need to push scopeId before rendering its content
+-      const genScopeId = isSlot && scopeId != null && mode !== 'function';
+-      if (genScopeId) {
+-          push(`_withId(`);
+-      }
+-      else if (isSlot) {
++      if (isSlot) {
++          // wrap slot functions with owner context
+           push(`_${helperNameMap[WITH_CTX]}(`);
+       }
+       push(`(`, node);
+@@ -5973,7 +5955,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+           deindent();
+           push(`}`);
+       }
+-      if (genScopeId || isSlot) {
++      if (isSlot) {
+           push(`)`);
+       }
+   }
+@@ -6675,6 +6657,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+     ArgumentsInClass: "'arguments' is only allowed in functions and class methods",
+     AsyncFunctionInSingleStatementContext: "Async functions can only be declared at the top level or inside a block",
+     AwaitBindingIdentifier: "Can not use 'await' as identifier inside an async function",
++    AwaitBindingIdentifierInStaticBlock: "Can not use 'await' as identifier inside a static block",
+     AwaitExpressionFormalParameter: "await is not allowed in async function parameters",
+     AwaitNotInAsyncContext: "'await' is only allowed within async functions and at the top levels of modules",
+     AwaitNotInAsyncFunction: "'await' is only allowed within async functions",
+@@ -6702,7 +6685,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+     DuplicateStaticBlock: "Duplicate static block in the same class",
+     ElementAfterRest: "Rest element must be last element",
+     EscapedCharNotAnIdentifier: "Invalid Unicode escape",
+-    ExportBindingIsString: "A string literal cannot be used as an exported binding without `from`.\n- Did you mean `export { %0 as '%1' } from 'some-module'`?",
++    ExportBindingIsString: "A string literal cannot be used as an exported binding without `from`.\n- Did you mean `export { '%0' as '%1' } from 'some-module'`?",
+     ExportDefaultFromAsIdentifier: "'from' is not allowed as an identifier after 'export default'",
+     ForInOfLoopInitializer: "%0 loop variable declaration may not have an initializer",
+     GeneratorInSingleStatementContext: "Generators can only be declared at the top level or inside a block",
+@@ -6740,6 +6723,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+     MalformedRegExpFlags: "Invalid regular expression flag",
+     MissingClassName: "A class name is required",
+     MissingEqInAssignment: "Only '=' operator can be used for specifying default value.",
++    MissingSemicolon: "Missing semicolon",
+     MissingUnicodeEscape: "Expecting Unicode escape sequence \\uXXXX",
+     MixingCoalesceWithLogical: "Nullish coalescing operator(??) requires parens when mixing with logical operators",
+     ModuleAttributeDifferentFromType: "The only accepted module attribute is `type`",
+@@ -6829,6 +6813,32 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       return this.raiseWithData(pos, undefined, errorTemplate, ...params);
+     }
+ 
++    raiseOverwrite(pos, errorTemplate, ...params) {
++      const loc = this.getLocationForPosition(pos);
++      const message = errorTemplate.replace(/%(\d+)/g, (_, i) => params[i]) + ` (${loc.line}:${loc.column})`;
++
++      if (this.options.errorRecovery) {
++        const errors = this.state.errors;
++
++        for (let i = errors.length - 1; i >= 0; i--) {
++          const error = errors[i];
++
++          if (error.pos === pos) {
++            return Object.assign(error, {
++              message
++            });
++          } else if (error.pos < pos) {
++            break;
++          }
++        }
++      }
++
++      return this._raise({
++        loc,
++        pos
++      }, message);
++    }
++
+     raiseWithData(pos, data, errorTemplate, ...params) {
+       const loc = this.getLocationForPosition(pos);
+       const message = errorTemplate.replace(/%(\d+)/g, (_, i) => params[i]) + ` (${loc.line}:${loc.column})`;
+@@ -6852,10 +6862,6 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+   }
+ 
+-  function isSimpleProperty(node) {
+-    return node != null && node.type === "Property" && node.kind === "init" && node.method === false;
+-  }
+-
+   var estree = (superClass => class extends superClass {
+     estreeParseRegExpLiteral({
+       pattern,
+@@ -6876,7 +6882,14 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+     }
+ 
+     estreeParseBigIntLiteral(value) {
+-      const bigInt = typeof BigInt !== "undefined" ? BigInt(value) : null;
++      let bigInt;
++
++      try {
++        bigInt = BigInt(value);
++      } catch (_unused) {
++        bigInt = null;
++      }
++
+       const node = this.estreeParseLiteral(bigInt);
+       node.bigint = String(node.value || value);
+       return node;
+@@ -6897,7 +6910,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       const directiveLiteral = directive.value;
+       const stmt = this.startNodeAt(directive.start, directive.loc.start);
+       const expression = this.startNodeAt(directiveLiteral.start, directiveLiteral.loc.start);
+-      expression.value = directiveLiteral.value;
++      expression.value = directiveLiteral.extra.expressionValue;
+       expression.raw = directiveLiteral.extra.raw;
+       stmt.expression = this.finishNodeAt(expression, "Literal", directiveLiteral.end, directiveLiteral.loc.end);
+       stmt.directive = directiveLiteral.extra.raw.slice(1, -1);
+@@ -6910,7 +6923,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+     }
+ 
+     checkDeclaration(node) {
+-      if (isSimpleProperty(node)) {
++      if (node != null && this.isObjectProperty(node)) {
+         this.checkDeclaration(node.value);
+       } else {
+         super.checkDeclaration(node);
+@@ -6921,42 +6934,21 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       return method.value.params;
+     }
+ 
+-    checkLVal(expr, contextDescription, ...args) {
+-      switch (expr.type) {
+-        case "ObjectPattern":
+-          expr.properties.forEach(prop => {
+-            this.checkLVal(prop.type === "Property" ? prop.value : prop, "object destructuring pattern", ...args);
+-          });
+-          break;
+-
+-        default:
+-          super.checkLVal(expr, contextDescription, ...args);
+-      }
+-    }
+-
+-    checkProto(prop, isRecord, protoRef, refExpressionErrors) {
+-      if (prop.method) {
+-        return;
+-      }
+-
+-      super.checkProto(prop, isRecord, protoRef, refExpressionErrors);
+-    }
+-
+     isValidDirective(stmt) {
+       var _stmt$expression$extr;
+ 
+-      return stmt.type === "ExpressionStatement" && stmt.expression.type === "Literal" && typeof stmt.expression.value === "string" && !((_stmt$expression$extr = stmt.expression.extra) == null ? void 0 : _stmt$expression$extr.parenthesized);
++      return stmt.type === "ExpressionStatement" && stmt.expression.type === "Literal" && typeof stmt.expression.value === "string" && !((_stmt$expression$extr = stmt.expression.extra) != null && _stmt$expression$extr.parenthesized);
+     }
+ 
+     stmtToDirective(stmt) {
+       const directive = super.stmtToDirective(stmt);
+       const value = stmt.expression.value;
+-      directive.value.value = value;
++      this.addExtra(directive.value, "expressionValue", value);
+       return directive;
+     }
+ 
+-    parseBlockBody(node, allowDirectives, topLevel, end) {
+-      super.parseBlockBody(node, allowDirectives, topLevel, end);
++    parseBlockBody(node, ...args) {
++      super.parseBlockBody(node, ...args);
+       const directiveStatements = node.directives.map(d => this.directiveToStmt(d));
+       node.body = directiveStatements.concat(node.body);
+       delete node.directives;
+@@ -7002,6 +6994,41 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       }
+     }
+ 
++    parseMaybePrivateName(...args) {
++      const node = super.parseMaybePrivateName(...args);
++
++      if (node.type === "PrivateName" && this.getPluginOption("estree", "classFeatures")) {
++        return this.convertPrivateNameToPrivateIdentifier(node);
++      }
++
++      return node;
++    }
++
++    convertPrivateNameToPrivateIdentifier(node) {
++      const name = super.getPrivateNameSV(node);
++      node = node;
++      delete node.id;
++      node.name = name;
++      node.type = "PrivateIdentifier";
++      return node;
++    }
++
++    isPrivateName(node) {
++      if (!this.getPluginOption("estree", "classFeatures")) {
++        return super.isPrivateName(node);
++      }
++
++      return node.type === "PrivateIdentifier";
++    }
++
++    getPrivateNameSV(node) {
++      if (!this.getPluginOption("estree", "classFeatures")) {
++        return super.getPrivateNameSV(node);
++      }
++
++      return node.name;
++    }
++
+     parseLiteral(value, type, startPos, startLoc) {
+       const node = super.parseLiteral(value, type, startPos, startLoc);
+       node.raw = node.extra.raw;
+@@ -7021,10 +7048,36 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       funcNode.type = "FunctionExpression";
+       delete funcNode.kind;
+       node.value = funcNode;
+-      type = type === "ClassMethod" ? "MethodDefinition" : type;
++
++      if (type === "ClassPrivateMethod") {
++        node.computed = false;
++      }
++
++      type = "MethodDefinition";
+       return this.finishNode(node, type);
+     }
+ 
++    parseClassProperty(...args) {
++      const propertyNode = super.parseClassProperty(...args);
++
++      if (this.getPluginOption("estree", "classFeatures")) {
++        propertyNode.type = "PropertyDefinition";
++      }
++
++      return propertyNode;
++    }
++
++    parseClassPrivateProperty(...args) {
++      const propertyNode = super.parseClassPrivateProperty(...args);
++
++      if (this.getPluginOption("estree", "classFeatures")) {
++        propertyNode.type = "PropertyDefinition";
++        propertyNode.computed = false;
++      }
++
++      return propertyNode;
++    }
++
+     parseObjectMethod(prop, isGenerator, isAsync, isPattern, isAccessor) {
+       const node = super.parseObjectMethod(prop, isGenerator, isAsync, isPattern, isAccessor);
+ 
+@@ -7049,8 +7102,8 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+     }
+ 
+     toAssignable(node, isLHS = false) {
+-      if (isSimpleProperty(node)) {
+-        this.toAssignable(node.value);
++      if (node != null && this.isObjectProperty(node)) {
++        this.toAssignable(node.value, isLHS);
+         return node;
+       }
+ 
+@@ -7059,9 +7112,9 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+     toAssignableObjectExpressionProp(prop, ...args) {
+       if (prop.kind === "get" || prop.kind === "set") {
+-        throw this.raise(prop.key.start, ErrorMessages.PatternHasAccessor);
++        this.raise(prop.key.start, ErrorMessages.PatternHasAccessor);
+       } else if (prop.method) {
+-        throw this.raise(prop.key.start, ErrorMessages.PatternHasMethod);
++        this.raise(prop.key.start, ErrorMessages.PatternHasMethod);
+       } else {
+         super.toAssignableObjectExpressionProp(prop, ...args);
+       }
+@@ -7129,6 +7182,26 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       return node;
+     }
+ 
++    hasPropertyAsPrivateName(node) {
++      if (node.type === "ChainExpression") {
++        node = node.expression;
++      }
++
++      return super.hasPropertyAsPrivateName(node);
++    }
++
++    isOptionalChain(node) {
++      return node.type === "ChainExpression";
++    }
++
++    isObjectProperty(node) {
++      return node.type === "Property" && node.kind === "init" && !node.method;
++    }
++
++    isObjectMethod(node) {
++      return node.method || node.kind === "get" || node.kind === "set";
++    }
++
+   });
+ 
+   class TokContext {
+@@ -7307,26 +7380,28 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+     return current === 64 && next === 64;
+   }
+ 
+-  const SCOPE_OTHER = 0b00000000,
+-        SCOPE_PROGRAM = 0b00000001,
+-        SCOPE_FUNCTION = 0b00000010,
+-        SCOPE_ARROW = 0b00000100,
+-        SCOPE_SIMPLE_CATCH = 0b00001000,
+-        SCOPE_SUPER = 0b00010000,
+-        SCOPE_DIRECT_SUPER = 0b00100000,
+-        SCOPE_CLASS = 0b01000000,
+-        SCOPE_TS_MODULE = 0b10000000,
++  const SCOPE_OTHER = 0b000000000,
++        SCOPE_PROGRAM = 0b000000001,
++        SCOPE_FUNCTION = 0b000000010,
++        SCOPE_ARROW = 0b000000100,
++        SCOPE_SIMPLE_CATCH = 0b000001000,
++        SCOPE_SUPER = 0b000010000,
++        SCOPE_DIRECT_SUPER = 0b000100000,
++        SCOPE_CLASS = 0b001000000,
++        SCOPE_STATIC_BLOCK = 0b010000000,
++        SCOPE_TS_MODULE = 0b100000000,
+         SCOPE_VAR = SCOPE_PROGRAM | SCOPE_FUNCTION | SCOPE_TS_MODULE;
+-  const BIND_KIND_VALUE = 0b00000000001,
+-        BIND_KIND_TYPE = 0b00000000010,
+-        BIND_SCOPE_VAR = 0b00000000100,
+-        BIND_SCOPE_LEXICAL = 0b00000001000,
+-        BIND_SCOPE_FUNCTION = 0b00000010000,
+-        BIND_FLAGS_NONE = 0b00001000000,
+-        BIND_FLAGS_CLASS = 0b00010000000,
+-        BIND_FLAGS_TS_ENUM = 0b00100000000,
+-        BIND_FLAGS_TS_CONST_ENUM = 0b01000000000,
+-        BIND_FLAGS_TS_EXPORT_ONLY = 0b10000000000;
++  const BIND_KIND_VALUE = 0b000000000001,
++        BIND_KIND_TYPE = 0b000000000010,
++        BIND_SCOPE_VAR = 0b000000000100,
++        BIND_SCOPE_LEXICAL = 0b000000001000,
++        BIND_SCOPE_FUNCTION = 0b000000010000,
++        BIND_FLAGS_NONE = 0b000001000000,
++        BIND_FLAGS_CLASS = 0b000010000000,
++        BIND_FLAGS_TS_ENUM = 0b000100000000,
++        BIND_FLAGS_TS_CONST_ENUM = 0b001000000000,
++        BIND_FLAGS_TS_EXPORT_ONLY = 0b010000000000,
++        BIND_FLAGS_FLOW_DECLARE_FN = 0b100000000000;
+   const BIND_CLASS = BIND_KIND_VALUE | BIND_KIND_TYPE | BIND_SCOPE_LEXICAL | BIND_FLAGS_CLASS,
+         BIND_LEXICAL = BIND_KIND_VALUE | 0 | BIND_SCOPE_LEXICAL | 0,
+         BIND_VAR = BIND_KIND_VALUE | 0 | BIND_SCOPE_VAR | 0,
+@@ -7338,7 +7413,8 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         BIND_NONE = 0 | 0 | 0 | BIND_FLAGS_NONE,
+         BIND_OUTSIDE = BIND_KIND_VALUE | 0 | 0 | BIND_FLAGS_NONE,
+         BIND_TS_CONST_ENUM = BIND_TS_ENUM | BIND_FLAGS_TS_CONST_ENUM,
+-        BIND_TS_NAMESPACE = 0 | 0 | 0 | BIND_FLAGS_TS_EXPORT_ONLY;
++        BIND_TS_NAMESPACE = 0 | 0 | 0 | BIND_FLAGS_TS_EXPORT_ONLY,
++        BIND_FLOW_DECLARE_FN = BIND_FLAGS_FLOW_DECLARE_FN;
+   const CLASS_ELEMENT_FLAG_STATIC = 0b100,
+         CLASS_ELEMENT_KIND_GETTER = 0b010,
+         CLASS_ELEMENT_KIND_SETTER = 0b001,
+@@ -7349,6 +7425,201 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         CLASS_ELEMENT_INSTANCE_SETTER = CLASS_ELEMENT_KIND_SETTER,
+         CLASS_ELEMENT_OTHER = 0;
+ 
++  class Scope {
++    constructor(flags) {
++      this.flags = void 0;
++      this.var = [];
++      this.lexical = [];
++      this.functions = [];
++      this.flags = flags;
++    }
++
++  }
++  class ScopeHandler {
++    constructor(raise, inModule) {
++      this.scopeStack = [];
++      this.undefinedExports = new Map();
++      this.undefinedPrivateNames = new Map();
++      this.raise = raise;
++      this.inModule = inModule;
++    }
++
++    get inFunction() {
++      return (this.currentVarScope().flags & SCOPE_FUNCTION) > 0;
++    }
++
++    get allowSuper() {
++      return (this.currentThisScope().flags & SCOPE_SUPER) > 0;
++    }
++
++    get allowDirectSuper() {
++      return (this.currentThisScope().flags & SCOPE_DIRECT_SUPER) > 0;
++    }
++
++    get inClass() {
++      return (this.currentThisScope().flags & SCOPE_CLASS) > 0;
++    }
++
++    get inStaticBlock() {
++      return (this.currentThisScope().flags & SCOPE_STATIC_BLOCK) > 0;
++    }
++
++    get inNonArrowFunction() {
++      return (this.currentThisScope().flags & SCOPE_FUNCTION) > 0;
++    }
++
++    get treatFunctionsAsVar() {
++      return this.treatFunctionsAsVarInScope(this.currentScope());
++    }
++
++    createScope(flags) {
++      return new Scope(flags);
++    }
++
++    enter(flags) {
++      this.scopeStack.push(this.createScope(flags));
++    }
++
++    exit() {
++      this.scopeStack.pop();
++    }
++
++    treatFunctionsAsVarInScope(scope) {
++      return !!(scope.flags & SCOPE_FUNCTION || !this.inModule && scope.flags & SCOPE_PROGRAM);
++    }
++
++    declareName(name, bindingType, pos) {
++      let scope = this.currentScope();
++
++      if (bindingType & BIND_SCOPE_LEXICAL || bindingType & BIND_SCOPE_FUNCTION) {
++        this.checkRedeclarationInScope(scope, name, bindingType, pos);
++
++        if (bindingType & BIND_SCOPE_FUNCTION) {
++          scope.functions.push(name);
++        } else {
++          scope.lexical.push(name);
++        }
++
++        if (bindingType & BIND_SCOPE_LEXICAL) {
++          this.maybeExportDefined(scope, name);
++        }
++      } else if (bindingType & BIND_SCOPE_VAR) {
++        for (let i = this.scopeStack.length - 1; i >= 0; --i) {
++          scope = this.scopeStack[i];
++          this.checkRedeclarationInScope(scope, name, bindingType, pos);
++          scope.var.push(name);
++          this.maybeExportDefined(scope, name);
++          if (scope.flags & SCOPE_VAR) break;
++        }
++      }
++
++      if (this.inModule && scope.flags & SCOPE_PROGRAM) {
++        this.undefinedExports.delete(name);
++      }
++    }
++
++    maybeExportDefined(scope, name) {
++      if (this.inModule && scope.flags & SCOPE_PROGRAM) {
++        this.undefinedExports.delete(name);
++      }
++    }
++
++    checkRedeclarationInScope(scope, name, bindingType, pos) {
++      if (this.isRedeclaredInScope(scope, name, bindingType)) {
++        this.raise(pos, ErrorMessages.VarRedeclaration, name);
++      }
++    }
++
++    isRedeclaredInScope(scope, name, bindingType) {
++      if (!(bindingType & BIND_KIND_VALUE)) return false;
++
++      if (bindingType & BIND_SCOPE_LEXICAL) {
++        return scope.lexical.indexOf(name) > -1 || scope.functions.indexOf(name) > -1 || scope.var.indexOf(name) > -1;
++      }
++
++      if (bindingType & BIND_SCOPE_FUNCTION) {
++        return scope.lexical.indexOf(name) > -1 || !this.treatFunctionsAsVarInScope(scope) && scope.var.indexOf(name) > -1;
++      }
++
++      return scope.lexical.indexOf(name) > -1 && !(scope.flags & SCOPE_SIMPLE_CATCH && scope.lexical[0] === name) || !this.treatFunctionsAsVarInScope(scope) && scope.functions.indexOf(name) > -1;
++    }
++
++    checkLocalExport(id) {
++      if (this.scopeStack[0].lexical.indexOf(id.name) === -1 && this.scopeStack[0].var.indexOf(id.name) === -1 && this.scopeStack[0].functions.indexOf(id.name) === -1) {
++        this.undefinedExports.set(id.name, id.start);
++      }
++    }
++
++    currentScope() {
++      return this.scopeStack[this.scopeStack.length - 1];
++    }
++
++    currentVarScope() {
++      for (let i = this.scopeStack.length - 1;; i--) {
++        const scope = this.scopeStack[i];
++
++        if (scope.flags & SCOPE_VAR) {
++          return scope;
++        }
++      }
++    }
++
++    currentThisScope() {
++      for (let i = this.scopeStack.length - 1;; i--) {
++        const scope = this.scopeStack[i];
++
++        if ((scope.flags & SCOPE_VAR || scope.flags & SCOPE_CLASS) && !(scope.flags & SCOPE_ARROW)) {
++          return scope;
++        }
++      }
++    }
++
++  }
++
++  class FlowScope extends Scope {
++    constructor(...args) {
++      super(...args);
++      this.declareFunctions = [];
++    }
++
++  }
++
++  class FlowScopeHandler extends ScopeHandler {
++    createScope(flags) {
++      return new FlowScope(flags);
++    }
++
++    declareName(name, bindingType, pos) {
++      const scope = this.currentScope();
++
++      if (bindingType & BIND_FLAGS_FLOW_DECLARE_FN) {
++        this.checkRedeclarationInScope(scope, name, bindingType, pos);
++        this.maybeExportDefined(scope, name);
++        scope.declareFunctions.push(name);
++        return;
++      }
++
++      super.declareName(...arguments);
++    }
++
++    isRedeclaredInScope(scope, name, bindingType) {
++      if (super.isRedeclaredInScope(...arguments)) return true;
++
++      if (bindingType & BIND_FLAGS_FLOW_DECLARE_FN) {
++        return !scope.declareFunctions.includes(name) && (scope.lexical.includes(name) || scope.functions.includes(name));
++      }
++
++      return false;
++    }
++
++    checkLocalExport(id) {
++      if (this.scopeStack[0].declareFunctions.indexOf(id.name) === -1) {
++        super.checkLocalExport(id);
++      }
++    }
++
++  }
++
+   const reservedTypes = new Set(["_", "any", "bool", "boolean", "empty", "extends", "false", "interface", "mixed", "null", "number", "static", "string", "true", "typeof", "void"]);
+   const FlowErrors = Object.freeze({
+     AmbiguousConditionalArrow: "Ambiguous expression: wrap the arrow functions in parentheses to disambiguate.",
+@@ -7368,6 +7639,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+     EnumInvalidMemberName: "Enum member names cannot start with lowercase 'a' through 'z'. Instead of using `%0`, consider using `%1`, in enum `%2`.",
+     EnumNumberMemberNotInitialized: "Number enum members need to be initialized, e.g. `%1 = 1` in enum `%0`.",
+     EnumStringMemberInconsistentlyInitailized: "String enum members need to consistently either all use initializers, or use no initializers, in enum `%0`.",
++    GetterMayNotHaveThisParam: "A getter cannot have a `this` parameter.",
+     ImportTypeShorthandOnlyInPureImport: "The `type` and `typeof` keywords on named imports can only be used on regular `import` statements. It cannot be used with `import type` or `import typeof` statements",
+     InexactInsideExact: "Explicit inexact syntax cannot appear inside an explicit exact object type",
+     InexactInsideNonObject: "Explicit inexact syntax cannot appear in class or interface definitions",
+@@ -7377,7 +7649,13 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+     NestedDeclareModule: "`declare module` cannot be used inside another `declare module`",
+     NestedFlowComment: "Cannot have a flow comment inside another flow comment",
+     OptionalBindingPattern: "A binding pattern parameter cannot be optional in an implementation signature.",
++    SetterMayNotHaveThisParam: "A setter cannot have a `this` parameter.",
+     SpreadVariance: "Spread properties cannot have variance",
++    ThisParamAnnotationRequired: "A type annotation is required for the `this` parameter.",
++    ThisParamBannedInConstructor: "Constructors cannot have a `this` parameter; constructors don't bind `this` like other functions.",
++    ThisParamMayNotBeOptional: "The `this` parameter cannot be optional.",
++    ThisParamMustBeFirst: "The `this` parameter must be the first function parameter.",
++    ThisParamNoDefault: "The `this` parameter may not have a default value.",
+     TypeBeforeInitializer: "Type annotations must come before default assignments, e.g. instead of `age = 25: number` use `age: number = 25`",
+     TypeCastInPattern: "The type cast expression is expected to be wrapped with parenthesis",
+     UnexpectedExplicitInexactInObject: "Explicit inexact syntax must appear at the end of an inexact object",
+@@ -7428,12 +7706,15 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+     var _temp;
+ 
+     return _temp = class extends superClass {
+-      constructor(options, input) {
+-        super(options, input);
+-        this.flowPragma = void 0;
++      constructor(...args) {
++        super(...args);
+         this.flowPragma = undefined;
+       }
+ 
++      getScopeHandler() {
++        return FlowScopeHandler;
++      }
++
+       shouldParseTypes() {
+         return this.getPluginOption("flow", "all") || this.flowPragma === "flow";
+       }
+@@ -7542,12 +7823,14 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         const tmp = this.flowParseFunctionTypeParams();
+         typeNode.params = tmp.params;
+         typeNode.rest = tmp.rest;
++        typeNode.this = tmp._this;
+         this.expect(types.parenR);
+         [typeNode.returnType, node.predicate] = this.flowParseTypeAndPredicateInitialiser();
+         typeContainer.typeAnnotation = this.finishNode(typeNode, "FunctionTypeAnnotation");
+         id.typeAnnotation = this.finishNode(typeContainer, "TypeAnnotation");
+         this.resetEndLocation(id);
+         this.semicolon();
++        this.scope.declareName(node.id.name, BIND_FLOW_DECLARE_FN, node.id.start);
+         return this.finishNode(node, "DeclareFunction");
+       }
+ 
+@@ -8005,6 +8288,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         node.params = [];
+         node.rest = null;
+         node.typeParameters = null;
++        node.this = null;
+ 
+         if (this.isRelational("<")) {
+           node.typeParameters = this.flowParseTypeParameterDeclaration();
+@@ -8012,8 +8296,17 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+         this.expect(types.parenL);
+ 
++        if (this.match(types._this)) {
++          node.this = this.flowParseFunctionTypeParam(true);
++          node.this.name = null;
++
++          if (!this.match(types.parenR)) {
++            this.expect(types.comma);
++          }
++        }
++
+         while (!this.match(types.parenR) && !this.match(types.ellipsis)) {
+-          node.params.push(this.flowParseFunctionTypeParam());
++          node.params.push(this.flowParseFunctionTypeParam(false));
+ 
+           if (!this.match(types.parenR)) {
+             this.expect(types.comma);
+@@ -8021,7 +8314,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         }
+ 
+         if (this.eat(types.ellipsis)) {
+-          node.rest = this.flowParseFunctionTypeParam();
++          node.rest = this.flowParseFunctionTypeParam(false);
+         }
+ 
+         this.expect(types.parenR);
+@@ -8212,6 +8505,10 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+             if (kind === "get" || kind === "set") {
+               this.flowCheckGetterSetterParams(node);
+             }
++
++            if (!allowSpread && node.key.name === "constructor" && node.value.this) {
++              this.raise(node.value.this.start, FlowErrors.ThisParamBannedInConstructor);
++            }
+           } else {
+             if (kind !== "init") this.unexpected();
+             node.method = false;
+@@ -8234,6 +8531,10 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         const start = property.start;
+         const length = property.value.params.length + (property.value.rest ? 1 : 0);
+ 
++        if (property.value.this) {
++          this.raise(property.value.this.start, property.kind === "get" ? FlowErrors.GetterMayNotHaveThisParam : FlowErrors.SetterMayNotHaveThisParam);
++        }
++
+         if (length !== paramCount) {
+           if (property.kind === "get") {
+             this.raise(start, ErrorMessages.BadGetterArity);
+@@ -8302,18 +8603,27 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         return this.finishNode(node, "TupleTypeAnnotation");
+       }
+ 
+-      flowParseFunctionTypeParam() {
++      flowParseFunctionTypeParam(first) {
+         let name = null;
+         let optional = false;
+         let typeAnnotation = null;
+         const node = this.startNode();
+         const lh = this.lookahead();
++        const isThis = this.state.type === types._this;
+ 
+         if (lh.type === types.colon || lh.type === types.question) {
+-          name = this.parseIdentifier();
++          if (isThis && !first) {
++            this.raise(node.start, FlowErrors.ThisParamMustBeFirst);
++          }
++
++          name = this.parseIdentifier(isThis);
+ 
+           if (this.eat(types.question)) {
+             optional = true;
++
++            if (isThis) {
++              this.raise(node.start, FlowErrors.ThisParamMayNotBeOptional);
++            }
+           }
+ 
+           typeAnnotation = this.flowParseTypeInitialiser();
+@@ -8337,9 +8647,19 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+       flowParseFunctionTypeParams(params = []) {
+         let rest = null;
++        let _this = null;
++
++        if (this.match(types._this)) {
++          _this = this.flowParseFunctionTypeParam(true);
++          _this.name = null;
++
++          if (!this.match(types.parenR)) {
++            this.expect(types.comma);
++          }
++        }
+ 
+         while (!this.match(types.parenR) && !this.match(types.ellipsis)) {
+-          params.push(this.flowParseFunctionTypeParam());
++          params.push(this.flowParseFunctionTypeParam(false));
+ 
+           if (!this.match(types.parenR)) {
+             this.expect(types.comma);
+@@ -8347,12 +8667,13 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         }
+ 
+         if (this.eat(types.ellipsis)) {
+-          rest = this.flowParseFunctionTypeParam();
++          rest = this.flowParseFunctionTypeParam(false);
+         }
+ 
+         return {
+           params,
+-          rest
++          rest,
++          _this
+         };
+       }
+ 
+@@ -8434,6 +8755,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+               tmp = this.flowParseFunctionTypeParams();
+               node.params = tmp.params;
+               node.rest = tmp.rest;
++              node.this = tmp._this;
+               this.expect(types.parenR);
+               this.expect(types.arrow);
+               node.returnType = this.flowParseType();
+@@ -8446,7 +8768,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+             this.next();
+ 
+             if (!this.match(types.parenR) && !this.match(types.ellipsis)) {
+-              if (this.match(types.name)) {
++              if (this.match(types.name) || this.match(types._this)) {
+                 const token = this.lookahead().type;
+                 isGroupedType = token !== types.question && token !== types.colon;
+               } else {
+@@ -8475,6 +8797,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+             node.params = tmp.params;
+             node.rest = tmp.rest;
++            node.this = tmp._this;
+             this.expect(types.parenR);
+             this.expect(types.arrow);
+             node.returnType = this.flowParseType();
+@@ -8577,6 +8900,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+           const node = this.startNodeAt(param.start, param.loc.start);
+           node.params = [this.reinterpretTypeAsFunctionTypeParam(param)];
+           node.rest = null;
++          node.this = null;
+           node.returnType = this.flowParseType();
+           node.typeParameters = null;
+           return this.finishNode(node, "FunctionTypeAnnotation");
+@@ -9001,9 +9325,9 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         super.parseClassMember(classBody, member, state);
+ 
+         if (member.declare) {
+-          if (member.type !== "ClassProperty" && member.type !== "ClassPrivateProperty") {
+-            this.raise(pos, FlowErrors.DeclareClassElement);
+-          } else if (member.value) {
++          if (member.type !== "ClassProperty" && member.type !== "ClassPrivateProperty" && member.type !== "PropertyDefinition") {
++              this.raise(pos, FlowErrors.DeclareClassElement);
++            } else if (member.value) {
+             this.raise(member.value.start, FlowErrors.DeclareClassFieldInitializer);
+           }
+         }
+@@ -9093,7 +9417,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+           const expr = exprList[i];
+ 
+-          if (expr && expr.type === "TypeCastExpression" && !((_expr$extra = expr.extra) == null ? void 0 : _expr$extra.parenthesized) && (exprList.length > 1 || !isParenthesizedExpr)) {
++          if (expr && expr.type === "TypeCastExpression" && !((_expr$extra = expr.extra) != null && _expr$extra.parenthesized) && (exprList.length > 1 || !isParenthesizedExpr)) {
+             this.raise(expr.typeAnnotation.start, FlowErrors.TypeCastInPattern);
+           }
+         }
+@@ -9145,6 +9469,10 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         return !this.match(types.colon) && super.isNonstaticConstructor(method);
+       }
+ 
++      isThisParam(param) {
++        return param.type === "Identifier" && param.name === "this";
++      }
++
+       pushClassMethod(classBody, method, isGenerator, isAsync, isConstructor, allowsDirectSuper) {
+         if (method.variance) {
+           this.unexpected(method.variance.start);
+@@ -9157,6 +9485,20 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         }
+ 
+         super.pushClassMethod(classBody, method, isGenerator, isAsync, isConstructor, allowsDirectSuper);
++
++        if (method.params && isConstructor) {
++          const params = method.params;
++
++          if (params.length > 0 && this.isThisParam(params[0])) {
++            this.raise(method.start, FlowErrors.ThisParamBannedInConstructor);
++          }
++        } else if (method.type === "MethodDefinition" && isConstructor && method.value.params) {
++          const params = method.value.params;
++
++          if (params.length > 0 && this.isThisParam(params[0])) {
++            this.raise(method.start, FlowErrors.ThisParamBannedInConstructor);
++          }
++        }
+       }
+ 
+       pushClassPrivateMethod(classBody, method, isGenerator, isAsync) {
+@@ -9199,6 +9541,21 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         }
+       }
+ 
++      checkGetterSetterParams(method) {
++        super.checkGetterSetterParams(method);
++        const params = this.getObjectOrClassMethodParams(method);
++
++        if (params.length > 0) {
++          const param = params[0];
++
++          if (this.isThisParam(param) && method.kind === "get") {
++            this.raise(param.start, FlowErrors.GetterMayNotHaveThisParam);
++          } else if (this.isThisParam(param)) {
++            this.raise(param.start, FlowErrors.SetterMayNotHaveThisParam);
++          }
++        }
++      }
++
+       parsePropertyName(node, isPrivateNameAllowed) {
+         const variance = this.flowParseVariance();
+         const key = super.parsePropertyName(node, isPrivateNameAllowed);
+@@ -9232,11 +9589,21 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+             this.raise(param.start, FlowErrors.OptionalBindingPattern);
+           }
+ 
++          if (this.isThisParam(param)) {
++            this.raise(param.start, FlowErrors.ThisParamMayNotBeOptional);
++          }
++
+           param.optional = true;
+         }
+ 
+         if (this.match(types.colon)) {
+           param.typeAnnotation = this.flowParseTypeAnnotation();
++        } else if (this.isThisParam(param)) {
++          this.raise(param.start, FlowErrors.ThisParamAnnotationRequired);
++        }
++
++        if (this.match(types.eq) && this.isThisParam(param)) {
++          this.raise(param.start, FlowErrors.ThisParamNoDefault);
+         }
+ 
+         this.resetEndLocation(param);
+@@ -9361,6 +9728,16 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         node.specifiers.push(this.finishNode(specifier, "ImportSpecifier"));
+       }
+ 
++      parseBindingAtom() {
++        switch (this.state.type) {
++          case types._this:
++            return this.parseIdentifier(true);
++
++          default:
++            return super.parseBindingAtom();
++        }
++      }
++
+       parseFunctionParams(node, allowModifiers) {
+         const kind = node.kind;
+ 
+@@ -9416,7 +9793,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+           }
+         }
+ 
+-        if (((_jsx = jsx) == null ? void 0 : _jsx.error) || this.isRelational("<")) {
++        if ((_jsx = jsx) != null && _jsx.error || this.isRelational("<")) {
+           var _jsx2, _jsx3;
+ 
+           state = state || this.state.clone();
+@@ -9431,7 +9808,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+               return result;
+             });
+ 
+-            if (arrowExpression.type !== "ArrowFunctionExpression" && ((_arrowExpression$extr = arrowExpression.extra) == null ? void 0 : _arrowExpression$extr.parenthesized)) {
++            if (arrowExpression.type !== "ArrowFunctionExpression" && (_arrowExpression$extr = arrowExpression.extra) != null && _arrowExpression$extr.parenthesized) {
+               abort();
+             }
+ 
+@@ -9454,7 +9831,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+             arrowExpression = arrow.node;
+           }
+ 
+-          if ((_jsx2 = jsx) == null ? void 0 : _jsx2.node) {
++          if ((_jsx2 = jsx) != null && _jsx2.node) {
+             this.state = jsx.failState;
+             return jsx.node;
+           }
+@@ -9464,7 +9841,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+             return arrowExpression;
+           }
+ 
+-          if ((_jsx3 = jsx) == null ? void 0 : _jsx3.thrown) throw jsx.error;
++          if ((_jsx3 = jsx) != null && _jsx3.thrown) throw jsx.error;
+           if (arrow.thrown) throw arrow.error;
+           throw this.raise(typeParameters.start, FlowErrors.UnexpectedTokenAfterTypeParameter);
+         }
+@@ -9509,6 +9886,12 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+           return;
+         }
+ 
++        for (let i = 0; i < node.params.length; i++) {
++          if (this.isThisParam(node.params[i]) && i > 0) {
++            this.raise(node.params[i].start, FlowErrors.ThisParamMustBeFirst);
++          }
++        }
++
+         return super.checkParams(...arguments);
+       }
+ 
+@@ -9877,8 +10260,14 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+           stringMembers: [],
+           defaultedMembers: []
+         };
++        let hasUnknownMembers = false;
+ 
+         while (!this.match(types.braceR)) {
++          if (this.eat(types.ellipsis)) {
++            hasUnknownMembers = true;
++            break;
++          }
++
+           const memberNode = this.startNode();
+           const {
+             id,
+@@ -9964,7 +10353,10 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+           }
+         }
+ 
+-        return members;
++        return {
++          members,
++          hasUnknownMembers
++        };
+       }
+ 
+       flowEnumStringMembers(initializedMembers, defaultedMembers, {
+@@ -9975,8 +10367,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         } else if (defaultedMembers.length === 0) {
+           return initializedMembers;
+         } else if (defaultedMembers.length > initializedMembers.length) {
+-          for (let _i = 0; _i < initializedMembers.length; _i++) {
+-            const member = initializedMembers[_i];
++          for (const member of initializedMembers) {
+             this.flowEnumErrorStringMemberInconsistentlyInitailized(member.start, {
+               enumName
+             });
+@@ -9984,8 +10375,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+           return defaultedMembers;
+         } else {
+-          for (let _i2 = 0; _i2 < defaultedMembers.length; _i2++) {
+-            const member = defaultedMembers[_i2];
++          for (const member of defaultedMembers) {
+             this.flowEnumErrorStringMemberInconsistentlyInitailized(member.start, {
+               enumName
+             });
+@@ -10032,10 +10422,14 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+           enumName
+         });
+         this.expect(types.braceL);
+-        const members = this.flowEnumMembers({
++        const {
++          members,
++          hasUnknownMembers
++        } = this.flowEnumMembers({
+           enumName,
+           explicitType
+         });
++        node.hasUnknownMembers = hasUnknownMembers;
+ 
+         switch (explicitType) {
+           case "boolean":
+@@ -10086,8 +10480,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+                 this.expect(types.braceR);
+                 return this.finishNode(node, "EnumStringBody");
+               } else if (!numsLen && !strsLen && boolsLen >= defaultedLen) {
+-                for (let _i3 = 0, _members$defaultedMem = members.defaultedMembers; _i3 < _members$defaultedMem.length; _i3++) {
+-                  const member = _members$defaultedMem[_i3];
++                for (const member of members.defaultedMembers) {
+                   this.flowEnumErrorBooleanMemberNotInitialized(member.start, {
+                     enumName,
+                     memberName: member.id.name
+@@ -10098,8 +10491,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+                 this.expect(types.braceR);
+                 return this.finishNode(node, "EnumBooleanBody");
+               } else if (!boolsLen && !strsLen && numsLen >= defaultedLen) {
+-                for (let _i4 = 0, _members$defaultedMem2 = members.defaultedMembers; _i4 < _members$defaultedMem2.length; _i4++) {
+-                  const member = _members$defaultedMem2[_i4];
++                for (const member of members.defaultedMembers) {
+                   this.flowEnumErrorNumberMemberNotInitialized(member.start, {
+                     enumName,
+                     memberName: member.id.name
+@@ -10417,6 +10809,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+     AttributeIsEmpty: "JSX attributes must only be assigned a non-empty expression",
+     MissingClosingTagFragment: "Expected corresponding JSX closing tag for <>",
+     MissingClosingTagElement: "Expected corresponding JSX closing tag for <%0>",
++    UnexpectedSequenceExpression: "Sequence expressions cannot be directly nested inside JSX. Did you mean to wrap it in parentheses (...)?",
+     UnsupportedJsxValue: "JSX value should be either an expression or a quoted JSX text",
+     UnterminatedJsxContent: "Unterminated JSX contents",
+     UnwrappedAdjacentJSXElements: "Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX fragment <>...</>?"
+@@ -10503,6 +10896,9 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+             chunkStart = this.state.pos;
+             break;
+ 
++          case 62:
++          case 125:
++
+           default:
+             if (isNewLine(ch)) {
+               out += this.input.slice(chunkStart, this.state.pos);
+@@ -10701,7 +11097,8 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       if (this.match(types.braceR)) {
+         node.expression = this.jsxParseEmptyExpression();
+       } else {
+-        node.expression = this.parseExpression();
++        const expression = this.parseExpression();
++        node.expression = expression;
+       }
+ 
+       this.expect(types.braceR);
+@@ -10909,153 +11306,6 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+   });
+ 
+-  class Scope {
+-    constructor(flags) {
+-      this.flags = void 0;
+-      this.var = [];
+-      this.lexical = [];
+-      this.functions = [];
+-      this.flags = flags;
+-    }
+-
+-  }
+-  class ScopeHandler {
+-    constructor(raise, inModule) {
+-      this.scopeStack = [];
+-      this.undefinedExports = new Map();
+-      this.undefinedPrivateNames = new Map();
+-      this.raise = raise;
+-      this.inModule = inModule;
+-    }
+-
+-    get inFunction() {
+-      return (this.currentVarScope().flags & SCOPE_FUNCTION) > 0;
+-    }
+-
+-    get allowSuper() {
+-      return (this.currentThisScope().flags & SCOPE_SUPER) > 0;
+-    }
+-
+-    get allowDirectSuper() {
+-      return (this.currentThisScope().flags & SCOPE_DIRECT_SUPER) > 0;
+-    }
+-
+-    get inClass() {
+-      return (this.currentThisScope().flags & SCOPE_CLASS) > 0;
+-    }
+-
+-    get inNonArrowFunction() {
+-      return (this.currentThisScope().flags & SCOPE_FUNCTION) > 0;
+-    }
+-
+-    get treatFunctionsAsVar() {
+-      return this.treatFunctionsAsVarInScope(this.currentScope());
+-    }
+-
+-    createScope(flags) {
+-      return new Scope(flags);
+-    }
+-
+-    enter(flags) {
+-      this.scopeStack.push(this.createScope(flags));
+-    }
+-
+-    exit() {
+-      this.scopeStack.pop();
+-    }
+-
+-    treatFunctionsAsVarInScope(scope) {
+-      return !!(scope.flags & SCOPE_FUNCTION || !this.inModule && scope.flags & SCOPE_PROGRAM);
+-    }
+-
+-    declareName(name, bindingType, pos) {
+-      let scope = this.currentScope();
+-
+-      if (bindingType & BIND_SCOPE_LEXICAL || bindingType & BIND_SCOPE_FUNCTION) {
+-        this.checkRedeclarationInScope(scope, name, bindingType, pos);
+-
+-        if (bindingType & BIND_SCOPE_FUNCTION) {
+-          scope.functions.push(name);
+-        } else {
+-          scope.lexical.push(name);
+-        }
+-
+-        if (bindingType & BIND_SCOPE_LEXICAL) {
+-          this.maybeExportDefined(scope, name);
+-        }
+-      } else if (bindingType & BIND_SCOPE_VAR) {
+-        for (let i = this.scopeStack.length - 1; i >= 0; --i) {
+-          scope = this.scopeStack[i];
+-          this.checkRedeclarationInScope(scope, name, bindingType, pos);
+-          scope.var.push(name);
+-          this.maybeExportDefined(scope, name);
+-          if (scope.flags & SCOPE_VAR) break;
+-        }
+-      }
+-
+-      if (this.inModule && scope.flags & SCOPE_PROGRAM) {
+-        this.undefinedExports.delete(name);
+-      }
+-    }
+-
+-    maybeExportDefined(scope, name) {
+-      if (this.inModule && scope.flags & SCOPE_PROGRAM) {
+-        this.undefinedExports.delete(name);
+-      }
+-    }
+-
+-    checkRedeclarationInScope(scope, name, bindingType, pos) {
+-      if (this.isRedeclaredInScope(scope, name, bindingType)) {
+-        this.raise(pos, ErrorMessages.VarRedeclaration, name);
+-      }
+-    }
+-
+-    isRedeclaredInScope(scope, name, bindingType) {
+-      if (!(bindingType & BIND_KIND_VALUE)) return false;
+-
+-      if (bindingType & BIND_SCOPE_LEXICAL) {
+-        return scope.lexical.indexOf(name) > -1 || scope.functions.indexOf(name) > -1 || scope.var.indexOf(name) > -1;
+-      }
+-
+-      if (bindingType & BIND_SCOPE_FUNCTION) {
+-        return scope.lexical.indexOf(name) > -1 || !this.treatFunctionsAsVarInScope(scope) && scope.var.indexOf(name) > -1;
+-      }
+-
+-      return scope.lexical.indexOf(name) > -1 && !(scope.flags & SCOPE_SIMPLE_CATCH && scope.lexical[0] === name) || !this.treatFunctionsAsVarInScope(scope) && scope.functions.indexOf(name) > -1;
+-    }
+-
+-    checkLocalExport(id) {
+-      if (this.scopeStack[0].lexical.indexOf(id.name) === -1 && this.scopeStack[0].var.indexOf(id.name) === -1 && this.scopeStack[0].functions.indexOf(id.name) === -1) {
+-        this.undefinedExports.set(id.name, id.start);
+-      }
+-    }
+-
+-    currentScope() {
+-      return this.scopeStack[this.scopeStack.length - 1];
+-    }
+-
+-    currentVarScope() {
+-      for (let i = this.scopeStack.length - 1;; i--) {
+-        const scope = this.scopeStack[i];
+-
+-        if (scope.flags & SCOPE_VAR) {
+-          return scope;
+-        }
+-      }
+-    }
+-
+-    currentThisScope() {
+-      for (let i = this.scopeStack.length - 1;; i--) {
+-        const scope = this.scopeStack[i];
+-
+-        if ((scope.flags & SCOPE_VAR || scope.flags & SCOPE_CLASS) && !(scope.flags & SCOPE_ARROW)) {
+-          return scope;
+-        }
+-      }
+-    }
+-
+-  }
+-
+   class TypeScriptScope extends Scope {
+     constructor(...args) {
+       super(...args);
+@@ -11196,19 +11446,25 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+     DeclareClassFieldHasInitializer: "Initializers are not allowed in ambient contexts.",
+     DeclareFunctionHasImplementation: "An implementation cannot be declared in ambient contexts.",
+     DuplicateModifier: "Duplicate modifier: '%0'",
++    DuplicateAccessibilityModifier: "Accessibility modifier already seen.",
+     EmptyHeritageClauseType: "'%0' list cannot be empty.",
+     EmptyTypeArguments: "Type argument list cannot be empty.",
+     EmptyTypeParameters: "Type parameter list cannot be empty.",
++    ExpectedAmbientAfterExportDeclare: "'export declare' must be followed by an ambient declaration.",
+     IndexSignatureHasAbstract: "Index signatures cannot have the 'abstract' modifier",
+     IndexSignatureHasAccessibility: "Index signatures cannot have an accessibility modifier ('%0')",
+     IndexSignatureHasStatic: "Index signatures cannot have the 'static' modifier",
+     IndexSignatureHasDeclare: "Index signatures cannot have the 'declare' modifier",
++    InvalidModifierOnTypeMember: "'%0' modifier cannot appear on a type member.",
+     InvalidTupleMemberLabel: "Tuple members must be labeled with a simple identifier.",
+     MixedLabeledAndUnlabeledElements: "Tuple members must all have names or all not have names.",
++    NonAbstractClassHasAbstractMethod: "Abstract methods can only appear within an abstract class.",
++    NonClassMethodPropertyHasAbstractModifer: "'abstract' modifier can only appear on a class, method, or property declaration.",
+     OptionalTypeBeforeRequired: "A required element cannot follow an optional element.",
+     PatternIsOptional: "A binding pattern parameter cannot be optional in an implementation signature.",
+     PrivateElementHasAbstract: "Private elements cannot have the 'abstract' modifier.",
+     PrivateElementHasAccessibility: "Private elements cannot have an accessibility modifier ('%0')",
++    ReadonlyForMethodSignature: "'readonly' modifier can only appear on a property declaration or index signature.",
+     TypeAnnotationAfterAssign: "Type annotations must come before default assignments, e.g. instead of `age = 25: number` use `age: number = 25`",
+     UnexpectedParameterModifier: "A parameter property is only allowed in a constructor implementation.",
+     UnexpectedReadonly: "'readonly' type modifier is only permitted on array and tuple literal types.",
+@@ -11256,6 +11512,10 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+     }
+   }
+ 
++  function tsIsAccessModifier(modifier) {
++    return modifier === "private" || modifier === "public" || modifier === "protected";
++  }
++
+   var typescript = (superClass => class extends superClass {
+     getScopeHandler() {
+       return TypeScriptScopeHandler;
+@@ -11284,17 +11544,29 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       return undefined;
+     }
+ 
+-    tsParseModifiers(modified, allowedModifiers) {
++    tsParseModifiers(modified, allowedModifiers, disallowedModifiers, errorTemplate) {
+       for (;;) {
+         const startPos = this.state.start;
+-        const modifier = this.tsParseModifier(allowedModifiers);
++        const modifier = this.tsParseModifier(allowedModifiers.concat(disallowedModifiers != null ? disallowedModifiers : []));
+         if (!modifier) break;
+ 
+-        if (Object.hasOwnProperty.call(modified, modifier)) {
+-          this.raise(startPos, TSErrors.DuplicateModifier, modifier);
++        if (tsIsAccessModifier(modifier)) {
++          if (modified.accessibility) {
++            this.raise(startPos, TSErrors.DuplicateAccessibilityModifier);
++          } else {
++            modified.accessibility = modifier;
++          }
++        } else {
++          if (Object.hasOwnProperty.call(modified, modifier)) {
++            this.raise(startPos, TSErrors.DuplicateModifier, modifier);
++          }
++
++          modified[modifier] = true;
+         }
+ 
+-        modified[modifier] = true;
++        if (disallowedModifiers != null && disallowedModifiers.includes(modifier)) {
++          this.raise(startPos, errorTemplate, modifier);
++        }
+       }
+     }
+ 
+@@ -11562,7 +11834,11 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       if (this.eat(types.question)) node.optional = true;
+       const nodeAny = node;
+ 
+-      if (!readonly && (this.match(types.parenL) || this.isRelational("<"))) {
++      if (this.match(types.parenL) || this.isRelational("<")) {
++        if (readonly) {
++          this.raise(node.start, TSErrors.ReadonlyForMethodSignature);
++        }
++
+         const method = nodeAny;
+         this.tsFillSignature(types.colon, method);
+         this.tsParseTypeMemberSemicolon();
+@@ -11596,16 +11872,15 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         }
+       }
+ 
+-      const readonly = !!this.tsParseModifier(["readonly"]);
++      this.tsParseModifiers(node, ["readonly"], ["declare", "abstract", "private", "protected", "public", "static"], TSErrors.InvalidModifierOnTypeMember);
+       const idx = this.tsTryParseIndexSignature(node);
+ 
+       if (idx) {
+-        if (readonly) node.readonly = true;
+         return idx;
+       }
+ 
+       this.parsePropertyName(node, false);
+-      return this.tsParsePropertyOrMethodSignature(node, readonly);
++      return this.tsParsePropertyOrMethodSignature(node, !!node.readonly);
+     }
+ 
+     tsParseTypeLiteral() {
+@@ -11763,11 +12038,13 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       return this.finishNode(node, "TSParenthesizedType");
+     }
+ 
+-    tsParseFunctionOrConstructorType(type) {
++    tsParseFunctionOrConstructorType(type, abstract) {
+       const node = this.startNode();
+ 
+       if (type === "TSConstructorType") {
+-        this.expect(types._new);
++        node.abstract = !!abstract;
++        if (abstract) this.next();
++        this.next();
+       }
+ 
+       this.tsFillSignature(types.arrow, node);
+@@ -11939,22 +12216,20 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+     }
+ 
+     tsParseUnionOrIntersectionType(kind, parseConstituentType, operator) {
+-      this.eat(operator);
+-      let type = parseConstituentType();
+-
+-      if (this.match(operator)) {
+-        const types = [type];
++      const node = this.startNode();
++      const hasLeadingOperator = this.eat(operator);
++      const types = [];
+ 
+-        while (this.eat(operator)) {
+-          types.push(parseConstituentType());
+-        }
++      do {
++        types.push(parseConstituentType());
++      } while (this.eat(operator));
+ 
+-        const node = this.startNodeAtNode(type);
+-        node.types = types;
+-        type = this.finishNode(node, kind);
++      if (types.length === 1 && !hasLeadingOperator) {
++        return types[0];
+       }
+ 
+-      return type;
++      node.types = types;
++      return this.finishNode(node, kind);
+     }
+ 
+     tsParseIntersectionTypeOrHigher() {
+@@ -12044,17 +12319,18 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       return this.tsInType(() => {
+         const t = this.startNode();
+         this.expect(returnToken);
++        const node = this.startNode();
+         const asserts = !!this.tsTryParse(this.tsParseTypePredicateAsserts.bind(this));
+ 
+         if (asserts && this.match(types._this)) {
+           let thisTypePredicate = this.tsParseThisTypeOrThisTypePredicate();
+ 
+           if (thisTypePredicate.type === "TSThisType") {
+-            const node = this.startNodeAtNode(t);
+             node.parameterName = thisTypePredicate;
+             node.asserts = true;
+             thisTypePredicate = this.finishNode(node, "TSTypePredicate");
+           } else {
++            this.resetStartLocationFromNode(thisTypePredicate, node);
+             thisTypePredicate.asserts = true;
+           }
+ 
+@@ -12069,7 +12345,6 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+             return this.tsParseTypeAnnotation(false, t);
+           }
+ 
+-          const node = this.startNodeAtNode(t);
+           node.parameterName = this.parseIdentifier();
+           node.asserts = asserts;
+           t.typeAnnotation = this.finishNode(node, "TSTypePredicate");
+@@ -12077,7 +12352,6 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         }
+ 
+         const type = this.tsParseTypeAnnotation(false);
+-        const node = this.startNodeAtNode(t);
+         node.parameterName = typePredicateVariable;
+         node.typeAnnotation = type;
+         node.asserts = asserts;
+@@ -12152,6 +12426,10 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       return this.finishNode(node, "TSConditionalType");
+     }
+ 
++    isAbstractConstructorSignature() {
++      return this.isContextual("abstract") && this.lookahead().type === types._new;
++    }
++
+     tsParseNonConditionalType() {
+       if (this.tsIsStartOfFunctionType()) {
+         return this.tsParseFunctionOrConstructorType("TSFunctionType");
+@@ -12159,6 +12437,8 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+       if (this.match(types._new)) {
+         return this.tsParseFunctionOrConstructorType("TSConstructorType");
++      } else if (this.isAbstractConstructorSignature()) {
++        return this.tsParseFunctionOrConstructorType("TSConstructorType", true);
+       }
+ 
+       return this.tsParseUnionTypeOrHigher();
+@@ -12494,19 +12774,8 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+     tsParseDeclaration(node, value, next) {
+       switch (value) {
+         case "abstract":
+-          if (this.tsCheckLineTerminatorAndMatch(types._class, next)) {
+-            const cls = node;
+-            cls.abstract = true;
+-
+-            if (next) {
+-              this.next();
+-
+-              if (!this.match(types._class)) {
+-                this.unexpected(null, types._class);
+-              }
+-            }
+-
+-            return this.parseClass(cls, true, false);
++          if (this.tsCheckLineTerminator(next) && (this.match(types._class) || this.match(types.name))) {
++            return this.tsParseAbstractDeclaration(node);
+           }
+ 
+           break;
+@@ -12520,35 +12789,32 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+           break;
+ 
+         case "interface":
+-          if (this.tsCheckLineTerminatorAndMatch(types.name, next)) {
+-            if (next) this.next();
++          if (this.tsCheckLineTerminator(next) && this.match(types.name)) {
+             return this.tsParseInterfaceDeclaration(node);
+           }
+ 
+           break;
+ 
+         case "module":
+-          if (next) this.next();
+-
+-          if (this.match(types.string)) {
+-            return this.tsParseAmbientExternalModuleDeclaration(node);
+-          } else if (this.tsCheckLineTerminatorAndMatch(types.name, next)) {
+-            return this.tsParseModuleOrNamespaceDeclaration(node);
++          if (this.tsCheckLineTerminator(next)) {
++            if (this.match(types.string)) {
++              return this.tsParseAmbientExternalModuleDeclaration(node);
++            } else if (this.match(types.name)) {
++              return this.tsParseModuleOrNamespaceDeclaration(node);
++            }
+           }
+ 
+           break;
+ 
+         case "namespace":
+-          if (this.tsCheckLineTerminatorAndMatch(types.name, next)) {
+-            if (next) this.next();
++          if (this.tsCheckLineTerminator(next) && this.match(types.name)) {
+             return this.tsParseModuleOrNamespaceDeclaration(node);
+           }
+ 
+           break;
+ 
+         case "type":
+-          if (this.tsCheckLineTerminatorAndMatch(types.name, next)) {
+-            if (next) this.next();
++          if (this.tsCheckLineTerminator(next) && this.match(types.name)) {
+             return this.tsParseTypeAliasDeclaration(node);
+           }
+ 
+@@ -12556,8 +12822,14 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       }
+     }
+ 
+-    tsCheckLineTerminatorAndMatch(tokenType, next) {
+-      return (next || this.match(tokenType)) && !this.isLineTerminator();
++    tsCheckLineTerminator(next) {
++      if (next) {
++        if (this.hasFollowingLineBreak()) return false;
++        this.next();
++        return true;
++      }
++
++      return !this.isLineTerminator();
+     }
+ 
+     tsTryParseGenericAsyncArrowFunction(startPos, startLoc) {
+@@ -12749,6 +13021,11 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+               node.arguments = this.parseCallExpressionArguments(types.parenR, false);
+               this.tsCheckForInvalidTypeCasts(node.arguments);
+               node.typeParameters = typeArguments;
++
++              if (state.optionalChainMember) {
++                node.optional = false;
++              }
++
+               return this.finishCallExpression(node, state.optionalChainMember);
+             } else if (this.match(types.backQuote)) {
+               const result = this.parseTaggedTemplateExpression(base, startPos, startLoc, state);
+@@ -12868,8 +13145,8 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       if (this.isAbstractClass()) {
+         const cls = this.startNode();
+         this.next();
+-        this.parseClass(cls, true, true);
+         cls.abstract = true;
++        this.parseClass(cls, true, true);
+         return cls;
+       }
+ 
+@@ -12901,10 +13178,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+     }
+ 
+     parseClassMember(classBody, member, state) {
+-      this.tsParseModifiers(member, ["declare"]);
+-      const accessibility = this.parseAccessModifier();
+-      if (accessibility) member.accessibility = accessibility;
+-      this.tsParseModifiers(member, ["declare"]);
++      this.tsParseModifiers(member, ["declare", "private", "public", "protected"]);
+ 
+       const callParseClassMember = () => {
+         super.parseClassMember(classBody, member, state);
+@@ -12943,6 +13217,10 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         return;
+       }
+ 
++      if (!this.state.inAbstractClass && member.abstract) {
++        this.raise(member.start, TSErrors.NonAbstractClassHasAbstractMethod);
++      }
++
+       super.parseClassMemberWithIsStatic(classBody, member, state, isStatic);
+     }
+ 
+@@ -13007,6 +13285,11 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       const startPos = this.state.start;
+       const startLoc = this.state.startLoc;
+       const isDeclare = this.eatContextual("declare");
++
++      if (isDeclare && (this.isContextual("declare") || !this.shouldParseExportDeclaration())) {
++        throw this.raise(this.state.start, TSErrors.ExpectedAmbientAfterExportDeclare);
++      }
++
+       let declaration;
+ 
+       if (this.match(types.name)) {
+@@ -13142,7 +13425,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       let jsx;
+       let typeCast;
+ 
+-      if (this.match(types.jsxTagStart)) {
++      if (this.hasPlugin("jsx") && (this.match(types.jsxTagStart) || this.isRelational("<"))) {
+         state = this.state.clone();
+         jsx = this.tryParse(() => super.parseMaybeAssign(...args), state);
+         if (!jsx.error) return jsx.node;
+@@ -13157,7 +13440,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         }
+       }
+ 
+-      if (!((_jsx = jsx) == null ? void 0 : _jsx.error) && !this.isRelational("<")) {
++      if (!((_jsx = jsx) != null && _jsx.error) && !this.isRelational("<")) {
+         return super.parseMaybeAssign(...args);
+       }
+ 
+@@ -13188,7 +13471,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         if (!typeCast.error) return typeCast.node;
+       }
+ 
+-      if ((_jsx2 = jsx) == null ? void 0 : _jsx2.node) {
++      if ((_jsx2 = jsx) != null && _jsx2.node) {
+         this.state = jsx.failState;
+         return jsx.node;
+       }
+@@ -13198,14 +13481,14 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         return arrow.node;
+       }
+ 
+-      if ((_typeCast = typeCast) == null ? void 0 : _typeCast.node) {
++      if ((_typeCast = typeCast) != null && _typeCast.node) {
+         this.state = typeCast.failState;
+         return typeCast.node;
+       }
+ 
+-      if ((_jsx3 = jsx) == null ? void 0 : _jsx3.thrown) throw jsx.error;
++      if ((_jsx3 = jsx) != null && _jsx3.thrown) throw jsx.error;
+       if (arrow.thrown) throw arrow.error;
+-      if ((_typeCast2 = typeCast) == null ? void 0 : _typeCast2.thrown) throw typeCast.error;
++      if ((_typeCast2 = typeCast) != null && _typeCast2.thrown) throw typeCast.error;
+       throw ((_jsx4 = jsx) == null ? void 0 : _jsx4.error) || arrow.error || ((_typeCast3 = typeCast) == null ? void 0 : _typeCast3.error);
+     }
+ 
+@@ -13436,6 +13719,33 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       }
+     }
+ 
++    parseClass(node, ...args) {
++      const oldInAbstractClass = this.state.inAbstractClass;
++      this.state.inAbstractClass = !!node.abstract;
++
++      try {
++        return super.parseClass(node, ...args);
++      } finally {
++        this.state.inAbstractClass = oldInAbstractClass;
++      }
++    }
++
++    tsParseAbstractDeclaration(node) {
++      if (this.match(types._class)) {
++        node.abstract = true;
++        return this.parseClass(node, true, false);
++      } else if (this.isContextual("interface")) {
++        if (!this.hasFollowingLineBreak()) {
++          node.abstract = true;
++          this.raise(node.start, TSErrors.NonClassMethodPropertyHasAbstractModifer);
++          this.next();
++          return this.tsParseInterfaceDeclaration(node);
++        }
++      } else {
++        this.unexpected(null, types._class);
++      }
++    }
++
+   });
+ 
+   types.placeholder = new TokenType("%%", {
+@@ -13497,6 +13807,25 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       return super.toAssignable(...arguments);
+     }
+ 
++    isLet(context) {
++      if (super.isLet(context)) {
++        return true;
++      }
++
++      if (!this.isContextual("let")) {
++        return false;
++      }
++
++      if (context) return false;
++      const nextToken = this.lookahead();
++
++      if (nextToken.type === types.placeholder) {
++        return true;
++      }
++
++      return false;
++    }
++
+     verifyBreakContinue(node) {
+       if (node.label && node.label.type === "Placeholder") return;
+       super.verifyBreakContinue(...arguments);
+@@ -13599,7 +13928,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         specifiers
+       } = node;
+ 
+-      if (specifiers == null ? void 0 : specifiers.length) {
++      if (specifiers != null && specifiers.length) {
+         node.specifiers = specifiers.filter(node => node.exported.type === "Placeholder");
+       }
+ 
+@@ -13765,8 +14094,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+   function getOptions(opts) {
+     const options = {};
+ 
+-    for (let _i = 0, _Object$keys = Object.keys(defaultOptions); _i < _Object$keys.length; _i++) {
+-      const key = _Object$keys[_i];
++    for (const key of Object.keys(defaultOptions)) {
+       options[key] = opts && opts[key] != null ? opts[key] : defaultOptions[key];
+     }
+ 
+@@ -13791,6 +14119,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       this.hasFlowComment = false;
+       this.isIterator = false;
+       this.isDeclareContext = false;
++      this.inAbstractClass = false;
+       this.topicContext = {
+         maxNumOfResolvableTopics: 0,
+         maxTopicIndex: null
+@@ -13817,7 +14146,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       this.context = [types$1.braceStatement];
+       this.exprAllowed = true;
+       this.containsEsc = false;
+-      this.octalPositions = [];
++      this.strictErrors = new Map();
+       this.exportedIdentifiers = [];
+       this.tokensLength = 0;
+     }
+@@ -13949,15 +14278,11 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+     setStrict(strict) {
+       this.state.strict = strict;
+-      if (!this.match(types.num) && !this.match(types.string)) return;
+-      this.state.pos = this.state.start;
+ 
+-      while (this.state.pos < this.state.lineStart) {
+-        this.state.lineStart = this.input.lastIndexOf("\n", this.state.lineStart - 2) + 1;
+-        --this.state.curLine;
++      if (strict) {
++        this.state.strictErrors.forEach((message, pos) => this.raise(pos, message));
++        this.state.strictErrors.clear();
+       }
+-
+-      this.nextToken();
+     }
+ 
+     curContext() {
+@@ -13966,8 +14291,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+     nextToken() {
+       const curContext = this.curContext();
+-      if (!(curContext == null ? void 0 : curContext.preserveSpace)) this.skipSpace();
+-      this.state.octalPositions = [];
++      if (!(curContext != null && curContext.preserveSpace)) this.skipSpace();
+       this.state.start = this.state.pos;
+       this.state.startLoc = this.state.curPosition();
+ 
+@@ -14694,10 +15018,9 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+       if (hasLeadingZero) {
+         const integer = this.input.slice(start, this.state.pos);
++        this.recordStrictModeErrors(start, ErrorMessages.StrictOctalLiteral);
+ 
+-        if (this.state.strict) {
+-          this.raise(start, ErrorMessages.StrictOctalLiteral);
+-        } else {
++        if (!this.state.strict) {
+           const underscorePos = integer.indexOf("_");
+ 
+           if (underscorePos > 0) {
+@@ -14896,6 +15219,14 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       }
+     }
+ 
++    recordStrictModeErrors(pos, message) {
++      if (this.state.strict && !this.state.strictErrors.has(pos)) {
++        this.raise(pos, message);
++      } else {
++        this.state.strictErrors.set(pos, message);
++      }
++    }
++
+     readEscapedChar(inTemplate) {
+       const throwOnInvalid = !inTemplate;
+       const ch = this.input.charCodeAt(++this.state.pos);
+@@ -14949,8 +15280,8 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         case 57:
+           if (inTemplate) {
+             return null;
+-          } else if (this.state.strict) {
+-            this.raise(this.state.pos - 1, ErrorMessages.StrictNumericEscape);
++          } else {
++            this.recordStrictModeErrors(this.state.pos - 1, ErrorMessages.StrictNumericEscape);
+           }
+ 
+         default:
+@@ -14971,10 +15302,8 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+             if (octalStr !== "0" || next === 56 || next === 57) {
+               if (inTemplate) {
+                 return null;
+-              } else if (this.state.strict) {
+-                this.raise(codePos, ErrorMessages.StrictNumericEscape);
+               } else {
+-                this.state.octalPositions.push(codePos);
++                this.recordStrictModeErrors(codePos, ErrorMessages.StrictNumericEscape);
+               }
+             }
+ 
+@@ -15116,6 +15445,225 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+   }
+ 
++  class ClassScope {
++    constructor() {
++      this.privateNames = new Set();
++      this.loneAccessors = new Map();
++      this.undefinedPrivateNames = new Map();
++    }
++
++  }
++  class ClassScopeHandler {
++    constructor(raise) {
++      this.stack = [];
++      this.undefinedPrivateNames = new Map();
++      this.raise = raise;
++    }
++
++    current() {
++      return this.stack[this.stack.length - 1];
++    }
++
++    enter() {
++      this.stack.push(new ClassScope());
++    }
++
++    exit() {
++      const oldClassScope = this.stack.pop();
++      const current = this.current();
++
++      for (const [name, pos] of Array.from(oldClassScope.undefinedPrivateNames)) {
++        if (current) {
++          if (!current.undefinedPrivateNames.has(name)) {
++            current.undefinedPrivateNames.set(name, pos);
++          }
++        } else {
++          this.raise(pos, ErrorMessages.InvalidPrivateFieldResolution, name);
++        }
++      }
++    }
++
++    declarePrivateName(name, elementType, pos) {
++      const classScope = this.current();
++      let redefined = classScope.privateNames.has(name);
++
++      if (elementType & CLASS_ELEMENT_KIND_ACCESSOR) {
++        const accessor = redefined && classScope.loneAccessors.get(name);
++
++        if (accessor) {
++          const oldStatic = accessor & CLASS_ELEMENT_FLAG_STATIC;
++          const newStatic = elementType & CLASS_ELEMENT_FLAG_STATIC;
++          const oldKind = accessor & CLASS_ELEMENT_KIND_ACCESSOR;
++          const newKind = elementType & CLASS_ELEMENT_KIND_ACCESSOR;
++          redefined = oldKind === newKind || oldStatic !== newStatic;
++          if (!redefined) classScope.loneAccessors.delete(name);
++        } else if (!redefined) {
++          classScope.loneAccessors.set(name, elementType);
++        }
++      }
++
++      if (redefined) {
++        this.raise(pos, ErrorMessages.PrivateNameRedeclaration, name);
++      }
++
++      classScope.privateNames.add(name);
++      classScope.undefinedPrivateNames.delete(name);
++    }
++
++    usePrivateName(name, pos) {
++      let classScope;
++
++      for (classScope of this.stack) {
++        if (classScope.privateNames.has(name)) return;
++      }
++
++      if (classScope) {
++        classScope.undefinedPrivateNames.set(name, pos);
++      } else {
++        this.raise(pos, ErrorMessages.InvalidPrivateFieldResolution, name);
++      }
++    }
++
++  }
++
++  const kExpression = 0,
++        kMaybeArrowParameterDeclaration = 1,
++        kMaybeAsyncArrowParameterDeclaration = 2,
++        kParameterDeclaration = 3;
++
++  class ExpressionScope {
++    constructor(type = kExpression) {
++      this.type = void 0;
++      this.type = type;
++    }
++
++    canBeArrowParameterDeclaration() {
++      return this.type === kMaybeAsyncArrowParameterDeclaration || this.type === kMaybeArrowParameterDeclaration;
++    }
++
++    isCertainlyParameterDeclaration() {
++      return this.type === kParameterDeclaration;
++    }
++
++  }
++
++  class ArrowHeadParsingScope extends ExpressionScope {
++    constructor(type) {
++      super(type);
++      this.errors = new Map();
++    }
++
++    recordDeclarationError(pos, message) {
++      this.errors.set(pos, message);
++    }
++
++    clearDeclarationError(pos) {
++      this.errors.delete(pos);
++    }
++
++    iterateErrors(iterator) {
++      this.errors.forEach(iterator);
++    }
++
++  }
++
++  class ExpressionScopeHandler {
++    constructor(raise) {
++      this.stack = [new ExpressionScope()];
++      this.raise = raise;
++    }
++
++    enter(scope) {
++      this.stack.push(scope);
++    }
++
++    exit() {
++      this.stack.pop();
++    }
++
++    recordParameterInitializerError(pos, message) {
++      const {
++        stack
++      } = this;
++      let i = stack.length - 1;
++      let scope = stack[i];
++
++      while (!scope.isCertainlyParameterDeclaration()) {
++        if (scope.canBeArrowParameterDeclaration()) {
++          scope.recordDeclarationError(pos, message);
++        } else {
++          return;
++        }
++
++        scope = stack[--i];
++      }
++
++      this.raise(pos, message);
++    }
++
++    recordParenthesizedIdentifierError(pos, message) {
++      const {
++        stack
++      } = this;
++      const scope = stack[stack.length - 1];
++
++      if (scope.isCertainlyParameterDeclaration()) {
++        this.raise(pos, message);
++      } else if (scope.canBeArrowParameterDeclaration()) {
++        scope.recordDeclarationError(pos, message);
++      } else {
++        return;
++      }
++    }
++
++    recordAsyncArrowParametersError(pos, message) {
++      const {
++        stack
++      } = this;
++      let i = stack.length - 1;
++      let scope = stack[i];
++
++      while (scope.canBeArrowParameterDeclaration()) {
++        if (scope.type === kMaybeAsyncArrowParameterDeclaration) {
++          scope.recordDeclarationError(pos, message);
++        }
++
++        scope = stack[--i];
++      }
++    }
++
++    validateAsPattern() {
++      const {
++        stack
++      } = this;
++      const currentScope = stack[stack.length - 1];
++      if (!currentScope.canBeArrowParameterDeclaration()) return;
++      currentScope.iterateErrors((message, pos) => {
++        this.raise(pos, message);
++        let i = stack.length - 2;
++        let scope = stack[i];
++
++        while (scope.canBeArrowParameterDeclaration()) {
++          scope.clearDeclarationError(pos);
++          scope = stack[--i];
++        }
++      });
++    }
++
++  }
++  function newParameterDeclarationScope() {
++    return new ExpressionScope(kParameterDeclaration);
++  }
++  function newArrowHeadScope() {
++    return new ArrowHeadParsingScope(kMaybeArrowParameterDeclaration);
++  }
++  function newAsyncArrowScope() {
++    return new ArrowHeadParsingScope(kMaybeAsyncArrowParameterDeclaration);
++  }
++  function newExpressionScope() {
++    return new ExpressionScope();
++  }
++
+   class UtilParser extends Tokenizer {
+     addExtra(node, key, val) {
+       if (!node) return;
+@@ -15165,12 +15713,17 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       return lineBreak.test(this.input.slice(this.state.lastTokEnd, this.state.start));
+     }
+ 
++    hasFollowingLineBreak() {
++      return lineBreak.test(this.input.slice(this.state.end, this.nextTokenStart()));
++    }
++
+     isLineTerminator() {
+       return this.eat(types.semi) || this.canInsertSemicolon();
+     }
+ 
+-    semicolon() {
+-      if (!this.isLineTerminator()) this.unexpected(null, types.semi);
++    semicolon(allowAsi = true) {
++      if (allowAsi ? this.isLineTerminator() : this.eat(types.semi)) return;
++      this.raise(this.state.lastTokEnd, ErrorMessages.MissingSemicolon);
+     }
+ 
+     expect(type, pos) {
+@@ -15288,6 +15841,68 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       return this.match(types.name) || !!this.state.type.keyword || this.match(types.string) || this.match(types.num) || this.match(types.bigint) || this.match(types.decimal);
+     }
+ 
++    isPrivateName(node) {
++      return node.type === "PrivateName";
++    }
++
++    getPrivateNameSV(node) {
++      return node.id.name;
++    }
++
++    hasPropertyAsPrivateName(node) {
++      return (node.type === "MemberExpression" || node.type === "OptionalMemberExpression") && this.isPrivateName(node.property);
++    }
++
++    isOptionalChain(node) {
++      return node.type === "OptionalMemberExpression" || node.type === "OptionalCallExpression";
++    }
++
++    isObjectProperty(node) {
++      return node.type === "ObjectProperty";
++    }
++
++    isObjectMethod(node) {
++      return node.type === "ObjectMethod";
++    }
++
++    initializeScopes(inModule = this.options.sourceType === "module") {
++      const oldLabels = this.state.labels;
++      this.state.labels = [];
++      const oldExportedIdentifiers = this.state.exportedIdentifiers;
++      this.state.exportedIdentifiers = [];
++      const oldInModule = this.inModule;
++      this.inModule = inModule;
++      const oldScope = this.scope;
++      const ScopeHandler = this.getScopeHandler();
++      this.scope = new ScopeHandler(this.raise.bind(this), this.inModule);
++      const oldProdParam = this.prodParam;
++      this.prodParam = new ProductionParameterHandler();
++      const oldClassScope = this.classScope;
++      this.classScope = new ClassScopeHandler(this.raise.bind(this));
++      const oldExpressionScope = this.expressionScope;
++      this.expressionScope = new ExpressionScopeHandler(this.raise.bind(this));
++      return () => {
++        this.state.labels = oldLabels;
++        this.state.exportedIdentifiers = oldExportedIdentifiers;
++        this.inModule = oldInModule;
++        this.scope = oldScope;
++        this.prodParam = oldProdParam;
++        this.classScope = oldClassScope;
++        this.expressionScope = oldExpressionScope;
++      };
++    }
++
++    enterInitialScopes() {
++      let paramFlags = PARAM;
++
++      if (this.hasPlugin("topLevelAwait") && this.inModule) {
++        paramFlags |= PARAM_AWAIT;
++      }
++
++      this.scope.enter(SCOPE_PROGRAM);
++      this.prodParam.enter(paramFlags);
++    }
++
+   }
+   class ExpressionErrors {
+     constructor() {
+@@ -15312,8 +15927,8 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       this.start = pos;
+       this.end = 0;
+       this.loc = new SourceLocation(loc);
+-      if (parser == null ? void 0 : parser.options.ranges) this.range = [pos, 0];
+-      if (parser == null ? void 0 : parser.filename) this.loc.filename = parser.filename;
++      if (parser != null && parser.options.ranges) this.range = [pos, 0];
++      if (parser != null && parser.filename) this.loc.filename = parser.filename;
+     }
+ 
+     __clone() {
+@@ -15388,7 +16003,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+       let parenthesized = undefined;
+ 
+-      if (node.type === "ParenthesizedExpression" || ((_node$extra = node.extra) == null ? void 0 : _node$extra.parenthesized)) {
++      if (node.type === "ParenthesizedExpression" || (_node$extra = node.extra) != null && _node$extra.parenthesized) {
+         parenthesized = unwrapParenthesizedExpression(node);
+ 
+         if (isLHS) {
+@@ -15419,7 +16034,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+             const isLast = i === last;
+             this.toAssignableObjectExpressionProp(prop, isLast, isLHS);
+ 
+-            if (isLast && prop.type === "RestElement" && ((_node$extra2 = node.extra) == null ? void 0 : _node$extra2.trailingComma)) {
++            if (isLast && prop.type === "RestElement" && (_node$extra2 = node.extra) != null && _node$extra2.trailingComma) {
+               this.raiseRestNotLast(node.extra.trailingComma);
+             }
+           }
+@@ -15521,9 +16136,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+     toReferencedListDeep(exprList, isParenthesizedExpr) {
+       this.toReferencedList(exprList, isParenthesizedExpr);
+ 
+-      for (let _i = 0; _i < exprList.length; _i++) {
+-        const expr = exprList[_i];
+-
++      for (const expr of exprList) {
+         if ((expr == null ? void 0 : expr.type) === "ArrayExpression") {
+           this.toReferencedListDeep(expr.elements);
+         }
+@@ -15667,18 +16280,15 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+           break;
+ 
+         case "ObjectPattern":
+-          for (let _i2 = 0, _expr$properties = expr.properties; _i2 < _expr$properties.length; _i2++) {
+-            let prop = _expr$properties[_i2];
+-            if (prop.type === "ObjectProperty") prop = prop.value;else if (prop.type === "ObjectMethod") continue;
++          for (let prop of expr.properties) {
++            if (this.isObjectProperty(prop)) prop = prop.value;else if (this.isObjectMethod(prop)) continue;
+             this.checkLVal(prop, "object destructuring pattern", bindingType, checkClashes, disallowLetBinding);
+           }
+ 
+           break;
+ 
+         case "ArrayPattern":
+-          for (let _i3 = 0, _expr$elements = expr.elements; _i3 < _expr$elements.length; _i3++) {
+-            const elem = _expr$elements[_i3];
+-
++          for (const elem of expr.elements) {
+             if (elem) {
+               this.checkLVal(elem, "array destructuring pattern", bindingType, checkClashes, disallowLetBinding);
+             }
+@@ -15731,147 +16341,9 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+   }
+ 
+-  const kExpression = 0,
+-        kMaybeArrowParameterDeclaration = 1,
+-        kMaybeAsyncArrowParameterDeclaration = 2,
+-        kParameterDeclaration = 3;
+-
+-  class ExpressionScope {
+-    constructor(type = kExpression) {
+-      this.type = void 0;
+-      this.type = type;
+-    }
+-
+-    canBeArrowParameterDeclaration() {
+-      return this.type === kMaybeAsyncArrowParameterDeclaration || this.type === kMaybeArrowParameterDeclaration;
+-    }
+-
+-    isCertainlyParameterDeclaration() {
+-      return this.type === kParameterDeclaration;
+-    }
+-
+-  }
+-
+-  class ArrowHeadParsingScope extends ExpressionScope {
+-    constructor(type) {
+-      super(type);
+-      this.errors = new Map();
+-    }
+-
+-    recordDeclarationError(pos, message) {
+-      this.errors.set(pos, message);
+-    }
+-
+-    clearDeclarationError(pos) {
+-      this.errors.delete(pos);
+-    }
+-
+-    iterateErrors(iterator) {
+-      this.errors.forEach(iterator);
+-    }
+-
+-  }
+-
+-  class ExpressionScopeHandler {
+-    constructor(raise) {
+-      this.stack = [new ExpressionScope()];
+-      this.raise = raise;
+-    }
+-
+-    enter(scope) {
+-      this.stack.push(scope);
+-    }
+-
+-    exit() {
+-      this.stack.pop();
+-    }
+-
+-    recordParameterInitializerError(pos, message) {
+-      const {
+-        stack
+-      } = this;
+-      let i = stack.length - 1;
+-      let scope = stack[i];
+-
+-      while (!scope.isCertainlyParameterDeclaration()) {
+-        if (scope.canBeArrowParameterDeclaration()) {
+-          scope.recordDeclarationError(pos, message);
+-        } else {
+-          return;
+-        }
+-
+-        scope = stack[--i];
+-      }
+-
+-      this.raise(pos, message);
+-    }
+-
+-    recordParenthesizedIdentifierError(pos, message) {
+-      const {
+-        stack
+-      } = this;
+-      const scope = stack[stack.length - 1];
+-
+-      if (scope.isCertainlyParameterDeclaration()) {
+-        this.raise(pos, message);
+-      } else if (scope.canBeArrowParameterDeclaration()) {
+-        scope.recordDeclarationError(pos, message);
+-      } else {
+-        return;
+-      }
+-    }
+-
+-    recordAsyncArrowParametersError(pos, message) {
+-      const {
+-        stack
+-      } = this;
+-      let i = stack.length - 1;
+-      let scope = stack[i];
+-
+-      while (scope.canBeArrowParameterDeclaration()) {
+-        if (scope.type === kMaybeAsyncArrowParameterDeclaration) {
+-          scope.recordDeclarationError(pos, message);
+-        }
+-
+-        scope = stack[--i];
+-      }
+-    }
+-
+-    validateAsPattern() {
+-      const {
+-        stack
+-      } = this;
+-      const currentScope = stack[stack.length - 1];
+-      if (!currentScope.canBeArrowParameterDeclaration()) return;
+-      currentScope.iterateErrors((message, pos) => {
+-        this.raise(pos, message);
+-        let i = stack.length - 2;
+-        let scope = stack[i];
+-
+-        while (scope.canBeArrowParameterDeclaration()) {
+-          scope.clearDeclarationError(pos);
+-          scope = stack[--i];
+-        }
+-      });
+-    }
+-
+-  }
+-  function newParameterDeclarationScope() {
+-    return new ExpressionScope(kParameterDeclaration);
+-  }
+-  function newArrowHeadScope() {
+-    return new ArrowHeadParsingScope(kMaybeArrowParameterDeclaration);
+-  }
+-  function newAsyncArrowScope() {
+-    return new ArrowHeadParsingScope(kMaybeAsyncArrowParameterDeclaration);
+-  }
+-  function newExpressionScope() {
+-    return new ExpressionScope();
+-  }
+-
+   class ExpressionParser extends LValParser {
+     checkProto(prop, isRecord, protoRef, refExpressionErrors) {
+-      if (prop.type === "SpreadElement" || prop.type === "ObjectMethod" || prop.computed || prop.shorthand) {
++      if (prop.type === "SpreadElement" || this.isObjectMethod(prop) || prop.computed || prop.shorthand) {
+         return;
+       }
+ 
+@@ -15920,6 +16392,11 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+       expr.comments = this.state.comments;
+       expr.errors = this.state.errors;
++
++      if (this.options.tokens) {
++        expr.tokens = this.tokens;
++      }
++
+       return expr;
+     }
+ 
+@@ -16147,8 +16624,17 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+     }
+ 
+     parseMaybeUnary(refExpressionErrors) {
+-      if (this.isContextual("await") && this.isAwaitAllowed()) {
+-        return this.parseAwait();
++      const startPos = this.state.start;
++      const startLoc = this.state.startLoc;
++      const isAwait = this.isContextual("await");
++
++      if (isAwait && this.isAwaitAllowed()) {
++        this.next();
++        return this.parseAwait(startPos, startLoc);
++      }
++
++      if (this.isContextual("module") && this.lookaheadCharCode() === 123 && !this.hasFollowingLineBreak()) {
++        return this.parseModuleExpression();
+       }
+ 
+       const update = this.match(types.incDec);
+@@ -16172,7 +16658,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+           if (arg.type === "Identifier") {
+             this.raise(node.start, ErrorMessages.StrictDelete);
+-          } else if ((arg.type === "MemberExpression" || arg.type === "OptionalMemberExpression") && arg.property.type === "PrivateName") {
++          } else if (this.hasPropertyAsPrivateName(arg)) {
+             this.raise(node.start, ErrorMessages.DeletePrivateField);
+           }
+         }
+@@ -16182,7 +16668,18 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         }
+       }
+ 
+-      return this.parseUpdate(node, update, refExpressionErrors);
++      const expr = this.parseUpdate(node, update, refExpressionErrors);
++
++      if (isAwait) {
++        const startsExpr = this.hasPlugin("v8intrinsic") ? this.state.type.startsExpr : this.state.type.startsExpr && !this.match(types.modulo);
++
++        if (startsExpr && !this.isAmbiguousAwait()) {
++          this.raiseOverwrite(startPos, this.hasPlugin("topLevelAwait") ? ErrorMessages.AwaitNotInAsyncContext : ErrorMessages.AwaitNotInAsyncFunction);
++          return this.parseAwait(startPos, startLoc);
++        }
++      }
++
++      return expr;
+     }
+ 
+     parseUpdate(node, update, refExpressionErrors) {
+@@ -16247,13 +16744,12 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       let optional = false;
+ 
+       if (this.match(types.questionDot)) {
+-        state.optionalChainMember = optional = true;
+-
+         if (noCalls && this.lookaheadCharCode() === 40) {
+           state.stop = true;
+           return base;
+         }
+ 
++        state.optionalChainMember = optional = true;
+         this.next();
+       }
+ 
+@@ -16274,12 +16770,12 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       node.computed = computed;
+       const property = computed ? this.parseExpression() : this.parseMaybePrivateName(true);
+ 
+-      if (property.type === "PrivateName") {
++      if (this.isPrivateName(property)) {
+         if (node.object.type === "Super") {
+           this.raise(startPos, ErrorMessages.SuperPrivateField);
+         }
+ 
+-        this.classScope.usePrivateName(property.id.name, property.start);
++        this.classScope.usePrivateName(this.getPrivateNameSV(property), property.start);
+       }
+ 
+       node.property = property;
+@@ -16375,9 +16871,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         if (node.arguments.length === 0 || node.arguments.length > 2) {
+           this.raise(node.start, ErrorMessages.ImportCallArity, this.hasPlugin("importAssertions") || this.hasPlugin("moduleAttributes") ? "one or two arguments" : "one argument");
+         } else {
+-          for (let _i = 0, _node$arguments = node.arguments; _i < _node$arguments.length; _i++) {
+-            const arg = _node$arguments[_i];
+-
++          for (const arg of node.arguments) {
+             if (arg.type === "SpreadElement") {
+               this.raise(arg.start, ErrorMessages.ImportCallSpreadArgument);
+             }
+@@ -16616,9 +17110,9 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+               if (this.match(types._in)) {
+                 this.expectPlugin("privateIn");
+-                this.classScope.usePrivateName(node.id.name, node.start);
++                this.classScope.usePrivateName(this.getPrivateNameSV(node), node.start);
+               } else if (this.hasPlugin("privateIn")) {
+-                this.raise(this.state.start, ErrorMessages.PrivateInExpectedIn, node.id.name);
++                this.raise(this.state.start, ErrorMessages.PrivateInExpectedIn, this.getPrivateNameSV(node));
+               } else {
+                 throw this.unexpected(start);
+               }
+@@ -16910,7 +17404,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+       if (node.callee.type === "Import") {
+         this.raise(node.callee.start, ErrorMessages.ImportCallNotNewExpression);
+-      } else if (node.callee.type === "OptionalMemberExpression" || node.callee.type === "OptionalCallExpression") {
++      } else if (this.isOptionalChain(node.callee)) {
+         this.raise(this.state.lastTokEnd, ErrorMessages.OptionalChainingNoNew);
+       } else if (this.eat(types.questionDot)) {
+         this.raise(this.state.start, ErrorMessages.OptionalChainingNoNew);
+@@ -17001,7 +17495,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+           this.checkProto(prop, isRecord, propHash, refExpressionErrors);
+         }
+ 
+-        if (isRecord && prop.type !== "ObjectProperty" && prop.type !== "SpreadElement") {
++        if (isRecord && !this.isObjectProperty(prop) && prop.type !== "SpreadElement") {
+           this.raise(prop.start, ErrorMessages.InvalidRecordProperty);
+         }
+ 
+@@ -17196,7 +17690,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         this.state.inPropertyName = true;
+         prop.key = this.match(types.num) || this.match(types.string) || this.match(types.bigint) || this.match(types.decimal) ? this.parseExprAtom() : this.parseMaybePrivateName(isPrivateNameAllowed);
+ 
+-        if (prop.key.type !== "PrivateName") {
++        if (!this.isPrivateName(prop.key)) {
+           prop.computed = false;
+         }
+ 
+@@ -17317,8 +17811,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+     checkParams(node, allowDuplicates, isArrowFunction, strictModeChanged = true) {
+       const checkClashes = new Set();
+ 
+-      for (let _i2 = 0, _node$params = node.params; _i2 < _node$params.length; _i2++) {
+-        const param = _node$params[_i2];
++      for (const param of node.params) {
+         this.checkLVal(param, "function parameter list", BIND_VAR, allowDuplicates ? null : checkClashes, undefined, strictModeChanged);
+       }
+     }
+@@ -17431,6 +17924,9 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         if (this.prodParam.hasAwait) {
+           this.raise(startLoc, ErrorMessages.AwaitBindingIdentifier);
+           return;
++        } else if (this.scope.inStaticBlock && !this.scope.inNonArrowFunction) {
++          this.raise(startLoc, ErrorMessages.AwaitBindingIdentifierInStaticBlock);
++          return;
+         } else {
+           this.expressionScope.recordAsyncArrowParametersError(startLoc, ErrorMessages.AwaitBindingIdentifier);
+         }
+@@ -17449,28 +17945,22 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       const reservedTest = !this.state.strict ? isReservedWord : isBinding ? isStrictBindReservedWord : isStrictReservedWord;
+ 
+       if (reservedTest(word, this.inModule)) {
+-        if (!this.prodParam.hasAwait && word === "await") {
+-          this.raise(startLoc, this.hasPlugin("topLevelAwait") ? ErrorMessages.AwaitNotInAsyncContext : ErrorMessages.AwaitNotInAsyncFunction);
+-        } else {
+-          this.raise(startLoc, ErrorMessages.UnexpectedReservedWord, word);
+-        }
++        this.raise(startLoc, ErrorMessages.UnexpectedReservedWord, word);
+       }
+     }
+ 
+     isAwaitAllowed() {
+-      if (this.scope.inFunction) return this.prodParam.hasAwait;
+-      if (this.options.allowAwaitOutsideFunction) return true;
++      if (this.prodParam.hasAwait) return true;
+ 
+-      if (this.hasPlugin("topLevelAwait")) {
+-        return this.inModule && this.prodParam.hasAwait;
++      if (this.options.allowAwaitOutsideFunction && !this.scope.inFunction) {
++        return true;
+       }
+ 
+       return false;
+     }
+ 
+-    parseAwait() {
+-      const node = this.startNode();
+-      this.next();
++    parseAwait(startPos, startLoc) {
++      const node = this.startNodeAt(startPos, startLoc);
+       this.expressionScope.recordParameterInitializerError(node.start, ErrorMessages.AwaitExpressionFormalParameter);
+ 
+       if (this.eat(types.star)) {
+@@ -17478,7 +17968,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       }
+ 
+       if (!this.scope.inFunction && !this.options.allowAwaitOutsideFunction) {
+-        if (this.hasPrecedingLineBreak() || this.match(types.plusMin) || this.match(types.parenL) || this.match(types.bracketL) || this.match(types.backQuote) || this.match(types.regexp) || this.match(types.slash) || this.hasPlugin("v8intrinsic") && this.match(types.modulo)) {
++        if (this.isAmbiguousAwait()) {
+           this.ambiguousScriptDifferentAst = true;
+         } else {
+           this.sawUnambiguousESM = true;
+@@ -17492,6 +17982,10 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       return this.finishNode(node, "AwaitExpression");
+     }
+ 
++    isAmbiguousAwait() {
++      return this.hasPrecedingLineBreak() || this.match(types.plusMin) || this.match(types.parenL) || this.match(types.bracketL) || this.match(types.backQuote) || this.match(types.regexp) || this.match(types.slash) || this.hasPlugin("v8intrinsic") && this.match(types.modulo);
++    }
++
+     parseYield() {
+       const node = this.startNode();
+       this.expressionScope.recordParameterInitializerError(node.start, ErrorMessages.YieldInParameter);
+@@ -17655,6 +18149,25 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       return ret;
+     }
+ 
++    parseModuleExpression() {
++      this.expectPlugin("moduleBlocks");
++      const node = this.startNode();
++      this.next();
++      this.eat(types.braceL);
++      const revertScopes = this.initializeScopes(true);
++      this.enterInitialScopes();
++      const program = this.startNode();
++
++      try {
++        node.body = this.parseProgram(program, types.braceR, "module");
++      } finally {
++        revertScopes();
++      }
++
++      this.eat(types.braceR);
++      return this.finishNode(node, "ModuleExpression");
++    }
++
+   }
+ 
+   const loopLabel = {
+@@ -17670,22 +18183,25 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+   const loneSurrogate = /[\uD800-\uDFFF]/u;
+   class StatementParser extends ExpressionParser {
+     parseTopLevel(file, program) {
+-      program.sourceType = this.options.sourceType;
++      file.program = this.parseProgram(program);
++      file.comments = this.state.comments;
++      if (this.options.tokens) file.tokens = this.tokens;
++      return this.finishNode(file, "File");
++    }
++
++    parseProgram(program, end = types.eof, sourceType = this.options.sourceType) {
++      program.sourceType = sourceType;
+       program.interpreter = this.parseInterpreterDirective();
+-      this.parseBlockBody(program, true, true, types.eof);
++      this.parseBlockBody(program, true, true, end);
+ 
+       if (this.inModule && !this.options.allowUndeclaredExports && this.scope.undefinedExports.size > 0) {
+-        for (let _i = 0, _Array$from = Array.from(this.scope.undefinedExports); _i < _Array$from.length; _i++) {
+-          const [name] = _Array$from[_i];
++        for (const [name] of Array.from(this.scope.undefinedExports)) {
+           const pos = this.scope.undefinedExports.get(name);
+           this.raise(pos, ErrorMessages.ModuleExportUndefined, name);
+         }
+       }
+ 
+-      file.program = this.finishNode(program, "Program");
+-      file.comments = this.state.comments;
+-      if (this.options.tokens) file.tokens = this.tokens;
+-      return this.finishNode(file, "File");
++      return this.finishNode(program, "Program");
+     }
+ 
+     stmtToDirective(stmt) {
+@@ -18247,9 +18763,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+     }
+ 
+     parseLabeledStatement(node, maybeName, expr, context) {
+-      for (let _i2 = 0, _this$state$labels = this.state.labels; _i2 < _this$state$labels.length; _i2++) {
+-        const label = _this$state$labels[_i2];
+-
++      for (const label of this.state.labels) {
+         if (label.name === maybeName) {
+           this.raise(expr.start, ErrorMessages.LabelRedeclaration, maybeName);
+         }
+@@ -18287,6 +18801,11 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+     parseBlock(allowDirectives = false, createNewLexicalScope = true, afterBlockParse) {
+       const node = this.startNode();
++
++      if (allowDirectives) {
++        this.state.strictErrors.clear();
++      }
++
+       this.expect(types.braceL);
+ 
+       if (createNewLexicalScope) {
+@@ -18313,41 +18832,33 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+     }
+ 
+     parseBlockOrModuleBlockBody(body, directives, topLevel, end, afterBlockParse) {
+-      const octalPositions = [];
+       const oldStrict = this.state.strict;
+       let hasStrictModeDirective = false;
+       let parsedNonDirective = false;
+ 
+       while (!this.match(end)) {
+-        if (!parsedNonDirective && this.state.octalPositions.length) {
+-          octalPositions.push(...this.state.octalPositions);
+-        }
+-
+         const stmt = this.parseStatement(null, topLevel);
+ 
+-        if (directives && !parsedNonDirective && this.isValidDirective(stmt)) {
+-          const directive = this.stmtToDirective(stmt);
+-          directives.push(directive);
++        if (directives && !parsedNonDirective) {
++          if (this.isValidDirective(stmt)) {
++            const directive = this.stmtToDirective(stmt);
++            directives.push(directive);
+ 
+-          if (!hasStrictModeDirective && directive.value.value === "use strict") {
+-            hasStrictModeDirective = true;
+-            this.setStrict(true);
++            if (!hasStrictModeDirective && directive.value.value === "use strict") {
++              hasStrictModeDirective = true;
++              this.setStrict(true);
++            }
++
++            continue;
+           }
+ 
+-          continue;
++          parsedNonDirective = true;
++          this.state.strictErrors.clear();
+         }
+ 
+-        parsedNonDirective = true;
+         body.push(stmt);
+       }
+ 
+-      if (this.state.strict && octalPositions.length) {
+-        for (let _i3 = 0; _i3 < octalPositions.length; _i3++) {
+-          const pos = octalPositions[_i3];
+-          this.raise(pos, ErrorMessages.StrictOctalLiteral);
+-        }
+-      }
+-
+       if (afterBlockParse) {
+         afterBlockParse.call(this, hasStrictModeDirective);
+       }
+@@ -18361,9 +18872,9 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+     parseFor(node, init) {
+       node.init = init;
+-      this.expect(types.semi);
++      this.semicolon(false);
+       node.test = this.match(types.semi) ? null : this.parseExpression();
+-      this.expect(types.semi);
++      this.semicolon(false);
+       node.update = this.match(types.parenR) ? null : this.parseExpression();
+       this.expect(types.parenR);
+       node.body = this.withTopicForbiddingContext(() => this.parseStatement("for"));
+@@ -18616,7 +19127,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         method.kind = "method";
+         this.parseClassElementName(method);
+ 
+-        if (method.key.type === "PrivateName") {
++        if (this.isPrivateName(method.key)) {
+           this.pushClassPrivateMethod(classBody, privateMethod, true, false);
+           return;
+         }
+@@ -18631,7 +19142,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+       const containsEsc = this.state.containsEsc;
+       const key = this.parseClassElementName(member);
+-      const isPrivate = key.type === "PrivateName";
++      const isPrivate = this.isPrivateName(key);
+       const isSimple = key.type === "Identifier";
+       const maybeQuestionTokenStart = this.state.start;
+       this.parsePostMemberNameModifiers(publicMember);
+@@ -18676,7 +19187,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         this.parseClassElementName(method);
+         this.parsePostMemberNameModifiers(publicMember);
+ 
+-        if (method.key.type === "PrivateName") {
++        if (this.isPrivateName(method.key)) {
+           this.pushClassPrivateMethod(classBody, privateMethod, isGenerator, true);
+         } else {
+           if (this.isNonstaticConstructor(publicMethod)) {
+@@ -18689,7 +19200,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         method.kind = key.name;
+         this.parseClassElementName(publicMethod);
+ 
+-        if (method.key.type === "PrivateName") {
++        if (this.isPrivateName(method.key)) {
+           this.pushClassPrivateMethod(classBody, privateMethod, false, false);
+         } else {
+           if (this.isNonstaticConstructor(publicMethod)) {
+@@ -18718,7 +19229,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         this.raise(key.start, ErrorMessages.StaticPrototype);
+       }
+ 
+-      if (key.type === "PrivateName" && key.id.name === "constructor") {
++      if (this.isPrivateName(key) && this.getPrivateNameSV(key) === "constructor") {
+         this.raise(key.start, ErrorMessages.ConstructorClassPrivateField);
+       }
+ 
+@@ -18729,15 +19240,13 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       var _member$decorators;
+ 
+       this.expectPlugin("classStaticBlock", member.start);
+-      this.scope.enter(SCOPE_CLASS | SCOPE_SUPER);
+-      this.expressionScope.enter(newExpressionScope());
++      this.scope.enter(SCOPE_CLASS | SCOPE_STATIC_BLOCK | SCOPE_SUPER);
+       const oldLabels = this.state.labels;
+       this.state.labels = [];
+       this.prodParam.enter(PARAM);
+       const body = member.body = [];
+       this.parseBlockOrModuleBlockBody(body, undefined, false, types.braceR);
+       this.prodParam.exit();
+-      this.expressionScope.exit();
+       this.scope.exit();
+       this.state.labels = oldLabels;
+       classBody.body.push(this.finishNode(member, "StaticBlock"));
+@@ -18746,7 +19255,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+         this.raise(member.start, ErrorMessages.DuplicateStaticBlock);
+       }
+ 
+-      if ((_member$decorators = member.decorators) == null ? void 0 : _member$decorators.length) {
++      if ((_member$decorators = member.decorators) != null && _member$decorators.length) {
+         this.raise(member.start, ErrorMessages.DecoratorStaticBlock);
+       }
+ 
+@@ -18765,7 +19274,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       this.expectPlugin("classPrivateProperties", prop.key.start);
+       const node = this.parseClassPrivateProperty(prop);
+       classBody.body.push(node);
+-      this.classScope.declarePrivateName(node.key.id.name, CLASS_ELEMENT_OTHER, node.key.start);
++      this.classScope.declarePrivateName(this.getPrivateNameSV(node.key), CLASS_ELEMENT_OTHER, node.key.start);
+     }
+ 
+     pushClassMethod(classBody, method, isGenerator, isAsync, isConstructor, allowsDirectSuper) {
+@@ -18777,7 +19286,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       const node = this.parseMethod(method, isGenerator, isAsync, false, false, "ClassPrivateMethod", true);
+       classBody.body.push(node);
+       const kind = node.kind === "get" ? node.static ? CLASS_ELEMENT_STATIC_GETTER : CLASS_ELEMENT_INSTANCE_GETTER : node.kind === "set" ? node.static ? CLASS_ELEMENT_STATIC_SETTER : CLASS_ELEMENT_INSTANCE_SETTER : CLASS_ELEMENT_OTHER;
+-      this.classScope.declarePrivateName(node.key.id.name, kind, node.key.start);
++      this.classScope.declarePrivateName(this.getPrivateNameSV(node.key), kind, node.key.start);
+     }
+ 
+     parsePostMemberNameModifiers(methodOrProp) {}
+@@ -19044,13 +19553,12 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+             const declaration = node.declaration;
+ 
+-            if (declaration.type === "Identifier" && declaration.name === "from" && declaration.end - declaration.start === 4 && !((_declaration$extra = declaration.extra) == null ? void 0 : _declaration$extra.parenthesized)) {
++            if (declaration.type === "Identifier" && declaration.name === "from" && declaration.end - declaration.start === 4 && !((_declaration$extra = declaration.extra) != null && _declaration$extra.parenthesized)) {
+               this.raise(declaration.start, ErrorMessages.ExportDefaultFromAsIdentifier);
+             }
+           }
+         } else if (node.specifiers && node.specifiers.length) {
+-          for (let _i4 = 0, _node$specifiers = node.specifiers; _i4 < _node$specifiers.length; _i4++) {
+-            const specifier = _node$specifiers[_i4];
++          for (const specifier of node.specifiers) {
+             const {
+               exported
+             } = specifier;
+@@ -19063,7 +19571,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+               } = specifier;
+ 
+               if (local.type === "StringLiteral") {
+-                this.raise(specifier.start, ErrorMessages.ExportBindingIsString, local.extra.raw, exportedName);
++                this.raise(specifier.start, ErrorMessages.ExportBindingIsString, local.value, exportedName);
+               } else {
+                 this.checkReservedWord(local.name, local.start, true, false);
+                 this.scope.checkLocalExport(local);
+@@ -19076,8 +19584,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+             if (!id) throw new Error("Assertion failure");
+             this.checkDuplicateExports(node, id.name);
+           } else if (node.declaration.type === "VariableDeclaration") {
+-            for (let _i5 = 0, _node$declaration$dec = node.declaration.declarations; _i5 < _node$declaration$dec.length; _i5++) {
+-              const declaration = _node$declaration$dec[_i5];
++            for (const declaration of node.declaration.declarations) {
+               this.checkDeclaration(declaration.id);
+             }
+           }
+@@ -19095,14 +19602,11 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       if (node.type === "Identifier") {
+         this.checkDuplicateExports(node, node.name);
+       } else if (node.type === "ObjectPattern") {
+-        for (let _i6 = 0, _node$properties = node.properties; _i6 < _node$properties.length; _i6++) {
+-          const prop = _node$properties[_i6];
++        for (const prop of node.properties) {
+           this.checkDeclaration(prop);
+         }
+       } else if (node.type === "ArrayPattern") {
+-        for (let _i7 = 0, _node$elements = node.elements; _i7 < _node$elements.length; _i7++) {
+-          const elem = _node$elements[_i7];
+-
++        for (const elem of node.elements) {
+           if (elem) {
+             this.checkDeclaration(elem);
+           }
+@@ -19367,101 +19871,12 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+   }
+ 
+-  class ClassScope {
+-    constructor() {
+-      this.privateNames = new Set();
+-      this.loneAccessors = new Map();
+-      this.undefinedPrivateNames = new Map();
+-    }
+-
+-  }
+-  class ClassScopeHandler {
+-    constructor(raise) {
+-      this.stack = [];
+-      this.undefinedPrivateNames = new Map();
+-      this.raise = raise;
+-    }
+-
+-    current() {
+-      return this.stack[this.stack.length - 1];
+-    }
+-
+-    enter() {
+-      this.stack.push(new ClassScope());
+-    }
+-
+-    exit() {
+-      const oldClassScope = this.stack.pop();
+-      const current = this.current();
+-
+-      for (let _i = 0, _Array$from = Array.from(oldClassScope.undefinedPrivateNames); _i < _Array$from.length; _i++) {
+-        const [name, pos] = _Array$from[_i];
+-
+-        if (current) {
+-          if (!current.undefinedPrivateNames.has(name)) {
+-            current.undefinedPrivateNames.set(name, pos);
+-          }
+-        } else {
+-          this.raise(pos, ErrorMessages.InvalidPrivateFieldResolution, name);
+-        }
+-      }
+-    }
+-
+-    declarePrivateName(name, elementType, pos) {
+-      const classScope = this.current();
+-      let redefined = classScope.privateNames.has(name);
+-
+-      if (elementType & CLASS_ELEMENT_KIND_ACCESSOR) {
+-        const accessor = redefined && classScope.loneAccessors.get(name);
+-
+-        if (accessor) {
+-          const oldStatic = accessor & CLASS_ELEMENT_FLAG_STATIC;
+-          const newStatic = elementType & CLASS_ELEMENT_FLAG_STATIC;
+-          const oldKind = accessor & CLASS_ELEMENT_KIND_ACCESSOR;
+-          const newKind = elementType & CLASS_ELEMENT_KIND_ACCESSOR;
+-          redefined = oldKind === newKind || oldStatic !== newStatic;
+-          if (!redefined) classScope.loneAccessors.delete(name);
+-        } else if (!redefined) {
+-          classScope.loneAccessors.set(name, elementType);
+-        }
+-      }
+-
+-      if (redefined) {
+-        this.raise(pos, ErrorMessages.PrivateNameRedeclaration, name);
+-      }
+-
+-      classScope.privateNames.add(name);
+-      classScope.undefinedPrivateNames.delete(name);
+-    }
+-
+-    usePrivateName(name, pos) {
+-      let classScope;
+-
+-      for (let _i2 = 0, _this$stack = this.stack; _i2 < _this$stack.length; _i2++) {
+-        classScope = _this$stack[_i2];
+-        if (classScope.privateNames.has(name)) return;
+-      }
+-
+-      if (classScope) {
+-        classScope.undefinedPrivateNames.set(name, pos);
+-      } else {
+-        this.raise(pos, ErrorMessages.InvalidPrivateFieldResolution, name);
+-      }
+-    }
+-
+-  }
+-
+   class Parser extends StatementParser {
+     constructor(options, input) {
+       options = getOptions(options);
+       super(options, input);
+-      const ScopeHandler = this.getScopeHandler();
+       this.options = options;
+-      this.inModule = this.options.sourceType === "module";
+-      this.scope = new ScopeHandler(this.raise.bind(this), this.inModule);
+-      this.prodParam = new ProductionParameterHandler();
+-      this.classScope = new ClassScopeHandler(this.raise.bind(this));
+-      this.expressionScope = new ExpressionScopeHandler(this.raise.bind(this));
++      this.initializeScopes();
+       this.plugins = pluginsMap(this.options.plugins);
+       this.filename = options.sourceFilename;
+     }
+@@ -19471,14 +19886,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+     }
+ 
+     parse() {
+-      let paramFlags = PARAM;
+-
+-      if (this.hasPlugin("topLevelAwait") && this.inModule) {
+-        paramFlags |= PARAM_AWAIT;
+-      }
+-
+-      this.scope.enter(SCOPE_PROGRAM);
+-      this.prodParam.enter(paramFlags);
++      this.enterInitialScopes();
+       const file = this.startNode();
+       const program = this.startNode();
+       this.nextToken();
+@@ -19493,8 +19901,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+   function pluginsMap(plugins) {
+     const pluginMap = new Map();
+ 
+-    for (let _i = 0; _i < plugins.length; _i++) {
+-      const plugin = plugins[_i];
++    for (const plugin of plugins) {
+       const [name, options] = Array.isArray(plugin) ? plugin : [plugin, {}];
+       if (!pluginMap.has(name)) pluginMap.set(name, options || {});
+     }
+@@ -19543,7 +19950,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+   function getParser(options, input) {
+     let cls = Parser;
+ 
+-    if (options == null ? void 0 : options.plugins) {
++    if (options != null && options.plugins) {
+       validatePlugins(options.plugins);
+       cls = getParserClass(options.plugins);
+     }
+@@ -19561,8 +19968,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+     if (!cls) {
+       cls = Parser;
+ 
+-      for (let _i = 0; _i < pluginList.length; _i++) {
+-        const plugin = pluginList[_i];
++      for (const plugin of pluginList) {
+         cls = mixinPlugins[plugin](cls);
+       }
+ 
+@@ -19574,18 +19980,42 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+   var parse_1 = parse;
+ 
+-  class WalkerBase {constructor() { WalkerBase.prototype.__init.call(this);WalkerBase.prototype.__init2.call(this);WalkerBase.prototype.__init3.call(this);WalkerBase.prototype.__init4.call(this); }
+-  	 __init() {this.should_skip = false;}
+-  	 __init2() {this.should_remove = false;}
+-  	 __init3() {this.replacement = null;}
++  // @ts-check
++  /** @typedef { import('estree').BaseNode} BaseNode */
++
++  /** @typedef {{
++  	skip: () => void;
++  	remove: () => void;
++  	replace: (node: BaseNode) => void;
++  }} WalkerContext */
++
++  class WalkerBase {
++  	constructor() {
++  		/** @type {boolean} */
++  		this.should_skip = false;
++
++  		/** @type {boolean} */
++  		this.should_remove = false;
+ 
+-  	 __init4() {this.context = {
+-  		skip: () => (this.should_skip = true),
+-  		remove: () => (this.should_remove = true),
+-  		replace: (node) => (this.replacement = node)
+-  	};}
++  		/** @type {BaseNode | null} */
++  		this.replacement = null;
+ 
+-  	 replace(parent, prop, index, node) {
++  		/** @type {WalkerContext} */
++  		this.context = {
++  			skip: () => (this.should_skip = true),
++  			remove: () => (this.should_remove = true),
++  			replace: (node) => (this.replacement = node)
++  		};
++  	}
++
++  	/**
++  	 *
++  	 * @param {any} parent
++  	 * @param {string} prop
++  	 * @param {number} index
++  	 * @param {BaseNode} node
++  	 */
++  	replace(parent, prop, index, node) {
+   		if (parent) {
+   			if (index !== null) {
+   				parent[prop][index] = node;
+@@ -19595,7 +20025,13 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+   		}
+   	}
+ 
+-  	 remove(parent, prop, index) {
++  	/**
++  	 *
++  	 * @param {any} parent
++  	 * @param {string} prop
++  	 * @param {number} index
++  	 */
++  	remove(parent, prop, index) {
+   		if (parent) {
+   			if (index !== null) {
+   				parent[prop].splice(index, 1);
+@@ -19606,26 +20042,46 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+   	}
+   }
+ 
+-  class SyncWalkerClass extends WalkerBase {
++  // @ts-check
+ 
++  /** @typedef { import('estree').BaseNode} BaseNode */
++  /** @typedef { import('./walker.js').WalkerContext} WalkerContext */
+ 
++  /** @typedef {(
++   *    this: WalkerContext,
++   *    node: BaseNode,
++   *    parent: BaseNode,
++   *    key: string,
++   *    index: number
++   * ) => void} SyncHandler */
+ 
+-  	constructor(walker) {
++  class SyncWalker extends WalkerBase {
++  	/**
++  	 *
++  	 * @param {SyncHandler} enter
++  	 * @param {SyncHandler} leave
++  	 */
++  	constructor(enter, leave) {
+   		super();
+-  		this.enter = walker.enter;
+-  		this.leave = walker.leave;
++
++  		/** @type {SyncHandler} */
++  		this.enter = enter;
++
++  		/** @type {SyncHandler} */
++  		this.leave = leave;
+   	}
+ 
+-  	 visit(
+-  		node,
+-  		parent,
+-  		enter,
+-  		leave,
+-  		prop,
+-  		index
+-  	) {
++  	/**
++  	 *
++  	 * @param {BaseNode} node
++  	 * @param {BaseNode} parent
++  	 * @param {string} [prop]
++  	 * @param {number} [index]
++  	 * @returns {BaseNode}
++  	 */
++  	visit(node, parent, prop, index) {
+   		if (node) {
+-  			if (enter) {
++  			if (this.enter) {
+   				const _should_skip = this.should_skip;
+   				const _should_remove = this.should_remove;
+   				const _replacement = this.replacement;
+@@ -19633,7 +20089,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+   				this.should_remove = false;
+   				this.replacement = null;
+ 
+-  				enter.call(this.context, node, parent, prop, index);
++  				this.enter.call(this.context, node, parent, prop, index);
+ 
+   				if (this.replacement) {
+   					node = this.replacement;
+@@ -19656,31 +20112,31 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+   			}
+ 
+   			for (const key in node) {
+-  				const value = (node )[key];
++  				const value = node[key];
+ 
+   				if (typeof value !== "object") {
+   					continue;
+   				} else if (Array.isArray(value)) {
+   					for (let i = 0; i < value.length; i += 1) {
+   						if (value[i] !== null && typeof value[i].type === 'string') {
+-  							if (!this.visit(value[i], node, enter, leave, key, i)) {
++  							if (!this.visit(value[i], node, key, i)) {
+   								// removed
+   								i--;
+   							}
+   						}
+   					}
+   				} else if (value !== null && typeof value.type === "string") {
+-  					this.visit(value, node, enter, leave, key, null);
++  					this.visit(value, node, key, null);
+   				}
+   			}
+ 
+-  			if (leave) {
++  			if (this.leave) {
+   				const _replacement = this.replacement;
+   				const _should_remove = this.should_remove;
+   				this.replacement = null;
+   				this.should_remove = false;
+ 
+-  				leave.call(this.context, node, parent, prop, index);
++  				this.leave.call(this.context, node, parent, prop, index);
+ 
+   				if (this.replacement) {
+   					node = this.replacement;
+@@ -19704,9 +20160,24 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+   	}
+   }
+ 
+-  function walk$1(ast, walker) {
+-  	const instance = new SyncWalkerClass(walker);
+-  	return instance.visit(ast, null, walker.enter, walker.leave);
++  // @ts-check
++
++  /** @typedef { import('estree').BaseNode} BaseNode */
++  /** @typedef { import('./sync.js').SyncHandler} SyncHandler */
++  /** @typedef { import('./async.js').AsyncHandler} AsyncHandler */
++
++  /**
++   *
++   * @param {BaseNode} ast
++   * @param {{
++   *   enter?: SyncHandler
++   *   leave?: SyncHandler
++   * }} walker
++   * @returns {BaseNode}
++   */
++  function walk$1(ast, { enter, leave }) {
++  	const instance = new SyncWalker(enter, leave);
++  	return instance.visit(ast, null);
+   }
+ 
+   const isLiteralWhitelisted = /*#__PURE__*/ makeMap('true,false,null,this');
+@@ -21250,6 +21721,15 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+               }
+               slotArgs.push(createFunctionExpression([], children, false, false, loc));
+           }
++          if (context.slotted) {
++              if (!slotProps) {
++                  slotArgs.push(`{}`);
++              }
++              if (!children.length) {
++                  slotArgs.push(`undefined`);
++              }
++              slotArgs.push(`true`);
++          }
+           node.codegenNode = createCallExpression(context.helper(RENDER_SLOT), slotArgs, loc);
+       }
+   };
+@@ -24460,9 +24940,8 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+    * This optimization is only performed in Node.js.
+    */
+   const stringifyStatic = (children, context, parent) => {
+-      if (parent.type === 1 /* ELEMENT */ &&
+-          (parent.tagType === 1 /* COMPONENT */ ||
+-              parent.tagType === 3 /* TEMPLATE */)) {
++      // bail stringification for slot content
++      if (context.scopes.vSlot > 0) {
+           return;
+       }
+       let nc = 0; // current node count
+@@ -24833,9 +25312,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+     CAPITALIZE: CAPITALIZE,
+     TO_HANDLER_KEY: TO_HANDLER_KEY,
+     SET_BLOCK_TRACKING: SET_BLOCK_TRACKING,
+-    PUSH_SCOPE_ID: PUSH_SCOPE_ID,
+-    POP_SCOPE_ID: POP_SCOPE_ID,
+-    WITH_SCOPE_ID: WITH_SCOPE_ID,
++    SET_SCOPE_ID: SET_SCOPE_ID,
+     WITH_CTX: WITH_CTX,
+     UNREF: UNREF,
+     IS_REF: IS_REF,
+@@ -24951,13 +25428,13 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       };
+   };
+   cssVarsPlugin.postcss = true;
+-  function genCssVarsCode(vars, bindings, id, isProd) {
++  function genCssVarsCode(vars, id, isProd, bindings) {
+       const varsExp = genCssVarsFromList(vars, id, isProd);
+       const exp = createSimpleExpression(varsExp, false);
+       const context = createTransformContext(createRoot([]), {
+           prefixIdentifiers: true,
+-          inline: true,
+-          bindingMetadata: bindings
++          inline: !!bindings,
++          bindingMetadata: bindings || {}
+       });
+       const transformed = processExpression(exp, context);
+       const transformedString = transformed.type === 4 /* SIMPLE_EXPRESSION */
+@@ -24973,9 +25450,9 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+   }
+   // <script setup> already gets the calls injected as part of the transform
+   // this is only for single normal <script>
+-  function genNormalScriptCssVarsCode(cssVars, bindings, id, isProd) {
++  function genNormalScriptCssVarsCode(cssVars, id, isProd) {
+       return (`\nimport { ${CSS_VARS_HELPER} as _${CSS_VARS_HELPER} } from 'vue'\n` +
+-          `const __injectCSSVars__ = () => {\n${genCssVarsCode(cssVars, bindings, id, isProd)}}\n` +
++          `const __injectCSSVars__ = () => {\n${genCssVarsCode(cssVars, id, isProd)}}\n` +
+           `const __setup__ = __default__.setup\n` +
+           `__default__.setup = __setup__\n` +
+           `  ? (props, ctx) => { __injectCSSVars__();return __setup__(props, ctx) }\n` +
+@@ -25016,7 +25493,8 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+           scriptSetup: null,
+           styles: [],
+           customBlocks: [],
+-          cssVars: []
++          cssVars: [],
++          slotted: false
+       };
+       const errors = [];
+       const ast = compiler.parse(source, {
+@@ -25116,6 +25594,9 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       if (descriptor.cssVars.length) {
+           warnExperimental(`v-bind() CSS variable injection`, 231);
+       }
++      // check if the SFC uses :slotted
++      const slottedRE = /(?:::v-|:)slotted\(/;
++      descriptor.slotted = descriptor.styles.some(s => s.scoped && slottedRE.test(s.content));
+       const result = {
+           descriptor,
+           errors
+@@ -25577,14 +26058,20 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+   const ssrTransformSlotOutlet = (node, context) => {
+       if (isSlotOutlet(node)) {
+           const { slotName, slotProps } = processSlotOutlet(node, context);
+-          node.ssrCodegenNode = createCallExpression(context.helper(SSR_RENDER_SLOT), [
++          const args = [
+               `_ctx.$slots`,
+               slotName,
+               slotProps || `{}`,
++              // fallback content placeholder. will be replaced in the process phase
+               `null`,
+               `_push`,
+               `_parent`
+-          ]);
++          ];
++          // inject slot scope id if current template uses :slotted
++          if (context.scopeId && context.slotted !== false) {
++              args.push(`"${context.scopeId}-s"`);
++          }
++          node.ssrCodegenNode = createCallExpression(context.helper(SSR_RENDER_SLOT), args);
+       }
+   };
+   function ssrProcessSlotOutlet(node, context) {
+@@ -25596,6 +26083,13 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+           // _renderSlot(slots, name, props, fallback, ...)
+           renderCall.arguments[3] = fallbackRenderFn;
+       }
++      // Forwarded <slot/>. Merge slot scope ids
++      if (context.withSlotScopeId) {
++          const slotScopeId = renderCall.arguments[6];
++          renderCall.arguments[6] = slotScopeId
++              ? `${slotScopeId} + _scopeId`
++              : `_scopeId`;
++      }
+       context.pushStatement(node.ssrCodegenNode);
+   }
+ 
+@@ -25838,6 +26332,10 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+               // is called by `_ssrRenderSlot`.
+               fn.body = createIfStatement(createSimpleExpression(`_push`, false), processChildrenAsStatement(children, context, false, true /* withSlotScopeId */), vnodeBranch);
+           }
++          // component is inside a slot, inherit slot scope Id
++          if (context.withSlotScopeId) {
++              node.ssrCodegenNode.arguments.push(`_scopeId`);
++          }
+           if (typeof component === 'string') {
+               // static component
+               context.pushStatement(createCallExpression(`_push`, [node.ssrCodegenNode]));
+@@ -26204,10 +26702,10 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       ast.codegenNode = createBlockStatement(context.body);
+       // Finalize helpers.
+       // We need to separate helpers imported from 'vue' vs. '@vue/server-renderer'
+-      ast.ssrHelpers = [
++      ast.ssrHelpers = Array.from(new Set([
+           ...ast.helpers.filter(h => h in ssrHelpers),
+           ...context.helpers
+-      ];
++      ]));
+       ast.helpers = ast.helpers.filter(h => !(h in ssrHelpers));
+   }
+   function createSSRTransformContext(root, options, helpers = new Set(), withSlotScopeId = false) {
+@@ -26645,7 +27143,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+           return doCompileTemplate(options);
+       }
+   }
+-  function doCompileTemplate({ filename, id, scoped, inMap, source, ssr = false, ssrCssVars, isProd = false, compiler = ssr ? CompilerSSR : CompilerDOM, compilerOptions = {}, transformAssetUrls }) {
++  function doCompileTemplate({ filename, id, scoped, slotted, inMap, source, ssr = false, ssrCssVars, isProd = false, compiler = ssr ? CompilerSSR : CompilerDOM, compilerOptions = {}, transformAssetUrls }) {
+       const errors = [];
+       let nodeTransforms = [];
+       if (isObject(transformAssetUrls)) {
+@@ -26677,6 +27175,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+               ? genCssVarsFromList(ssrCssVars, shortId, isProd)
+               : '',
+           scopeId: scoped ? longId : undefined,
++          slotted,
+           ...compilerOptions,
+           nodeTransforms: nodeTransforms.concat(compilerOptions.nodeTransforms || []),
+           filename,
+@@ -31026,7 +31525,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+   var SourceMapConsumer$2 = sourceMap.SourceMapConsumer;
+   var SourceMapGenerator$3 = sourceMap.SourceMapGenerator;
+ 
+-  var mergeSourceMap = merge$1;
++  var C__Vue_vueNext_node_modules_mergeSourceMap = merge$1;
+ 
+   /**
+    * Merge old source map and new source map and return merged.
+@@ -31104,7 +31603,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+           if (map) {
+               return {
+                   code: result.css.toString(),
+-                  map: mergeSourceMap(map, JSON.parse(result.map.toString())),
++                  map: C__Vue_vueNext_node_modules_mergeSourceMap(map, JSON.parse(result.map.toString())),
+                   errors: [],
+                   dependencies
+               };
+@@ -31134,7 +31633,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       if (map) {
+           return {
+               code: result.css.toString(),
+-              map: mergeSourceMap(map, result.map),
++              map: C__Vue_vueNext_node_modules_mergeSourceMap(map, result.map),
+               errors: [],
+               dependencies: dependencies
+           };
+@@ -31158,7 +31657,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+           if (map) {
+               return {
+                   code: result,
+-                  map: mergeSourceMap(map, ref.sourcemap),
++                  map: C__Vue_vueNext_node_modules_mergeSourceMap(map, ref.sourcemap),
+                   errors: [],
+                   dependencies
+               };
+@@ -34335,6 +34834,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+ 
+   const defaultExportRE = /((?:^|\n|;)\s*)export(\s*)default/;
+   const namedDefaultExportRE = /((?:^|\n|;)\s*)export(.+)as(\s*)default/;
++  const exportDefaultClassRE = /((?:^|\n|;)\s*)export\s+default\s+class\s+([\w$]+)/;
+   /**
+    * Utility for rewriting `export default` in a script block into a variable
+    * declaration so that we can inject things into it
+@@ -34343,7 +34843,16 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       if (!hasDefaultExport(input)) {
+           return input + `\nconst ${as} = {}`;
+       }
+-      const replaced = input.replace(defaultExportRE, `$1const ${as} =`);
++      let replaced;
++      const classMatch = input.match(exportDefaultClassRE);
++      if (classMatch) {
++          replaced =
++              input.replace(exportDefaultClassRE, '$1class $2') +
++                  `\nconst ${as} = ${classMatch[2]}`;
++      }
++      else {
++          replaced = input.replace(defaultExportRE, `$1const ${as} =`);
++      }
+       if (!hasDefaultExport(replaced)) {
+           return replaced;
+       }
+@@ -34427,7 +34936,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+               if (needRewrite) {
+                   content = rewriteDefault(content, `__default__`, plugins);
+                   if (cssVars.length) {
+-                      content += genNormalScriptCssVarsCode(cssVars, bindings, scopeId, !!options.isProd);
++                      content += genNormalScriptCssVarsCode(cssVars, scopeId, !!options.isProd);
+                   }
+                   if (hasInheritAttrsFlag) {
+                       content += `__default__.inheritAttrs = false`;
+@@ -34989,7 +35498,7 @@ var VueCompilerSFC = (function (exports, path, url, postcss, require$$0) {
+       if (cssVars.length) {
+           helperImports.add(CSS_VARS_HELPER);
+           helperImports.add('unref');
+-          s.prependRight(startOffset, `\n${genCssVarsCode(cssVars, bindingMetadata, scopeId, !!options.isProd)}\n`);
++          s.prependRight(startOffset, `\n${genCssVarsCode(cssVars, scopeId, !!options.isProd, bindingMetadata)}\n`);
+       }
+       // 9. finalize setup() argument signature
+       let args = `__props`;
