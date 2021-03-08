@@ -1,8 +1,8 @@
 <template>
   <PropsAccordion class="area-props" :accordion="accordion">
     <AreaAccordionItem v-for="a in areaPath" :key="a.name" :area="a" :accordion="accordion" />
-    
-        <!--
+
+    <!--
     <div class="area-type">{{ area.type === 'div' ? area.display : area.type }} props</div>
     <PropsAccordionItem name="display" :heading="`Display (${area.display})`" :accordion="accordion">
       <AreaContentProps :area="area" />
@@ -68,7 +68,7 @@
     </PropsAccordionItem> 
     -->
 
-    <template v-if="area.children.length" >
+    <template v-if="area.children.length">
       <AreaAccordionItem v-for="a in area.children" :key="`child:${a.name}`" :area="a" :accordion="accordion" />
     </template>
   </PropsAccordion>
@@ -110,7 +110,7 @@ function concatenateParents(area, list = [area]) {
   return parent ? concatenateParents(parent, [parent, ...list]) : list
 }
 
-const areaPath = computed(() => concatenateParents(props.area))
+const areaPath = computed(() => concatenateParents(currentArea.value))
 
 watch(currentArea, () => {
   if (accordion.value.active !== 'tree') {
