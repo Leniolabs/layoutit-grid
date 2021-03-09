@@ -43,11 +43,8 @@ import BrandBanner from '../props/BrandBanner.vue'
 }
 
 .code-sidebar {
-  display: flex;
-  flex-direction: column;
-  > div {
-    //flex: 1;
-  }
+  display: grid;
+  grid-template-rows: 50px 50px calc(100% - 270px) 85px 85px;
 }
 .btn-github {
   position: fixed;

@@ -60,10 +60,9 @@ function copyToClipBoard() {
   height: max-content;
   overflow: auto;
   margin-bottom: 6px;
-  max-height: 211px;
+  max-width: 330px;
   + .code-container {
     margin-bottom: 0px;
-    max-height: calc(100vh - 390px);
   }
 }
 

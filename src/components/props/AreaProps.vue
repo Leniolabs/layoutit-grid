@@ -205,7 +205,7 @@ function onUpdateType(type) {
   height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #666;
+  background: #1e1e1e;
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb {
