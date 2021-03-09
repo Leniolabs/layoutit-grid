@@ -1,5 +1,10 @@
 <template>
-  <section v-if="selection" :style="{ 'grid-area': gridArea, 'border-color': selection.color }" class="area-selection">
+  <section
+    v-if="selection"
+    :style="{ 'grid-area': gridArea, 'border-color': selection.color }"
+    class="area-selection"
+    @keyup.esc="closeSelection"
+  >
     <input
       ref="nameInputElement"
       v-model="gridName"

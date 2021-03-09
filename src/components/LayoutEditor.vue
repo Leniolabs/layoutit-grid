@@ -18,8 +18,9 @@ import SidebarRight from './basic/SidebarRight.vue'
 import PropsSidebar from './props/PropsSidebar.vue'
 import LiveCode from './code/LiveCode.vue'
 
-import { defineProps, ref, computed, onMounted } from 'vue'
+import { defineProps, ref, computed, onMounted, onUnmounted } from 'vue'
 import { mainArea, loadFromStorage, currentArea, currentView } from '../store.js'
+import { keyMonitor } from '../utils/keyMonitor'
 
 defineProps({
   saveDesign: { type: Function, default: null },
@@ -29,7 +30,12 @@ function toggleView(view) {
   currentView.value = currentView.value === view ? 'editor' : view
 }
 
-onMounted(loadFromStorage)
+onMounted(() => {
+  loadFromStorage()
+  addEventListener('keydown', keyMonitor)
+})
+
+onUnmounted(() => removeEventListener('keydown', keyMonitor))
 </script>
 
 <style lang="scss">

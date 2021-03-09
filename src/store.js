@@ -217,3 +217,13 @@ export function addImplicitArea(area) {
     })
   )
 }
+
+export function subGrid(area) {
+  clearArea(area)
+  if (!area.grid) {
+    area.type = 'div'
+    area.display = 'grid'
+    area.grid = createGridState()
+  }
+  setCurrentArea(area)
+}
