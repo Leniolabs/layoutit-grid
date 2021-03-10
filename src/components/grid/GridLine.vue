@@ -19,7 +19,12 @@
         {
           compact: area.padding !== '0',
           dragging: dragging && dragging.grid === grid && dragging[type + 'Line'] === pos,
-          focused: currentFocus && currentFocus.on === 'line' && currentFocus.type === type && currentFocus.pos === pos,
+          focused:
+            currentFocus &&
+            currentFocus.grid === grid &&
+            currentFocus.on === 'line' &&
+            currentFocus.type === type &&
+            currentFocus.pos === pos,
         },
       ]"
     >
