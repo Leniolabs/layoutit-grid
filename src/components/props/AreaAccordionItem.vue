@@ -1,19 +1,16 @@
 <template>
-  <PropsAccordionItem
-    class="area-actions-sidebar"
-    :name="`area:${area.name}`"
-    :heading="`.${area.name}`"
-    :accordion="accordion"
-    :independent="true"
+  <div
+    class="props-accordion-item area-actions-sidebar"
     :style="{ 'border-left': `2px solid ${area.color}` }"
-    @click="currentArea = area"
+    @click="setCurrentArea(area)"
   >
-    <template #buttons>
+    <h1>
+      {{ `.${area.name}` }}
       <div class="area-action-buttons">
         <OptionsButton v-show="area.display === 'grid'" class="add-area-button" @click="addImplicitArea(area)">
           <IconAdd />
         </OptionsButton>
-        <OptionsButton v-show="area.display === 'block'" class="remove-button" @click="removeArea(area)"
+        <OptionsButton v-show="area.display === 'block'" class="remove-button" @click="$emit('removearea', area)"
           ><IconRemove
         /></OptionsButton>
         <OptionsButton
@@ -24,30 +21,39 @@
           ><IconClear
         /></OptionsButton>
       </div>
-    </template>
-  </PropsAccordionItem>
+    </h1>
+  </div>
 </template>
 
-<script setup>
-import PropsAccordionItem from './PropsAccordionItem.vue'
+<script>
 import OptionsButton from '../basic/OptionsButton.vue'
 import IconAdd from '../icons/IconAdd.vue'
-import IconAddArea from '../icons/IconAddArea.vue'
 import IconClear from '../icons/IconClear.vue'
 import IconRemove from '../icons/IconRemove.vue'
 
-import { currentArea, mainArea } from '../../store.js'
-import { defineProps } from 'vue'
-import { clearArea, removeArea, addImplicitArea } from '../../store.js'
+import { setCurrentArea, clearArea, addImplicitArea, removeArea } from '../../store.js'
 
-defineProps({
-  area: { type: Object, required: true },
-  accordion: { type: Object, required: true },
-})
+export default {
+  components: { IconAdd, OptionsButton, IconClear, IconRemove },
+  props: {
+    area: { type: Object, required: true },
+  },
+  emits: ['removearea'],
+  methods: {
+    clearArea,
+    removeArea,
+    addImplicitArea,
+    setCurrentArea,
+    click() {
+      setCurrentArea(this.area)
+    },
+  },
+}
 </script>
 
 <style scoped lang="scss">
 .props-accordion-item h1 {
+  position: relative;
   width: 100%;
   border-top: 1px solid rgba(68, 68, 68, 0.5);
   color: #fff;

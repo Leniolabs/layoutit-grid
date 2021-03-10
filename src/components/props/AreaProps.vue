@@ -1,6 +1,6 @@
 <template>
   <PropsAccordion class="area-props" :accordion="accordion">
-    <AreaAccordionItem v-for="a in areaPath" :key="a.name" :area="a" :accordion="accordion" />
+    <AreaAccordionItem v-for="a in areaPath" :key="a.name" :area="a" @removearea="onRemove($event)" />
 
     <!--
     <div class="area-type">{{ area.type === 'div' ? area.display : area.type }} props</div>
@@ -69,7 +69,7 @@
     -->
 
     <template v-if="area.children.length">
-      <AreaAccordionItem v-for="a in area.children" :key="`child:${a.name}`" :area="a" :accordion="accordion" />
+      <AreaAccordionItem v-for="a in area.children" :key="`child:${a.name}`" :area="a" @removearea="onRemove($event)" />
     </template>
   </PropsAccordion>
 </template>
@@ -95,8 +95,11 @@ import IconAddArea from '../icons/IconAddArea.vue'
 import IconClear from '../icons/IconClear.vue'
 import IconRemove from '../icons/IconRemove.vue'
 
-import { currentArea, mainArea } from '../../store.js'
-import { defineProps, ref, computed, watch } from 'vue'
+import { currentArea, setCurrentArea, mainArea, removeArea } from '../../store.js'
+import { defineProps, ref, computed, watch, onBeforeUpdate, nextTick } from 'vue'
+
+// Hack, there is a strange interaction betweetn refs and slots
+let toBeRemoved = null
 
 const props = defineProps({
   area: { type: Object, required: true },
@@ -105,12 +108,20 @@ const accordion = ref({ active: 'explicit-grid' })
 const currentGrid = computed(() => props.area.grid)
 const currentFlex = computed(() => props.area.flex)
 
+function onRemove(area) {
+  const { parent } = area
+  removeArea(area)
+  setTimeout(() => {
+    setCurrentArea(parent)
+  }, 10)
+}
+
 function concatenateParents(area, list = [area]) {
   const { parent } = area
   return parent ? concatenateParents(parent, [parent, ...list]) : list
 }
 
-const areaPath = computed(() => concatenateParents(currentArea.value))
+const areaPath = computed(() => concatenateParents(props.area))
 
 watch(currentArea, () => {
   if (accordion.value.active !== 'tree') {
