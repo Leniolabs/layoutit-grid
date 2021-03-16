@@ -1,6 +1,7 @@
 <template>
-  <PropsAccordion class="area-props" :accordion="accordion">
-    <AreaAccordionItem v-for="a in areaPath" :key="a.name" :area="a" @removearea="onRemove($event)" />
+  <PropsAccordion class="area-props" :accordion="accordion" >
+    <div>
+      <AreaAccordionItem v-for="a in areaPath" :key="a.name" :area="a" :name="a.name" :accordion="accordion" @removearea="onRemove($event)" />
 
     <!--
     <div class="area-type">{{ area.type === 'div' ? area.display : area.type }} props</div>
@@ -67,6 +68,8 @@
       <AreaTypeSelect v-if="area.parent" :model-value="area.type" @update:modelValue="onUpdateType" />
     </PropsAccordionItem> 
     -->
+    </div>
+    
 
     <template v-if="area.children.length">
       <AreaAccordionItem v-for="a in area.children" :key="`child:${a.name}`" :area="a" @removearea="onRemove($event)" />
@@ -161,6 +164,7 @@ function onUpdateType(type) {
 .props-accordion-item h1 {
   width: 100%;
   border-top: 1px solid rgba(68, 68, 68, 0.5);
+
   color: #fff;
   font-size: 15px;
   margin: 0;

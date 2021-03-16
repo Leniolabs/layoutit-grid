@@ -24,10 +24,16 @@
           <template v-if="type === 'justify-content'">
             <component :is="optionIconsJustify[option]" v-if="optionIconsJustify[option]" />
           </template>          
+          <template v-if="type === 'justify-self'">
+            <component :is="optionIconsJustify[option]" v-if="optionIconsJustify[option]" />
+          </template>            
           <template v-if="type === 'align-items'">
             <component :is="optionIconsAlign[option]" v-if="optionIconsAlign[option]" />
           </template>
           <template v-if="type === 'align-content'">
+            <component :is="optionIconsAlign[option]" v-if="optionIconsAlign[option]" />
+          </template>          
+          <template v-if="type === 'align-self'">
             <component :is="optionIconsAlign[option]" v-if="optionIconsAlign[option]" />
           </template>          
         </label>

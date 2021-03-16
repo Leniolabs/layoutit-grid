@@ -5,22 +5,7 @@
         <div class="items-header">
           <h2>grid-template-columns</h2>
           <OptionsButton class="add-button" @click="addCol(grid, '1fr')"
-            ><svg
-              fill="none"
-              stroke="#fff"
-              stroke-width="12"
-              stroke-dashoffset="0"
-              stroke-dasharray="0"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 100 100"
-              data-v-72c511f8=""
-              data-v-0da319cf-s=""
-            >
-              <line x1="15" y1="15" x2="85" y2="85"></line>
-              <line x1="85" y1="15" x2="15" y2="85"></line></svg
-          ></OptionsButton>
+            >Add</OptionsButton>
         </div>
         <div v-for="column in colsNumber" :key="column" class="area-size">
           <div
@@ -72,22 +57,7 @@
         <div class="items-header">
           <h2>grid-auto-columns</h2>
           <OptionsButton class="add-button" @click="addImplicitCol(grid, '1fr')"
-            ><svg
-              fill="none"
-              stroke="#fff"
-              stroke-width="12"
-              stroke-dashoffset="0"
-              stroke-dasharray="0"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 100 100"
-              data-v-72c511f8=""
-              data-v-0da319cf-s=""
-            >
-              <line x1="15" y1="15" x2="85" y2="85"></line>
-              <line x1="85" y1="15" x2="15" y2="85"></line></svg
-          ></OptionsButton>
+            >Add</OptionsButton>
         </div>
         <div v-for="column in autoColsNumber" :key="column" class="area-size area-auto-cols">
           <div
@@ -142,22 +112,7 @@
         <div class="items-header">
           <h2>grid-template-rows</h2>
           <OptionsButton class="add-button" @click="addRow(grid, '1fr')"
-            ><svg
-              fill="none"
-              stroke="#fff"
-              stroke-width="12"
-              stroke-dashoffset="0"
-              stroke-dasharray="0"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 100 100"
-              data-v-72c511f8=""
-              data-v-0da319cf-s=""
-            >
-              <line x1="15" y1="15" x2="85" y2="85"></line>
-              <line x1="85" y1="15" x2="15" y2="85"></line></svg
-          ></OptionsButton>
+            >Add</OptionsButton>
         </div>
         <div v-for="row in rowsNumber" :key="row" class="area-size">
           <div
@@ -207,22 +162,7 @@
         <div class="items-header">
           <h2>grid-auto-rows</h2>
           <OptionsButton class="add-button" @click="addImplicitRow(grid, '1fr')"
-            ><svg
-              fill="none"
-              stroke="#fff"
-              stroke-width="12"
-              stroke-dashoffset="0"
-              stroke-dasharray="0"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 100 100"
-              data-v-72c511f8=""
-              data-v-0da319cf-s=""
-            >
-              <line x1="15" y1="15" x2="85" y2="85"></line>
-              <line x1="85" y1="15" x2="15" y2="85"></line></svg
-          ></OptionsButton>
+            >Add</OptionsButton>
         </div>
         <div v-for="row in autoRowsNumber" :key="row" class="area-size area-auto-rows">
           <div
@@ -403,6 +343,7 @@ h2 {
   .items-header:only-child h2,
   .items-header:only-child button {
     opacity: 0.6;
+    background: transparent;
   }
   .items-header:only-child button:hover {
     opacity: 1;
@@ -413,6 +354,7 @@ h2 {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
   + .area-size {
     margin-top: 6px;
   }
@@ -506,11 +448,19 @@ button,
 
 .add-button {
   height: 30px;
-  svg {
-    transform: rotate(45deg);
-  }
+  max-width: 31px;
+  background: transparent;
   &:hover {
-    background: #0165b4;
+    color: #FFEB3B;
+    background: transparent;
+  }
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
 }
 

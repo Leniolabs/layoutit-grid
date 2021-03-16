@@ -50,7 +50,7 @@ const opened = ref(true)
     margin: 0;
     padding: 10px 15px;
     cursor: pointer;
-    border-bottom: 1px solid rgba(68, 68, 68, 0.5);
+    //border-bottom: 1px solid rgba(68, 68, 68, 0.5);
     opacity: 0.6;
     &.independent {
       border-top: 1px solid rgba(68, 68, 68, 0.5);

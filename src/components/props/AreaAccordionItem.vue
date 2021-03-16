@@ -7,9 +7,7 @@
     <h1>
       {{ `.${area.name}` }}
       <div class="area-action-buttons">
-        <OptionsButton v-show="area.display === 'grid'" class="add-area-button" @click="addImplicitArea(area)">
-          <IconAdd />
-        </OptionsButton>
+
         <OptionsButton v-show="area.display === 'block'" class="remove-button" @click="$emit('removearea', area)"
           ><IconRemove
         /></OptionsButton>
@@ -20,6 +18,9 @@
           @click="clearArea(area)"
           ><IconClear
         /></OptionsButton>
+        <OptionsButton v-show="area.display === 'grid'" class="add-area-button" @click="addImplicitArea(area)">
+          <IconAdd />
+        </OptionsButton>        
       </div>
     </h1>
   </div>
@@ -56,6 +57,7 @@ export default {
   position: relative;
   width: 100%;
   border-top: 1px solid rgba(68, 68, 68, 0.5);
+
   color: #fff;
   font-size: 15px;
   margin: 0;
@@ -67,6 +69,12 @@ export default {
     text-shadow: none;
     color: #d7ba7d;
     font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
+}
+
+.area-actions-sidebar {
+  h1 {
+    border-bottom: 1px solid rgba(68, 68, 68, 0.5);
   }
 }
 

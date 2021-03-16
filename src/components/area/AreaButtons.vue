@@ -36,7 +36,7 @@
     <button
       v-show="hasDisplay"
       aria-label="Clear area"
-      class="btn-remove"
+      class="btn-remove btn-clear" 
       title="Clear Area"
       :style="{ background: `${area.color}` }"
       @click="clearArea(area)"
@@ -130,6 +130,10 @@ button {
       stroke: #fff;
       stroke-width: 20px;
     }
+  }
+  &.btn-remove.btn-clear svg {
+    stroke: transparent;
+    width: 13px;
   }
 }
 </style>
