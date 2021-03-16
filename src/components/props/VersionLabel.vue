@@ -41,7 +41,7 @@ function onChange(event) {
     background: #1e1e1e;
     -webkit-appearance: none;
     appearance: none;
-    width: 50px;
+    width: 40px;
     cursor: pointer;
     &:hover {
       color: #eee;

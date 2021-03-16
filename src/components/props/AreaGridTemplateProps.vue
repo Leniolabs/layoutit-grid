@@ -448,8 +448,11 @@ button,
 
 .add-button {
   height: 30px;
-  max-width: 31px;
+  max-width: 32px;
   background: transparent;
+      font-size: 13px;
+    text-shadow: none;
+    font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
   &:hover {
     color: #FFEB3B;
     background: transparent;
