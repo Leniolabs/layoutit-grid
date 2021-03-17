@@ -68,7 +68,7 @@ function keyHandler(event) {
 }
 
 export function keyMonitor(event) {
-  if (event.target.nodeName === 'INPUT' && event.key !== 'Escape') return
+  if ((event.target.nodeName === 'INPUT' || event.target.nodeName === 'SPAN') && event.key !== 'Escape') return
   else if (event.ctrlKey || event.metaKey) ctrlMetaKeyHandler(event)
   else keyHandler(event)
 }
