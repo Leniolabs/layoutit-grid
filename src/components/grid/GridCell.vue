@@ -6,6 +6,7 @@
     :data-row-end="section.row.end"
     :style="{
       gridArea: `${section.row.start} / ${section.col.start} / ${section.row.start + 1} / ${section.col.start + 1}`,
+      background: grayed ? '#e8e8e8' : '#ffffff',
     }"
     :class="{
       lastcol: section.col.start === colsNumber && section.row.start === 1,
@@ -95,7 +96,6 @@ section {
   z-index: -1;
   pointer-events: initial;
   touch-action: none;
-  background: #ffffff;
   height: 100%;
   position: relative;
   &:not(.dragging) {
