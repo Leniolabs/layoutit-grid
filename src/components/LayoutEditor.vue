@@ -38,7 +38,7 @@ onMounted(() => {
 onUnmounted(() => removeEventListener('keydown', keyMonitor))
 </script>
 
-<style lang="scss">
+<style lang="postcss">
 :root {
   --color-add: #0165b4;
   --color-add-active: #50b83c;

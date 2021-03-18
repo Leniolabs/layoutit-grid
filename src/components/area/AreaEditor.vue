@@ -332,7 +332,7 @@ const gridTracks = computed(() => {
 })
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .area-editor {
   position: relative;
   pointer-events: none;

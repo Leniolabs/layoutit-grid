@@ -256,7 +256,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .grid-areas,
 .grid-area-info {
   touch-action: none;

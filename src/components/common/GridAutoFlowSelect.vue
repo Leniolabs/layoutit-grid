@@ -39,7 +39,7 @@ defineEmit(['update:modelValue'])
 const options = ['row', 'column']
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .display-select-container {
   padding-top: 8px;
   margin-bottom: 10px;
@@ -81,7 +81,7 @@ const options = ['row', 'column']
   background: #151515;
   line-height: 30px;
   display: flex;
-  align-items: center;  
+  align-items: center;
   text-align: center;
   justify-content: center;
   color: #aaa;
@@ -93,7 +93,7 @@ const options = ['row', 'column']
     color: #fff;
     svg {
       stroke: #fff;
-    }      
+    }
   }
   &.dense-label {
     background: transparent;
@@ -114,7 +114,7 @@ input[type='radio']:checked + label {
   border-radius: 2px;
   &.dense-label {
     background: transparent;
-  }  
+  }
   svg {
     color: #fff;
   }

@@ -10,4 +10,4 @@
 import LayoutEditor from './components/LayoutEditor.vue'
 </script>
 
-<style lang="scss"></style>
+<style lang="postcss"></style>

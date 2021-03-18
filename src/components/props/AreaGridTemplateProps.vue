@@ -4,8 +4,7 @@
       <div class="items">
         <div class="items-header">
           <h2>grid-template-columns</h2>
-          <OptionsButton class="add-button" @click="addCol(grid, '1fr')"
-            >Add</OptionsButton>
+          <OptionsButton class="add-button" @click="addCol(grid, '1fr')">Add</OptionsButton>
         </div>
         <div v-for="column in colsNumber" :key="column" class="area-size">
           <div
@@ -56,8 +55,7 @@
       <div class="items items-auto">
         <div class="items-header">
           <h2>grid-auto-columns</h2>
-          <OptionsButton class="add-button" @click="addImplicitCol(grid, '1fr')"
-            >Add</OptionsButton>
+          <OptionsButton class="add-button" @click="addImplicitCol(grid, '1fr')">Add</OptionsButton>
         </div>
         <div v-for="column in autoColsNumber" :key="column" class="area-size area-auto-cols">
           <div
@@ -111,8 +109,7 @@
       <div class="items">
         <div class="items-header">
           <h2>grid-template-rows</h2>
-          <OptionsButton class="add-button" @click="addRow(grid, '1fr')"
-            >Add</OptionsButton>
+          <OptionsButton class="add-button" @click="addRow(grid, '1fr')">Add</OptionsButton>
         </div>
         <div v-for="row in rowsNumber" :key="row" class="area-size">
           <div
@@ -161,8 +158,7 @@
       <div class="items items-auto">
         <div class="items-header">
           <h2>grid-auto-rows</h2>
-          <OptionsButton class="add-button" @click="addImplicitRow(grid, '1fr')"
-            >Add</OptionsButton>
+          <OptionsButton class="add-button" @click="addImplicitRow(grid, '1fr')">Add</OptionsButton>
         </div>
         <div v-for="row in autoRowsNumber" :key="row" class="area-size area-auto-rows">
           <div
@@ -318,7 +314,7 @@ const onImplicitSizeValueInput = debounce((type, track, value) => {
 })
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 h2 {
   display: block;
   flex: 1;
@@ -450,15 +446,15 @@ button,
   height: 30px;
   max-width: 32px;
   background: transparent;
-      font-size: 13px;
-    text-shadow: none;
-    font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  font-size: 13px;
+  text-shadow: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   &:hover {
-    color: #FFEB3B;
+    color: #ffeb3b;
     background: transparent;
   }
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;

@@ -39,7 +39,7 @@ const lineName = computed({
 const onInput = useInputSetter(lineName, isValidLineName, targetText)
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .col,
 .row {
   &:hover {

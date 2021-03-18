@@ -27,7 +27,7 @@ defineEmit(['update:modelValue'])
 const options = ['block', 'flex', 'grid']
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .display-select-container {
   margin-bottom: 5px;
   span {
@@ -78,7 +78,7 @@ const options = ['block', 'flex', 'grid']
     color: #fff;
     svg {
       stroke: #fff;
-    }      
+    }
   }
   &.default-value {
     opacity: 1;

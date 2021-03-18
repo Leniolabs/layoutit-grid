@@ -38,7 +38,7 @@ const gridArea = computed(() => {
 })
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 span {
   &:hover {
     color: white;

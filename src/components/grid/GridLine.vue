@@ -106,7 +106,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 section {
   touch-action: none;
   pointer-events: none;

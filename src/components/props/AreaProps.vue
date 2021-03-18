@@ -1,57 +1,64 @@
 <template>
-  <PropsAccordion class="area-props" :accordion="accordion" >
+  <PropsAccordion class="area-props" :accordion="accordion">
     <div>
-      <AreaAccordionItem v-for="a in areaPath" :key="a.name" :area="a" :name="a.name" :accordion="accordion" @removearea="onRemove($event)" />
+      <AreaAccordionItem
+        v-for="a in areaPath"
+        :key="a.name"
+        :area="a"
+        :name="a.name"
+        :accordion="accordion"
+        @removearea="onRemove($event)"
+      />
 
-    <!--
+      <!--
     <div class="area-type">{{ area.type === 'div' ? area.display : area.type }} props</div>
     <PropsAccordionItem name="display" :heading="`Display (${area.display})`" :accordion="accordion">
       <AreaContentProps :area="area" />
     </PropsAccordionItem>
     -->
 
-    <template v-if="area.display === 'grid'">
-      <PropsAccordionItem name="explicit-grid" heading="Grid Layout" :accordion="accordion">
-        <AreaGridTemplateProps :area="area" />
-        <AreaGridGapProps :area="area" />
+      <template v-if="area.display === 'grid'">
+        <PropsAccordionItem name="explicit-grid" heading="Grid Layout" :accordion="accordion">
+          <AreaGridTemplateProps :area="area" />
+          <AreaGridGapProps :area="area" />
+        </PropsAccordionItem>
+
+        <PropsAccordionItem name="grid-items-placement" heading="Items Placement" :accordion="accordion">
+          <AreaGridItemsPlacementProps :area="area" />
+        </PropsAccordionItem>
+
+        <PropsAccordionItem name="grid-content-placement" heading="Content Placement" :accordion="accordion">
+          <AreaGridContentPlacementProps :area="area" />
+        </PropsAccordionItem>
+      </template>
+
+      <PropsAccordionItem v-if="area.display === 'flex'" name="flex-props" heading="Flex Props" :accordion="accordion">
+        <AreaFlexProps :area="area" />
       </PropsAccordionItem>
 
-      <PropsAccordionItem name="grid-items-placement" heading="Items Placement" :accordion="accordion">
-        <AreaGridItemsPlacementProps :area="area" />
+      <PropsAccordionItem
+        v-if="area.parent && area.parent.display === 'grid'"
+        name="self-grid"
+        heading="Self Placement"
+        :accordion="accordion"
+      >
+        <AreaSelfGridProps :area="area" />
       </PropsAccordionItem>
 
-      <PropsAccordionItem name="grid-content-placement" heading="Content Placement" :accordion="accordion">
-        <AreaGridContentPlacementProps :area="area" />
+      <PropsAccordionItem
+        v-if="area.parent && area.parent.display === 'flex'"
+        name="self-flex"
+        heading="Self Flex"
+        :accordion="accordion"
+      >
+        <AreaSelfFlexProps :area="area" />
       </PropsAccordionItem>
-    </template>
 
-    <PropsAccordionItem v-if="area.display === 'flex'" name="flex-props" heading="Flex Props" :accordion="accordion">
-      <AreaFlexProps :area="area" />
-    </PropsAccordionItem>
+      <PropsAccordionItem name="area-box" heading="Area Box" :accordion="accordion">
+        <AreaBoxProps :area="area" />
+      </PropsAccordionItem>
 
-    <PropsAccordionItem
-      v-if="area.parent && area.parent.display === 'grid'"
-      name="self-grid"
-      heading="Self Placement"
-      :accordion="accordion"
-    >
-      <AreaSelfGridProps :area="area" />
-    </PropsAccordionItem>
-
-    <PropsAccordionItem
-      v-if="area.parent && area.parent.display === 'flex'"
-      name="self-flex"
-      heading="Self Flex"
-      :accordion="accordion"
-    >
-      <AreaSelfFlexProps :area="area" />
-    </PropsAccordionItem>
-
-    <PropsAccordionItem name="area-box" heading="Area Box" :accordion="accordion">
-      <AreaBoxProps :area="area" />
-    </PropsAccordionItem>
-
-    <!--
+      <!--
     <PropsAccordionItem
       name="tree"
       :independent="true"
@@ -63,13 +70,11 @@
       <AreaTree :area="mainArea" />
     </PropsAccordionItem>
     -->
-    <!--     
+      <!--     
     <PropsAccordionItem v-if="area.parent" name="type" heading="Type" :accordion="accordion">
       <AreaTypeSelect v-if="area.parent" :model-value="area.type" @update:modelValue="onUpdateType" />
     </PropsAccordionItem> 
-    -->
-    </div>
-    
+    --></div>
 
     <template v-if="area.children.length">
       <AreaAccordionItem v-for="a in area.children" :key="`child:${a.name}`" :area="a" @removearea="onRemove($event)" />
@@ -160,7 +165,7 @@ function onUpdateType(type) {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .props-accordion-item h1 {
   width: 100%;
   border-top: 1px solid rgba(68, 68, 68, 0.5);

@@ -23,4 +23,4 @@ defineProps({
 })
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="postcss"></style>

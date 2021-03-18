@@ -36,7 +36,7 @@
     <button
       v-show="hasDisplay"
       aria-label="Clear area"
-      class="btn-remove btn-clear" 
+      class="btn-remove btn-clear"
       title="Clear Area"
       :style="{ background: `${area.color}` }"
       @click="clearArea(area)"
@@ -84,7 +84,7 @@ function subFlex() {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 button {
   border: 0;
   height: 30px;

@@ -32,7 +32,7 @@ const areaName = computed({
 const onInput = useInputSetter(areaName, isValidAreaName, targetText)
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 span {
   &:hover {
     color: white;

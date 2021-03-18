@@ -118,7 +118,7 @@ function getPermalink() {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .buttons {
   display: flex;
   user-select: none;

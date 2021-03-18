@@ -20,7 +20,7 @@ import IconGithub from '../icons/IconGithub.vue'
 import BrandBanner from '../props/BrandBanner.vue'
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .code-sidebar {
   overflow: auto;
   text-align: left;

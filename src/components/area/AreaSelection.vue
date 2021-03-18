@@ -232,7 +232,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .area-selection {
   pointer-events: none;
   touch-action: none;

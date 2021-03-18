@@ -8,7 +8,7 @@
 import HireUs from './HireUs.vue'
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .version-container {
   border-top: 1px solid rgba(68, 68, 68, 0.5);
   padding-top: 15px;

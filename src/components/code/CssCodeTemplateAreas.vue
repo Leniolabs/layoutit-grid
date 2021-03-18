@@ -31,7 +31,7 @@ function getGridTemplateAreas(area) {
 const templateAreas = computed(() => getGridTemplateAreas(props.area))
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 span {
   &:hover {
     color: white;

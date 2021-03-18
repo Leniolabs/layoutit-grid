@@ -34,7 +34,7 @@ const props = defineProps({
 const flex = computed(() => props.area.flex)
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 h2 {
   margin: 0 0 10px;
   font-family: 'Alegreya Sans', 'Helvetica Neue', Arial, sans-serif;

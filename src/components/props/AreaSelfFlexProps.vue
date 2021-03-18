@@ -49,7 +49,7 @@ const onFlexShrinkInput = inputSetter((value) => (props.area.Shrink = value))
 const onFlexBasisInput = inputSetter((value) => (props.area.flexBasis = value), isValidFlexBasis)
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .layout-props {
   display: flex;
   flex-direction: column;

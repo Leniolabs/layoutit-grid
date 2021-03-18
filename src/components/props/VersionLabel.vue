@@ -15,7 +15,7 @@ function onChange(event) {
   }
 }
 </script>
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .version {
   float: left;
   position: relative;

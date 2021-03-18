@@ -22,8 +22,8 @@ const props = defineProps({
 })
 defineEmit(['update:modelValue'])
 
-const optionsContent = [ 'stretch', 'start', 'center', 'end', 'around', 'between', 'evenly']
-const optionsItems = ['stretch', 'start', 'center', 'end', ]
+const optionsContent = ['stretch', 'start', 'center', 'end', 'around', 'between', 'evenly']
+const optionsItems = ['stretch', 'start', 'center', 'end']
 
 const optionsMap = {
   content: optionsContent,
@@ -34,7 +34,7 @@ const optionsMap = {
 const options = computed(() => optionsMap[props.type.split('-')[1]])
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .placement-select-container {
   display: grid;
   grid-template-columns: 0.75fr 1fr;

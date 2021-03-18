@@ -119,7 +119,7 @@ function onDragOver(areaTarget, event) {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .token.tag,
 .token.attr-name {
   cursor: pointer;

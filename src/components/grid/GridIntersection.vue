@@ -28,7 +28,7 @@ defineEmit(['down'])
 const grid = computed(() => props.area.grid)
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 section {
   touch-action: none;
   pointer-events: none;

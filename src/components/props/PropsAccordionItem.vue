@@ -27,16 +27,18 @@ defineProps({
 const opened = ref(true)
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .props-accordion-item {
   overflow: hidden;
   overflow-y: auto;
   margin: 0;
   opacity: 1;
   transition: opacity 0.1s ease-in;
-  &:first-of-type { 
-    opacity: 1; 
-    h1:hover { background: transparent; }
+  &:first-of-type {
+    opacity: 1;
+    h1:hover {
+      background: transparent;
+    }
   }
   &:hover,
   &.active {
@@ -73,11 +75,11 @@ const opened = ref(true)
   color: #d7ba7d;
   font-size: 13px;
   text-shadow: none;
-  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   direction: ltr;
   text-align: left;
   white-space: pre;
-  word-spacing: normal; 
+  word-spacing: normal;
   word-break: normal;
   line-height: 1.5;
   font-weight: normal;

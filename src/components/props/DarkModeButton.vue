@@ -46,7 +46,7 @@ function getSystemTheme() {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 button.btn-dark {
   margin-bottom: 10px;
   background: #151515;

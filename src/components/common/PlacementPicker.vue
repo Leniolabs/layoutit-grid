@@ -1,6 +1,8 @@
 <template>
   <div class="placement-select-container">
-    <label>{{ type }}: <span>{{modelValue}}</span></label>
+    <label
+      >{{ type }}: <span>{{ modelValue }}</span></label
+    >
     <div class="radio-toolbar">
       <template v-for="option in options" :key="option">
         <input
@@ -17,25 +19,26 @@
             'default-value': option === (initial === 'initial' ? 'stretch' : initial) && modelValue === 'initial',
             'long-name': option.includes('space'),
           }"
-          :for="`items-placement-${type}-${option}`">
+          :for="`items-placement-${type}-${option}`"
+        >
           <template v-if="type === 'justify-items'">
             <component :is="optionIconsJustify[option]" v-if="optionIconsJustify[option]" />
           </template>
           <template v-if="type === 'justify-content'">
             <component :is="optionIconsJustify[option]" v-if="optionIconsJustify[option]" />
-          </template>          
+          </template>
           <template v-if="type === 'justify-self'">
             <component :is="optionIconsJustify[option]" v-if="optionIconsJustify[option]" />
-          </template>            
+          </template>
           <template v-if="type === 'align-items'">
             <component :is="optionIconsAlign[option]" v-if="optionIconsAlign[option]" />
           </template>
           <template v-if="type === 'align-content'">
             <component :is="optionIconsAlign[option]" v-if="optionIconsAlign[option]" />
-          </template>          
+          </template>
           <template v-if="type === 'align-self'">
             <component :is="optionIconsAlign[option]" v-if="optionIconsAlign[option]" />
-          </template>          
+          </template>
         </label>
       </template>
     </div>
@@ -85,7 +88,7 @@ const optionIconsJustify = {
   end: IconJustifyEnd,
   around: IconJustifyAround,
   between: IconJustifyBetween,
-  evenly: IconJustifyEvenly  
+  evenly: IconJustifyEvenly,
 }
 
 const optionIconsAlign = {
@@ -95,13 +98,13 @@ const optionIconsAlign = {
   end: IconAlignEnd,
   around: IconAlignAround,
   between: IconAlignBetween,
-  evenly: IconAlignEvenly
+  evenly: IconAlignEvenly,
 }
 
 const options = computed(() => optionsMap[props.type.split('-')[1]])
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .placement-select-container {
   padding: 10px 0px 0 0;
   > label {
@@ -119,7 +122,7 @@ const options = computed(() => optionsMap[props.type.split('-')[1]])
     margin-bottom: 5px;
     span {
       color: #ce9178;
-    }    
+    }
   }
 }
 
@@ -149,29 +152,33 @@ const options = computed(() => optionsMap[props.type.split('-')[1]])
   justify-content: center;
   text-align: center;
   color: #aaa;
-  &:last-child { border-right: solid 1px #23241f; }
+  &:last-child {
+    border-right: solid 1px #23241f;
+  }
 
   svg {
     stroke: #aaa;
-      fill: #eee;
+    fill: #eee;
     width: 20px;
-    stroke-width: 5px;  
+    stroke-width: 5px;
     rect {
       fill: #aaa;
-    }  
+    }
   }
   &:hover {
     color: #fff;
     svg {
       stroke: #fff;
-    }    
+    }
   }
   &.default-value {
     opacity: 1;
     color: #fff;
     background: #01579b;
     border-radius: 2px;
-    svg { stroke: #fff; }
+    svg {
+      stroke: #fff;
+    }
   }
 }
 input[type='radio']:checked + label {
@@ -183,7 +190,7 @@ input[type='radio']:checked + label {
     stroke: #fff;
   }
 }
-    rect {
-      fill: #aaa;
-    }  
+rect {
+  fill: #aaa;
+}
 </style>
