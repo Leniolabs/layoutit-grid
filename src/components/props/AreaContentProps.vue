@@ -78,7 +78,7 @@ function addItems() {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .items {
   font-size: 11px;
   margin-bottom: 10px;

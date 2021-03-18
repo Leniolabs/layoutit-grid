@@ -29,7 +29,7 @@ const gap = computed({
 const onInput = useInputSetter(gap, isValidGapSize, targetText)
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 span {
   &:hover {
     color: white;

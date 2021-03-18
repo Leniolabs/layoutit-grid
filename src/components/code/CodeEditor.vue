@@ -32,7 +32,7 @@ function copyToClipBoard() {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 * {
   scrollbar-width: thin;
   scrollbar-color: #555 #111;

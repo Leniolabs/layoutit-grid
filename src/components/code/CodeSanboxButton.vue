@@ -93,7 +93,7 @@ async function createCodeSandbox() {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .button {
   border: 0;
   border-radius: 50px;

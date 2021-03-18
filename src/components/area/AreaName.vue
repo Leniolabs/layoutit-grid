@@ -12,7 +12,7 @@ defineProps({
 defineEmit(['edit'])
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .area-name {
   position: relative;
   background: #ddd;

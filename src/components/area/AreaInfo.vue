@@ -49,7 +49,7 @@ const toolbarStart = computed(() => {
 })
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .area-info {
   position: absolute;
   top: 5px;

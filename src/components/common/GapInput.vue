@@ -49,7 +49,7 @@ function setGapValue(value) {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 h2 {
   display: block;
   flex: 1;

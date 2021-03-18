@@ -1,23 +1,22 @@
 <template>
   <div>
     <a
-        target="_blank"
+      target="_blank"
       class="hire-us"
-
-        rel="noopener"
-        href="https://www.leniolabs.com/services/team-augmentation/?utm_source=layoutit&utm_medium=banner&utm_campaign=leniolabs&utm_content=grid_banner"
-        >Hire our front-end team!</a>     
+      rel="noopener"
+      href="https://www.leniolabs.com/services/team-augmentation/?utm_source=layoutit&utm_medium=banner&utm_campaign=leniolabs&utm_content=grid_banner"
+      >Hire our front-end team!</a
+    >
     <a
       target="_blank"
       rel="noopener"
       href="https://www.leniolabs.com/services/team-augmentation/?utm_source=layoutit&utm_medium=banner&utm_campaign=leniolabs&utm_content=grid_banner"
-      >Crafted with ♥ by Leniolabs_</a>
- 
-</div>
-
+      >Crafted with ♥ by Leniolabs_</a
+    >
+  </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 div {
   .hire-us {
     border-radius: 30px;
@@ -31,9 +30,9 @@ div {
     font-weight: normal;
     font-size: 13px;
     text-shadow: none;
-    font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   }
-  .hire-us + a{
+  .hire-us + a {
     flex: 1;
     display: block;
     background: var(--color-hire-us);
@@ -49,8 +48,7 @@ div {
     text-shadow: rgba(0, 0, 0, 0.3) 0 1px 1px;
     &:hover {
       background: var(--color-hire-us-active);
-    }    
+    }
   }
 }
-
 </style>

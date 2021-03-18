@@ -85,13 +85,13 @@ const gridArea = computed(() => {
 })
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 section {
   touch-action: none;
   pointer-events: none;
   height: 100%;
   position: relative;
-  border: 1px dashed #aaa; // #2c3e50;
+  border: 1px dashed #aaa;
   overflow: hidden;
   &.focused {
     background: #27ae6011;

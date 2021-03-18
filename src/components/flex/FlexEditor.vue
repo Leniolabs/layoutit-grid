@@ -25,7 +25,7 @@ const { area } = toRefs(props)
 const isActive = useIsActiveArea(area)
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .grid section.flex-container {
   overflow: auto;
   background: #fff3c4;

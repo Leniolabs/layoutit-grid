@@ -14,7 +14,7 @@ import IconSidebar from './icons/IconSidebar.vue'
 import IconSubgrid from './icons/IconSubgrid.vue'
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .mobile-buttons {
   display: none;
   z-index: 90000;

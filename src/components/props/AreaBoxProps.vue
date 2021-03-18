@@ -46,7 +46,7 @@ const setPadding = inputSetter((value) => {
 }, isValidPadding)
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 label {
   display: block;
   flex: 1;
@@ -177,7 +177,12 @@ button,
 .layout-props {
   padding-top: 8px;
   display: flex;
-  > * { flex: 1; margin-right: 8px; }
-  > *:last-child { margin-right: 0; }  
+  > * {
+    flex: 1;
+    margin-right: 8px;
+  }
+  > *:last-child {
+    margin-right: 0;
+  }
 }
 </style>

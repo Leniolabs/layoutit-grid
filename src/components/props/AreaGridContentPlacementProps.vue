@@ -16,4 +16,4 @@ const props = defineProps({
 const grid = computed(() => props.area.grid)
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="postcss"></style>

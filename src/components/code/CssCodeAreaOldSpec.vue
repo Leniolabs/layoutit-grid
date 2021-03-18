@@ -43,4 +43,4 @@ const gridAreas = computed(() => (props.area.display === 'grid' ? props.area.chi
 const gridRegion = computed(() => getGridRegion(props.area))
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="postcss"></style>

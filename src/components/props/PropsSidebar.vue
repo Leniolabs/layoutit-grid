@@ -17,7 +17,7 @@ defineProps({
 })
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .sidebar {
   z-index: 20000;
   color: #fff;

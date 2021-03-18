@@ -90,7 +90,7 @@ const isDraggingCol = computed(() => isDraggingGrid.value && dragging.value.colL
 const isDraggingRow = computed(() => isDraggingGrid.value && dragging.value.rowLine === props.section.row.start)
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 section {
   z-index: -1;
   pointer-events: initial;

@@ -29,7 +29,7 @@ const props = defineProps({
 const grid = computed(() => props.area.grid)
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 /*
 .auto-flow-container {
   display: grid;

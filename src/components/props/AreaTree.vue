@@ -18,7 +18,7 @@
         :class="{ caret: area.children.length > 0, 'caret-down': showChildren }"
         @click="showChildren = !showChildren"
         >{{ showChildren ? ' &lt; ' : ' &gt; ' }}</span
-      > 
+      >
       <button v-if="area.display !== 'block'" aria-label="Add area" class="btn-add" title="Add Area" @click="addArea">
         <IconRemove />
       </button>
@@ -156,7 +156,7 @@ function addArea() {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .area-tree {
   padding-left: v-bind(depth);
   color: rgb(212, 212, 212);
@@ -206,8 +206,7 @@ function addArea() {
   content: '{';
   display: inline-block;
   color: #fff;
-        padding: 2px 0 1px 4px;
-
+  padding: 2px 0 1px 4px;
 }
 .area-name::after {
   content: '}';
@@ -221,12 +220,12 @@ function addArea() {
   padding-right: 0;
   cursor: pointer;
   &.current {
-      background: #01579b;
-      color: #fff;
-      &:after {
-        background: #151515;
-        padding: 2px 0 1px 4px;
-      }
+    background: #01579b;
+    color: #fff;
+    &:after {
+      background: #151515;
+      padding: 2px 0 1px 4px;
+    }
   }
 }
 
@@ -240,7 +239,7 @@ function addArea() {
       &:after {
         background: #151515;
         padding: 2px 0 1px 4px;
-      }      
+      }
     }
   }
   &.area-name:before,

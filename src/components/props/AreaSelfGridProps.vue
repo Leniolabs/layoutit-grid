@@ -6,7 +6,7 @@
         <div class="input-container">
           <input :value="area.gridArea" aria-label="margin" @input="setGridArea($event.target.value)" />
         </div>
-      </div>      
+      </div>
       <PlacementPicker v-model="area.justifySelf" type="justify-self" :initial="area.parent.grid.justifyItems" />
       <PlacementPicker v-model="area.alignSelf" type="align-self" :initial="area.parent.grid.alignItems" />
     </template>
@@ -27,8 +27,7 @@ const setGridArea = inputSetter((value) => {
 }, isValidGridArea)
 </script>
 
-<style scoped lang="scss">
-
+<style scoped lang="postcss">
 .layout-props {
   padding-top: 8px;
   padding-right: 10px;
@@ -40,14 +39,13 @@ label {
   color: #9cdcfe;
   font-size: 13px;
   text-shadow: none;
-  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   direction: ltr;
   text-align: left;
   white-space: pre;
   word-spacing: normal;
   margin-bottom: 5px;
 }
-
 
 .input-container input {
   height: 30px;
@@ -62,5 +60,4 @@ label {
   width: 100%;
   border-radius: 2px;
 }
-
 </style>

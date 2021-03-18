@@ -30,12 +30,12 @@ defineEmit(['update:modelValue'])
 const options = computed(() => units[props.type])
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .unit-select {
   background: #fff;
   border: 0 none;
   border-radius: 2px;
-  
+
   width: 100%;
   height: 24px;
   font-size: 14px;

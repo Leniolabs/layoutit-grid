@@ -17,7 +17,7 @@ defineEmit(['close'])
 const fullPath = computed(() => 'https://' + props.path)
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 div {
   position: fixed;
   top: 0px;

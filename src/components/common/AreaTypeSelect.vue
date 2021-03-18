@@ -19,7 +19,7 @@ defineEmit(['update:modelValue'])
 const options = ['div', 'p', 'button', 'image', 'component']
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .area-type-select-container {
   display: grid;
   grid-template-columns: 0.75fr 1fr;

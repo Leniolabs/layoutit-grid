@@ -1,10 +1,9 @@
 <template>
-<div>
-  <div class="items-header">
-        <label>{{ type }}</label>
-      </div>
+  <div>
+    <div class="items-header">
+      <label>{{ type }}</label>
+    </div>
     <div class="area-size">
-
       <div class="input-container">
         <input
           v-if="size.unit !== 'initial'"
@@ -18,7 +17,6 @@
       </div>
     </div>
   </div>
-    
 </template>
 
 <script setup>
@@ -54,8 +52,7 @@ function setSizeUnit(unit) {
 const onSizeInput = inputSetter(setSizeValue)
 </script>
 
-<style scoped lang="scss">
-
+<style scoped lang="postcss">
 label {
   display: block;
   flex: 1;
@@ -83,8 +80,13 @@ label {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  + .area-size { margin-top: 6px; }
-  > * { flex: 1; max-width: max-content; }
+  + .area-size {
+    margin-top: 6px;
+  }
+  > * {
+    flex: 1;
+    max-width: max-content;
+  }
 }
 
 .area-size {
@@ -107,7 +109,7 @@ label {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     padding-left: 5px;
-  }  
+  }
   .input-container {
     display: flex;
     flex: 1;
@@ -131,7 +133,6 @@ label {
       border-bottom-right-radius: 0;
       padding-left: 5px;
       border-right: 1px solid #aaa;
-
     }
   }
 }

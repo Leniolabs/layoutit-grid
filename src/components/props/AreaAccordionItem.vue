@@ -7,7 +7,6 @@
     <h1>
       {{ `.${area.name}` }}
       <div class="area-action-buttons">
-
         <OptionsButton v-show="area.display === 'block'" class="remove-button" @click="$emit('removearea', area)"
           ><IconRemove
         /></OptionsButton>
@@ -20,7 +19,7 @@
         /></OptionsButton>
         <OptionsButton v-show="area.display === 'grid'" class="add-area-button" @click="addImplicitArea(area)">
           <IconAdd />
-        </OptionsButton>        
+        </OptionsButton>
       </div>
     </h1>
   </div>
@@ -52,7 +51,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .props-accordion-item h1 {
   position: relative;
   width: 100%;

@@ -46,7 +46,7 @@ const isDraggingTrackLine = computed(
 )
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .col,
 .row {
   pointer-events: initial;

@@ -50,9 +50,7 @@ defineProps({
 })
 </script>
 
-<style scoped lang="scss">
-
-
+<style scoped lang="postcss">
 .output-settings {
   margin: auto 0 0 0;
   width: 100%;
@@ -62,30 +60,30 @@ defineProps({
   a {
     color: #9cdcfe;
   }
-.checkbox-warning {
-  color: #333;
-  margin-top: 5px;
-  padding: 6px 10px;
-  border-radius: 2px;
-  background-color: #fdd835;
-  width: 100%;
-  font-size: 13px;
-  .auto-placement-link {
-    font-weight: 600;
-  }
-  a {
+  .checkbox-warning {
     color: #333;
-  }
-}  
-  strong { 
-    font-weight: normal; 
-        font-size: 13px;
-    text-shadow: none;
-    font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+    margin-top: 5px;
+    padding: 6px 10px;
+    border-radius: 2px;
+    background-color: #fdd835;
+    width: 100%;
+    font-size: 13px;
+    .auto-placement-link {
+      font-weight: 600;
     }
+    a {
+      color: #333;
+    }
+  }
+  strong {
+    font-weight: normal;
+    font-size: 13px;
+    text-shadow: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  }
   .slide-checkbox {
     padding-bottom: 5px;
- 
+
     &:last-child {
       padding-bottom: 0;
     }
