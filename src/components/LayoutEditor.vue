@@ -188,36 +188,54 @@ p {
 
 .grid-line.col:after {
   content: '';
-  height: 100vh;
+  height: 200vh;
   position: absolute;
   left: -1px;
-  top: 1px;
+  top: -103vh;
   border-left: 1px dashed #aaa;
 }
 .grid-line.row:after {
   content: '';
-  width: 100vw;
+  width: 200vw;
   position: absolute;
-  left: 1px;
+  left: -103vw;
   top: -1px;
   border-bottom: 1px dashed #aaa;
 }
 
 .grid-line.row.last:before {
   content: '';
-  width: 100vw;
+  width: 200vw;
   position: absolute;
-  left: 1px;
+  left: -103vw;
   bottom: 0;
   border-bottom: 1px solid #aaa;
 }
 
 .grid-line.col.last:before {
   content: '';
-  height: 100vh;
+  height: 200vh;
   position: absolute;
   right: 0;
-  top: 1px;
+  top: -103vh;
+  border-left: 1px solid #aaa;
+}
+
+.grid-line.row.first:after {
+  content: '';
+  width: 200vw;
+  position: absolute;
+  left: -103vw;
+  top: -1px;
+  border-bottom: 1px solid #aaa;
+}
+
+.grid-line.col.first:after {
+  content: '';
+  height: 200vh;
+  position: absolute;
+  left: -1px;
+  top: -103vh;
   border-left: 1px solid #aaa;
 }
 </style>

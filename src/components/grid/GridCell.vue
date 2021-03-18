@@ -6,7 +6,7 @@
     :data-row-end="section.row.end"
     :style="{
       gridArea: `${section.row.start} / ${section.col.start} / ${section.row.start + 1} / ${section.col.start + 1}`,
-      background: grayed ? '#e8e8e8' : '#ffffff',
+      background: grayed ? '#ccc' : '#ffffff',
     }"
     :class="{
       lastcol: section.col.start === colsNumber && section.row.start === 1,

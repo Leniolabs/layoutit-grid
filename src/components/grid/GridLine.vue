@@ -122,7 +122,7 @@ section {
     background: #fff;
     line-height: 15px;
     text-align: center;
-    z-index: 1;
+    //z-index: 1;
     &.dragging,
     &.focused {
       background: #27ae60;
