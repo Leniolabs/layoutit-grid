@@ -198,7 +198,7 @@ p {
   content: '';
   width: 100vw;
   position: absolute;
-  left: 0;
+  left: 1px;
   top: -1px;
   border-bottom: 1px dashed #aaa;
 }
@@ -207,7 +207,7 @@ p {
   content: '';
   width: 100vw;
   position: absolute;
-  left: 0;
+  left: 1px;
   bottom: 0;
   border-bottom: 1px solid #aaa;
 }
