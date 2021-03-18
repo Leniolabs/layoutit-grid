@@ -185,4 +185,39 @@ p {
   position: fixed;
   bottom: 1em;
 }
+
+.grid-line.col:after {
+  content: '';
+  height: 100vh;
+  position: absolute;
+  left: -1px;
+  top: 1px;
+  border-left: 1px dashed #aaa;
+}
+.grid-line.row:after {
+  content: '';
+  width: 100vw;
+  position: absolute;
+  left: 0;
+  top: -1px;
+  border-bottom: 1px dashed #aaa;
+}
+
+.grid-line.row.last:before {
+  content: '';
+  width: 100vw;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  border-bottom: 1px solid #aaa;
+}
+
+.grid-line.col.last:before {
+  content: '';
+  height: 100vh;
+  position: absolute;
+  right: 0;
+  top: 1px;
+  border-left: 1px solid #aaa;
+}
 </style>
