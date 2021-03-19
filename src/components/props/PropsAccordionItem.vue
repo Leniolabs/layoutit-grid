@@ -86,7 +86,7 @@ const opened = ref(true)
 }
 
 .props-accordion-content {
-  margin: 0 10px 15px 15px;
+  margin: 0 12px 15px 15px;
   &:empty {
     margin: 0;
   }

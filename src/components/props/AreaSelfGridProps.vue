@@ -30,7 +30,7 @@ const setGridArea = inputSetter((value) => {
 <style scoped lang="postcss">
 .layout-props {
   padding-top: 8px;
-  padding-right: 10px;
+  //padding-right: 10px;
 }
 label {
   display: block;

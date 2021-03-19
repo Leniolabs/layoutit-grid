@@ -23,11 +23,8 @@
           <AreaGridGapProps :area="area" />
         </PropsAccordionItem>
 
-        <PropsAccordionItem name="grid-items-placement" heading="Items Placement" :accordion="accordion">
+        <PropsAccordionItem name="grid-items-placement" heading="Grid Placement" :accordion="accordion">
           <AreaGridItemsPlacementProps :area="area" />
-        </PropsAccordionItem>
-
-        <PropsAccordionItem name="grid-content-placement" heading="Content Placement" :accordion="accordion">
           <AreaGridContentPlacementProps :area="area" />
         </PropsAccordionItem>
       </template>

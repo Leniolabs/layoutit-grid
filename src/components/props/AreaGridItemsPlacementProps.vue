@@ -1,6 +1,5 @@
 <template>
   <div class="grid-settings-container">
-    <GridAutoFlowSelect v-model="grid.autoFlow" />
     <!--
     <div class="auto-flow-container">
       <span>grid-auto-flow</span>
@@ -19,7 +18,6 @@
 
 <script setup>
 import PlacementPicker from '../common/PlacementPicker.vue'
-import GridAutoFlowSelect from '../common/GridAutoFlowSelect.vue'
 
 import { defineProps, computed } from 'vue'
 

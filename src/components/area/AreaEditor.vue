@@ -388,6 +388,7 @@ const gridTracks = computed(() => {
   display: flex;
   align-items: center;
   max-width: max-content;
+  min-width: 30px;
   position: relative;
   &:first-child:last-child {
     border-bottom-right-radius: 2px;

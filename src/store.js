@@ -211,7 +211,7 @@ const counter = ref(1)
 export function addImplicitArea(area) {
   area.children.push(
     createAreaState({
-      name: 'a' + counter.value++,
+      name: 'i' + counter.value++,
       parent: area,
       color: getRandomColor(),
     })
