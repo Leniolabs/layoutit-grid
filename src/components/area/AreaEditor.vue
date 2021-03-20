@@ -72,7 +72,12 @@
       :style="{ border: `2px solid ${areaDisplayColor(area)}`, top: toolbarStart * 30 + 'px', left: 0 }"
     >
       <div class="area-info-controls">
-        <div :style="{ backgroundColor: area.color }" class="area-name" @click="currentArea = area">
+        <div
+          :style="{ backgroundColor: area.color }"
+          class="area-name"
+          :class="{ implicit: area.gridArea === 'auto' }"
+          @click="currentArea = area"
+        >
           {{ area.name }}
         </div>
         <AreaButtons :area="area" @edit="$emit('edit')" />
@@ -390,6 +395,11 @@ const gridTracks = computed(() => {
   max-width: max-content;
   min-width: 30px;
   position: relative;
+  &.implicit:after {
+    content: ' [auto]';
+    font-size: 12px;
+    opacity: 0.7;
+  }
   &:first-child:last-child {
     border-bottom-right-radius: 2px;
   }
