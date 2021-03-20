@@ -1,6 +1,6 @@
 <template>
   <div class="placement-select-container">
-    <input :id="type" type="checkbox" />
+    <input :id="type" type="checkbox" :checked="modelValue != 'initial'" />
     <label :for="type"
       >{{ type }}: <span>{{ modelValue }}</span></label
     >
