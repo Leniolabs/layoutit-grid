@@ -107,7 +107,6 @@ const options = computed(() => optionsMap[props.type.split('-')[1]])
 
 <style scoped lang="postcss">
 .placement-select-container {
-  padding: 10px 0px 0 0;
   input,
   input ~ .radio-toolbar {
     display: none;
@@ -121,7 +120,6 @@ const options = computed(() => optionsMap[props.type.split('-')[1]])
   > label {
     display: block;
     flex: 1 1 0%;
-    //max-width: max-content;
     color: rgb(156, 220, 254);
     font-size: 13px;
     text-shadow: none;
@@ -130,10 +128,10 @@ const options = computed(() => optionsMap[props.type.split('-')[1]])
     text-align: left;
     white-space: pre;
     word-spacing: normal;
-    margin-bottom: 5px;
     cursor: pointer;
     opacity: 0.7;
     transition: all 0.2s ease-in-out;
+    line-height: 30px;
     &:hover {
       opacity: 1;
     }

@@ -4,7 +4,7 @@
     <div class="items items-auto">
       <div class="items-header">
         <h2>grid-auto-columns</h2>
-        <OptionsButton class="add-button" @click="addImplicitCol(grid, '1fr')">Add</OptionsButton>
+        <OptionsButton class="add-button" @click="addImplicitCol(grid, '1fr')">add</OptionsButton>
       </div>
       <div v-for="column in autoColsNumber" :key="column" class="area-size area-auto-cols">
         <div
@@ -55,7 +55,7 @@
     <div class="items items-auto">
       <div class="items-header">
         <h2>grid-auto-rows</h2>
-        <OptionsButton class="add-button" @click="addImplicitRow(grid, '1fr')">Add</OptionsButton>
+        <OptionsButton class="add-button" @click="addImplicitRow(grid, '1fr')">add</OptionsButton>
       </div>
       <div v-for="row in autoRowsNumber" :key="row" class="area-size area-auto-rows">
         <div
@@ -351,6 +351,7 @@ button,
   font-size: 13px;
   text-shadow: none;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  color: #eee;
   &:hover {
     color: #ffeb3b;
     background: transparent;

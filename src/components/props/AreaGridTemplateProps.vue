@@ -4,7 +4,7 @@
       <div class="items">
         <div class="items-header">
           <h2>grid-template-columns</h2>
-          <OptionsButton class="add-button" @click="addCol(grid, '1fr')">Add</OptionsButton>
+          <OptionsButton class="add-button" @click="addCol(grid, '1fr')">add</OptionsButton>
         </div>
         <div v-for="column in colsNumber" :key="column" class="area-size">
           <div
@@ -57,7 +57,7 @@
       <div class="items">
         <div class="items-header">
           <h2>grid-template-rows</h2>
-          <OptionsButton class="add-button" @click="addRow(grid, '1fr')">Add</OptionsButton>
+          <OptionsButton class="add-button" @click="addRow(grid, '1fr')">add</OptionsButton>
         </div>
         <div v-for="row in rowsNumber" :key="row" class="area-size">
           <div
@@ -349,6 +349,7 @@ button,
   height: 30px;
   max-width: 32px;
   background: transparent;
+  color: #fff;
   font-size: 13px;
   text-shadow: none;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
