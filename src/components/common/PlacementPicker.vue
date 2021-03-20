@@ -1,6 +1,7 @@
 <template>
   <div class="placement-select-container">
-    <label
+    <input :id="type" type="checkbox" />
+    <label :for="type"
       >{{ type }}: <span>{{ modelValue }}</span></label
     >
     <div class="radio-toolbar">
@@ -107,10 +108,20 @@ const options = computed(() => optionsMap[props.type.split('-')[1]])
 <style scoped lang="postcss">
 .placement-select-container {
   padding: 10px 0px 0 0;
+  input,
+  input ~ .radio-toolbar {
+    display: none;
+  }
+  input:checked ~ .radio-toolbar {
+    display: flex;
+  }
+  input:checked + label {
+    opacity: 1;
+  }
   > label {
     display: block;
     flex: 1 1 0%;
-    max-width: max-content;
+    //max-width: max-content;
     color: rgb(156, 220, 254);
     font-size: 13px;
     text-shadow: none;
@@ -120,6 +131,12 @@ const options = computed(() => optionsMap[props.type.split('-')[1]])
     white-space: pre;
     word-spacing: normal;
     margin-bottom: 5px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: all 0.2s ease-in-out;
+    &:hover {
+      opacity: 1;
+    }
     span {
       color: #ce9178;
     }
@@ -147,6 +164,7 @@ const options = computed(() => optionsMap[props.type.split('-')[1]])
   border-right: 0;
   background: #151515;
   height: 35px;
+  min-width: 62px;
   display: flex;
   align-items: center;
   justify-content: center;

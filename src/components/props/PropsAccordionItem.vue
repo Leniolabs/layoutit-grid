@@ -53,7 +53,8 @@ const opened = ref(true)
     padding: 10px 15px;
     cursor: pointer;
     //border-bottom: 1px solid rgba(68, 68, 68, 0.5);
-    opacity: 0.6;
+    opacity: 0.7;
+
     &.independent {
       border-top: 1px solid rgba(68, 68, 68, 0.5);
       opacity: 1;
@@ -86,7 +87,7 @@ const opened = ref(true)
 }
 
 .props-accordion-content {
-  margin: 0 12px 15px 15px;
+  margin: 0 12px 10px 15px;
   &:empty {
     margin: 0;
   }

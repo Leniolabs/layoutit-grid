@@ -18,11 +18,13 @@
     -->
 
       <template v-if="area.display === 'grid'">
-        <PropsAccordionItem name="explicit-grid" heading="Grid Layout" :accordion="accordion">
+        <PropsAccordionItem name="explicit-grid" heading="Explicit Grid" :accordion="accordion">
           <AreaGridTemplateProps :area="area" />
           <AreaGridGapProps :area="area" />
         </PropsAccordionItem>
-
+        <PropsAccordionItem name="implicit-grid" heading="Implicit Grid" :accordion="accordion">
+          <AreaGridImplicitProps :area="area" />
+        </PropsAccordionItem>
         <PropsAccordionItem name="grid-items-placement" heading="Grid Placement" :accordion="accordion">
           <AreaGridItemsPlacementProps :area="area" />
           <AreaGridContentPlacementProps :area="area" />
@@ -87,6 +89,7 @@ import AreaBoxProps from './AreaBoxProps.vue'
 import AreaSelfGridProps from './AreaSelfGridProps.vue'
 import AreaSelfFlexProps from './AreaSelfFlexProps.vue'
 import AreaGridTemplateProps from './AreaGridTemplateProps.vue'
+import AreaGridImplicitProps from './AreaGridImplicitProps.vue'
 import AreaGridGapProps from './AreaGridGapProps.vue'
 import AreaGridItemsPlacementProps from './AreaGridItemsPlacementProps.vue'
 import AreaGridContentPlacementProps from './AreaGridContentPlacementProps.vue'
