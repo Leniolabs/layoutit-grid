@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="items-header">
-      <h2 v-if="type === 'col'">column-gap</h2>
-      <h2 v-if="type === 'row'">row-gap</h2>
+      <h2 v-if="type === 'col'" title="Sets the size of the gap (gutter) between grid columns.">column-gap</h2>
+      <h2 v-if="type === 'row'" title="Sets the size of the gap (gutter) between grid rows.">row-gap</h2>
     </div>
     <div class="area-size">
       <div class="input-container">
@@ -158,11 +158,14 @@ button,
   }
   &.remove-button {
     background: var(--color-remove);
+    svg {
+      stroke-width: 15px;
+    }
   }
   svg {
     width: 10px;
     stroke: #fff;
-    stroke-width: 20px;
+    stroke-width: 6px;
   }
   &:hover {
     opacity: 1;

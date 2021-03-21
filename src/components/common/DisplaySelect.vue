@@ -71,7 +71,7 @@ const options = ['block', 'flex', 'grid']
   text-align: center;
   color: #aaa;
   svg {
-    stroke: #aaa;
+    stroke: #eee;
     width: 20px;
   }
   &:hover {

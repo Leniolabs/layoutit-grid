@@ -154,11 +154,14 @@ button,
   }
   &.remove-button {
     background: var(--color-remove);
+    svg {
+      stroke-width: 15px;
+    }
   }
   svg {
     width: 10px;
     stroke: #fff;
-    stroke-width: 20px;
+    stroke-width: 6px;
   }
   &:hover {
     opacity: 1;

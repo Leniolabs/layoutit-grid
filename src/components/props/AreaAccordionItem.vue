@@ -164,7 +164,7 @@ button,
   svg {
     width: 10px;
     stroke: #fff;
-    stroke-width: 20px;
+    stroke-width: 6px;
   }
   &:hover {
     opacity: 1;
@@ -177,5 +177,9 @@ button,
   svg {
     transform: rotate(45deg);
   }
+}
+
+.add-area-button svg {
+  stroke-width: 15px;
 }
 </style>

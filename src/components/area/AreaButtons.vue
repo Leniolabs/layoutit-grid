@@ -128,7 +128,7 @@ button {
     svg {
       width: 10px;
       stroke: #fff;
-      stroke-width: 20px;
+      stroke-width: 6px;
     }
   }
   &.btn-remove.btn-clear svg {

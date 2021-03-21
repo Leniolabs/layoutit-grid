@@ -1,10 +1,12 @@
 <template>
   <div class="grid-settings-container">
-    <GridAutoFlowSelect v-model="grid.autoFlow" />
     <div class="items items-auto">
-      <div class="items-header">
+      <div
+        class="items-header"
+        title="Specifies the size of an implicitly-created grid row track or pattern of tracks."
+      >
         <h2>grid-auto-columns</h2>
-        <OptionsButton class="add-button" @click="addImplicitCol(grid, '1fr')">add</OptionsButton>
+        <OptionsButton class="add-button" @click="addImplicitCol(grid, '1fr')">add<span>+</span></OptionsButton>
       </div>
       <div v-for="column in autoColsNumber" :key="column" class="area-size area-auto-cols">
         <div
@@ -53,9 +55,12 @@
       </div>
     </div>
     <div class="items items-auto">
-      <div class="items-header">
+      <div
+        class="items-header"
+        title="Specifies the size of an implicitly-created grid column track or pattern of tracks."
+      >
         <h2>grid-auto-rows</h2>
-        <OptionsButton class="add-button" @click="addImplicitRow(grid, '1fr')">add</OptionsButton>
+        <OptionsButton class="add-button" @click="addImplicitRow(grid, '1fr')">add<span>+</span></OptionsButton>
       </div>
       <div v-for="row in autoRowsNumber" :key="row" class="area-size area-auto-rows">
         <div
@@ -98,6 +103,7 @@
         </div>
       </div>
     </div>
+    <GridAutoFlowSelect v-model="grid.autoFlow" />
   </div>
 </template>
 
@@ -332,11 +338,14 @@ button,
   }
   &.remove-button {
     background: var(--color-remove);
+    svg {
+      stroke-width: 15px;
+    }
   }
   svg {
     width: 10px;
     stroke: #eee;
-    stroke-width: 20px;
+    stroke-width: 6px;
   }
   &:hover {
     opacity: 1;
@@ -346,12 +355,17 @@ button,
 
 .add-button {
   height: 30px;
-  max-width: 32px;
+  max-width: max-content;
   background: transparent;
   font-size: 13px;
   text-shadow: none;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   color: #eee;
+  span {
+    font-size: 12px;
+    margin-left: 5px;
+    padding-right: 2px;
+  }
   &:hover {
     color: #ffeb3b;
     background: transparent;

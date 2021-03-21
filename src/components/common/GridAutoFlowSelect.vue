@@ -1,7 +1,7 @@
 <template>
   <div class="display-select-container">
-    <label
-      >grid-auto-flow: <span>{{ modelValue }}</span></label
+    <label title="Controls the auto-placement algorithm, specifying how items get flowed into the grid."
+      >grid-auto-flow: <span :title="optionTooltipsFlow[modelValue]">{{ modelValue }}</span></label
     >
     <div class="radio-toolbar">
       <template v-for="option in options" :key="option">
@@ -13,7 +13,7 @@
           :value="option"
           @input="$emit('update:modelValue', option + (modelValue.includes('dense') ? ' dense' : ''))"
         />
-        <label :for="`direction-${option}`"
+        <label :title="optionTooltipsFlow[option]" :for="`direction-${option}`"
           ><component :is="optionIconsFlow[option]" v-if="optionIconsFlow[option]"
         /></label>
       </template>
@@ -27,7 +27,12 @@
           $emit('update:modelValue', $event.target.checked ? modelValue + ' dense' : modelValue.split(' dense')[0])
         "
       />
-      <label class="dense-label" for="dense"><IconFlowDense /></label>
+      <label
+        title="dense: the packing algorithm attempts to fill in holes in the grid if smaller items come up later. This may cause items to appear out-of-order."
+        class="dense-label"
+        for="dense"
+        ><IconFlowDense
+      /></label>
     </div>
   </div>
 </template>
@@ -49,6 +54,12 @@ const optionIconsFlow = {
   row: IconFlowRow,
   column: IconFlowCol,
   dense: IconFlowDense,
+}
+
+const optionTooltipsFlow = {
+  row:
+    'row: items are placed by filling each row in turn, adding new rows as necessary. If neither row nor column is provided, row is assumed.',
+  column: 'column: items are placed by filling each column in turn, adding new columns as necessary.',
 }
 </script>
 
@@ -110,6 +121,7 @@ const optionIconsFlow = {
   }
   &:hover {
     color: #fff;
+    background: #23241f;
     svg {
       stroke: #fff;
     }
@@ -125,6 +137,9 @@ input[type='radio']:checked + label {
   opacity: 1;
   color: #fff;
   background: #01579b;
+  &:hover {
+    background: #01579b;
+  }
   &.dense-label {
     margin-right: 0;
   }

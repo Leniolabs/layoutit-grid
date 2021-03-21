@@ -2,9 +2,9 @@
   <div class="grid-settings-container">
     <div class="items columns">
       <div class="items">
-        <div class="items-header">
+        <div class="items-header" title="Defines the track sizing functions of the grid columns.">
           <h2>grid-template-columns</h2>
-          <OptionsButton class="add-button" @click="addCol(grid, '1fr')">add</OptionsButton>
+          <OptionsButton class="add-button" @click="addCol(grid, '1fr')">add<span>+</span></OptionsButton>
         </div>
         <div v-for="column in colsNumber" :key="column" class="area-size">
           <div
@@ -55,9 +55,9 @@
     </div>
     <div class="items rows">
       <div class="items">
-        <div class="items-header">
+        <div class="items-header" title="Defines track sizing functions of the grid rows.">
           <h2>grid-template-rows</h2>
-          <OptionsButton class="add-button" @click="addRow(grid, '1fr')">add</OptionsButton>
+          <OptionsButton class="add-button" @click="addRow(grid, '1fr')">add<span>+</span></OptionsButton>
         </div>
         <div v-for="row in rowsNumber" :key="row" class="area-size">
           <div
@@ -333,11 +333,14 @@ button,
   }
   &.remove-button {
     background: var(--color-remove);
+    svg {
+      stroke-width: 15px;
+    }
   }
   svg {
     width: 10px;
     stroke: #eee;
-    stroke-width: 20px;
+    stroke-width: 6px;
   }
   &:hover {
     opacity: 1;
@@ -347,12 +350,17 @@ button,
 
 .add-button {
   height: 30px;
-  max-width: 32px;
+  max-width: max-content;
   background: transparent;
   color: #fff;
   font-size: 13px;
   text-shadow: none;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  span {
+    font-size: 12px;
+    margin-left: 5px;
+    padding-right: 2px;
+  }
   &:hover {
     color: #ffeb3b;
     background: transparent;
