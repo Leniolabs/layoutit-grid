@@ -41,6 +41,7 @@ const props = defineProps({
   type: { type: String, required: true },
   pos: { type: Number, required: true },
   area: { type: Object, required: true },
+  implicitGrid: { type: Object, required: true },
 })
 const grid = computed(() => props.area.grid)
 
@@ -80,8 +81,10 @@ const isLineDraggingNext = computed(() => isDraggingGrid.value && dragging.value
 const isLineFocusedNext = computed(() => isLineFocused(props.pos + 1))
 
 const gridArea = computed(() => {
-  const { pos } = props
-  return props.type === 'row' ? `${pos} / 1 / ${pos + 1} / -1` : `1 / ${pos} / -1 / ${pos + 1}`
+  const { pos, implicitGrid } = props
+  return props.type === 'row'
+    ? `${pos} / ${2 - implicitGrid.ci} / ${pos + 1} / ${implicitGrid.cols + 2 - implicitGrid.ci}`
+    : `${2 - implicitGrid.ri} / ${pos} / ${implicitGrid.rows + 2 - implicitGrid.ri} / ${pos + 1}`
 })
 </script>
 

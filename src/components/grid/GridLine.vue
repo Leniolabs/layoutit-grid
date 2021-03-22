@@ -53,6 +53,7 @@ export default {
     pos: { type: Number, required: true },
     area: { type: Object, required: true },
     gap: { type: String, default: '0px' },
+    implicitGrid: { type: Object, required: true },
   },
   emits: ['down', 'overcell'],
   setup(props, { expose, emit }) {
@@ -68,7 +69,10 @@ export default {
     const gridArea = computed(() => {
       // The first line uses the same track as the second one
       const pos = Math.max(props.pos - 1, 1)
-      return props.type === 'row' ? `${pos} / 1 / ${pos + 1} / -1` : `1 / ${pos} / -1 / ${pos + 1}`
+      const { implicitGrid } = props
+      return props.type === 'row'
+        ? `${pos} / ${2 - implicitGrid.ci} / ${pos + 1} / ${implicitGrid.cols + 2 - implicitGrid.ci}`
+        : `${2 - implicitGrid.ri} / ${pos} / ${implicitGrid.rows + 2 - implicitGrid.ri} / ${pos + 1}`
     })
 
     const lineNameRef = ref(null)
