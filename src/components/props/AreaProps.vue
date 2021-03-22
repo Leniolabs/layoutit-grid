@@ -18,11 +18,11 @@
     -->
 
       <template v-if="area.display === 'grid'">
-        <PropsAccordionItem name="explicit-grid" heading="Explicit Grid" :accordion="accordion">
+        <PropsAccordionItem name="explicit-grid" heading="Explicit Grid" :independent="true" :accordion="accordion">
           <AreaGridTemplateProps :area="area" />
           <AreaGridGapProps :area="area" />
         </PropsAccordionItem>
-        <PropsAccordionItem name="implicit-grid" heading="Implicit Grid" :accordion="accordion">
+        <PropsAccordionItem name="implicit-grid" heading="Implicit Grid" :independent="true" :accordion="accordion">
           <AreaGridImplicitProps :area="area" />
         </PropsAccordionItem>
         <PropsAccordionItem name="grid-items-placement" heading="Grid Placement" :accordion="accordion">
