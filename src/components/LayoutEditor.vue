@@ -188,7 +188,7 @@ p {
 
 .grid-line.col:after {
   content: '';
-  height: 200vh;
+  height: 300vh;
   position: absolute;
   left: -1px;
   top: -103vh;
@@ -196,7 +196,7 @@ p {
 }
 .grid-line.row:after {
   content: '';
-  width: 200vw;
+  width: 300vw;
   position: absolute;
   left: -103vw;
   top: -1px;
@@ -205,7 +205,7 @@ p {
 
 .grid-line.row.last:before {
   content: '';
-  width: 200vw;
+  width: 300vw;
   position: absolute;
   left: -103vw;
   bottom: 0;
@@ -214,7 +214,7 @@ p {
 
 .grid-line.col.last:before {
   content: '';
-  height: 200vh;
+  height: 300vh;
   position: absolute;
   right: 0;
   top: -103vh;
@@ -223,7 +223,7 @@ p {
 
 .grid-line.row.first:after {
   content: '';
-  width: 200vw;
+  width: 300vw;
   position: absolute;
   left: -103vw;
   top: -1px;
@@ -232,7 +232,7 @@ p {
 
 .grid-line.col.first:after {
   content: '';
-  height: 200vh;
+  height: 300vh;
   position: absolute;
   left: -1px;
   top: -103vh;

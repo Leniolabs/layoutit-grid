@@ -80,11 +80,14 @@ const options = ['block', 'flex', 'grid']
       stroke: #fff;
     }
   }
-  &.default-value {
+  &.default-value > div {
     opacity: 1;
     color: #fff;
     background: #01579b;
     border-radius: 2px;
+    &:hover {
+      background: #01579b;
+    }
   }
 }
 input[type='radio']:checked + label {

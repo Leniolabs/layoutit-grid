@@ -34,6 +34,7 @@ const opened = ref(true)
   margin: 0;
   opacity: 1;
   transition: opacity 0.1s ease-in;
+  border-bottom: 1px dashed rgba(68, 68, 68, 0.4);
   &:first-of-type {
     opacity: 1;
     h1:hover {
@@ -47,18 +48,11 @@ const opened = ref(true)
   h1 {
     width: 100%;
     position: relative;
-    color: #fff;
+    color: #eee;
     font-size: 15px;
     margin: 0;
     padding: 10px 15px;
     cursor: pointer;
-    //border-bottom: 1px solid rgba(68, 68, 68, 0.5);
-    opacity: 0.7;
-
-    &.independent {
-      border-top: 1px solid rgba(68, 68, 68, 0.5);
-      opacity: 1;
-    }
     &:hover {
       background: #151515;
     }

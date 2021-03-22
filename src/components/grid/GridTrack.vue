@@ -161,9 +161,29 @@ section {
   }
   &.col-last {
     border-right: 1px dashed #aaa !important;
+    ~ .col {
+      content: '';
+      width: 1px;
+      top: -103vw;
+      right: 0;
+      border-right: 1px dotted #aaa !important;
+      height: 300vh;
+      display: block;
+      position: absolute;
+    }
   }
   &.row-last {
     border-bottom: 1px dashed #aaa !important;
+    ~ .row {
+      content: '';
+      width: 300vw;
+      left: -103vw;
+      bottom: 0;
+      border-bottom: 1px dotted #aaa !important;
+      height: 1px;
+      display: block;
+      position: absolute;
+    }
   }
 }
 </style>
