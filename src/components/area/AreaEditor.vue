@@ -47,8 +47,15 @@
         :area="area"
         :type="track.type"
         :pos="track.pos"
+        :implicit-grid="implicitGrid"
       />
-      <GridEditor :area="area" :computed-styles="computedStyles" :computed-gap="computedGap" @overcell="onOverCell" />
+      <GridEditor
+        :area="area"
+        :computed-styles="computedStyles"
+        :computed-gap="computedGap"
+        :implicit-grid="implicitGrid"
+        @overcell="onOverCell"
+      />
     </template>
 
     <AreaEditor
@@ -285,6 +292,8 @@ const explicitAreas = computed(() => {
   }
 })
 
+const implicitGrid = computed(() => explicitAreas.value.implicitGrid)
+
 const toolbarStart = computed(() => {
   const gridRegion = getGridRegion(props.area)
   return gridRegion ? (gridRegion.col.start === 1 && gridRegion.row.start === 1 ? getAreaDepth(props.area) - 1 : 0) : 0
@@ -294,7 +303,7 @@ const gridCells = computed(() => {
   if (!props.area.grid) {
     return []
   }
-  const { cols, rows, ri, ci } = explicitAreas.value.implicitGrid
+  const { cols, rows, ri, ci } = implicitGrid.value
   const sections = []
   for (let c = 1; c <= cols; c++) {
     for (let r = 1; r <= rows; r++) {
@@ -325,14 +334,19 @@ function isFocused(section) {
 
 function tracksFor(type) {
   const { grid } = props.area
-  return grid
-    ? grid[type].sizes.map((size, i) => {
-        return {
-          type,
-          pos: i + 1,
-        }
+  const { rows, cols, ri, ci } = implicitGrid.value
+  const size = type === 'row' ? rows : cols
+  const cell_i = type === 'row' ? ri : ci
+  const tracks = []
+  if (grid) {
+    for (let i = 1 - cell_i; i < size + 1 - cell_i; i++) {
+      tracks.push({
+        type,
+        pos: i + 1,
       })
-    : []
+    }
+  }
+  return tracks
 }
 const gridTracks = computed(() => {
   return [...tracksFor('row'), ...tracksFor('col')]
