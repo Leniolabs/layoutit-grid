@@ -4,8 +4,10 @@
       'grid-line',
       type,
       {
-        first: pos === 1,
-        last,
+        firstExplicit,
+        lastExplicit,
+        firstImplicit,
+        lastImplicit,
       },
     ]"
     :style="{
@@ -32,12 +34,12 @@
     </div>
 
     <div
-      :class="['line-handle', type, { first: pos === 1, last, 'dragging-something': dragging }]"
+      :class="['line-handle', type, { firstImplicit, lastImplicit, 'dragging-something': dragging }]"
       @pointerdown.stop="$emit('down', $event, { [type]: pos })"
       @pointermove="onMove"
     />
 
-    <LineName ref="lineNameRef" :grid="grid" :pos="pos" :type="type" :gap="gap" />
+    <LineName v-if="isExplicit" ref="lineNameRef" :grid="grid" :pos="pos" :type="type" :gap="gap" />
   </section>
 </template>
 
@@ -59,11 +61,28 @@ export default {
   setup(props, { expose, emit }) {
     const grid = computed(() => props.area.grid)
 
-    const last = computed(() => props.pos === grid.value[props.type].lineNames.length)
+    const firstExplicit = computed(() => props.pos === 1)
+    const lastExplicit = computed(() => props.pos === grid.value[props.type].lineNames.length)
+
+    // TODO: refactor implicitGrid -> { col: { size, i }, row: { size, i } }
+    const firstImplicit = computed(
+      () => props.pos === 2 - (props.type === 'row' ? props.implicitGrid.ri : props.implicitGrid.ci)
+    )
+    const lastImplicit = computed(
+      () =>
+        props.pos ===
+        (props.type === 'row' ? props.implicitGrid.rows : props.implicitGrid.cols) +
+          2 -
+          (props.type === 'row' ? props.implicitGrid.ri : props.implicitGrid.ci)
+    )
+
+    const isExplicit = computed(() => {
+      return props.pos >= 1 && props.pos <= grid.value[props.type].lineNames.length
+    })
 
     const showNumber = computed(() => {
       const otherLineNames = grid.value[props.type === 'col' ? 'row' : 'col'].lineNames
-      return !(last.value && otherLineNames[0].active)
+      return !(lastImplicit.value && otherLineNames[0].active)
     })
 
     const gridArea = computed(() => {
@@ -100,7 +119,11 @@ export default {
       lineNameRef,
       gridArea,
       showNumber,
-      last,
+      firstExplicit,
+      lastExplicit,
+      firstImplicit,
+      lastImplicit,
+      isExplicit,
       grid,
       dragging,
       onMove,
@@ -149,7 +172,7 @@ section {
       left: 1px;
     }
   }
-  &.row.first .line-number {
+  &.row.firstImplicit .line-number {
     border-top-right-radius: 0px;
     bottom: auto;
     top: 0px;
@@ -157,7 +180,7 @@ section {
       top: 1px;
     }
   }
-  &.row.last .line-number {
+  &.row.lastImplicit .line-number {
     border-bottom-right-radius: 0px;
     bottom: 0px;
     &.compact {
@@ -177,7 +200,7 @@ section {
       top: 1px;
     }
   }
-  &.col.first .line-number {
+  &.col.firstImplicit .line-number {
     border-bottom-left-radius: 0px;
     right: auto;
     left: 0px;
@@ -185,7 +208,7 @@ section {
       left: 1px;
     }
   }
-  &.col.last .line-number {
+  &.col.lastImplicit .line-number {
     border-bottom-right-radius: 0px;
     right: 0px;
     &.compact {
@@ -202,12 +225,12 @@ section {
       height: 100%;
       width: calc(v-bind(gap) + 20px);
       right: calc(-10px - v-bind(gap));
-      &.first {
+      &.firstImplicit {
         width: 14px;
         right: initial;
         left: 0;
       }
-      &.last {
+      &.lastImplicit {
         width: 14px;
         right: 0;
       }
@@ -220,12 +243,12 @@ section {
       width: 100%;
       height: calc(v-bind(gap) + 20px);
       bottom: calc(-10px - v-bind(gap));
-      &.first {
+      &.firstImplicit {
         bottom: initial;
         top: 0;
         height: 14px;
       }
-      &.last {
+      &.lastImplicit {
         bottom: 0;
         height: 14px;
       }

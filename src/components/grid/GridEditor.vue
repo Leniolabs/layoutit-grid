@@ -99,8 +99,12 @@ export default {
     function linesFor(type) {
       const end = grid.value[type].lineNames.length
       const lines = []
-      for (let pos = 1; pos <= end; pos++) {
-        lines.push({ type, pos })
+      const { rows, cols, ri, ci } = props.implicitGrid
+      const size = type === 'row' ? rows : cols
+      const cell_i = type === 'row' ? ri : ci
+      const tracks = []
+      for (let i = 1 - cell_i; i <= size + 2 - cell_i; i++) {
+        lines.push({ type, pos: i })
       }
       return lines
     }
