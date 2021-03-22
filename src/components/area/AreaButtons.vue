@@ -116,6 +116,9 @@ button {
   }
   &.btn-subgrid {
     padding-top: 2px;
+    svg {
+      width: 13px;
+    }
   }
   &.btn-remove {
     padding-top: 0;

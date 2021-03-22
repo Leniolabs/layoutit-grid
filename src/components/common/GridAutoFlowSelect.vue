@@ -110,7 +110,7 @@ const optionTooltipsFlow = {
   justify-content: center;
   color: #eee;
   height: 35px;
-  max-width: 62px;
+  max-width: 60px;
   &:last-child {
     border-right: 0;
   }
@@ -126,10 +126,13 @@ const optionTooltipsFlow = {
       stroke: #fff;
     }
   }
-  &.default-value {
+  &.default-value > div {
     opacity: 1;
     color: #fff;
     background: #01579b;
+    &:hover {
+      background: #01579b;
+    }
   }
 }
 input[type='checkbox']:checked + label,

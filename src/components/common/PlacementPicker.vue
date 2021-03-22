@@ -181,7 +181,7 @@ const options = computed(() => optionsMap[props.type.split('-')[1]])
   border-right: 0;
   background: #151515;
   height: 35px;
-  min-width: 62px;
+  min-width: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -217,11 +217,13 @@ const options = computed(() => optionsMap[props.type.split('-')[1]])
       stroke: #fff;
     }
   }
-  &.default-value {
+  &.default-value > div {
     opacity: 1;
     color: #fff;
     background: #01579b;
-    border-radius: 2px;
+    &:hover {
+      background: #01579b;
+    }
     svg {
       stroke: #fff;
     }

@@ -31,10 +31,9 @@ defineProps({
   @media screen and (max-width: 768px) {
     transform: translateX(-100%);
     position: fixed;
-    padding: 0px 12px;
     bottom: 0;
     top: 0;
-    background: #300748;
+    background: #1e1e1e;
     a.brand {
       display: none;
     }
