@@ -195,7 +195,8 @@ export default {
       const colsNumber = grid.value.col.sizes.length
       const rowLine = row && row > 1 && row <= rowsNumber ? row : undefined
       const colLine = col && col > 1 && col <= colsNumber ? col : undefined
-      const handleMove = (event) => {
+
+      const doMove = (event) => {
         const pos = { x: event.clientX, y: event.clientY }
 
         if (!dragging.value && (new Date().getTime() - initialTime > 500 || farEnough(initialPos, pos))) {
@@ -228,13 +229,34 @@ export default {
         }
       }
 
-      const handleUp = () => {
-        if (dragging.value) {
+      let movingAnimation = null
+      const animatedMove = () => {
+        if (movingAnimation && !movingAnimation.done) {
+          doMove(movingAnimation.event)
+          movingAnimation.done = true
+        }
+        if (movingAnimation) {
+          requestAnimationFrame(animatedMove)
+        } else if (dragging.value) {
           // Finish dragging grid lines
           document.body.style.cursor = dragging.value.prevCursor
           dragging.value = null
           resume(true)
-        } else if (new Date().getTime() - initialTime < 500) {
+        }
+      }
+
+      const handleMove = (event) => {
+        const startAnimation = !movingAnimation
+        movingAnimation = { done: false, event }
+        if (startAnimation) {
+          animatedMove()
+        }
+      }
+
+      const handleUp = () => {
+        movingAnimation = null
+
+        if (!dragging.value && new Date().getTime() - initialTime < 500) {
           gridLineRefs.value[col ? 'col' : 'row'][col || row].toggleLineName()
         }
 

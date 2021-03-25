@@ -14,6 +14,8 @@
         'col-last': type === 'col' && pos === grid.col.sizes.length,
         'row-no-gap': type === 'row' && parseValue(grid.row.gap) === 0,
         'col-no-gap': type === 'col' && parseValue(grid.col.gap) === 0,
+        'is-explicit-prev': isExplicitPrev,
+        'is-explicit-next': isExplicitNext,
         'dragging-prev': isLineDraggingPrev,
         'dragging-next': isLineDraggingNext,
         'focused-prev': isLineFocusedPrev,
@@ -80,6 +82,13 @@ const isLineFocusedPrev = computed(() => isLineFocused(props.pos))
 const isLineDraggingNext = computed(() => isDraggingGrid.value && dragging.value[props.type + 'Line'] === props.pos + 1)
 const isLineFocusedNext = computed(() => isLineFocused(props.pos + 1))
 
+const isExplicitPrev = computed(() => {
+  return props.pos >= 1 && props.pos <= grid.value[props.type].lineNames.length
+})
+const isExplicitNext = computed(() => {
+  return props.pos + 1 >= 1 && props.pos + 1 <= grid.value[props.type].lineNames.length
+})
+
 const gridArea = computed(() => {
   const { pos, implicitGrid } = props
   return props.type === 'row'
@@ -95,7 +104,30 @@ section {
   height: 100%;
   position: relative;
   border: 1px dashed #aaa;
+
   overflow: hidden;
+  &.col {
+    top: -103vw;
+    height: 300vh;
+  }
+  &.row {
+    width: 300vw;
+    left: -103vw;
+  }
+
+  &.row.is-explicit-prev {
+    border-top: 1px dotted #aaa;
+  }
+  &.row.is-explicit-next {
+    border-bottom: 1px dotted #aaa;
+  }
+  &.col.is-explicit-prev {
+    border-left: 1px dotted #aaa;
+  }
+  &.col.is-explicit-next {
+    border-right: 1px dotted #aaa;
+  }
+
   &.focused {
     background: #27ae6011;
   }
@@ -158,32 +190,6 @@ section {
   }
   &:not(.col-first).col-no-gap {
     border-left: initial;
-  }
-  &.col-last {
-    border-right: 1px dashed #aaa !important;
-    ~ .col {
-      content: '';
-      width: 1px;
-      top: -103vw;
-      right: 0;
-      border-right: 1px dotted #aaa !important;
-      height: 300vh;
-      display: block;
-      position: absolute;
-    }
-  }
-  &.row-last {
-    border-bottom: 1px dashed #aaa !important;
-    ~ .row {
-      content: '';
-      width: 300vw;
-      left: -103vw;
-      bottom: 0;
-      border-bottom: 1px dotted #aaa !important;
-      height: 1px;
-      display: block;
-      position: absolute;
-    }
   }
 }
 </style>
