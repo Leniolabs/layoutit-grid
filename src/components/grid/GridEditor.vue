@@ -33,7 +33,7 @@
 <script>
 import GridLine from './GridLine.vue'
 import GridIntersection from './GridIntersection.vue'
-
+import { handlePointerEventsInteraction } from '../../utils.js'
 import {
   currentArea,
   setCurrentArea,
@@ -168,10 +168,6 @@ export default {
       return newSizes
     }
 
-    function farEnough(a, b, delta = 5) {
-      return Math.abs(a.x - b.x) > delta || Math.abs(a.y - b.y) > delta
-    }
-
     function handleLineDown(event, { row, col }) {
       event.stopPropagation() // TODO: ...
       event.preventDefault()
@@ -196,75 +192,53 @@ export default {
       const rowLine = row && row > 1 && row <= rowsNumber ? row : undefined
       const colLine = col && col > 1 && col <= colsNumber ? col : undefined
 
-      const doMove = (event) => {
-        const pos = { x: event.clientX, y: event.clientY }
+      handlePointerEventsInteraction(event, {
+        onmove(event) {
+          const pos = { x: event.clientX, y: event.clientY }
 
-        if (!dragging.value && (new Date().getTime() - initialTime > 500 || farEnough(initialPos, pos))) {
-          if (colLine || rowLine) {
-            // Start dragging grid lines
-            dragging.value = { grid: grid.value, rowLine, colLine, prevCursor: document.body.style.cursor }
-            document.body.style.cursor = col && row ? 'move' : col ? 'col-resize' : 'row-resize'
-            pause()
+          if (!dragging.value) {
+            if (colLine || rowLine) {
+              // Start dragging grid lines
+              dragging.value = { grid: grid.value, rowLine, colLine, prevCursor: document.body.style.cursor }
+              document.body.style.cursor = col && row ? 'move' : col ? 'col-resize' : 'row-resize'
+              pause()
+            }
           }
-        }
-        if (dragging.value) {
-          if (dragging.value.rowLine !== null) {
-            // Drag row line by updating row sizes
-            grid.value.row.sizes = resizeGridSizes(
-              initialRowSizes,
-              initialRowComputedSizes,
-              pos.y - initialPos.y,
-              dragging.value.rowLine
-            )
+          if (dragging.value) {
+            if (dragging.value.rowLine !== null) {
+              // Drag row line by updating row sizes
+              grid.value.row.sizes = resizeGridSizes(
+                initialRowSizes,
+                initialRowComputedSizes,
+                pos.y - initialPos.y,
+                dragging.value.rowLine
+              )
+            }
+            if (dragging.value.colLine !== undefined) {
+              // Drag col line by updating col sizes
+              grid.value.col.sizes = resizeGridSizes(
+                initialColSizes,
+                initialColComputedSizes,
+                pos.x - initialPos.x,
+                dragging.value.colLine
+              )
+            }
           }
-          if (dragging.value.colLine !== undefined) {
-            // Drag col line by updating col sizes
-            grid.value.col.sizes = resizeGridSizes(
-              initialColSizes,
-              initialColComputedSizes,
-              pos.x - initialPos.x,
-              dragging.value.colLine
-            )
-          }
-        }
-      }
+        },
 
-      let movingAnimation = null
-      const animatedMove = () => {
-        if (movingAnimation && !movingAnimation.done) {
-          doMove(movingAnimation.event)
-          movingAnimation.done = true
-        }
-        if (movingAnimation) {
-          requestAnimationFrame(animatedMove)
-        } else if (dragging.value) {
+        onup() {
           // Finish dragging grid lines
           document.body.style.cursor = dragging.value.prevCursor
           dragging.value = null
           resume(true)
-        }
-      }
+        },
 
-      const handleMove = (event) => {
-        const startAnimation = !movingAnimation
-        movingAnimation = { done: false, event }
-        if (startAnimation) {
-          animatedMove()
-        }
-      }
-
-      const handleUp = () => {
-        movingAnimation = null
-
-        if (!dragging.value && new Date().getTime() - initialTime < 500) {
-          gridLineRefs.value[col ? 'col' : 'row'][col || row].toggleLineName()
-        }
-
-        window.removeEventListener('pointermove', handleMove)
-        window.removeEventListener('pointerup', handleUp)
-      }
-      window.addEventListener('pointermove', handleMove)
-      window.addEventListener('pointerup', handleUp)
+        onclick() {
+          if (!dragging.value) {
+            gridLineRefs.value[col ? 'col' : 'row'][col || row].toggleLineName()
+          }
+        },
+      })
     }
 
     return {

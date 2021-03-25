@@ -209,3 +209,54 @@ function getCaretCharacterOffsetWithin(element) {
   }
   return caretOffset
 }
+
+function farEnough(a, b, delta = 5) {
+  return Math.abs(a.x - b.x) > delta || Math.abs(a.y - b.y) > delta
+}
+
+export function handlePointerEventsInteraction(event, { onmove, onup, onclick }) {
+  const initialPos = { x: event.clientX, y: event.clientY }
+  const initialTime = new Date().getTime()
+
+  let movingAnimation = null
+  const animatedMove = () => {
+    if (movingAnimation && !movingAnimation.done) {
+      // update state
+      onmove(movingAnimation.event)
+
+      movingAnimation.done = true
+    }
+    if (movingAnimation) {
+      requestAnimationFrame(animatedMove)
+    } else {
+      onup()
+    }
+  }
+
+  const handleMove = (event) => {
+    if (
+      !movingAnimation &&
+      new Date().getTime() - initialTime < 500 &&
+      !farEnough(initialPos, { x: event.clientX, y: event.clientY })
+    ) {
+      return
+    }
+    const startAnimation = !movingAnimation
+    movingAnimation = { done: false, event }
+    if (startAnimation) {
+      animatedMove()
+    }
+  }
+
+  const handleUp = () => {
+    if (!movingAnimation && new Date().getTime() - initialTime < 500) {
+      onclick()
+    }
+    movingAnimation = null
+
+    window.removeEventListener('pointermove', handleMove)
+    window.removeEventListener('pointerup', handleUp)
+  }
+  window.addEventListener('pointermove', handleMove)
+  window.addEventListener('pointerup', handleUp)
+}
