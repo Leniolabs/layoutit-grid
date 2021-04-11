@@ -11,6 +11,7 @@
     :class="{
       lastcol: section.col.start === colsNumber && section.row.start === 1,
       lastrow: section.row.start === rowsNumber && section.col.start === 1,
+      implicit: section.row.start > rowsNumber || section.col.start > colsNumber,
       dragging,
       grayed,
       focused,
@@ -109,6 +110,12 @@ section {
   }
   &.focused {
     background: #ecf8eccc;
+  }
+  &.implicit {
+    background: transparent !important;
+    &:hover {
+      background: rgba(255, 255, 255, 0.5) !important;
+    }
   }
 }
 </style>

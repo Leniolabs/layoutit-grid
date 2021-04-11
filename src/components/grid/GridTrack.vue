@@ -103,31 +103,35 @@ section {
   pointer-events: none;
   height: 100%;
   position: relative;
-  border: 1px dashed #aaa;
-
   overflow: hidden;
   &.col {
-    top: -103vw;
+    top: -100vh;
     height: 300vh;
+    border-right: 1px dashed #bdbdbd;
+    &.col-first {
+      border-left: 1px solid #bdbdbd;
+    }
+    &.col-last {
+      border-right: 1px solid #bdbdbd;
+      & ~ .col {
+        border-right: 1px dotted #bdbdbd;
+      }
+    }
   }
   &.row {
     width: 300vw;
-    left: -103vw;
+    left: -100vw;
+    border-bottom: 1px dashed #bdbdbd;
+    &.row-first {
+      border-top: 1px solid #bdbdbd;
+    }
+    &.row-last {
+      border-bottom: 1px solid #bdbdbd;
+      & ~ .row {
+        border-bottom: 1px dotted #bdbdbd;
+      }
+    }
   }
-
-  &.row.is-explicit-prev {
-    border-top: 1px dotted #aaa;
-  }
-  &.row.is-explicit-next {
-    border-bottom: 1px dotted #aaa;
-  }
-  &.col.is-explicit-prev {
-    border-left: 1px dotted #aaa;
-  }
-  &.col.is-explicit-next {
-    border-right: 1px dotted #aaa;
-  }
-
   &.focused {
     background: #27ae6011;
   }
@@ -140,7 +144,7 @@ section {
   &.row.focused,
   &.row.dragging-prev,
   &.row.focused-prev {
-    border-top: 1px solid #27ae60;
+    border-bottom: 1px solid #27ae60;
     z-index: 1;
   }
   &.row.focused,
@@ -153,7 +157,7 @@ section {
   &.col.focused,
   &.col.dragging-prev,
   &.col.focused-prev {
-    border-left: 1px solid #27ae60;
+    border-right: 1px solid #27ae60;
     z-index: 1;
   }
   &.col.focused,
@@ -162,34 +166,6 @@ section {
   &.col.focused-next {
     border-right: 1px solid #27ae60;
     z-index: 1;
-  }
-  &.row {
-    border-left: initial;
-    border-right: initial;
-  }
-  &.col {
-    border-top: initial;
-    border-bottom: initial;
-  }
-  &.row-first.compact {
-    border-top: initial;
-  }
-  &.row-last.compact {
-    border-bottom: initial;
-  }
-  &:not(.darkmode) {
-    &.col-first.compact {
-      border-left: initial;
-    }
-    &.col-last.compact {
-      border-right: initial;
-    }
-  }
-  &:not(.row-first).row-no-gap {
-    border-top: initial;
-  }
-  &:not(.col-first).col-no-gap {
-    border-left: initial;
   }
 }
 </style>
