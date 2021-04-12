@@ -1,0 +1,138 @@
+diff --git a/node_modules/@vue/compiler-sfc/dist/compiler-sfc.cjs.js b/node_modules/@vue/compiler-sfc/dist/compiler-sfc.cjs.js
+index e81a5a0..3d8c0b9 100644
+--- a/node_modules/@vue/compiler-sfc/dist/compiler-sfc.cjs.js
++++ b/node_modules/@vue/compiler-sfc/dist/compiler-sfc.cjs.js
+@@ -80,13 +80,13 @@ const cssVarsPlugin = opts => {
+     };
+ };
+ cssVarsPlugin.postcss = true;
+-function genCssVarsCode(vars, bindings, id, isProd) {
++function genCssVarsCode(vars, id, isProd, bindings) {
+     const varsExp = genCssVarsFromList(vars, id, isProd);
+     const exp = CompilerDOM.createSimpleExpression(varsExp, false);
+     const context = CompilerDOM.createTransformContext(CompilerDOM.createRoot([]), {
+         prefixIdentifiers: true,
+-        inline: true,
+-        bindingMetadata: bindings
++        inline: !!bindings,
++        bindingMetadata: bindings || {}
+     });
+     const transformed = CompilerDOM.processExpression(exp, context);
+     const transformedString = transformed.type === 4 /* SIMPLE_EXPRESSION */
+@@ -102,9 +102,9 @@ function genCssVarsCode(vars, bindings, id, isProd) {
+ }
+ // <script setup> already gets the calls injected as part of the transform
+ // this is only for single normal <script>
+-function genNormalScriptCssVarsCode(cssVars, bindings, id, isProd) {
++function genNormalScriptCssVarsCode(cssVars, id, isProd) {
+     return (`\nimport { ${CSS_VARS_HELPER} as _${CSS_VARS_HELPER} } from 'vue'\n` +
+-        `const __injectCSSVars__ = () => {\n${genCssVarsCode(cssVars, bindings, id, isProd)}}\n` +
++        `const __injectCSSVars__ = () => {\n${genCssVarsCode(cssVars, id, isProd)}}\n` +
+         `const __setup__ = __default__.setup\n` +
+         `__default__.setup = __setup__\n` +
+         `  ? (props, ctx) => { __injectCSSVars__();return __setup__(props, ctx) }\n` +
+@@ -1297,7 +1297,7 @@ function compileScript(sfc, options) {
+             if (needRewrite) {
+                 content = rewriteDefault(content, `__default__`, plugins);
+                 if (cssVars.length) {
+-                    content += genNormalScriptCssVarsCode(cssVars, bindings, scopeId, !!options.isProd);
++                    content += genNormalScriptCssVarsCode(cssVars, scopeId, !!options.isProd);
+                 }
+                 if (hasInheritAttrsFlag) {
+                     content += `__default__.inheritAttrs = false`;
+@@ -1859,7 +1859,7 @@ function compileScript(sfc, options) {
+     if (cssVars.length) {
+         helperImports.add(CSS_VARS_HELPER);
+         helperImports.add('unref');
+-        s.prependRight(startOffset, `\n${genCssVarsCode(cssVars, bindingMetadata, scopeId, !!options.isProd)}\n`);
++        s.prependRight(startOffset, `\n${genCssVarsCode(cssVars, scopeId, !!options.isProd, bindingMetadata)}\n`);
+     }
+     // 9. finalize setup() argument signature
+     let args = `__props`;
+diff --git a/node_modules/@vue/compiler-sfc/dist/compiler-sfc.esm-browser.js b/node_modules/@vue/compiler-sfc/dist/compiler-sfc.esm-browser.js
+index afb03e4..0fde525 100644
+--- a/node_modules/@vue/compiler-sfc/dist/compiler-sfc.esm-browser.js
++++ b/node_modules/@vue/compiler-sfc/dist/compiler-sfc.esm-browser.js
+@@ -25567,13 +25567,13 @@ const cssVarsPlugin = opts => {
+     };
+ };
+ cssVarsPlugin.postcss = true;
+-function genCssVarsCode(vars, bindings, id, isProd) {
++function genCssVarsCode(vars, id, isProd, bindings) {
+     const varsExp = genCssVarsFromList(vars, id, isProd);
+     const exp = createSimpleExpression(varsExp, false);
+     const context = createTransformContext(createRoot([]), {
+         prefixIdentifiers: true,
+-        inline: true,
+-        bindingMetadata: bindings
++        inline: !!bindings,
++        bindingMetadata: bindings || {}
+     });
+     const transformed = processExpression(exp, context);
+     const transformedString = transformed.type === 4 /* SIMPLE_EXPRESSION */
+@@ -25589,9 +25589,9 @@ function genCssVarsCode(vars, bindings, id, isProd) {
+ }
+ // <script setup> already gets the calls injected as part of the transform
+ // this is only for single normal <script>
+-function genNormalScriptCssVarsCode(cssVars, bindings, id, isProd) {
++function genNormalScriptCssVarsCode(cssVars, id, isProd) {
+     return (`\nimport { ${CSS_VARS_HELPER} as _${CSS_VARS_HELPER} } from 'vue'\n` +
+-        `const __injectCSSVars__ = () => {\n${genCssVarsCode(cssVars, bindings, id, isProd)}}\n` +
++        `const __injectCSSVars__ = () => {\n${genCssVarsCode(cssVars, id, isProd)}}\n` +
+         `const __setup__ = __default__.setup\n` +
+         `__default__.setup = __setup__\n` +
+         `  ? (props, ctx) => { __injectCSSVars__();return __setup__(props, ctx) }\n` +
+@@ -39732,7 +39732,7 @@ scopedPlugin.postcss = true;
+ var SourceMapConsumer$2 = sourceMap.SourceMapConsumer;
+ var SourceMapGenerator$3 = sourceMap.SourceMapGenerator;
+ 
+-var mergeSourceMap = merge$1;
++var C__Code_vueNext_node_modules_mergeSourceMap = merge$1;
+ 
+ /**
+  * Merge old source map and new source map and return merged.
+@@ -39810,7 +39810,7 @@ const scss = (source, map, options, load = require) => {
+         if (map) {
+             return {
+                 code: result.css.toString(),
+-                map: mergeSourceMap(map, JSON.parse(result.map.toString())),
++                map: C__Code_vueNext_node_modules_mergeSourceMap(map, JSON.parse(result.map.toString())),
+                 errors: [],
+                 dependencies
+             };
+@@ -39840,7 +39840,7 @@ const less = (source, map, options, load = require) => {
+     if (map) {
+         return {
+             code: result.css.toString(),
+-            map: mergeSourceMap(map, result.map),
++            map: C__Code_vueNext_node_modules_mergeSourceMap(map, result.map),
+             errors: [],
+             dependencies: dependencies
+         };
+@@ -39864,7 +39864,7 @@ const styl = (source, map, options, load = require) => {
+         if (map) {
+             return {
+                 code: result,
+-                map: mergeSourceMap(map, ref.sourcemap),
++                map: C__Code_vueNext_node_modules_mergeSourceMap(map, ref.sourcemap),
+                 errors: [],
+                 dependencies
+             };
+@@ -41178,7 +41178,7 @@ function compileScript(sfc, options) {
+             if (needRewrite) {
+                 content = rewriteDefault(content, `__default__`, plugins);
+                 if (cssVars.length) {
+-                    content += genNormalScriptCssVarsCode(cssVars, bindings, scopeId, !!options.isProd);
++                    content += genNormalScriptCssVarsCode(cssVars, scopeId, !!options.isProd);
+                 }
+                 if (hasInheritAttrsFlag) {
+                     content += `__default__.inheritAttrs = false`;
+@@ -41740,7 +41740,7 @@ function compileScript(sfc, options) {
+     if (cssVars.length) {
+         helperImports.add(CSS_VARS_HELPER);
+         helperImports.add('unref');
+-        s.prependRight(startOffset, `\n${genCssVarsCode(cssVars, bindingMetadata, scopeId, !!options.isProd)}\n`);
++        s.prependRight(startOffset, `\n${genCssVarsCode(cssVars, scopeId, !!options.isProd, bindingMetadata)}\n`);
+     }
+     // 9. finalize setup() argument signature
+     let args = `__props`;
