@@ -137,7 +137,7 @@ export default {
     function calcValue(prev, prevComp, delta) {
       const sizeAdd = (prev.value * delta) / prevComp.value
 
-      let value = +(prev.value + sizeAdd).toFixed(2)
+      let value = +((prev.value + sizeAdd) * 2).toFixed(1) / 2
 
       if (value <= 0) {
         value = 0.1
