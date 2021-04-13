@@ -37,6 +37,10 @@ export function areaIsSingleLineInCSS(area) {
   )
 }
 
+export function includeAreaInCSS(area) {
+  return !(areaIsSingleLineInCSS(area) && area.gridArea === 'auto')
+}
+
 export function templateRows(grid) {
   return grid.row.sizes.length.join(' ')
 }

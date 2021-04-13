@@ -6,6 +6,7 @@ import {
   namedTemplateRows,
   getGridAreaWithNamedLines,
   areaIsSingleLineInCSS,
+  includeAreaInCSS,
   getElementTag,
 } from './utils.js'
 
@@ -41,7 +42,7 @@ export function areaToCSS(area, { parentGrid, templateAreas = true, validTemplat
   if (grid) {
     const validTemplateAreas = gridTemplateAreas(area) !== undefined
     area.children.forEach((area) => {
-      if (!(areaIsSingleLineInCSS(area) && area.gridArea === 'auto')) {
+      if (includeAreaInCSS(area)) {
         css += '\n' + areaToCSS(area, { parentGrid: grid, templateAreas, validTemplateAreas, repeat })
       }
     })
@@ -141,5 +142,8 @@ function areasToHTML(area, ident = 0) {
 
 export function areaToHTML(area, ident = 0) {
   const tag = getElementTag(area)
-  return `<${tag} class="${toCssName(area.name)}">${areasToHTML(area, ident + 1)}</${tag}>`
+  return `<${tag} ${includeAreaInCSS(area) ? `class="${toCssName(area.name)}"` : ''}>${areasToHTML(
+    area,
+    ident + 1
+  )}</${tag}>`
 }
