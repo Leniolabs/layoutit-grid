@@ -338,7 +338,7 @@ function placeColLockedArea(ig, area, cursor, limits) {
     limits = gridAreaToGridLimits(area.gridArea)
   }
   const { row, col } = limits
-  const gd = getGridDimension(limits, 'col')
+  const gd = getGridDimension(area, 'col', limits)
   cursor.col = gd.start + ig.ci
   for (let r = cursor.row; r < ig.rows; r++) {
     if (rowIsTherePlace(ig.grid, r, cursor.col, row.span, col.span)) {
