@@ -119,9 +119,10 @@ const currentFlex = computed(() => props.area.flex)
 function onRemove(area) {
   const { parent } = area
   removeArea(area)
+
   setTimeout(() => {
     setCurrentArea(parent)
-  }, 10)
+  }, 1)
 }
 
 function concatenateParents(area, list = [area]) {
