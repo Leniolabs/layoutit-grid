@@ -103,7 +103,7 @@ export default {
       const size = type === 'row' ? rows : cols
       const cell_i = type === 'row' ? ri : ci
       const tracks = []
-      for (let i = 1 - cell_i; i <= size + 2 - cell_i; i++) {
+      for (let i = 2 - cell_i; i <= size + 2 - cell_i; i++) {
         lines.push({ type, pos: i })
       }
       return lines
