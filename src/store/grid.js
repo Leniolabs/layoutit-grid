@@ -41,6 +41,7 @@ function typeIndex(type) {
 {
   col {
     sizes,
+    auto,
     lineNames,
     gap
   },

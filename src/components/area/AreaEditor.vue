@@ -292,6 +292,23 @@ const explicitAreas = computed(() => {
   }
 })
 
+watch(explicitAreas, () => {
+  if (props.area.display === 'grid') {
+    const { ri, ci, cols, rows } = explicitAreas.value.implicitGrid
+    const { row, col } = props.area.grid
+    if (ri > 1 || rows - ri >= row.sizes.length) {
+      if (row.auto.length === 0) {
+        row.auto.push('1fr')
+      }
+    }
+    if (ci > 1 || cols - ci >= col.sizes.length) {
+      if (col.auto.length === 0) {
+        col.auto.push('1fr')
+      }
+    }
+  }
+})
+
 const implicitGrid = computed(() => explicitAreas.value.implicitGrid)
 
 const toolbarStart = computed(() => {
