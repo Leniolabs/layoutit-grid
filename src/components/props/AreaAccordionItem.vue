@@ -7,7 +7,7 @@
     <h1>
       {{ `.${area.name}` }}
       <div class="area-action-buttons">
-        <OptionsButton v-show="area.display === 'block'" class="remove-button" @click="$emit('removearea', area)"
+        <OptionsButton v-show="area.display === 'block'" class="remove-button" @click.stop="removeArea(area)"
           ><IconRemove
         /></OptionsButton>
         <OptionsButton
@@ -25,30 +25,18 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import OptionsButton from '../basic/OptionsButton.vue'
 import IconAdd from '../icons/IconAdd.vue'
 import IconClear from '../icons/IconClear.vue'
 import IconRemove from '../icons/IconRemove.vue'
 
 import { setCurrentArea, clearArea, addImplicitArea, removeArea } from '../../store.js'
+import { defineProps } from 'vue'
 
-export default {
-  components: { IconAdd, OptionsButton, IconClear, IconRemove },
-  props: {
-    area: { type: Object, required: true },
-  },
-  emits: ['removearea'],
-  methods: {
-    clearArea,
-    removeArea,
-    addImplicitArea,
-    setCurrentArea,
-    click() {
-      setCurrentArea(this.area)
-    },
-  },
-}
+defineProps({
+  area: { type: Object, required: true },
+})
 </script>
 
 <style scoped lang="postcss">
