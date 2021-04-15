@@ -18,13 +18,24 @@
         <PropsAccordionItem name="implicit-grid" heading="Implicit Grid" :independent="true" :accordion="accordion">
           <AreaGridImplicitProps :area="area" />
         </PropsAccordionItem>
-        <PropsAccordionItem name="grid-items-placement" heading="Grid Placement" :accordion="accordion">
+        <PropsAccordionItem
+          name="grid-items-placement"
+          heading="Grid Placement"
+          :independent="true"
+          :accordion="accordion"
+        >
           <AreaGridItemsPlacementProps :area="area" />
           <AreaGridContentPlacementProps :area="area" />
         </PropsAccordionItem>
       </template>
 
-      <PropsAccordionItem v-if="area.display === 'flex'" name="flex-props" heading="Flex Props" :accordion="accordion">
+      <PropsAccordionItem
+        v-if="area.display === 'flex'"
+        name="flex-props"
+        heading="Flex Props"
+        :independent="true"
+        :accordion="accordion"
+      >
         <AreaFlexProps :area="area" />
       </PropsAccordionItem>
 
@@ -33,6 +44,7 @@
         name="self-grid"
         heading="Self Placement"
         :accordion="accordion"
+        :independent="true"
       >
         <AreaSelfGridProps :area="area" />
       </PropsAccordionItem>
@@ -42,11 +54,12 @@
         name="self-flex"
         heading="Self Flex"
         :accordion="accordion"
+        :independent="true"
       >
         <AreaSelfFlexProps :area="area" />
       </PropsAccordionItem>
 
-      <PropsAccordionItem name="area-box" heading="Area Box" :accordion="accordion">
+      <PropsAccordionItem name="area-box" :independent="true" heading="Area Box" :accordion="accordion">
         <AreaBoxProps :area="area" />
       </PropsAccordionItem>
 

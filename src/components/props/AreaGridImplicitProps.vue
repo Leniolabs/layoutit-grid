@@ -234,7 +234,7 @@ h2 {
 }
 
 .items {
-  margin-bottom: 6px;
+  margin-bottom: 12px;
   &:last-of-type {
     margin-bottom: 0;
   }
@@ -356,7 +356,8 @@ button,
 .add-button {
   height: 30px;
   max-width: max-content;
-  background: transparent;
+  background: #01579b;
+  padding: 0 12px;
   font-size: 13px;
   text-shadow: none;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
@@ -365,10 +366,10 @@ button,
     font-size: 12px;
     margin-left: 5px;
     padding-right: 2px;
+    display: none;
   }
   &:hover {
-    color: #ffeb3b;
-    background: transparent;
+    background: #014982;
   }
   &:after {
     content: '';

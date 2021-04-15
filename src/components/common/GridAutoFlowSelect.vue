@@ -111,6 +111,9 @@ const optionTooltipsFlow = {
   color: #eee;
   height: 35px;
   max-width: 60px;
+  &.dense-label {
+    margin-left: 10px;
+  }
   &:last-child {
     border-right: 0;
   }
@@ -144,7 +147,6 @@ input[type='radio']:checked + label {
     background: #01579b;
   }
   &.dense-label {
-    margin-right: 0;
   }
   svg {
     stroke: #eee;

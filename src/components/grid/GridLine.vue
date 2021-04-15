@@ -167,7 +167,7 @@ section {
     border-top-right-radius: 5px;
     border-top-left-radius: 0;
     padding-left: 4px;
-    left: 0;
+    left: 1px;
     &.compact {
       left: 1px;
     }
@@ -175,14 +175,14 @@ section {
   &.row.firstImplicit .line-number {
     border-top-right-radius: 0px;
     bottom: auto;
-    top: 0px;
+    top: 1px;
     &.compact {
       top: 1px;
     }
   }
   &.row.lastImplicit .line-number {
     border-bottom-right-radius: 0px;
-    bottom: 0px;
+    bottom: 1px;
     &.compact {
       bottom: 1px;
     }
@@ -195,7 +195,7 @@ section {
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
     height: 16px;
-    top: 0px;
+    top: 1px;
     &.compact {
       top: 1px;
     }
@@ -203,14 +203,14 @@ section {
   &.col.firstImplicit .line-number {
     border-bottom-left-radius: 0px;
     right: auto;
-    left: 0px;
+    left: 1px;
     &.compact {
       left: 1px;
     }
   }
   &.col.lastImplicit .line-number {
     border-bottom-right-radius: 0px;
-    right: 0px;
+    right: 1px;
     &.compact {
       right: 1px;
     }
@@ -259,5 +259,9 @@ section {
 
     overflow: hidden;
   }
+}
+
+.grayed section .line-number {
+  background: #ccc;
 }
 </style>
