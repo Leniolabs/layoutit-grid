@@ -1,21 +1,24 @@
 module.exports = {
   root: true,
   env: {
-    node: true
+    node: true,
   },
   extends: [
     // add more generic rulesets here, such as:
     // 'eslint:recommended',
-    "plugin:vue/vue3-recommended",
-    "prettier",
-    "prettier/vue",
+    'plugin:vue/vue3-recommended',
+    'prettier',
+    'prettier/vue',
+    '@vue/typescript/recommended',
+    'plugin:@typescript-eslint/recommended',
   ],
+  parser: 'vue-eslint-parser',
   rules: {
     'no-console': 'off',
     'no-debugger': 'off',
-    'vue/no-mutating-props': 0
+    'vue/no-mutating-props': 0,
   },
   parserOptions: {
-    parser: "babel-eslint"
+    parser: '@typescript-eslint/parser',
   },
 }
