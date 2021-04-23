@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import { useMagicKeys } from '@vueuse/core'
 import GridLine from './GridLine.vue'
 import GridIntersection from './GridIntersection.vue'
 import { handlePointerEventsInteraction } from '../../utils.js'
@@ -48,6 +49,8 @@ import {
 import { useIsCurrentArea, useIsActiveArea } from '../../composables/area.js'
 
 import { defineProps, ref, computed, watch, toRefs, onBeforeUpdate, nextTick } from 'vue'
+
+const { shift } = useMagicKeys()
 
 export default {
   components: { GridLine, GridIntersection },
@@ -137,7 +140,7 @@ export default {
     function calcValue(prev, prevComp, delta) {
       const sizeAdd = (prev.value * delta) / prevComp.value
 
-      let value = +(prev.value + sizeAdd).toFixed(1)
+      let value = +(prev.value + sizeAdd).toFixed(shift.value ? 2 : 1)
 
       if (value <= 0) {
         value = 0.1
