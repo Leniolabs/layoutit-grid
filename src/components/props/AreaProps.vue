@@ -70,26 +70,35 @@
       </PropsAccordionItem>
 
       <!--
-    <PropsAccordionItem
-      name="tree"
-      :independent="true"
-      :heading="`Area Tree`"
-      :closed-heading="`${area.name}`"
-      :accordion="accordion"
-      class="tree-item"
-    >
-      <AreaTree :area="mainArea" />
-    </PropsAccordionItem>
-    -->
+      <PropsAccordionItem
+        name="tree"
+        :independent="true"
+        :heading="`Area Tree`"
+        :closed-heading="`${area.name}`"
+        :accordion="accordion"
+        class="tree-item"
+      >
+        <AreaTree :area="mainArea" />
+      </PropsAccordionItem>
+      -->
       <!--     
-    <PropsAccordionItem v-if="area.parent" name="type" heading="Type" :accordion="accordion">
-      <AreaTypeSelect v-if="area.parent" :model-value="area.type" @update:modelValue="onUpdateType" />
-    </PropsAccordionItem> 
-    --></div>
+      <PropsAccordionItem v-if="area.parent" name="type" heading="Type" :accordion="accordion">
+        <AreaTypeSelect v-if="area.parent" :model-value="area.type" @update:modelValue="onUpdateType" />
+      </PropsAccordionItem> 
+      -->
 
-    <template v-if="area.children.length">
-      <AreaAccordionItem v-for="a in area.children" :key="`child:${a.name}`" :area="a" />
-    </template>
+      <PropsAccordionItem
+        name="children"
+        :independent="true"
+        :start-opened="true"
+        heading="Children"
+        :accordion="accordion"
+      >
+        <template v-if="area.children.length">
+          <AreaAccordionItem v-for="a in area.children" :key="`child:${a.name}`" :area="a" />
+        </template>
+      </PropsAccordionItem>
+    </div>
   </PropsAccordion>
 </template>
 
