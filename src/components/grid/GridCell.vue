@@ -108,7 +108,7 @@ section {
     background: #f6fbf6 !important;
   }
   &.focused {
-    background: #ecf8eccc;
+    background: #f6fbf6 !important;
   }
   &.implicit {
     background: transparent !important;
