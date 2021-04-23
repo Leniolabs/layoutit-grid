@@ -94,7 +94,6 @@ const isDraggingRow = computed(() => isDraggingGrid.value && dragging.value.rowL
 
 <style scoped lang="postcss">
 section {
-  z-index: -1;
   pointer-events: initial;
   touch-action: none;
   height: 100%;
@@ -106,7 +105,7 @@ section {
     background: #ddddddcc;
   }*/
   &:not(.dragging):hover {
-    background: #f6fbf6;
+    background: #f6fbf6 !important;
   }
   &.focused {
     background: #ecf8eccc;
