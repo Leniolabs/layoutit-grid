@@ -179,6 +179,8 @@ p {
 .area-editor-container {
   display: grid;
   overflow: auto;
+  align-items: center;
+  justify-items: center;
 }
 
 .mobile-buttons {

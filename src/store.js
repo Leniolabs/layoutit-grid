@@ -23,7 +23,7 @@ function createMainAreaState() {
     display: 'grid',
     grid: createGridState(),
     justifySelf: 'center',
-    alignSelf: 'start',
+    alignSelf: 'center',
     width: '100%',
     height: '100%',
     color: '#1e1e1e',
@@ -73,7 +73,9 @@ watch(
 export function loadFromStorage() {
   if (stateStorage.value) {
     try {
-      mainArea.value = parseArea(stateStorage.value)
+      const area = parseArea(stateStorage.value)
+      area.alignSelf = 'center' // Some areas were saved with alignSelf start
+      mainArea.value = area
       clear()
     } catch (error) {
       console.log(error)
