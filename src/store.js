@@ -1,7 +1,7 @@
 import { ref, watch } from 'vue'
 import { useRefHistory, useLocalStorage } from '@vueuse/core'
 
-export * from './store/grid.js'
+export * from './store/grid.ts'
 export * from './store/flex.js'
 export * from './store/area.js'
 
@@ -14,7 +14,7 @@ import {
   gridAreaToGridLimits,
   getRandomColor,
 } from './store/area.js'
-import { createGridState, isValidTrackSize } from './store/grid.js'
+import { createGridState, isValidTrackSize } from './store/grid.ts'
 
 function createMainAreaState() {
   return createAreaState({
