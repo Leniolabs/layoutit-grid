@@ -26,11 +26,13 @@
     :col="intersection.col"
     :colgap="computedGap.col"
     :rowgap="computedGap.row"
+    :implicit-grid="implicitGrid"
     @down="handleLineDown"
   />
 </template>
 
 <script>
+import { useMagicKeys } from '@vueuse/core'
 import GridLine from './GridLine.vue'
 import GridIntersection from './GridIntersection.vue'
 import { handlePointerEventsInteraction } from '../../utils.js'
@@ -48,6 +50,8 @@ import {
 import { useIsCurrentArea, useIsActiveArea } from '../../composables/area.js'
 
 import { defineProps, ref, computed, watch, toRefs, onBeforeUpdate, nextTick } from 'vue'
+
+const { shift } = useMagicKeys()
 
 export default {
   components: { GridLine, GridIntersection },
@@ -97,12 +101,10 @@ export default {
     const isActive = useIsActiveArea(area)
 
     function linesFor(type) {
-      const end = grid.value[type].lineNames.length
       const lines = []
       const { rows, cols, ri, ci } = props.implicitGrid
       const size = type === 'row' ? rows : cols
       const cell_i = type === 'row' ? ri : ci
-      const tracks = []
       for (let i = 2 - cell_i; i <= size + 2 - cell_i; i++) {
         lines.push({ type, pos: i })
       }
@@ -121,6 +123,12 @@ export default {
           intersections.push({ row, col })
         }
       }
+      const { rows, cols, ri, ci } = props.implicitGrid
+      const rs = 2 - ri,
+        cs = 2 - ci,
+        re = rows + 2 - ri,
+        ce = cols + 2 - ci
+      intersections.push({ row: rs, col: cs }, { row: rs, col: ce }, { row: re, col: cs }, { row: re, col: ce })
       return intersections
     })
 
@@ -137,7 +145,19 @@ export default {
     function calcValue(prev, prevComp, delta) {
       const sizeAdd = (prev.value * delta) / prevComp.value
 
-      let value = +(prev.value + sizeAdd).toFixed(1)
+      let value = +(prev.value + sizeAdd).toFixed(shift.value ? 2 : 1)
+
+      if (value <= 0) {
+        value = 0.1
+      }
+
+      return { value, unit: prev.unit }
+    }
+
+    function calcContainerValue(prev, delta) {
+      const sizeAdd = (prev.value * delta) / prev.value
+
+      let value = +(prev.value + sizeAdd).toFixed(shift.value ? 2 : 1)
 
       if (value <= 0) {
         value = 0.1
@@ -189,8 +209,16 @@ export default {
       const initialColComputedSizes = props.computedStyles.gridTemplateColumns.split(/\s/g)
       const rowsNumber = grid.value.row.sizes.length
       const colsNumber = grid.value.col.sizes.length
+      const initialWidth = parseValueUnit(props.area.width)
+      const initialComputedWidth = parseValueUnit(props.computedStyles.width)
+      const initialHeight = parseValueUnit(props.area.height)
+      const initialComputedHeight = parseValueUnit(props.computedStyles.height)
+
+      const { rows, cols, ri, ci } = props.implicitGrid
       const rowLine = row && row > 1 && row <= rowsNumber ? row : undefined
       const colLine = col && col > 1 && col <= colsNumber ? col : undefined
+      const rowEdge = row === 2 - ri || row === rows + 2 - ri ? row : undefined
+      const colEdge = col === 2 - ci || col === cols + 2 - ri ? col : undefined
 
       handlePointerEventsInteraction(event, {
         onmove(event) {
@@ -202,26 +230,46 @@ export default {
               dragging.value = { grid: grid.value, rowLine, colLine, prevCursor: document.body.style.cursor }
               document.body.style.cursor = col && row ? 'move' : col ? 'col-resize' : 'row-resize'
               pause()
+            } else if (!props.area.parent && (colEdge || rowEdge)) {
+              // Resize main container
+              dragging.value = {
+                grid: grid.value,
+                colLine: colEdge,
+                rowLine: rowEdge,
+                type: 'container',
+                prevCursor: document.body.style.cursor,
+              }
             }
           }
           if (dragging.value) {
-            if (dragging.value.rowLine !== null) {
-              // Drag row line by updating row sizes
-              grid.value.row.sizes = resizeGridSizes(
-                initialRowSizes,
-                initialRowComputedSizes,
-                pos.y - initialPos.y,
-                dragging.value.rowLine
-              )
-            }
-            if (dragging.value.colLine !== undefined) {
-              // Drag col line by updating col sizes
-              grid.value.col.sizes = resizeGridSizes(
-                initialColSizes,
-                initialColComputedSizes,
-                pos.x - initialPos.x,
-                dragging.value.colLine
-              )
+            if (dragging.value.type === 'container') {
+              if (colEdge !== undefined) {
+                const delta = (colEdge === 1 ? -1 : 1) * (pos.x - initialPos.x)
+                props.area.width = valueUnitToString(calcValue(initialWidth, initialComputedWidth, 2 * delta))
+              }
+              if (rowEdge !== undefined) {
+                const delta = (rowEdge === 1 ? -1 : 1) * (pos.y - initialPos.y)
+                props.area.height = valueUnitToString(calcValue(initialHeight, initialComputedHeight, 2 * delta))
+              }
+            } else {
+              if (dragging.value.rowLine !== undefined) {
+                // Drag row line by updating row sizes
+                grid.value.row.sizes = resizeGridSizes(
+                  initialRowSizes,
+                  initialRowComputedSizes,
+                  pos.y - initialPos.y,
+                  dragging.value.rowLine
+                )
+              }
+              if (dragging.value.colLine !== undefined) {
+                // Drag col line by updating col sizes
+                grid.value.col.sizes = resizeGridSizes(
+                  initialColSizes,
+                  initialColComputedSizes,
+                  pos.x - initialPos.x,
+                  dragging.value.colLine
+                )
+              }
             }
           }
         },

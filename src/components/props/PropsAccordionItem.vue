@@ -17,14 +17,15 @@
 <script setup>
 import { defineProps, ref } from 'vue'
 
-defineProps({
+const props = defineProps({
   name: { type: String, required: true },
   heading: { type: String, required: true },
   closedHeading: { type: String, default: '' },
   accordion: { type: Object, required: true },
   independent: { type: Boolean, default: false },
+  startOpened: { type: Boolean, default: false },
 })
-const opened = ref(true)
+const opened = ref(props.startOpened)
 </script>
 
 <style scoped lang="postcss">

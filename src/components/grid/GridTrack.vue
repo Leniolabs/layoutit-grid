@@ -141,26 +141,22 @@ section {
   &.darkmode {
     border: 1px dashed #888;
   }
-  &.row.focused,
   &.row.dragging-prev,
   &.row.focused-prev {
-    border-bottom: 1px solid #27ae60;
+    border-top: 1px solid #27ae60;
     z-index: 1;
   }
-  &.row.focused,
   &.row-no-gap.row.focused-track-next,
   &.row.dragging-next,
   &.row.focused-next {
     border-bottom: 1px solid #27ae60;
     z-index: 1;
   }
-  &.col.focused,
   &.col.dragging-prev,
   &.col.focused-prev {
-    border-right: 1px solid #27ae60;
+    border-left: 1px solid #27ae60;
     z-index: 1;
   }
-  &.col.focused,
   &.col-no-gap.col.focused-track-next,
   &.col.dragging-next,
   &.col.focused-next {
