@@ -18,6 +18,13 @@
     "lib": ["esnext", "dom"],
     "types": ["vite/client"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/store.js"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    // "src/**/*.vue",
+    "src/components/common/UnitSelect.vue",
+    "src/store.js"
+  ],
   "exclude": ["node_modules"]
 }

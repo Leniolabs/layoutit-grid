@@ -30,8 +30,7 @@ const emit = defineEmit(['update:modelValue'])
 const options = computed(() => units[props.type])
 
 const onInput = (event: Event) => {
-  // @ts-ignore
-  emit('update:modelValue', event.target.value)
+  emit('update:modelValue', (event.target as HTMLInputElement).value)
 }
 </script>
 

@@ -173,8 +173,8 @@ export function withChangedUnit(current: GridUnit, newUnit: GridUnit) {
   return valueUnitToString({ value: unitMeasureMap[newUnit], unit: newUnit })
 }
 
-function parseLineName(item: string): string | null {
-  return item.includes('[') ? item.match(/\[(.*)\]/)[1].trim() : null
+function parseLineName(item: string): string | undefined {
+  return item.includes('[') ? item.match(/\[(.*)\]/)?.[1].trim() : undefined
 }
 
 export function parseGridTemplate(templateStr: string) {

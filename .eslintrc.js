@@ -17,6 +17,7 @@ module.exports = {
     'no-console': 'off',
     'no-debugger': 'off',
     'vue/no-mutating-props': 0,
+    '@typescript-eslint/ban-ts-comment': 'off',
   },
   parserOptions: {
     parser: '@typescript-eslint/parser',
