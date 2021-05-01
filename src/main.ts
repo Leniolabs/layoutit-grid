@@ -2,9 +2,11 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import GridEditor from './components/grid/GridEditor.vue'
 import FlexEditor from './components/flex/FlexEditor.vue'
+//@ts-ignore
 import { registerServiceWorker } from './registerServiceWorker'
 
 if (!window.PointerEvent) {
+  //@ts-ignore
   import('pepjs')
 }
 

@@ -1,4 +1,4 @@
-import { parseGridTemplate, lineNamesToState } from './grid.js'
+import { parseGridTemplate, lineNamesToState } from './grid.ts'
 import { isValidTrackSize } from '../utils/grid.js'
 export { isValidTrackSize }
 export {

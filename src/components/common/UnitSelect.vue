@@ -1,15 +1,14 @@
 <template>
-  <select
-    :value="modelValue"
-    :class="['unit-select', { focused }]"
-    @input="$emit('update:modelValue', $event.target.value)"
-  >
+  <select :value="modelValue" :class="['unit-select', { focused }]" @input="onInput">
     <option v-for="option in options" :key="option" :value="option">{{ option }}</option>
   </select>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, defineProps, defineEmit } from 'vue'
+import type { PropType } from 'vue'
+import type { UnitSelectType, UnitsInterface } from '../../types'
+// @ts-ignore
 import { validGridUnits } from '../../store.js'
 
 const units = {
@@ -18,16 +17,21 @@ const units = {
   default: ['px', '%', 'em'],
   size: ['px', '%', 'em', 'initial'],
   auto: [...validGridUnits, 'initial'],
-}
+} as UnitsInterface
 
 const props = defineProps({
   modelValue: { type: String, default: 'px' },
-  type: { type: String, default: 'default' }, //  default, grid, flex
+  type: { type: String as PropType<UnitSelectType>, default: 'default' },
   focused: { type: Boolean, default: false },
 })
-defineEmit(['update:modelValue'])
+
+const emit = defineEmit(['update:modelValue'])
 
 const options = computed(() => units[props.type])
+
+const onInput = (event: Event) => {
+  emit('update:modelValue', (event.target as HTMLInputElement).value)
+}
 </script>
 
 <style scoped lang="postcss">

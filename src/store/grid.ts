@@ -1,16 +1,19 @@
+// @ts-ignore
 import { parseValue, parseUnit } from '../utils/grid.js'
 export { parseValue, parseUnit }
+// @ts-ignore
 export { validGridUnits, parseValueUnit, isValidTrackSize } from '../utils/grid.js'
+import { GridDimension, GridState, LineName, ValueUnit, UniversalUnits, GridUnit } from '../types'
 
-export function gridTemplateToArr(str) {
+export function gridTemplateToArr(str: string): string[] {
   return str.split(/(?!\(.*)\s(?![^(]*?\))/g)
 }
 
-export function isValidLineName(str) {
+export function isValidLineName(str: string): boolean {
   return true
 }
 
-export function valueUnitToString({ value, unit }) {
+export function valueUnitToString({ value, unit }: ValueUnit): string {
   switch (unit) {
     case 'minmax':
       return `minmax(${value})`
@@ -24,17 +27,14 @@ export function valueUnitToString({ value, unit }) {
   }
 }
 
-function newLineNames(n) {
+function newLineNames(n: number): LineName[] {
   return lineNamesToState(Array(n).fill(''))
 }
-export function lineNamesToState(names) {
+
+export function lineNamesToState(names: string[]): LineName[] {
   return names.map((name) => {
     return { active: name != '', name }
   })
-}
-
-function typeIndex(type) {
-  return type === 'row' ? 0 : 1
 }
 
 /*
@@ -53,7 +53,7 @@ function typeIndex(type) {
 }
 */
 
-export function createGridDimension(n) {
+export function createGridDimension(n: number): GridDimension {
   return {
     sizes: new Array(n).fill('1fr'),
     auto: [],
@@ -62,7 +62,7 @@ export function createGridDimension(n) {
   }
 }
 
-export function createGridState(r = 3, c = 3) {
+export function createGridState(r: number = 3, c: number = 3): GridState {
   return {
     row: createGridDimension(r),
     col: createGridDimension(c),
@@ -76,86 +76,86 @@ export function createGridState(r = 3, c = 3) {
 
 // TODO: abstract these helpers to work with the dimmension passed as param 'col', 'row'
 
-export function getRowValue(grid, n) {
+export function getRowValue(grid: GridState, n: number) {
   return parseValue(grid.row.sizes[n])
 }
 
-export function getRowUnit(grid, n) {
+export function getRowUnit(grid: GridState, n: number) {
   return parseUnit(grid.row.sizes[n])
 }
 
-export function getColValue(grid, n) {
+export function getColValue(grid: GridState, n: number) {
   return parseValue(grid.col.sizes[n])
 }
 
-export function getColUnit(grid, n) {
+export function getColUnit(grid: GridState, n: number) {
   return parseUnit(grid.col.sizes[n])
 }
 
-export function setRowValueUnit(grid, n, x) {
+export function setRowValueUnit(grid: GridState, n: number, x: ValueUnit) {
   grid.row.sizes[n] = valueUnitToString(x)
 }
 
-export function setRowValue(grid, n, value) {
+export function setRowValue(grid: GridState, n: number, value: string) {
   setRowValueUnit(grid, n, { value, unit: getRowUnit(grid, n) })
 }
 
-export function setColValueUnit(grid, n, x) {
+export function setColValueUnit(grid: GridState, n: number, x: ValueUnit) {
   grid.col.sizes[n] = valueUnitToString(x)
 }
 
-export function setColValue(grid, n, value) {
+export function setColValue(grid: GridState, n: number, value: string) {
   setColValueUnit(grid, n, { value, unit: getColUnit(grid, n) })
 }
 
-export function addImplicitCol(grid, val) {
+export function addImplicitCol(grid: GridState, val: string) {
   grid.col.auto.push(val)
 }
 
-export function addImplicitRow(grid, val) {
+export function addImplicitRow(grid: GridState, val: string) {
   grid.row.auto.push(val)
 }
 
-export function getImplicitRowValue(grid, n) {
+export function getImplicitRowValue(grid: GridState, n: number) {
   return parseValue(grid.row.auto[n])
 }
 
-export function getImplicitRowUnit(grid, n) {
+export function getImplicitRowUnit(grid: GridState, n: number) {
   return parseUnit(grid.row.auto[n])
 }
 
-export function getImplicitColValue(grid, n) {
+export function getImplicitColValue(grid: GridState, n: number) {
   return parseValue(grid.col.auto[n])
 }
 
-export function getImplicitColUnit(grid, n) {
+export function getImplicitColUnit(grid: GridState, n: number) {
   return parseUnit(grid.col.auto[n])
 }
 
-export function setImplicitRowValueUnit(grid, n, x) {
+export function setImplicitRowValueUnit(grid: GridState, n: number, x: ValueUnit) {
   grid.row.auto[n] = valueUnitToString(x)
 }
 
-export function setImplicitRowValue(grid, n, value) {
+export function setImplicitRowValue(grid: GridState, n: number, value: string) {
   setImplicitRowValueUnit(grid, n, { value, unit: getImplicitRowUnit(grid, n) })
 }
 
-export function setImplicitColValueUnit(grid, n, x) {
+export function setImplicitColValueUnit(grid: GridState, n: number, x: ValueUnit) {
   grid.col.auto[n] = valueUnitToString(x)
 }
 
-export function setImplicitColValue(grid, n, value) {
+export function setImplicitColValue(grid: GridState, n: number, value: string) {
   setImplicitColValueUnit(grid, n, { value, unit: getImplicitColUnit(grid, n) })
 }
 
-export function removeImplicitRow(grid, n) {
+export function removeImplicitRow(grid: GridState, n: number) {
   grid.row.auto.splice(n, 1)
 }
-export function removeImplicitCol(grid, n) {
+export function removeImplicitCol(grid: GridState, n: number) {
   grid.col.auto.splice(n, 1)
 }
 
-export function withChangedValue(current, newValue) {
+export function withChangedValue(current: UniversalUnits, newValue: string) {
   return valueUnitToString({ value: newValue, unit: parseUnit(current) })
 }
 
@@ -169,19 +169,19 @@ export const unitMeasureMap = {
   'min-content': '',
   'max-content': '',
 }
-export function withChangedUnit(current, newUnit) {
+export function withChangedUnit(current: GridUnit, newUnit: GridUnit) {
   return valueUnitToString({ value: unitMeasureMap[newUnit], unit: newUnit })
 }
 
-function parseLineName(item) {
-  return item.includes('[') ? item.match(/\[(.*)\]/)[1].trim() : null
+function parseLineName(item: string): string | undefined {
+  return item.includes('[') ? item.match(/\[(.*)\]/)?.[1].trim() : undefined
 }
 
-export function parseGridTemplate(templateStr) {
+export function parseGridTemplate(templateStr: string) {
   // splits at and space that isn't between two [ ] brackets
   const parsedArr = templateStr.split(/\s(?![^[]*])/)
-  const lineNames = []
-  const templateArr = []
+  const lineNames: string[] = []
+  const templateArr: string[] = []
   let position = 0
   parsedArr.forEach((item) => {
     const lineName = parseLineName(item)
