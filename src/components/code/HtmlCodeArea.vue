@@ -15,7 +15,8 @@
     ><template v-if="includeAreaInCSS(area)"
       >{{ ' ' }}<span class="token attr-name">class</span>="<span class="token attr-value">{{ cssAreaName }}</span
       >"</template
-    >><span v-for="(a, i) in gridAreas" :key="`${i}-${a.name}`" :class="['area-children']" :data-area-name="a.name"
+    >><span v-if="area === currentArea" class="selected"> • </span
+    ><span v-for="(a, i) in gridAreas" :key="`${i}-${a.name}`" :class="['area-children']" :data-area-name="a.name"
       >{{ '\n' }}<HtmlCodeArea :area="a" :options="options" :ident="ident + '  '" /></span
     >{{ `${gridAreas.length > 0 ? '\n' + ident : ''}${CLOSE_TAG}` }}<span class="token tag">{{ elementTag }}</span
     >></span
@@ -125,5 +126,8 @@ function onDragOver(areaTarget, event) {
 .token.tag,
 .token.attr-name {
   cursor: pointer;
+}
+.selected {
+  color: lightgreen;
 }
 </style>
