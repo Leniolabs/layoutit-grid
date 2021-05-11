@@ -11,12 +11,12 @@
       opacity: reordering && reordering.area === area ? 0.3 : 1,
     }"
     @click.stop="currentArea = area"
+    ><span v-if="area === currentArea && !(!area.parent && !area.children.length)" class="selected"></span
     >{{ `${ident}${OPEN_TAG}` }}<span class="token tag">{{ elementTag }}</span
     ><template v-if="includeAreaInCSS(area)"
       >{{ ' ' }}<span class="token attr-name">class</span>="<span class="token attr-value">{{ cssAreaName }}</span
       >"</template
-    >><span v-if="area === currentArea" class="selected"> • </span
-    ><span v-for="(a, i) in gridAreas" :key="`${i}-${a.name}`" :class="['area-children']" :data-area-name="a.name"
+    >><span v-for="(a, i) in gridAreas" :key="`${i}-${a.name}`" :class="['area-children']" :data-area-name="a.name"
       >{{ '\n' }}<HtmlCodeArea :area="a" :options="options" :ident="ident + '  '" /></span
     >{{ `${gridAreas.length > 0 ? '\n' + ident : ''}${CLOSE_TAG}` }}<span class="token tag">{{ elementTag }}</span
     >></span
@@ -123,11 +123,18 @@ function onDragOver(areaTarget, event) {
 </script>
 
 <style scoped lang="postcss">
+.area-tree {
+  position: relative;
+}
 .token.tag,
 .token.attr-name {
   cursor: pointer;
 }
 .selected {
-  color: lightgreen;
+  position: absolute;
+  left: -5px;
+  height: 20px;
+  width: 310px;
+  background-color: rgba(255, 255, 255, 0.123);
 }
 </style>
