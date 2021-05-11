@@ -111,6 +111,9 @@ section {
     &.col-first {
       border-left: 1px solid #bdbdbd;
     }
+    &:not(.col-first):not(.col-no-gap) {
+      border-left: 1px dashed #bdbdbd;
+    }
     &.col-last {
       border-right: 1px solid #bdbdbd;
       & ~ .col {
@@ -122,6 +125,9 @@ section {
     width: 300vw;
     left: -100vw;
     border-bottom: 1px dashed #bdbdbd;
+    &:not(.row-first):not(.row-no-gap) {
+      border-top: 1px dashed #bdbdbd;
+    }
     &.row-first {
       border-top: 1px solid #bdbdbd;
     }
@@ -141,26 +147,26 @@ section {
   &.darkmode {
     border: 1px dashed #888;
   }
-  &.row.dragging-prev,
+  &:not(.row-no-gap).row.dragging-prev,
   &.row.focused-prev {
-    border-top: 1px solid #27ae60;
+    border-top: 1px solid #27ae60 !important;
     z-index: 1;
   }
   &.row-no-gap.row.focused-track-next,
   &.row.dragging-next,
   &.row.focused-next {
-    border-bottom: 1px solid #27ae60;
+    border-bottom: 1px solid #27ae60 !important;
     z-index: 1;
   }
-  &.col.dragging-prev,
+  &:not(.col-no-gap).col.dragging-prev,
   &.col.focused-prev {
-    border-left: 1px solid #27ae60;
+    border-left: 1px solid #27ae60 !important;
     z-index: 1;
   }
   &.col-no-gap.col.focused-track-next,
   &.col.dragging-next,
   &.col.focused-next {
-    border-right: 1px solid #27ae60;
+    border-right: 1px solid #27ae60 !important;
     z-index: 1;
   }
 }
