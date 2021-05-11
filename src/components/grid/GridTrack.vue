@@ -32,7 +32,6 @@
 </template>
 
 <script setup>
-import TrackSize from './TrackSize.vue'
 import { useIsCurrentArea, useGridDimensions } from '../../composables/area.js'
 import { dragging, currentFocus, currentHover, darkmode, parseValue } from '../../store.js'
 import { defineProps, computed, toRefs } from 'vue'
@@ -145,25 +144,19 @@ section {
   &.darkmode {
     border: 1px dashed #888;
   }
-  &:not(.row-no-gap).row.dragging-prev,
-  &.row.focused-prev {
+  &:not(.row-no-gap).row.dragging-prev {
     border-top: 1px solid #27ae60 !important;
     z-index: 1;
   }
-  &.row-no-gap.row.focused-track-next,
-  &.row.dragging-next,
-  &.row.focused-next {
+  &.row.dragging-next {
     border-bottom: 1px solid #27ae60 !important;
     z-index: 1;
   }
-  &:not(.col-no-gap).col.dragging-prev,
-  &.col.focused-prev {
+  &:not(.col-no-gap).col.dragging-prev {
     border-left: 1px solid #27ae60 !important;
     z-index: 1;
   }
-  &.col-no-gap.col.focused-track-next,
-  &.col.dragging-next,
-  &.col.focused-next {
+  &.col.dragging-next {
     border-right: 1px solid #27ae60 !important;
     z-index: 1;
   }
