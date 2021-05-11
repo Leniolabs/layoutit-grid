@@ -57,6 +57,14 @@
         :grayed="!isActive"
         @overcell="onOverCell"
       />
+      <GridTrackSize
+        v-for="track in gridTracks"
+        :key="`track-size-${track.type}-${track.pos}`"
+        :area="area"
+        :type="track.type"
+        :pos="track.pos"
+        :implicit-grid="implicitGrid"
+      />
     </template>
 
     <AreaEditor
@@ -100,6 +108,7 @@
 <script setup>
 import GridCell from '../grid/GridCell.vue'
 import GridTrack from '../grid/GridTrack.vue'
+import GridTrackSize from '../grid/GridTrackSize.vue'
 import AreaBox from './AreaBox.vue'
 import AreaButtons from './AreaButtons.vue'
 import PieChart from '../content/PieChart.vue'

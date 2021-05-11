@@ -28,9 +28,7 @@
     :style="{
       gridArea,
     }"
-  >
-    <TrackSize v-if="isCurrent" :grid="grid" :type="type" :track="pos" />
-  </section>
+  ></section>
 </template>
 
 <script setup>
