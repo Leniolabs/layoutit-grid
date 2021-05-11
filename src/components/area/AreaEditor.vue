@@ -54,6 +54,7 @@
         :computed-styles="computedStyles"
         :computed-gap="computedGap"
         :implicit-grid="implicitGrid"
+        :grayed="!isActive"
         @overcell="onOverCell"
       />
     </template>

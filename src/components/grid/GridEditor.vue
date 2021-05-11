@@ -14,6 +14,7 @@
     :pos="line.pos"
     :gap="computedGap[line.type]"
     :implicit-grid="implicitGrid"
+    :grayed="grayed"
     @down="handleLineDown"
     @overcell="$emit('overcell', $event)"
   />
@@ -65,6 +66,7 @@ export default {
       },
     },
     implicitGrid: { type: Object, required: true },
+    grayed: { type: Boolean, default: false },
   },
   emits: ['overcell'],
   setup(props, { expose }) {

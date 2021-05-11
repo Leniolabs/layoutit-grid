@@ -19,6 +19,7 @@
       :class="[
         'line-number',
         {
+          grayed,
           compact: area.padding !== '0',
           dragging: dragging && dragging.grid === grid && dragging[type + 'Line'] === pos,
           focused:
@@ -56,6 +57,7 @@ export default {
     area: { type: Object, required: true },
     gap: { type: String, default: '0px' },
     implicitGrid: { type: Object, required: true },
+    grayed: { type: Boolean, default: false },
   },
   emits: ['down', 'overcell'],
   setup(props, { expose, emit }) {
@@ -150,6 +152,9 @@ section {
     line-height: 15px;
     text-align: center;
     //z-index: 1;
+    &.grayed {
+      background: #e8e8e8;
+    }
     &.dragging,
     &.focused {
       background: #27ae60;
@@ -259,9 +264,5 @@ section {
 
     overflow: hidden;
   }
-}
-
-.grayed section .line-number {
-  background: #ccc;
 }
 </style>
