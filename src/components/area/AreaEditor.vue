@@ -14,8 +14,8 @@
       background:
         area.display === 'block' && area.parent
           ? isActive
-            ? '#ffffff'
-            : '#e8e8e8'
+            ? '#ffffffaa'
+            : '#e8e8e8aa'
           : 'repeating-linear-gradient(45deg, white, white 9px, #f8f8f8 9px, #f8f8f8 14px)',
       'user-select': 'none',
       'z-index': 0,
