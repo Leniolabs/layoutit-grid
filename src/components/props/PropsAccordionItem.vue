@@ -1,5 +1,5 @@
 <template>
-  <div class="props-accordion-item" :class="{ active: accordion.active === name }">
+  <div class="props-accordion-item" :class="{ active: !!accordion && accordion.active === name }">
     <h1 :class="{ independent }" @click="independent ? (opened = !opened) : (accordion.active = name)">
       {{ (!opened && closedHeading) || heading }}
       <slot name="buttons"></slot>
@@ -21,7 +21,7 @@ const props = defineProps({
   name: { type: String, required: true },
   heading: { type: String, required: true },
   closedHeading: { type: String, default: '' },
-  accordion: { type: Object, required: true },
+  accordion: { type: Object, default: undefined },
   independent: { type: Boolean, default: false },
   startOpened: { type: Boolean, default: false },
 })
@@ -65,20 +65,6 @@ const opened = ref(props.startOpened)
       background: transparent;
     }
   }
-}
-
-.area-actions-sidebar h1 {
-  color: #d7ba7d;
-  font-size: 13px;
-  text-shadow: none;
-  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-  direction: ltr;
-  text-align: left;
-  white-space: pre;
-  word-spacing: normal;
-  word-break: normal;
-  line-height: 1.5;
-  font-weight: normal;
 }
 
 .props-accordion-content {
