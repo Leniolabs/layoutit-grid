@@ -4,6 +4,7 @@ import {
   canRedo,
   canUndo,
   currentArea,
+  overArea,
   deselectCurrentArea,
   mainArea,
   redo,
@@ -37,6 +38,7 @@ function ctrlMetaKeyHandler(event) {
 }
 
 function keyHandler(event) {
+  const targetArea = overArea?.value || currentArea.value
   switch (event.key.toLowerCase()) {
     case 'backspace':
     case 'delete':
@@ -50,14 +52,10 @@ function keyHandler(event) {
       }
       break
     case 'r':
-      if (currentArea?.value?.grid) {
-        addRow(currentArea.value.grid, '1fr')
-      }
+      if (targetArea.display === 'grid') addRow(targetArea, '1fr')
       break
     case 'c':
-      if (currentArea?.value?.grid) {
-        addCol(currentArea.value.grid, '1fr')
-      }
+      if (targetArea.display === 'grid') addCol(targetArea, '1fr')
       break
     case 'escape':
       if (currentArea.value !== mainArea.value) {

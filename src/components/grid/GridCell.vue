@@ -18,7 +18,8 @@
     }"
     class="grid-section"
     @pointerdown="$emit('pointerdown', $event)"
-    @mouseover="$emit('overcell', { col: section.col.start, row: section.row.start })"
+    @mouseover="$emit('overgridcell', { col: section.col.start, row: section.row.start })"
+    @mouseleave="$emit('leavegridcell')"
   />
 </template>
 
@@ -71,7 +72,7 @@ const props = defineProps({
   grayed: { type: Boolean, default: false },
   focused: { type: Boolean, default: false },
 })
-defineEmit(['pointerdown', 'overcell'])
+defineEmit(['pointerdown', 'overgridcell', 'overgridcell'])
 
 import { computed } from 'vue'
 

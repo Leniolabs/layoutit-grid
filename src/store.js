@@ -129,17 +129,35 @@ export const isValidGapSize = isValidTrackSize
 
 // This should go in grid.js, we need to check again if we can use sync:pre in the history management before
 
-export function addToDimension(dimension, val) {
-  dimension.sizes.push(val)
+export function addToDimension(dimension, index, val) {
+  dimension.sizes.splice(index, 0, val)
   dimension.lineNames.push({ active: false, name: '' })
 }
 
-export function addCol(grid, colStr) {
-  addToDimension(grid.col, colStr)
+export function addCol(area, colStr) {
+  const colIndex = area.grid.hover?.col || -1
+  addToDimension(area.grid.col, colIndex, colStr)
+  if (colIndex > 0)
+    area.children.forEach((child) => {
+      const [startRow, startCol, endRow, endCol] = child.gridArea.split(' / ')
+      if (colIndex < Number(startCol))
+        child.gridArea = `${startRow} / ${Number(startCol) + 1} / ${endRow} / ${Number(endCol) + 1}`
+      else if (colIndex < Number(endCol))
+        child.gridArea = `${startRow} / ${startCol} / ${endRow} / ${Number(endCol) + 1}`
+    })
 }
 
-export function addRow(grid, rowStr) {
-  addToDimension(grid.row, rowStr)
+export function addRow(area, rowStr) {
+  const rowIndex = area.grid.hover?.row || -1
+  addToDimension(area.grid.row, rowIndex, rowStr)
+  if (rowIndex > 0)
+    area.children.forEach((child) => {
+      const [startRow, startCol, endRow, endCol] = child.gridArea.split(' / ')
+      if (rowIndex < Number(startRow))
+        child.gridArea = `${Number(startRow) + 1} / ${startCol} / ${Number(endRow) + 1} / ${endCol}`
+      else if (rowIndex < Number(endRow))
+        child.gridArea = `${startRow} / ${startCol} / ${Number(endRow) + 1} / ${endCol}`
+    })
 }
 
 function reduceLimit(l) {
