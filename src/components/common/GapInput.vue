@@ -6,46 +6,43 @@
     </div>
     <div class="area-size">
       <div class="input-container">
-        <input
-          :value="gap.value"
-          aria-label="gap value"
-          type="number"
-          min="0"
-          @input="setGapValue($event.target.value)"
-        />
-        <UnitSelect :value="gap.unit" aria-label="gap unit" @input="setGapUnit($event.target.value)" />
+        <input :value="gap.value" aria-label="gap value" type="number" min="0" @input="setGapValue($event)" />
+        <UnitSelect :value="gap.unit" aria-label="gap unit" @input="setGapUnit($event)" />
       </div>
     </div>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import UnitSelect from './UnitSelect.vue'
-
+import type { PropType } from 'vue'
+import type { ValueGapUnit, DefaultUnit, Cell } from '../../types'
 import { defineProps, computed } from 'vue'
+//@ts-ignore
 import { parseValueUnit } from '../../store.js'
-import { inputSetter } from '../../composables'
 
 const props = defineProps({
   grid: { type: Object, required: true },
-  type: { type: String, required: true }, // 'row' or 'col'
+  type: { type: String as PropType<Cell>, required: true }, // 'row' or 'col'
 })
 const gap = computed({
-  get() {
+  get: (): ValueGapUnit => {
     return parseValueUnit(props.grid[props.type].gap)
   },
-  set(value) {
-    props.grid[props.type].gap = value
+  set: ({ value, unit }) => {
+    props.grid[props.type].gap = value + unit
   },
 })
 
-function setGapUnit(unit) {
+function setGapUnit(event: Event) {
+  const unit = (event.target as HTMLInputElement).value as DefaultUnit
   // TODO: Adjust value to avoid jump
-  gap.value = gap.value.value + unit
+  gap.value = { ...gap.value, unit }
 }
 
-function setGapValue(value) {
-  gap.value = value + gap.value.unit
+function setGapValue(event: Event) {
+  const value = (event.target as HTMLInputElement).value
+  gap.value = { ...gap.value, value }
 }
 </script>
 

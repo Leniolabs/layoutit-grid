@@ -11,42 +11,49 @@
           aria-label="size value"
           type="number"
           min="0"
-          @input="onSizeInput($event.target.value)"
+          @input="onSizeInput($event)"
         />
-        <UnitSelect type="size" :value="size.unit" aria-label="size unit" @input="setSizeUnit($event.target.value)" />
+        <UnitSelect type="size" :value="size.unit" aria-label="size unit" @input="setSizeUnit($event)" />
       </div>
     </div>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import UnitSelect from './UnitSelect.vue'
 
 import { defineProps, computed } from 'vue'
+import type { PropType } from 'vue'
+//@ts-ignore
 import { parseValueUnit } from '../../store.js'
+//@ts-ignore
 import { unitMeasureMap } from '../../utils.js'
+//@ts-ignore
 import { inputSetter } from '../../composables'
+import type { AreaType, AreaState, ValueUnit, UniversalUnits } from '../../types'
 
 const props = defineProps({
-  area: { type: Object, required: true },
-  type: { type: String, required: true }, // 'width' or 'height'
+  area: { type: Object as PropType<AreaState>, required: true },
+  type: { type: String as PropType<AreaType>, required: true },
 })
 const size = computed({
-  get() {
+  get: (): ValueUnit => {
     return parseValueUnit(props.area[props.type])
   },
-  set(s) {
-    props.area[props.type] = s
+  set: (s: ValueUnit) => {
+    props.area[props.type] = s.value + s.unit
   },
 })
 
-function setSizeValue(value) {
-  size.value = value + size.value.unit
+function setSizeValue({ target }: Event) {
+  const value = (target as HTMLInputElement).value
+  size.value = { ...size.value, value }
 }
 
-function setSizeUnit(unit) {
+function setSizeUnit({ target }: Event) {
+  const unit = (target as HTMLInputElement).value as UniversalUnits
   // TODO: Adjust value to avoid jump
-  size.value = unitMeasureMap[unit] + unit
+  size.value = { value: unitMeasureMap[unit], unit }
 }
 
 const onSizeInput = inputSetter(setSizeValue)

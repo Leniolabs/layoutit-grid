@@ -1,4 +1,4 @@
-export type UnitSelectType = 'default' | 'grid' | 'flex'
+export type UnitSelectType = 'default' | 'grid' | 'flex' | 'size' | 'auto'
 
 export type DefaultUnit = 'px' | '%' | 'em'
 
@@ -16,6 +16,9 @@ export type ContentProperties = BasicProperties | 'around' | 'between' | 'evenly
 
 export type Cell = 'col' | 'row'
 
+export type AreaType = 'width' | 'height'
+
+export type AlignOptionsType = 'content' | 'items' | 'self'
 export interface LineName {
   active: boolean
   name: string
@@ -50,3 +53,10 @@ export interface ValueUnit {
   value: string | number
   unit: UniversalUnits
 }
+
+export interface ValueGapUnit extends Omit<ValueUnit, 'unit'> {
+  unit: DefaultUnit
+}
+
+export * from './types/area'
+export * from './types/constans'

@@ -1,37 +1,28 @@
 <template>
   <div class="placement-select-container">
     <label>{{ type }}</label>
-    <select
-      :value="modelValue"
-      :class="['placement-select', { focused }]"
-      @input="$emit('update:modelValue', $event.target.value)"
-    >
+    <select :value="modelValue" :class="['placement-select', { focused }]" @input="onInput">
       <option v-for="option in options" :key="option" :value="option">{{ option }}</option>
     </select>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, defineProps, defineEmit } from 'vue'
-import { validGridUnits } from '../../store.js'
+import { alignOptionsMap } from '../../constants'
 
 const props = defineProps({
   modelValue: { type: String, default: 'stretch' },
   type: { type: String, default: 'justify-content' }, // [ justify | align ]-[ content, items, self ]
   focused: { type: Boolean, default: false },
 })
-defineEmit(['update:modelValue'])
+const emit = defineEmit(['update:modelValue'])
 
-const optionsContent = ['stretch', 'start', 'center', 'end', 'around', 'between', 'evenly']
-const optionsItems = ['stretch', 'start', 'center', 'end']
-
-const optionsMap = {
-  content: optionsContent,
-  items: optionsItems,
-  self: optionsItems,
+const onInput = (event: Event) => {
+  emit('update:modelValue', (event.target as HTMLInputElement).value)
 }
 
-const options = computed(() => optionsMap[props.type.split('-')[1]])
+const options = computed(() => alignOptionsMap[props.type.split('-')[1]])
 </script>
 
 <style scoped lang="postcss">

@@ -23,9 +23,7 @@
         type="checkbox"
         name="grid-auto-flow-dense"
         value="dense"
-        @input="
-          $emit('update:modelValue', $event.target.checked ? modelValue + ' dense' : modelValue.split(' dense')[0])
-        "
+        @input="onInput"
       />
       <label
         title="dense: the packing algorithm attempts to fill in holes in the grid if smaller items come up later. This may cause items to appear out-of-order."
@@ -36,19 +34,18 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { computed, defineProps, defineEmit } from 'vue'
+<script setup lang="ts">
+import { defineProps, defineEmit } from 'vue'
+import type { PropType } from 'vue'
 import IconFlowCol from '../icons/IconFlowCol.vue'
 import IconFlowDense from '../icons/IconFlowDense.vue'
 import IconFlowRow from '../icons/IconFlowRow.vue'
 
-defineProps({
-  modelValue: { type: String, default: 'row' },
+const { modelValue } = defineProps({
+  modelValue: { type: String as PropType<'column' | 'row'>, default: 'row' },
 })
-defineEmit(['update:modelValue'])
 
-const options = ['row', 'column']
+const options = ['row', 'column'] as const
 
 const optionIconsFlow = {
   row: IconFlowRow,
@@ -56,13 +53,20 @@ const optionIconsFlow = {
   dense: IconFlowDense,
 }
 
+const emit = defineEmit(['update:modelValue'])
+
+const onInput = (event: Event) => {
+  emit(
+    'update:modelValue',
+    (event.target as HTMLInputElement).checked ? modelValue + ' dense' : modelValue.split(' dense')[0]
+  )
+}
 const optionTooltipsFlow = {
   row:
     'row: items are placed by filling each row in turn, adding new rows as necessary. If neither row nor column is provided, row is assumed.',
   column: 'column: items are placed by filling each column in turn, adding new columns as necessary.',
 }
 </script>
-
 <style scoped lang="postcss">
 .display-select-container {
   margin-bottom: 10px;

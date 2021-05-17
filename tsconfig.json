@@ -4,7 +4,7 @@
     "module": "esnext",
     "importHelpers": true,
     "moduleResolution": "node",
-    "strict": true,
+    "strict": false,
     "jsx": "preserve",
     "sourceMap": true,
     "resolveJsonModule": true,
@@ -23,7 +23,7 @@
     "src/**/*.d.ts",
     "src/**/*.tsx",
     // "src/**/*.vue",
-    "src/components/common/UnitSelect.vue",
+    "src/components/common/*.vue",
     "src/store.js"
   ],
   "exclude": ["node_modules"]
