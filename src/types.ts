@@ -1,4 +1,4 @@
-export type UnitSelectType = 'default' | 'grid' | 'flex' | 'size' | 'auto'
+export type UnitSelectType = 'default' | 'grid' | 'flex' | 'size'
 
 export type DefaultUnit = 'px' | '%' | 'em'
 
