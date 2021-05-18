@@ -39,9 +39,10 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, defineProps, defineEmit } from 'vue'
-import { validGridUnits } from '../../store.js'
+import type { PropType } from 'vue'
+import type { ContentProperties, AlignOptionsType } from '../../types'
 import IconJustifyStart from '../icons/IconJustifyStart.vue'
 import IconJustifyStretch from '../icons/IconJustifyStretch.vue'
 import IconJustifyCenter from '../icons/IconJustifyCenter.vue'
@@ -57,23 +58,15 @@ import IconAlignEnd from '../icons/IconAlignEnd.vue'
 import IconAlignAround from '../icons/IconAlignAround.vue'
 import IconAlignBetween from '../icons/IconAlignBetween.vue'
 import IconAlignEvenly from '../icons/IconAlignEvenly.vue'
+import { alignOptionsMap } from '../../constants'
 
 const props = defineProps({
-  modelValue: { type: String, default: 'stretch' },
-  type: { type: String, default: 'justify-content' }, // [ justify | align ]-[ content, items, self ]
+  modelValue: { type: String as PropType<ContentProperties>, default: 'stretch' },
+  type: { type: String as PropType<OptionTooltipsType>, default: 'justify-content' }, // [ justify | align ]-[ content, items, self ]
   focused: { type: Boolean, default: false },
   initial: { type: String, default: 'initial' },
 })
 defineEmit(['update:modelValue'])
-
-const optionsContent = ['stretch', 'start', 'center', 'end', 'around', 'between', 'evenly']
-const optionsItems = ['stretch', 'start', 'center', 'end']
-
-const optionsMap = {
-  content: optionsContent,
-  items: optionsItems,
-  self: optionsItems,
-}
 
 const optionIconsJustify = {
   stretch: IconJustifyStretch,
@@ -121,7 +114,9 @@ const optionTooltipsType = {
   'align-self': 'Overrides a grid item align-items value, aligning it inside the grid area.',
 }
 
-const options = computed(() => optionsMap[props.type.split('-')[1]])
+type OptionTooltipsType = keyof typeof optionTooltipsType
+
+const options = computed(() => alignOptionsMap[props.type.split('-')[1] as AlignOptionsType])
 </script>
 
 <style scoped lang="postcss">

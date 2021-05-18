@@ -16,15 +16,17 @@
   </div>
 </template>
 
-<script setup>
-import { computed, defineProps, defineEmit } from 'vue'
+<script setup lang="ts">
+import { defineProps, defineEmit } from 'vue'
+import type { PropType } from 'vue'
+
+const options = ['block', 'flex', 'grid'] as const
+type Option = typeof options[number]
 
 defineProps({
-  modelValue: { type: String, default: 'block' },
+  modelValue: { type: String as PropType<Option>, default: 'block' },
 })
 defineEmit(['update:modelValue'])
-
-const options = ['block', 'flex', 'grid']
 </script>
 
 <style scoped lang="postcss">

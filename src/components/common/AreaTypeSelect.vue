@@ -1,22 +1,26 @@
 <template>
   <div class="area-type-select-container">
     <span>type</span>
-    <select :value="modelValue" class="area-type-select" @input="$emit('update:modelValue', $event.target.value)">
+    <select :value="modelValue" class="area-type-select" @input="onInput">
       <option v-for="option in options" :key="option" :value="option">{{ option }}</option>
     </select>
   </div>
 </template>
 
-<script setup>
-import { computed, defineProps, defineEmit } from 'vue'
+<script setup lang="ts">
+import { defineProps, defineEmit } from 'vue'
 
 defineProps({
   modelValue: { type: String, default: 'box' },
 })
 
-defineEmit(['update:modelValue'])
+const emit = defineEmit(['update:modelValue'])
 
 const options = ['div', 'p', 'button', 'image', 'component']
+
+const onInput = (event: Event) => {
+  emit('update:modelValue', (event.target as HTMLInputElement).value)
+}
 </script>
 
 <style scoped lang="postcss">
