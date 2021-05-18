@@ -1,6 +1,6 @@
 <template>
   <div :class="['sidebar', { active: currentView === 'props' }]">
-    <BrandLogo />
+    <div class="sidebar-logo"><BrandLogo /></div>
     <AreaProps :area="currentArea" />
   </div>
 </template>
@@ -32,13 +32,17 @@ defineProps({
     transform: translateX(-100%);
     position: fixed;
     bottom: 0;
-    top: 0;
+    top: 48px;
+    width: 100%;
     background: #1e1e1e;
     a.brand {
       display: none;
     }
     &.active {
       transform: translateX(0);
+    }
+    .sidebar-logo {
+      display: none;
     }
   }
 }

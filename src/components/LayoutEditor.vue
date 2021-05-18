@@ -1,5 +1,5 @@
 <template>
-  <MobileButtons @toggle-props="toggleView('props')" @toggle-code="toggleView('code')" />
+  <PropsHeader @toggle-props="toggleView('props')" @toggle-code="toggleView('code')" />
   <PropsSidebar :area="mainArea" />
   <div class="area-editor-container">
     <AreaEditor :area="mainArea" />
@@ -12,10 +12,10 @@
 </template>
 
 <script setup>
-import MobileButtons from './MobileButtons.vue'
 import AreaEditor from './area/AreaEditor.vue'
 import SidebarRight from './basic/SidebarRight.vue'
 import PropsSidebar from './props/PropsSidebar.vue'
+import PropsHeader from './props/PropsHeader.vue'
 import LiveCode from './code/LiveCode.vue'
 
 import { defineProps, ref, computed, onMounted, onUnmounted } from 'vue'
@@ -181,10 +181,8 @@ p {
   overflow: auto;
   align-items: center;
   justify-items: center;
-}
-
-.mobile-buttons {
-  position: fixed;
-  bottom: 1em;
+  @media screen and (max-width: 768px) {
+    padding-top: 48px;
+  }
 }
 </style>
