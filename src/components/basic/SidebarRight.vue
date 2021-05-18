@@ -30,12 +30,12 @@ import BrandBanner from '../props/BrandBanner.vue'
   @media (max-width: 769px) {
     padding: 10px 10px 10px 10px;
     transform: translateX(100%);
-    width: min(100%, 430px);
+    width: 100%;
     background: #1e1e1e;
     position: fixed;
     right: 0;
     bottom: 0;
-    top: 0;
+    top: 48px;
     &.active {
       transform: translateX(0em);
     }

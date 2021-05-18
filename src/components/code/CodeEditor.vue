@@ -66,6 +66,9 @@ function copyToClipBoard() {
     margin-bottom: 0px;
     max-height: initial;
   }
+  @media screen and (max-width: 768px) {
+    max-width: 100%;
+  }
 }
 
 .header {
