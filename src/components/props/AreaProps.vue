@@ -8,7 +8,7 @@
     <PropsAccordionItem name="display" :heading="`Display (${area.display})`" :accordion="accordion">
       <AreaContentProps :area="area" />
     </PropsAccordionItem>
-    -->
+      -->
 
       <template v-if="area.display === 'grid'">
         <PropsAccordionItem
@@ -88,15 +88,14 @@
       -->
 
       <PropsAccordionItem
+        v-if="area.children.length"
         name="children"
         :independent="true"
         :start-opened="true"
         heading="Children"
         :accordion="accordion"
       >
-        <template v-if="area.children.length">
-          <AreaAccordionItem v-for="a in area.children" :key="`child:${a.name}`" :area="a" />
-        </template>
+        <AreaAccordionItem v-for="a in area.children" :key="`child:${a.name}`" :area="a" />
       </PropsAccordionItem>
     </div>
   </PropsAccordion>
