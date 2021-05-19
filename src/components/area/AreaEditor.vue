@@ -408,8 +408,8 @@ const gridTracks = computed(() => {
 
 .area-info-controls {
   position: absolute;
-  top: -0.5px;
-  left: 0;
+  top: 3px;
+  left: 3px;
   display: flex;
   align-items: flex-start;
 }
@@ -436,14 +436,13 @@ const gridTracks = computed(() => {
   max-width: max-content;
   min-width: 30px;
   position: relative;
+  border-radius: 2px;
   &.implicit:after {
     content: ' [auto]';
     font-size: 12px;
     opacity: 0.7;
   }
-  &:first-child:last-child {
-    border-bottom-right-radius: 2px;
-  }
+
   &:before {
     content: '';
     position: absolute;

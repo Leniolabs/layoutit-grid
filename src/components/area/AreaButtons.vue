@@ -15,7 +15,7 @@
       aria-label="Add sub grid"
       class="btn-subgrid"
       title="Add Sub Grid"
-      :style="{ background: `${area.color}` }"
+      :style="{ background: `var(--color-add)` }"
       @click="subGrid(area)"
     >
       <IconSubgrid />
@@ -28,7 +28,6 @@
       aria-label="Remove area"
       class="btn-remove"
       title="Remove Area"
-      :style="{ background: `${area.color}` }"
       @click="removeArea(area)"
     >
       <IconRemove />
@@ -88,15 +87,16 @@ function subFlex() {
 button {
   border: 0;
   height: 30px;
-  min-width: 30px;
+  width: 30px;
   color: #fff;
   cursor: pointer;
   pointer-events: all;
   align-items: center;
   padding: 0;
   justify-content: center;
-  border-left: 1px solid rgba(238, 238, 238, 0.4);
   position: relative;
+  border-radius: 2px;
+  margin-left: 3px;
   &:before {
     content: '';
     position: absolute;
@@ -117,20 +117,21 @@ button {
   &.btn-subgrid {
     padding-top: 2px;
     svg {
-      width: 13px;
+      width: 12px;
     }
   }
   &.btn-remove {
     padding-top: 0;
     border-bottom-right-radius: 2px;
     right: 0;
+    background: var(--color-remove);
   }
 
   &.btn-edit,
   &.btn-remove {
     svg {
       width: 10px;
-      stroke: #fff;
+      stroke: #eee;
       stroke-width: 15px;
     }
   }

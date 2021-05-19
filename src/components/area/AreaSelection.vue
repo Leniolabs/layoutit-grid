@@ -15,23 +15,16 @@
       @keyup.enter="saveSelection"
       @pointerdown.stop
     />
-    <button
-      :style="{ 'background-color': selection.color }"
-      aria-label="Remove selection"
-      class="btn-remove"
-      title="Remove Selection"
-      @click="closeSelection"
-    >
+    <button aria-label="Remove selection" class="btn-remove" title="Remove Selection" @click="closeSelection">
       <IconRemove />
     </button>
     <button
       :class="{ disabled: !saveEnabled }"
       class="btn-save"
       aria-label="Save area"
-      :style="{ 'background-color': selection.color }"
       @click="saveEnabled ? saveSelection() : nameInputElement.focus()"
     >
-      Save
+      save
     </button>
   </section>
 </template>
@@ -256,7 +249,7 @@ export default {
     pointer-events: initial;
     text-align: center;
     border: 0;
-    font-size: 30px;
+    font-size: 24px;
     color: #300548;
     font-family: 'Alegreya Sans', 'Helvetica Neue', Arial, sans-serif;
     background: transparent;
@@ -309,7 +302,6 @@ export default {
     &.btn-remove {
       width: 30px;
       background: var(--color-remove);
-      border-left: 1px solid rgba(238, 238, 238, 0.4);
       &:hover {
         background: var(--color-remove-active);
       }
@@ -322,14 +314,15 @@ export default {
   }
   button {
     position: absolute;
-    top: 0;
+    top: 3px;
     pointer-events: all;
     vertical-align: top;
+    border-radius: 2px;
     &.btn-save {
-      right: 30px;
+      right: 36px;
     }
     &.btn-remove {
-      right: 0;
+      right: 3px;
     }
   }
 }

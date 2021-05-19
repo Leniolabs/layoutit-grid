@@ -152,7 +152,7 @@ button,
   svg {
     width: 10px;
     stroke: #fff;
-    stroke-width: 6px;
+    stroke-width: 15px;
   }
   &:hover {
     opacity: 1;
