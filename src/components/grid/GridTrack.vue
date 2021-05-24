@@ -104,34 +104,34 @@ section {
   &.col {
     top: -100vh;
     height: 300vh;
-    border-right: 1px dashed #bdbdbd;
+    border-right: 1px dashed #999;
     &.col-first {
-      border-left: 1px solid #bdbdbd;
+      border-left: 1px solid #999;
     }
     &:not(.col-first):not(.col-no-gap) {
-      border-left: 1px dashed #bdbdbd;
+      border-left: 1px dashed #999;
     }
     &.col-last {
-      border-right: 1px solid #bdbdbd;
+      border-right: 1px solid #999;
       & ~ .col {
-        border-right: 1px dotted #bdbdbd;
+        border-right: 1px dotted #999;
       }
     }
   }
   &.row {
     width: 300vw;
     left: -100vw;
-    border-bottom: 1px dashed #bdbdbd;
+    border-bottom: 1px dashed #999;
     &:not(.row-first):not(.row-no-gap) {
-      border-top: 1px dashed #bdbdbd;
+      border-top: 1px dashed #999;
     }
     &.row-first {
-      border-top: 1px solid #bdbdbd;
+      border-top: 1px solid #999;
     }
     &.row-last {
-      border-bottom: 1px solid #bdbdbd;
+      border-bottom: 1px solid #999;
       & ~ .row {
-        border-bottom: 1px dotted #bdbdbd;
+        border-bottom: 1px dotted #999;
       }
     }
   }

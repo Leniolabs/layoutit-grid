@@ -11,8 +11,19 @@ import HireUs from './HireUs.vue'
 <style scoped lang="postcss">
 .version-container {
   border-top: 1px solid rgba(68, 68, 68, 0.5);
-  padding-top: 15px;
-  margin-top: 15px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 15px;
+  > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    > * {
+      flex: 1;
+    }
+  }
 }
 
 @media screen and (max-width: 768px) {

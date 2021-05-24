@@ -37,7 +37,6 @@
       aria-label="Clear area"
       class="btn-remove btn-clear"
       title="Clear Area"
-      :style="{ background: `${area.color}` }"
       @click="clearArea(area)"
     >
       <IconClear />

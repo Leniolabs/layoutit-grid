@@ -22,13 +22,14 @@ import BrandBanner from '../props/BrandBanner.vue'
 
 <style scoped lang="postcss">
 .code-sidebar {
-  overflow: auto;
+  //overflow: auto;
   text-align: left;
   color: #e9e9e9;
-  padding: 10px 15px 15px 15px;
+  padding: 105px 15px;
+  height: 100vh;
   transition: transform 0.2s ease-in;
+  position: relative;
   @media (max-width: 769px) {
-    padding: 10px 10px 10px 10px;
     transform: translateX(100%);
     width: 100%;
     background: #1e1e1e;
@@ -36,16 +37,13 @@ import BrandBanner from '../props/BrandBanner.vue'
     right: 0;
     bottom: 0;
     top: 48px;
+    height: calc(100vh - 48px);
     &.active {
       transform: translateX(0em);
     }
   }
 }
 
-.code-sidebar {
-  display: grid;
-  grid-template-rows: 50px 50px calc(100% - 270px) 85px 85px;
-}
 .btn-github {
   position: fixed;
   top: 0;

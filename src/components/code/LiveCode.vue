@@ -1,28 +1,32 @@
 <template>
   <PermalinkBar v-show="showPermalink" :path="permalink" @close="showPermalink = false" />
-  <div class="buttons">
-    <SidebarButton :disabled="!canUndo" class="btn-history" aria-label="Undo" @click="undo">
-      <IconUndo />
-    </SidebarButton>
-    <SidebarButton :disabled="!canRedo" class="btn-history" aria-label="Redo" @click="redo">
-      <IconRedo />
-    </SidebarButton>
-    <SidebarButton aria-label="Restart" class="btn-trash" @click="restart">
-      <IconRefresh />
-    </SidebarButton>
-    <SidebarButton :disabled="!saveDesign" class="btn-link" aria-label="Get Shareable Link" @click="getPermalink">
-      <IconLink />
-    </SidebarButton>
+  <div class="buttons-wrapper">
+    <div class="buttons">
+      <SidebarButton :disabled="!canUndo" class="btn-history" aria-label="Undo" @click="undo">
+        <IconUndo />
+      </SidebarButton>
+      <SidebarButton :disabled="!canRedo" class="btn-history" aria-label="Redo" @click="redo">
+        <IconRedo />
+      </SidebarButton>
+      <SidebarButton aria-label="Restart" class="btn-trash" @click="restart">
+        <IconRefresh />
+      </SidebarButton>
+      <SidebarButton :disabled="!saveDesign" class="btn-link" aria-label="Get Shareable Link" @click="getPermalink">
+        <IconLink />
+      </SidebarButton>
+    </div>
+    <div class="buttons">
+      <CodepenButton :area="area" :options="options" />
+      <CodeSanboxButton :area="area" :options="options" />
+    </div>
   </div>
-  <div class="buttons">
-    <CodepenButton :area="area" :options="options" />
-    <CodeSanboxButton :area="area" :options="options" />
-  </div>
-  <div class="code-grid">
+  <div style="height: 100%">
     <HtmlCodeEditor :area="area" :options="options" />
-    <CssCodeEditor :area="area" :options="options" />
+    <div class="code-options-container">
+      <CssCodeEditor :area="area" :options="options" />
+      <LiveCodeOptions v-model="options" />
+    </div>
   </div>
-  <LiveCodeOptions v-model="options" />
 </template>
 
 <script setup>
@@ -119,12 +123,19 @@ function getPermalink() {
 </script>
 
 <style scoped lang="postcss">
+.buttons-wrapper {
+  position: absolute;
+  top: 0;
+  padding: 0;
+}
+
 .buttons {
   display: flex;
   user-select: none;
   > * {
     margin-right: 6px;
-    margin-bottom: 6px;
+    margin-top: 6px;
+    margin-bottom: 0;
   }
   svg {
     width: 20px;
@@ -201,8 +212,34 @@ function getPermalink() {
   }
 }
 
-.code-grid {
-  display: flex;
-  flex-direction: column;
+.code-options-container {
+  position: relative;
+  max-height: calc(100% - 212px);
+  overflow: auto;
+  .code-container {
+    max-height: initial;
+  }
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #555 #111;
+}
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar:horizontal {
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #111;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #777;
 }
 </style>

@@ -60,7 +60,7 @@ html,
 body {
   margin: 0;
   height: 100%;
-  background: #300548;
+  background: #151515;
   font-size: 100%;
 }
 input[type='number']::-webkit-inner-spin-button,
@@ -100,7 +100,7 @@ p {
   background: #1e1e1e;
   height: 100%;
   display: grid;
-  grid-template-columns: 275px 1fr 360px;
+  grid-template-columns: 275px 1fr 375px;
   @media screen and (max-width: 768px) {
     grid-template-columns: auto;
   }

@@ -3,7 +3,7 @@
     <span class="header"
       >{{ type.toUpperCase() }}
       <button class="copy-button" @click="copyToClipBoard">
-        {{ copied === 0 ? 'Copy' : 'Copied!' }}
+        {{ copied === 0 ? 'Copy' : 'Copy ✓' }}
       </button>
     </span>
     <pre><code><slot/></code></pre>
@@ -57,22 +57,23 @@ function copyToClipBoard() {
 .code-container {
   background: #151515;
   border: solid 1px #23241f;
-  height: max-content;
   overflow: auto;
   margin-bottom: 6px;
-  max-width: 330px;
+  max-width: 350px;
+  position: relative;
+  padding-top: 30px;
+  height: max-content;
   max-height: 200px;
-  + .code-container {
-    margin-bottom: 0px;
-    max-height: initial;
-  }
   @media screen and (max-width: 768px) {
     max-width: 100%;
   }
 }
 
 .header {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   display: block;
   color: #aaa;
   font-weight: 700;
@@ -87,16 +88,16 @@ function copyToClipBoard() {
   top: 6px;
   right: 0;
   position: absolute;
-  color: #aaa;
+  color: #eee;
   background-color: Transparent;
   background-repeat: no-repeat;
   font-weight: 700;
-  font-size: 12px;
+  font-size: 13px;
   border: none;
   cursor: pointer;
   overflow: hidden;
   outline: none;
-  opacity: 0.5;
+  opacity: 0.6;
   &:hover {
     opacity: 1;
   }
