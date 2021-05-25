@@ -1,4 +1,4 @@
-import { parseGridTemplate, lineNamesToState } from './grid.ts'
+import { parseGridTemplate, lineNamesToState, createGridState } from './grid.ts'
 import { isValidTrackSize } from '../utils/grid.js'
 export { isValidTrackSize }
 export {
@@ -115,7 +115,7 @@ export function generateNamedTemplate(templateArr, lineNames, css = true, repeat
 
 function repeatify(tokens) {
   for (;;) {
-    const longestSequence = findRepeatingSequnce(tokens)
+    const longestSequence = findRepeatingSequence(tokens)
     if (!longestSequence) {
       break
     }
@@ -128,7 +128,7 @@ function repeatify(tokens) {
   return tokens.join(' ')
 }
 
-function findRepeatingSequnce(tokens) {
+function findRepeatingSequence(tokens) {
   let data
   let longest = 0
 
@@ -183,7 +183,7 @@ function _serializeGrid({ col, row, ...gridData }) {
   }
 }
 export function serializeArea(area) {
-  return JSON.stringify({ area: _serializeArea(area), version: 1 }, (key, value) => {
+  return JSON.stringify({ area: _serializeArea(area), version: 2 }, (key, value) => {
     if (key === 'grid' && value) {
       return _serializeGrid(value)
     }
@@ -196,9 +196,15 @@ export function serializeArea(area) {
 
 // Support for serialization before version 1, area.children was in area.grid.areas
 export function rewireAreas(area) {
-  if (area.grid && area.grid.areas) {
-    area.children = area.grid.areas
-  } else if (!area.children) {
+  if (area.grid) {
+    if (area.grid.areas) {
+      area.children = area.grid.areas
+      delete area.grid.areas
+    }
+    area.grid = createGridState(area.grid)
+    area.display = 'grid'
+  }
+  if (!area.children) {
     area.children = []
   }
   area.children.forEach(rewireAreas)
@@ -234,7 +240,14 @@ export function parseArea(json) {
     }
     return value
   })
-  return parentify(rewireAreas(design.version ? design.area : design))
+  const area = {
+    justifySelf: 'center',
+    alignSelf: 'center',
+    width: '100%',
+    height: '100%',
+    ...(design.version ? design.area : design),
+  }
+  return parentify(createAreaState(rewireAreas(area)))
 }
 
 const remainingColors = []

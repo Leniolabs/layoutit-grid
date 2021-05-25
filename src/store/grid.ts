@@ -62,16 +62,24 @@ export function createGridDimension(n: number): GridDimension {
   }
 }
 
-export function createGridState(r: number = 3, c: number = 3): GridState {
+export function createGridState({
+  row = createGridDimension(3),
+  col = createGridDimension(3),
+  autoFlow = 'row',
+  justifyContent = 'initial',
+  alignContent = 'initial',
+  justifyItems = 'initial',
+  alignItems = 'initial'
+} = {}): GridState {
   return {
-    row: createGridDimension(r),
-    col: createGridDimension(c),
-    autoFlow: 'row',
-    justifyContent: 'initial',
-    alignContent: 'initial',
-    justifyItems: 'initial',
-    alignItems: 'initial',
-  }
+    row,
+    col,
+    autoFlow,
+    justifyContent,
+    alignContent,
+    justifyItems,
+    alignItems,
+  } as GridState
 }
 
 // TODO: abstract these helpers to work with the dimmension passed as param 'col', 'row'
