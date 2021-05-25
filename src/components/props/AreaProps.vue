@@ -94,6 +94,7 @@
         :start-opened="true"
         heading="Children"
         :accordion="accordion"
+        class="child-accordion"
       >
         <AreaAccordionItem v-for="a in area.children" :key="`child:${a.name}`" :area="a" />
       </PropsAccordionItem>

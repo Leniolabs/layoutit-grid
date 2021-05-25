@@ -75,6 +75,10 @@ function onHeaderClick() {
   }
 }
 
+.child-accordion .props-accordion-content {
+  margin: 0;
+}
+
 * {
   scrollbar-width: thin;
   scrollbar-color: #491988 #300748;

@@ -11,7 +11,7 @@
         class="hire-us"
         rel="noopener"
         href="https://www.leniolabs.com/services/team-augmentation/?utm_source=layoutit&utm_medium=banner&utm_campaign=leniolabs&utm_content=grid_banner"
-        >Crafted with ♥ by Leniolabs_</a
+        >Crafted with <span>♥</span> by Leniolabs_</a
       >
       <a
         target="_blank"
@@ -27,14 +27,15 @@
 <style scoped lang="postcss">
 div {
   svg {
-    width: 80px;
-    opacity: 0.9;
+    width: 65px;
+    opacity: 0.8;
+    margin: 7px 0 7px 10px;
   }
   .links-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-right: 10px;
+    padding-right: 15px;
   }
   .hire-us {
     border-radius: 30px;
@@ -50,6 +51,9 @@ div {
     font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
     flex: 1;
     margin-bottom: 10px;
+    span {
+      color: var(--color-hire-us);
+    }
   }
   .hire-us + a {
     flex: 1;
