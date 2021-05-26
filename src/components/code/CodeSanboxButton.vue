@@ -112,7 +112,7 @@ async function createCodeSandbox() {
   padding: 10px 15px;
 
   &:hover {
-    background: #23241f;
+    background: #323232;
   }
   span {
     margin-left: 10px;

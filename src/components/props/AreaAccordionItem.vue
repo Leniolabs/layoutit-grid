@@ -5,7 +5,10 @@
     @click="setCurrentArea(area)"
   >
     <h1>
-      {{ `.${area.name}` }}
+      <div class="area-name">
+        {{ `.${area.name}` }}
+      </div>
+
       <div class="area-action-buttons">
         <OptionsButton v-show="area.display === 'block'" class="remove-button" @click.stop="removeArea(area)"
           ><IconRemove
@@ -77,6 +80,22 @@ defineProps({
   word-break: normal;
   line-height: 1.5;
   font-weight: normal;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  > * {
+    flex: 1;
+  }
+}
+
+.area-name {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding-left: 15px;
+  &:hover {
+    background: #323232;
+  }
 }
 
 .area-type {
@@ -101,18 +120,15 @@ defineProps({
 }
 
 .area-action-buttons {
-  position: absolute;
   display: flex;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  justify-content: center;
+  max-width: max-content;
+  justify-content: flex-end;
   align-items: center;
+  cursor: default;
   button {
     margin: 0;
-    width: 40px;
+    max-width: 40px;
     height: 40px;
-    max-width: initial;
     border-left: 1px solid rgba(68, 68, 68, 0.5);
   }
 }
@@ -139,8 +155,10 @@ button,
   justify-content: center;
   border-radius: 2px;
   margin-top: 2px;
-  &[disabled] svg {
-    opacity: 0.5;
+  &[disabled] {
+    svg {
+      opacity: 0.25;
+    }
   }
   &.remove-button.clear {
     svg {
@@ -156,7 +174,7 @@ button,
   }
   &:hover {
     opacity: 1;
-    background: transparent;
+    background: #323232;
   }
 }
 

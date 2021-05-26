@@ -149,7 +149,7 @@ function getPermalink() {
     align-items: center;
     justify-content: center;
     &:hover {
-      background: #23241f;
+      background: #323232;
     }
     &[disabled] {
       opacity: 0.35;
@@ -166,7 +166,7 @@ function getPermalink() {
     background: #151515;
     border: solid 1px transparent;
     &:hover {
-      background: #000;
+      background: #323232;
     }
   }
   .btn-history {
@@ -204,7 +204,7 @@ function getPermalink() {
     float: right;
     margin: 0 0 0 10px;
     &:hover {
-      background: #444;
+      background: #323232;
     }
   }
   &.btn-default {

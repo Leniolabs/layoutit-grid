@@ -86,7 +86,7 @@ function copyToClipBoard() {
 
 .copy-button {
   top: 6px;
-  right: 0;
+  right: 5px;
   position: absolute;
   color: #eee;
   background-color: Transparent;

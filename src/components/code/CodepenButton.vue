@@ -85,7 +85,7 @@ ${cssCode}
   transition: all 0.2s ease-in-out;
   padding: 10px 15px;
   &:hover {
-    background: #23241f;
+    background: #323232;
   }
   span {
     margin-left: 10px;
