@@ -32,7 +32,7 @@ async function compressForCodesandbox(input) {
 
 function codeSandboxJSON() {
   const cssCode = areaToCSS(props.area, props.options)
-  const htmlCode = areaToHTML(props.area)
+  const htmlCode = areaToHTML(props.area, 2)
 
   const containerClass = 'container'
   return {

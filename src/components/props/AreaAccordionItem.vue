@@ -2,13 +2,15 @@
   <div
     class="props-accordion-item area-actions-sidebar"
     :class="{ active: area === currentArea && area !== mainArea }"
-    :style="[area === currentArea ? { background: `${area.color}` } : { 'border-left': `2px solid ${area.color}` }]"
+    :style="[
+      area === currentArea && area !== mainArea
+        ? { background: `${area.color}` }
+        : { 'border-left': `2px solid ${area.color}` },
+    ]"
     @click="setCurrentArea(area)"
   >
     <h1>
-      <div class="area-name">
-        {{ `.${area.name}` }}
-      </div>
+      <div class="area-name">{{ `.${area.name}` }}</div>
 
       <div class="area-action-buttons">
         <OptionsButton
@@ -16,16 +18,18 @@
           title="Remove this area from the grid"
           class="remove-button"
           @click.stop="removeArea(area)"
-          ><IconRemove
-        /></OptionsButton>
+        >
+          <IconRemove />
+        </OptionsButton>
         <OptionsButton
           v-show="area.display !== 'block'"
           :disabled="!area.parent"
           class="remove-button clear"
           title="Clear this area of subgrids"
           @click="clearArea(area)"
-          ><IconClear
-        /></OptionsButton>
+        >
+          <IconClear />
+        </OptionsButton>
         <OptionsButton
           v-show="area.display === 'grid'"
           class="add-area-button"
