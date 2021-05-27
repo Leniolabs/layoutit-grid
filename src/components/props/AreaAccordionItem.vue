@@ -1,7 +1,7 @@
 <template>
   <div
     class="props-accordion-item area-actions-sidebar"
-    :class="{ active: area === currentArea }"
+    :class="{ active: area === currentArea && area !== mainArea }"
     :style="[area === currentArea ? { background: `${area.color}` } : { 'border-left': `2px solid ${area.color}` }]"
     @click="setCurrentArea(area)"
   >
@@ -45,7 +45,7 @@ import IconAdd from '../icons/IconAdd.vue'
 import IconClear from '../icons/IconClear.vue'
 import IconRemove from '../icons/IconRemove.vue'
 
-import { currentArea, setCurrentArea, clearArea, addImplicitArea, removeArea } from '../../store.js'
+import { mainArea, currentArea, setCurrentArea, clearArea, addImplicitArea, removeArea } from '../../store.js'
 import { defineProps } from 'vue'
 
 defineProps({
