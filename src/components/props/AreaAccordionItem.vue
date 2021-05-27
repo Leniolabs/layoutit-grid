@@ -1,7 +1,8 @@
 <template>
   <div
     class="props-accordion-item area-actions-sidebar"
-    :style="{ 'border-left': `2px solid ${area.color}` }"
+    :class="{ active: area === currentArea }"
+    :style="[area === currentArea ? { background: `${area.color}` } : { 'border-left': `2px solid ${area.color}` }]"
     @click="setCurrentArea(area)"
   >
     <h1>
@@ -10,17 +11,27 @@
       </div>
 
       <div class="area-action-buttons">
-        <OptionsButton v-show="area.display === 'block'" class="remove-button" @click.stop="removeArea(area)"
+        <OptionsButton
+          v-show="area.display === 'block'"
+          title="Remove this area from the grid"
+          class="remove-button"
+          @click.stop="removeArea(area)"
           ><IconRemove
         /></OptionsButton>
         <OptionsButton
           v-show="area.display !== 'block'"
           :disabled="!area.parent"
           class="remove-button clear"
+          title="Clear this area of subgrids"
           @click="clearArea(area)"
           ><IconClear
         /></OptionsButton>
-        <OptionsButton v-show="area.display === 'grid'" class="add-area-button" @click="addImplicitArea(area)">
+        <OptionsButton
+          v-show="area.display === 'grid'"
+          class="add-area-button"
+          title="Add implicit element to this grid area"
+          @click="addImplicitArea(area)"
+        >
           <IconAdd />
         </OptionsButton>
       </div>
@@ -34,7 +45,7 @@ import IconAdd from '../icons/IconAdd.vue'
 import IconClear from '../icons/IconClear.vue'
 import IconRemove from '../icons/IconRemove.vue'
 
-import { setCurrentArea, clearArea, addImplicitArea, removeArea } from '../../store.js'
+import { currentArea, setCurrentArea, clearArea, addImplicitArea, removeArea } from '../../store.js'
 import { defineProps } from 'vue'
 
 defineProps({
@@ -43,22 +54,37 @@ defineProps({
 </script>
 
 <style scoped lang="postcss">
-.props-accordion-item h1 {
-  position: relative;
-  width: 100%;
-  border-top: 1px solid rgba(68, 68, 68, 0.5);
+.props-accordion-item {
+  h1 {
+    position: relative;
+    width: 100%;
+    border-top: 1px solid rgba(68, 68, 68, 0.5);
 
-  color: #fff;
-  font-size: 15px;
-  margin: 0;
-  padding: 10px 15px;
-  cursor: pointer;
-  span {
-    font-weight: normal;
-    font-size: 13px;
-    text-shadow: none;
-    color: #d7ba7d;
-    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    color: #fff;
+    font-size: 15px;
+    margin: 0;
+    padding: 10px 15px;
+    cursor: pointer;
+    span {
+      font-weight: normal;
+      font-size: 13px;
+      text-shadow: none;
+      color: #d7ba7d;
+      font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    }
+  }
+  &.active {
+    .area-action-buttons {
+      button:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+    }
+    .area-name {
+      color: #fff;
+      &:hover {
+        background: transparent;
+      }
+    }
   }
 }
 

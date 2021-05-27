@@ -28,6 +28,10 @@ const setGridArea = inputSetter((value) => {
 </script>
 
 <style scoped lang="postcss">
+.area-size {
+  margin-bottom: 6px;
+  padding-right: 40px;
+}
 .layout-props {
   padding-top: 8px;
   //padding-right: 10px;

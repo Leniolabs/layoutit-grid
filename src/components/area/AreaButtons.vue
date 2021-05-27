@@ -14,7 +14,7 @@
       v-show="!hasDisplay"
       aria-label="Add sub grid"
       class="btn-subgrid"
-      title="Add Sub Grid"
+      title="Add subgrid"
       :style="{ background: `var(--color-add)` }"
       @click="subGrid(area)"
     >
@@ -27,7 +27,7 @@
       v-show="!hasDisplay"
       aria-label="Remove area"
       class="btn-remove"
-      title="Remove Area"
+      title="Remove area"
       @click="removeArea(area)"
     >
       <IconRemove />
@@ -36,7 +36,7 @@
       v-show="hasDisplay"
       aria-label="Clear area"
       class="btn-remove btn-clear"
-      title="Clear Area"
+      title="Clear area"
       @click="clearArea(area)"
     >
       <IconClear />
