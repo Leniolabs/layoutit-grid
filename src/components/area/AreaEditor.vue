@@ -85,9 +85,9 @@
     <div
       v-if="area != mainArea"
       class="area-info"
-      :style="{ border: `2px solid ${areaDisplayColor(area)}`, top: toolbarStart * 30 + 'px', left: 0 }"
+      :style="{ border: `2px solid ${areaDisplayColor(area)}`, top: 0, left: 0 }"
     >
-      <div class="area-info-controls">
+      <div class="area-info-controls" :style="{ top: toolbarStart * 34 + 3 + 'px' }">
         <div
           :style="{ backgroundColor: area.color }"
           class="area-name"
