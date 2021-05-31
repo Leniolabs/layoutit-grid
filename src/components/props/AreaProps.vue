@@ -222,6 +222,7 @@ function onUpdateType(type) {
 
 .area-props {
   overflow: auto;
+  overflow: overlay;
 }
 
 * {

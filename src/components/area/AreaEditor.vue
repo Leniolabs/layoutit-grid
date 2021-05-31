@@ -412,6 +412,7 @@ const gridTracks = computed(() => {
   left: 3px;
   display: flex;
   align-items: flex-start;
+  flex-wrap: wrap;
 }
 
 .area-actions {
@@ -430,9 +431,12 @@ const gridTracks = computed(() => {
   word-spacing: normal;
   color: #fff;
   padding: 0 8px;
+  margin-right: 3px;
+  margin-bottom: 3px;
   height: 30px;
   display: flex;
   align-items: center;
+  justify-content: center;
   max-width: max-content;
   min-width: 30px;
   position: relative;

@@ -3,7 +3,7 @@
     <span class="header"
       >{{ type.toUpperCase() }}
       <button class="copy-button" @click="copyToClipBoard">
-        {{ copied === 0 ? 'Copy' : 'Copy ✓' }}
+        {{ copied === 0 ? 'Copy' : 'Copied' }}
       </button>
     </span>
     <pre><code><slot/></code></pre>
@@ -58,7 +58,7 @@ function copyToClipBoard() {
   background: #151515;
   border: solid 1px #23241f;
   overflow: auto;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   max-width: 350px;
   position: relative;
   padding-top: 30px;

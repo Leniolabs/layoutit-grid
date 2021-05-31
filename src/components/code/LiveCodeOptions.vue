@@ -131,7 +131,7 @@ const isOpen = ref(false)
   transition: opacity 0.1s ease-in;
   position: absolute;
   right: 65px;
-  top: 8px;
+  top: 7px;
   pointer-events: all;
   &:first-of-type {
     opacity: 1;

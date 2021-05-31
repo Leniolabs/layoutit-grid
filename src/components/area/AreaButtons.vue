@@ -95,7 +95,7 @@ button {
   justify-content: center;
   position: relative;
   border-radius: 2px;
-  margin-left: 3px;
+  margin-right: 3px;
   &:before {
     content: '';
     position: absolute;
@@ -114,13 +114,13 @@ button {
     border-radius: 2px 0 0 2px;
   }
   &.btn-subgrid {
-    padding-top: 2px;
+    padding-top: 3px;
     svg {
       width: 12px;
     }
   }
   &.btn-remove {
-    padding-top: 0;
+    padding-top: 1px;
     border-bottom-right-radius: 2px;
     right: 0;
     background: var(--color-remove);

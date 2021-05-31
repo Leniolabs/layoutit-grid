@@ -69,7 +69,7 @@ function onHeaderClick() {
 }
 
 .props-accordion-content {
-  margin: 0 12px 10px 15px;
+  margin: 0 15px 10px 15px;
   &:empty {
     margin: 0;
   }

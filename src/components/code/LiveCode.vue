@@ -214,10 +214,13 @@ function getPermalink() {
 
 .code-options-container {
   position: relative;
-  max-height: calc(100% - 212px);
+  max-height: calc(100% - 216px);
   overflow: auto;
+  border: solid 1px #23241f;
   .code-container {
     max-height: initial;
+    margin-bottom: 0;
+    border: 0;
   }
 }
 

@@ -29,17 +29,12 @@ export const isValidPadding = isValidSpacing
 
 //AREA COLORS
 const colors = [
-  'rgba(244, 67, 54, 0.8)',
-  'rgba(233, 30, 99, 0.8)',
-  'rgba(156, 39, 176, 0.8)',
-  'rgba(103, 58, 183, 0.8)',
-  'rgba(63, 81, 181, 0.8)',
-  'rgba(33, 150, 243, 0.8)',
-  'rgba(0, 150, 136, 0.8)',
-  'rgba(230, 25, 75, 0.8)',
-  'rgba(60, 180, 75, 0.8)',
   'rgba(245, 130, 48, 0.8)',
+  'rgba(230, 25, 75, 0.8)',
+  'rgba(156, 39, 176, 0.8)',
+  'rgba(63, 81, 181, 0.8)',
   'rgba(0, 128, 128, 0.8)',
+  'rgba(60, 180, 75, 0.8)',
 ]
 
 export function createAreaState({
