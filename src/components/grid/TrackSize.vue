@@ -1,11 +1,12 @@
 <template>
   <div
+    ref="el"
     role="textbox"
     :aria-label="`${type} track ${track} size`"
     contenteditable
     :class="['editor-track-size', 'input', type, { active: isDraggingTrackLine, focused: isFocused }]"
     @pointerdown.stop
-    @input="onInput"
+    @keydown.stop="onInput"
     @focus="currentFocus = { on: 'track', grid, type, track }"
     @blur="currentFocus = null"
   >
@@ -17,13 +18,15 @@
 import { dragging, currentFocus, isValidTrackSize } from '../../store.js'
 import { targetText } from '../../utils.js'
 import { useInputSetter } from '../../composables'
-import { defineProps, computed } from 'vue'
+import { defineProps, ref, computed } from 'vue'
 
 const props = defineProps({
   grid: { type: Object, required: true },
   type: { type: String, required: true },
   track: { type: Number, required: true },
 })
+
+const el = ref(null)
 
 const isFocused = computed(() => {
   const cf = currentFocus.value
@@ -35,7 +38,21 @@ const trackSize = computed({
   set: (value) => (props.grid[props.type].sizes[props.track - 1] = value),
 })
 
-const onInput = useInputSetter(trackSize, isValidTrackSize, targetText)
+const inputSetter = useInputSetter(trackSize, isValidTrackSize, targetText)
+
+const onInput = (event) => {
+  const { code } = event
+  if (code === 'Space') {
+    event.preventDefault()
+    return
+  }
+  if (code === 'Enter' || code === 'NumpadEnter') {
+    event.preventDefault()
+    el.value.blur()
+    return
+  }
+  return inputSetter(event)
+}
 
 const isDraggingGrid = computed(() => dragging.value && dragging.value.grid === props.grid)
 
