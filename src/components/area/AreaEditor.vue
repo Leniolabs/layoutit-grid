@@ -39,7 +39,8 @@
         :grayed="!isActive"
         :focused="isFocused(section)"
         @pointerdown="selectionEl.cellDown($event)"
-        @overcell="onOverCell"
+        @overgridcell="onOverGridCell"
+        @leavegridcell="onLeaveGridCell"
       />
       <GridTrack
         v-for="track in gridTracks"
@@ -352,6 +353,15 @@ function onOverCell({ row, col }) {
     }
   }
   overArea.value = props.area
+}
+
+function onOverGridCell({ row, col }) {
+  onOverCell({ row, col })
+  if (overArea.value.display === 'grid') overArea.value.grid.hover = { row, col }
+}
+
+function onLeaveGridCell() {
+  if (overArea.value.display === 'grid') overArea.value.grid.hover = null
 }
 
 function isFocused(section) {
