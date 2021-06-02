@@ -10,7 +10,7 @@ _Layoutit grid_ is a CSS Grid layout generator. Quickly design web pages layouts
 
 Go to https://grid.layoutit.com/ and start playing :dart:
 
-<img width="398" src="./assets/layoutit-grid-showcase.gif">
+<img width="398" src="./assets/layoutit-grid-v2-showcase.gif">
 
 ## Why we built a Generator
 
