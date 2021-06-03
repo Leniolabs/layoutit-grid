@@ -70,7 +70,6 @@ const isDraggingTrackLine = computed(
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   font-size: 13px;
   color: #aaa;
-  position: absolute;
   padding: 2px;
   user-select: none;
   &.active {
@@ -82,19 +81,5 @@ const isDraggingTrackLine = computed(
   &.focused {
     color: black;
   }
-}
-
-.col {
-  bottom: 0;
-  right: 0;
-  left: 0;
-  text-align: center;
-}
-.row {
-  top: 0;
-  bottom: 0;
-  right: 2px;
-  display: grid;
-  align-content: center;
 }
 </style>

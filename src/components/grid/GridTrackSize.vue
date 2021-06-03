@@ -33,11 +33,19 @@ const gridArea = computed(() => {
 </script>
 
 <style scoped lang="postcss">
-section {
+.grid-track-size {
   touch-action: none;
   pointer-events: none;
   height: 100%;
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  pointer-events: none;
+  &.col {
+    align-items: flex-end;
+    justify-content: center;
+  }
 }
 </style>
