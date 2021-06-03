@@ -75,6 +75,7 @@ const props = defineProps({
   area: { type: Object, required: true },
   grayed: { type: Boolean, default: false },
   focused: { type: Boolean, default: false },
+  implicitGrid: { type: Object, required: true },
 })
 defineEmit(['pointerdown', 'overcell'])
 
@@ -95,6 +96,16 @@ const isDraggingSection = computed(
 const isDraggingCol = computed(() => isDraggingGrid.value && dragging.value.colLine === props.section.col.start)
 
 const isDraggingRow = computed(() => isDraggingGrid.value && dragging.value.rowLine === props.section.row.start)
+
+const paddingIf = (condition) => (condition ? '7px' : '0')
+const paddingTop = computed(() => paddingIf(props.section.row.start === 2 - props.implicitGrid.ri))
+const paddingLeft = computed(() => paddingIf(props.section.col.start === 2 - props.implicitGrid.ci))
+const paddingBottom = computed(() =>
+  paddingIf(props.section.row.end === props.implicitGrid.rows + 2 - props.implicitGrid.ri)
+)
+const paddingRight = computed(() =>
+  paddingIf(props.section.col.end === props.implicitGrid.cols + 2 - props.implicitGrid.ci)
+)
 </script>
 
 <style scoped lang="postcss">
@@ -124,14 +135,15 @@ section {
 }
 
 section div {
-  width: 100%;
-  height: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
   &:not(.selection-dragging) {
-    width: calc(100% - 14px);
-    height: calc(100% - 14px);
-    top: 7px;
-    left: 7px;
-    padding: 7px;
+    left: v-bind(paddingLeft);
+    right: v-bind(paddingRight);
+    top: v-bind(paddingTop);
+    bottom: v-bind(paddingBottom);
   }
   position: absolute;
   pointer-events: initial;

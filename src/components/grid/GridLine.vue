@@ -38,7 +38,7 @@
       :class="['line-handle', type, { firstImplicit, lastImplicit, 'dragging-something': dragging }]"
       :style="{
         'pointer-events':
-          (selection && selection.fresh) || (area !== mainArea && (firstExplicit || lastExplicit)) ? 'none' : 'initial',
+          (selection && selection.fresh) || (area !== mainArea && (firstImplicit || lastImplicit)) ? 'none' : 'initial',
       }"
       @pointerdown.stop="$emit('down', $event, { [type]: pos })"
       @pointermove="onMove"

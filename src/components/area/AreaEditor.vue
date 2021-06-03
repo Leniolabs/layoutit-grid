@@ -38,6 +38,7 @@
         :section="section"
         :grayed="!isActive"
         :focused="isFocused(section)"
+        :implicit-grid="implicitGrid"
         @pointerdown="selectionEl.cellDown($event)"
         @overcell="onOverCell"
       />
