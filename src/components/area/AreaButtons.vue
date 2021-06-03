@@ -8,8 +8,8 @@
     @click="$emit('edit')"
   >
     <IconEdit />
-  </button> -->
-  <template v-if="currentArea === area || overArea === area">
+  </button>-->
+  <template v-if="!dragging && (currentArea === area || overArea === area)">
     <button
       v-show="!hasDisplay"
       aria-label="Add sub grid"
@@ -63,6 +63,7 @@ import {
   clearArea,
   removeArea,
   subGrid,
+  dragging,
 } from '../../store.js'
 
 const props = defineProps({
