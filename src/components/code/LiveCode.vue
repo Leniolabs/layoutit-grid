@@ -56,49 +56,28 @@ const props = defineProps({
   saveDesign: { type: Function, default: null },
 })
 
-function useStored(source, key, parse = (x) => x) {
-  const stored = useLocalStorage(key)
-  watch(source, () => {
-    stored.value = source.value
-  })
-  onMounted(() => {
-    const val = stored.value
-    if (val !== undefined) {
-      source.value = parse(val)
-    }
-  })
-  return source
-}
-function useOption(key, initial) {
-  return useStored(ref(initial), (x) => x === 'true')
-}
-
-useStored(preferredExport, 'layoutit-grid-preferred-export')
-
-const templateAreas = useOption('layoutit-grid-option-template-areas', true)
-const oldSpec = useLocalStorage('layoutit-grid-option-old-spec', false)
-const repeat = useLocalStorage('layoutit-grid-option-repeat', false)
-
 const options = ref({
-  templateAreas: templateAreas.value,
-  oldSpec: oldSpec.value,
-  repeat: repeat.value,
+  templateAreas: true,
+  oldSpec: false,
+  repeat: false,
 })
+
+const storedOptions = useLocalStorage('layoutit-grid-options', options.value)
+
 watch(
   options,
   () => {
-    if (templateAreas.value !== options.value.templateAreas) {
-      templateAreas.value = options.value.templateAreas
-    }
-    if (oldSpec.value !== options.value.oldSpec) {
-      oldSpec.value = options.value.oldSpec
-    }
-    if (repeat.value !== options.value.repeat) {
-      repeat.value = options.value.repeat
-    }
+    storedOptions.value = JSON.stringify(options.value)
   },
   { deep: true }
 )
+
+onMounted(() => {
+  const val = storedOptions.value
+  if (val !== undefined) {
+    options.value = JSON.parse(val)
+  }
+})
 
 const cssCode = computed(() => {
   return areaToCSS(props.area, options.value)
