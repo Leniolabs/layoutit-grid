@@ -1,9 +1,5 @@
 <template>
   <section
-    :data-col-start="section.col.start"
-    :data-row-start="section.row.start"
-    :data-col-end="section.col.end"
-    :data-row-end="section.row.end"
     :style="{
       gridArea: `${section.row.start} / ${section.col.start} / ${section.row.start + 1} / ${section.col.start + 1}`,
       background: grayed ? '#e8e8e8' : '#ffffff',
@@ -17,14 +13,23 @@
       focused,
     }"
     class="grid-section"
-    @pointerdown="$emit('pointerdown', $event)"
-    @mouseover="$emit('overcell', { col: section.col.start, row: section.row.start })"
-  />
+  >
+    <div
+      v-if="!(selection && selection.parent !== area && selection.fresh)"
+      :class="['grid-cell', { 'selection-dragging': selection && selection.fresh }]"
+      :data-col-start="section.col.start"
+      :data-row-start="section.row.start"
+      :data-col-end="section.col.end"
+      :data-row-end="section.row.end"
+      @pointerdown="$emit('pointerdown', $event)"
+      @mouseover="$emit('overcell', { col: section.col.start, row: section.row.start })"
+    ></div>
+  </section>
 </template>
 
 <script setup>
 import { defineProps, defineEmit } from 'vue'
-import { dragging, setCurrentArea, parseValueUnit, valueUnitToString, pause, resume } from '../../store.js'
+import { dragging, setCurrentArea, parseValueUnit, valueUnitToString, selection, pause, resume } from '../../store.js'
 import { useGridDimensions } from '../../composables/area.js'
 
 function calcValue(prev, prevComp, delta) {
@@ -94,8 +99,8 @@ const isDraggingRow = computed(() => isDraggingGrid.value && dragging.value.rowL
 
 <style scoped lang="postcss">
 section {
-  pointer-events: initial;
   touch-action: none;
+  pointer-events: none;
   height: 100%;
   position: relative;
   &:not(.dragging) {
@@ -116,5 +121,19 @@ section {
       background: rgba(255, 255, 255, 0.5) !important;
     }
   }
+}
+
+section div {
+  width: 100%;
+  height: 100%;
+  &:not(.selection-dragging) {
+    width: calc(100% - 14px);
+    height: calc(100% - 14px);
+    top: 7px;
+    left: 7px;
+    padding: 7px;
+  }
+  position: absolute;
+  pointer-events: initial;
 }
 </style>

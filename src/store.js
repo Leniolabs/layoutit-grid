@@ -39,6 +39,7 @@ export const currentFocus = ref(null)
 export const currentHover = ref(null)
 export const currentView = ref('editor')
 export const darkmode = ref(false)
+export const selection = ref(null)
 
 export const preferredExport = useLocalStorage('layoutit-grid-preferred-export', 'codepen')
 

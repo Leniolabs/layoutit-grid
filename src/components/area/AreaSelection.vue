@@ -1,6 +1,6 @@
 <template>
   <section
-    v-if="selection"
+    v-if="selection && selection.parent === area"
     :style="{ 'grid-area': gridArea, 'border-color': selection.color }"
     class="area-selection"
     @keyup.esc="closeSelection"
@@ -40,6 +40,7 @@ import {
   isValidAreaName,
   getGridRegion,
   overArea,
+  selection,
 } from '../../store.js'
 
 import { ref, computed } from 'vue'
@@ -72,7 +73,6 @@ export default {
   },
   emits: ['editend'],
   setup(props, { expose, emit }) {
-    const selection = ref(null)
     const gridName = ref('')
     const nameInputElement = ref(null)
 
@@ -94,6 +94,7 @@ export default {
           color: area.color,
           fresh: false,
           area,
+          parent: props.area,
         }
 
         setTimeout(() => nameInputElement.value.focus(), 0)
@@ -130,12 +131,17 @@ export default {
       if (section) {
         setCurrentArea(props.area)
 
+        if (selection.value && selection.value.parent !== props.area) {
+          selection.value = null
+        }
+
         if (!selection.value) {
           selection.value = {
             start: section,
             end: section,
             color: getRandomColor(),
             fresh: true,
+            parent: props.area,
           }
         }
 

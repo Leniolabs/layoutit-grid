@@ -36,6 +36,10 @@
 
     <div
       :class="['line-handle', type, { firstImplicit, lastImplicit, 'dragging-something': dragging }]"
+      :style="{
+        'pointer-events':
+          (selection && selection.fresh) || (area !== mainArea && (firstExplicit || lastExplicit)) ? 'none' : 'initial',
+      }"
       @pointerdown.stop="$emit('down', $event, { [type]: pos })"
       @pointermove="onMove"
     />
@@ -46,7 +50,7 @@
 
 <script>
 import LineName from './LineName.vue'
-import { dragging, currentFocus, overArea } from '../../store.js'
+import { dragging, selection, currentFocus, overArea, mainArea } from '../../store.js'
 import { ref, computed, defineProps, defineEmit } from 'vue'
 
 export default {
@@ -128,8 +132,10 @@ export default {
       isExplicit,
       grid,
       dragging,
+      selection,
       onMove,
       currentFocus,
+      mainArea,
     }
   },
 }
@@ -222,7 +228,6 @@ section {
   }
 
   .line-handle {
-    pointer-events: initial;
     touch-action: none;
     position: absolute;
     &.col {
