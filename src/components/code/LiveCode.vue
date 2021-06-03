@@ -62,7 +62,7 @@ const options = ref({
   repeat: false,
 })
 
-const storedOptions = useLocalStorage('layoutit-grid-options', options.value)
+const storedOptions = useLocalStorage('layoutit-grid-options', JSON.stringify(options.value))
 
 watch(
   options,
@@ -71,11 +71,19 @@ watch(
   },
   { deep: true }
 )
-
+const updateOption = (parsed, option) => {
+  const value = parsed[option]
+  if (value !== undefined) {
+    options.value[option] = value === true
+  }
+}
 onMounted(() => {
   const val = storedOptions.value
   if (val !== undefined) {
-    options.value = JSON.parse(val)
+    const parsed = JSON.parse(val)
+    updateOption(parsed, 'templateAreas')
+    updateOption(parsed, 'oldSpec')
+    updateOption(parsed, 'repeat')
   }
 })
 
