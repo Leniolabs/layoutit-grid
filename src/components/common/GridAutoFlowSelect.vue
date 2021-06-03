@@ -1,48 +1,44 @@
 <template>
   <div class="display-select-container">
-    <label title="Controls the auto-placement algorithm, specifying how items get flowed into the grid."
-      >grid-auto-flow: <span :title="optionTooltipsFlow[modelValue]">{{ modelValue }}</span></label
-    >
+    <label title="Controls the auto-placement algorithm, specifying how items get flowed into the grid.">
+      grid-auto-flow:
+      <span :title="optionTooltipsFlow[direction]">{{ modelValue }}</span>
+    </label>
     <div class="radio-toolbar">
       <template v-for="option in options" :key="option">
         <input
           :id="`direction-${option}`"
-          :checked="modelValue.includes(option)"
+          :checked="direction === option"
           type="radio"
           name="grid-auto-flow-direction"
           :value="option"
-          @input="$emit('update:modelValue', option + (modelValue.includes('dense') ? ' dense' : ''))"
+          @input="$emit('update:modelValue', option + (dense ? ' dense' : ''))"
         />
-        <label :title="optionTooltipsFlow[option]" :for="`direction-${option}`"
-          ><component :is="optionIconsFlow[option]" v-if="optionIconsFlow[option]"
-        /></label>
+        <label :title="optionTooltipsFlow[option]" :for="`direction-${option}`">
+          <component :is="optionIconsFlow[option]" v-if="optionIconsFlow[option]" />
+        </label>
       </template>
-      <input
-        id="dense"
-        :checked="modelValue.includes('dense')"
-        type="checkbox"
-        name="grid-auto-flow-dense"
-        value="dense"
-        @input="onInput"
-      />
+      <input id="dense" :checked="dense" type="checkbox" name="grid-auto-flow-dense" value="dense" @input="onInput" />
       <label
         title="dense: the packing algorithm attempts to fill in holes in the grid if smaller items come up later. This may cause items to appear out-of-order."
         class="dense-label"
         for="dense"
-        ><IconFlowDense
-      /></label>
+      >
+        <IconFlowDense />
+      </label>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { defineProps, defineEmit } from 'vue'
+import { defineProps, defineEmit, computed } from 'vue'
 import type { PropType } from 'vue'
 import IconFlowCol from '../icons/IconFlowCol.vue'
 import IconFlowDense from '../icons/IconFlowDense.vue'
 import IconFlowRow from '../icons/IconFlowRow.vue'
+import type { AutoFlowProperties } from '../../types'
 
-const { modelValue } = defineProps({
-  modelValue: { type: String as PropType<'column' | 'row'>, default: 'row' },
+const props = defineProps({
+  modelValue: { type: String as PropType<AutoFlowProperties>, default: 'row' },
 })
 
 const options = ['row', 'column'] as const
@@ -55,15 +51,14 @@ const optionIconsFlow = {
 
 const emit = defineEmit(['update:modelValue'])
 
+const direction = computed(() => props.modelValue.split(' dense')[0])
+const dense = computed(() => props.modelValue.includes('dense'))
+
 const onInput = (event: Event) => {
-  emit(
-    'update:modelValue',
-    (event.target as HTMLInputElement).checked ? modelValue + ' dense' : modelValue.split(' dense')[0]
-  )
+  emit('update:modelValue', direction.value + (dense.value ? '' : ' dense'))
 }
 const optionTooltipsFlow = {
-  row:
-    'row: items are placed by filling each row in turn, adding new rows as necessary. If neither row nor column is provided, row is assumed.',
+  row: 'row: items are placed by filling each row in turn, adding new rows as necessary. If neither row nor column is provided, row is assumed.',
   column: 'column: items are placed by filling each column in turn, adding new columns as necessary.',
 }
 </script>

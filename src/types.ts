@@ -14,6 +14,8 @@ export type BasicProperties = 'center' | 'start' | 'end' | 'stretch' | Initial
 
 export type ContentProperties = BasicProperties | 'around' | 'between' | 'evenly'
 
+export type AutoFlowProperties = 'column' | 'row' | 'column dense' | 'row dense'
+
 export type Cell = 'col' | 'row'
 
 export type AreaType = 'width' | 'height'
@@ -42,7 +44,7 @@ export interface GridDimension {
 export interface GridState {
   row: GridDimension
   col: GridDimension
-  autoFlow: string
+  autoFlow: AutoFlowProperties
   justifyContent: ContentProperties
   alignContent: ContentProperties
   justifyItems: BasicProperties
