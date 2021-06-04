@@ -161,6 +161,5 @@ section div {
   }
   position: absolute;
   pointer-events: initial;
-  background-color: #ff660044;
 }
 </style>

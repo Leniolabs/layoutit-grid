@@ -146,19 +146,15 @@ section {
   }
   &:not(.row-no-gap).row.dragging-prev {
     border-top: 1px solid #27ae60 !important;
-    z-index: 1;
   }
   &.row.dragging-next {
     border-bottom: 1px solid #27ae60 !important;
-    z-index: 1;
   }
   &:not(.col-no-gap).col.dragging-prev {
     border-left: 1px solid #27ae60 !important;
-    z-index: 1;
   }
   &.col.dragging-next {
     border-right: 1px solid #27ae60 !important;
-    z-index: 1;
   }
 }
 </style>
