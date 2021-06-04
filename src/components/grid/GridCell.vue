@@ -29,7 +29,16 @@
 
 <script setup>
 import { defineProps, defineEmit } from 'vue'
-import { dragging, setCurrentArea, parseValueUnit, valueUnitToString, selection, pause, resume } from '../../store.js'
+import {
+  dragging,
+  setCurrentArea,
+  parseValue,
+  parseValueUnit,
+  valueUnitToString,
+  selection,
+  pause,
+  resume,
+} from '../../store.js'
 import { useGridDimensions } from '../../composables/area.js'
 
 function calcValue(prev, prevComp, delta) {
@@ -97,14 +106,19 @@ const isDraggingCol = computed(() => isDraggingGrid.value && dragging.value.colL
 
 const isDraggingRow = computed(() => isDraggingGrid.value && dragging.value.rowLine === props.section.row.start)
 
-const paddingIf = (condition) => (condition ? '7px' : '0')
-const paddingTop = computed(() => paddingIf(props.section.row.start === 2 - props.implicitGrid.ri))
-const paddingLeft = computed(() => paddingIf(props.section.col.start === 2 - props.implicitGrid.ci))
+const computePadding = (condition, gap) => (condition ? '7px' : parseValue(gap) !== 0 ? `calc(-0.5 * ${gap})` : '0')
+
+const paddingTop = computed(() =>
+  computePadding(props.section.row.start === 2 - props.implicitGrid.ri, props.area.grid.row.gap)
+)
+const paddingLeft = computed(() =>
+  computePadding(props.section.col.start === 2 - props.implicitGrid.ci, props.area.grid.col.gap)
+)
 const paddingBottom = computed(() =>
-  paddingIf(props.section.row.end === props.implicitGrid.rows + 2 - props.implicitGrid.ri)
+  computePadding(props.section.row.end === props.implicitGrid.rows + 2 - props.implicitGrid.ri, props.area.grid.row.gap)
 )
 const paddingRight = computed(() =>
-  paddingIf(props.section.col.end === props.implicitGrid.cols + 2 - props.implicitGrid.ci)
+  computePadding(props.section.col.end === props.implicitGrid.cols + 2 - props.implicitGrid.ci, props.area.grid.col.gap)
 )
 </script>
 
@@ -147,5 +161,6 @@ section div {
   }
   position: absolute;
   pointer-events: initial;
+  background-color: #ff660044;
 }
 </style>
