@@ -4,7 +4,7 @@
     role="textbox"
     contenteditable
     spellcheck="false"
-    :class="['input', { active: false }]"
+    :class="['input', 'token', 'class-name', { active: false }]"
     @keydown="onCodeInputKeydown($event, $emit)"
     @input="onInput"
     @focus=";(currentArea = area), pause()"
@@ -33,7 +33,8 @@ const onInput = useInputSetter(areaName, isValidAreaName, targetText)
 </script>
 
 <style scoped lang="postcss">
-span {
+span.token.class-name {
+  color: #d7ba7d;
   &:hover {
     color: white;
   }
