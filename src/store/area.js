@@ -1,5 +1,6 @@
 import { parseGridTemplate, lineNamesToState, createGridState } from './grid.ts'
 import { isValidTrackSize } from '../utils/grid.js'
+import { nanoid } from 'nanoid'
 export { isValidTrackSize }
 export {
   findImplicitGrid,
@@ -58,6 +59,7 @@ export function createAreaState({
   items = null,
   children = [],
   parent = null,
+  id = nanoid(),
 }) {
   return {
     name,
@@ -161,7 +163,7 @@ function _serializeTemplate(dim) {
   return generateNamedTemplate(dim.sizes, dim.lineNames, false)
 }
 
-function _serializeArea({ items, parent, children, ...areaData }) {
+function _serializeArea({ items, parent, id, children, ...areaData }) {
   // Drop parent
   // items is not used at this point
   return { ...areaData, ...(children.length > 0 && { children }) }

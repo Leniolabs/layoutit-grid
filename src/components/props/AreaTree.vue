@@ -28,7 +28,7 @@
       <template v-if="showChildren">
         <div
           v-for="a in area.children"
-          :key="`area-${a.name}-${depth}`"
+          :key="`area-${a.id}-${depth}`"
           :class="[
             'area-children',
             {

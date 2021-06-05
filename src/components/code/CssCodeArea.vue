@@ -37,7 +37,7 @@
     <CssDecl v-if="area.margin !== '0'" property="margin">{{ area.margin }}</CssDecl>
     <CssDecl v-if="area.padding !== '0'" property="padding">{{ area.padding }}</CssDecl> </template
   >{{ (singleLine ? '' : '\n') + '}' }}
-  <template v-for="(a, i) in areasToInclude" :key="`area-${area.name}-${i}`"
+  <template v-for="(a, i) in areasToInclude" :key="`area-${area.id}-${i}`"
     >{{ '\n' }}<CssCodeArea :area="a" :options="options"
   /></template>
 </template>

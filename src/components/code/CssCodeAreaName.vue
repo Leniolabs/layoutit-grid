@@ -5,6 +5,7 @@
     contenteditable
     spellcheck="false"
     :class="['input', 'token', 'class-name', { active: false }]"
+    :style="{ color }"
     @keydown="onCodeInputKeydown($event, $emit)"
     @input="onInput"
     @focus=";(currentArea = area), pause()"
@@ -22,6 +23,7 @@ import { useInputSetter } from '../../composables'
 
 const props = defineProps({
   area: { type: Object, required: true },
+  color: { type: String, default: null },
 })
 
 const areaName = computed({

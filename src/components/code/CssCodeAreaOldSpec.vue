@@ -20,7 +20,7 @@
     <span class="token string">{{ gridRegion.col.end - gridRegion.row.start }}</span
     >;</template
   >{{ '\n}'
-  }}<template v-for="a in gridAreas" :key="a.name"
+  }}<template v-for="a in gridAreas" :key="a.id"
     >{{ '\n\n' }}<CssCodeAreaOldSpec :area="a" :options="options"
   /></template>
 </template>

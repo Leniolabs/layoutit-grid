@@ -10,7 +10,13 @@
     @click="setCurrentArea(area)"
   >
     <h1>
-      <div class="area-name">{{ `.${area.name}` }}</div>
+      <div class="area-name">
+        .<CssCodeAreaName
+          v-if="area === currentArea"
+          :color="area === currentArea && area !== mainArea ? 'white' : null"
+          :area="area"
+        /><span v-else>{{ area.name }}</span>
+      </div>
 
       <div class="area-action-buttons">
         <OptionsButton
@@ -48,7 +54,7 @@ import OptionsButton from '../basic/OptionsButton.vue'
 import IconAdd from '../icons/IconAdd.vue'
 import IconClear from '../icons/IconClear.vue'
 import IconRemove from '../icons/IconRemove.vue'
-
+import CssCodeAreaName from '../Code/CssCodeAreaName.vue'
 import { mainArea, currentArea, setCurrentArea, clearArea, addImplicitArea, removeArea } from '../../store.js'
 import { defineProps } from 'vue'
 

@@ -70,7 +70,7 @@
 
     <AreaEditor
       v-for="(a, i) in areasToShow"
-      :key="`area-${a.name}`"
+      :key="`area-${a.id}`"
       :area="a"
       :gridarea="explicitAreas.gridAreas[i]"
       @edit="onEditArea(a)"
@@ -79,7 +79,7 @@
     <FlexEditor v-if="area.display === 'flex'" :area="area" />
     -->
     <template v-if="area.display === 'grid'">
-      <template v-for="(a, i) in areasToShow" :key="`area-info-${a.name}`">
+      <template v-for="(a, i) in areasToShow" :key="`area-info-${a.id}`">
         <AreaBox :area="a" :gridarea="explicitAreas.gridAreas[i]" />
       </template>
     </template>

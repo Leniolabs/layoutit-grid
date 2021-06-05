@@ -1,7 +1,7 @@
 <template>
   <PropsAccordion class="area-props" :accordion="accordion">
     <div>
-      <AreaAccordionItem v-for="a in areaPath" :key="a.name" :area="a" :name="a.name" :accordion="accordion" />
+      <AreaAccordionItem v-for="a in areaPath" :key="a.id" :area="a" :name="a.name" :accordion="accordion" />
 
       <!--
     <div class="area-type">{{ area.type === 'div' ? area.display : area.type }} props</div>
@@ -96,7 +96,7 @@
         :accordion="accordion"
         class="child-accordion"
       >
-        <AreaAccordionItem v-for="a in area.children" :key="`child:${a.name}`" :area="a" />
+        <AreaAccordionItem v-for="a in area.children" :key="`child-${a.id}`" :area="a" />
       </PropsAccordionItem>
     </div>
   </PropsAccordion>
