@@ -43,5 +43,6 @@ span.token.class-name {
   &:focus {
     color: white;
   }
+  cursor: text;
 }
 </style>
