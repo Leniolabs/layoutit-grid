@@ -3,14 +3,23 @@
     :class="[
       'area-tree',
       {
-        reordering: reordering && reordering.target === area,
+        reordering: reordering && reordering.target === area && !(reordering.target === mainArea && !reordering.after),
         after: reordering && reordering.target === area && reordering.after,
+        'reorder-hint': area !== mainArea && area === currentArea && !reordering,
+        first: area.parent && area.parent.children.indexOf(area) === 0,
+        last: area.parent && area.parent.children.indexOf(area) === area.parent.children.length - 1,
       },
     ]"
     :style="{
       opacity: reordering && reordering.area === area ? 0.3 : 1,
     }"
+    :draggable="area !== mainArea"
+    @dragstart="onDragStart(area, $event)"
+    @dragend="onDragEnd(area)"
+    @drop="onDrop(area, $event)"
+    @dragover="onDragOver(area, $event)"
     @click.stop="currentArea = area"
+    ><span v-if="true || reordering" class="area-pad"></span
     ><span v-if="area === currentArea && !(!area.parent && !area.children.length)" class="selected"></span
     >{{ `${ident}${OPEN_TAG}` }}<span class="token tag">{{ elementTag }}</span
     ><template v-if="includeAreaInCSS(area)"
@@ -24,19 +33,15 @@
 
 <script setup>
 import { defineProps, computed } from 'vue'
-import { toCssName, getElementTag, includeAreaInCSS } from '../../utils.js'
-import { currentArea, reordering } from '../../store.js'
+import { toCssName, getElementTag, includeAreaInCSS, getGridAreaWithNamedLines } from '../../utils.js'
+import { mainArea, currentArea, reordering } from '../../store.js'
 import CssCodeAreaName from './CssCodeAreaName.vue'
 
 // <!--span class="drop-target" v-if="reordering && reordering.target === a && ! reordering.after">{{'>\n'}}</span-->
 // <!--span class="drop-target" v-if="reordering && reordering.target === a && reordering.after">{{'\n>'}}</span-->
 //  @click.stop="currentArea = area"
 /*
-      :draggable="true"
-      @dragstart="onDragStart(a, $event)"
-      @dragend="onDragEnd(a)"
-      @drop="onDrop(a, $event)"
-      @dragover="onDragOver(a, $event)"
+
 */
 
 // name: 'HtmlCodeArea',
@@ -53,8 +58,9 @@ const elementTag = computed(() => getElementTag(props.area))
 const gridAreas = computed(() => (props.area.display === 'grid' ? props.area.children : []))
 
 function onDragStart(area, event) {
-  // WIP, we will enable this feature once we expose flex and block displays
-  return
+  if (area === mainArea.value) {
+    return
+  }
   event.stopPropagation()
   currentArea.value = area
   reordering.value = { area, reordering: null, after: true }
@@ -79,7 +85,7 @@ function onDrop(areaTarget, event) {
   if (!sameParent) {
     areaFrom.parent = areaTarget.parent
   }
-  props.area.children = children
+  areaTarget.parent.children = children
 }
 
 function onDragEnd(a) {
@@ -98,7 +104,9 @@ function afterMiddleHeight(event) {
   return (event.clientY - top) / height > 0.5
 }
 function onDragOver(areaTarget, event) {
-  console.log('over')
+  if (!reordering.value) {
+    return
+  }
   event.stopPropagation()
 
   const areaFrom = reordering.value.area
@@ -116,6 +124,7 @@ function onDragOver(areaTarget, event) {
 
     reordering.value.target = areaTarget !== areaFrom ? areaTarget : null
     reordering.value.after = after
+    console.log('after: ' + after)
   } else {
     reordering.value.target = null
   }
@@ -126,10 +135,46 @@ function onDragOver(areaTarget, event) {
 .area-tree {
   position: relative;
 }
+
+.area-pad {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  left: -4px;
+  width: 328px;
+}
+
+.first .area-pad {
+  top: -10px;
+}
+.last .area-pad {
+  bottom: -22px;
+}
+
+.reorder-hint::after {
+  content: '\2195';
+  position: absolute;
+  left: 0px;
+  top: -2px;
+  color: #ce9178;
+  cursor: grab;
+}
+
 .token.tag,
 .token.attr-name {
   cursor: pointer;
 }
+.reordering::after {
+  position: absolute;
+  top: -11.5px;
+  color: #ce9178;
+  content: '\27A4  \23AF\23AF\23AF\23AF\23AF\23AF\23AF\23AF\23AF\23AF\23AF\23AF';
+  left: 0px;
+}
+.after::after {
+  top: 7.5px;
+}
+
 .selected {
   pointer-events: none;
   position: absolute;
