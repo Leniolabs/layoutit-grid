@@ -39,27 +39,12 @@ import {
   setCurrentArea,
   getRandomColor,
   isValidAreaName,
-  getGridRegion,
+  selectionGridArea,
   overArea,
   selection,
 } from '../../store.js'
 
 import { ref, computed } from 'vue'
-
-function selectionDimension(type, start, end) {
-  return {
-    start: Math.min(start[type].start, end[type].start),
-    end: Math.max(start[type].end, end[type].end),
-  }
-}
-
-function selectionArea(selection) {
-  const { start, end } = selection
-  return {
-    row: selectionDimension('row', start, end),
-    col: selectionDimension('col', start, end),
-  }
-}
 
 function farEnough(a, b, delta = 5) {
   return Math.abs(a.x - b.x) > delta || Math.abs(a.y - b.y) > delta
@@ -77,9 +62,7 @@ export default {
 
     const grid = computed(() => props.area.grid)
 
-    const gridArea = computed(() =>
-      selection.value ? gridRegionToGridArea(selectionArea(selection.value)) : 'initial'
-    )
+    const gridArea = computed(() => (selection.value ? selectionGridArea(selection.value) : 'initial'))
 
     function validGridName(name) {
       return name !== '' && !(name[0] >= '0' && name[0] <= '9')
@@ -175,12 +158,12 @@ export default {
         const sa = selection.value.area
         if (sa) {
           sa.name = toCssName(selection.value.name)
-          sa.gridArea = gridRegionToGridArea(selectionArea(selection.value))
+          sa.gridArea = selectionGridArea(selection.value)
           overArea.value = sa
         } else {
           const newArea = createAreaState({
             name: selection.value.name,
-            gridArea: gridRegionToGridArea(selectionArea(selection.value)),
+            gridArea: selectionGridArea(selection.value),
             color: selection.value.color,
             parent: props.area,
           })

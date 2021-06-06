@@ -15,6 +15,7 @@ import {
   getRandomColor,
 } from './store/area.js'
 import { createGridState, isValidTrackSize } from './store/grid.ts'
+import { gridRegionToGridArea } from './utils.js'
 
 function createMainAreaState() {
   return createAreaState({
@@ -44,6 +45,25 @@ export const selection = ref(null)
 export const preferredExport = useLocalStorage('layoutit-grid-preferred-export', 'codepen')
 
 const areaNameCounter = ref(1)
+
+function selectionDimension(type, start, end) {
+  return {
+    start: Math.min(start[type].start, end[type].start),
+    end: Math.max(start[type].end, end[type].end),
+  }
+}
+
+function selectionArea(selection) {
+  const { start, end } = selection
+  return {
+    row: selectionDimension('row', start, end),
+    col: selectionDimension('col', start, end),
+  }
+}
+
+export function selectionGridArea(selection) {
+  return gridRegionToGridArea(selectionArea(selection))
+}
 
 export function newAreaName() {
   let name
@@ -86,6 +106,9 @@ export function loadFromStorage() {
 }
 
 export function setCurrentArea(area) {
+  if (selection.value && selection.value.area !== area) {
+    selection.value = null
+  }
   currentArea.value = area
 }
 

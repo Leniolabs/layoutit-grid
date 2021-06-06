@@ -4,8 +4,13 @@
       <div class="area-size">
         <label>grid-area</label>
         <div class="input-container">
-          <input :value="area.gridArea" aria-label="margin" @input="setGridArea($event.target.value)" />
-          <OptionsButton class="edit-button" @click="onEdit">edit</OptionsButton>
+          <input
+            :value="gridAreaValue"
+            aria-label="margin"
+            :disabled="isEditing"
+            @input="setGridArea($event.target.value)"
+          />
+          <OptionsButton class="edit-button" :disabled="isEditing" @click="onEdit">edit</OptionsButton>
         </div>
       </div>
       <PlacementPicker v-model="area.justifySelf" type="justify-self" :initial="area.parent.grid.justifyItems" />
@@ -18,9 +23,9 @@
 import PlacementPicker from '../common/PlacementPicker.vue'
 import OptionsButton from '../basic/OptionsButton.vue'
 import { inputSetter } from '../../composables'
-import { selection, isValidGridArea, getGridRegion } from '../../store.js'
+import { selection, isValidGridArea, getGridRegion, selectionGridArea } from '../../store.js'
 import { createSection } from '../../utils.js'
-import { defineProps } from 'vue'
+import { defineProps, computed } from 'vue'
 import { findImplicitGrid, explicitGridAreaToGridRegion } from '../../utils/grid.js'
 
 const props = defineProps({
@@ -29,6 +34,17 @@ const props = defineProps({
 const setGridArea = inputSetter((value) => {
   props.area.gridArea = value
 }, isValidGridArea)
+
+const isEditing = computed(() => {
+  return selection.value && selection.value.area === props.area
+})
+const gridAreaValue = computed(() => {
+  if (isEditing.value) {
+    return selectionGridArea(selection.value)
+  } else {
+    return props.area.gridArea
+  }
+})
 
 const onEdit = () => {
   let gridRegion = getGridRegion(props.area)
