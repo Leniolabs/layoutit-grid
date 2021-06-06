@@ -14,23 +14,21 @@ import {
 } from '../store'
 
 function ctrlMetaKeyHandler(event) {
+  if (!event.shiftKey) {
+    return
+  }
   const key = event.key.toLowerCase()
   switch (key) {
     case 'z':
-      if (event.shiftKey && canRedo) {
-        redo()
-      } else if (canUndo) {
+      if (canUndo) {
+        event.preventDefault()
         undo()
       }
       break
     case 'y':
-      event.preventDefault()
-      if (canRedo) redo()
-      break
-    case 'r':
-      if (event.shiftKey) {
+      if (canRedo) {
         event.preventDefault()
-        restart()
+        redo()
       }
       break
   }
@@ -45,17 +43,17 @@ function keyHandler(event) {
       }
       break
     case 'g':
-      if (currentArea.value !== mainArea.value) {
+      if (event.shiftKey && currentArea.value !== mainArea.value) {
         subGrid(currentArea.value)
       }
       break
     case 'r':
-      if (currentArea?.value?.grid) {
+      if (event.shiftKey && currentArea?.value?.grid) {
         addRow(currentArea.value.grid, '1fr')
       }
       break
     case 'c':
-      if (currentArea?.value?.grid) {
+      if (event.shiftKey && currentArea?.value?.grid) {
         addCol(currentArea.value.grid, '1fr')
       }
       break
