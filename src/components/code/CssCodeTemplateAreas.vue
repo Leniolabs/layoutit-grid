@@ -8,10 +8,11 @@
         class="token string"
         :style="{
           color:
-            currentArea === cell
+            currentArea === cell && isCellHighligthed(cell)
+              ? '#e0d3b7'
+              : currentArea === cell
               ? '#d7ba7d'
-              : (currentHover && currentHover.on === 'cell' && currentHover.area && currentHover.area === cell) ||
-                (overArea && overArea === cell)
+              : isCellHighligthed(cell)
               ? 'white'
               : undefined,
         }"
@@ -36,6 +37,16 @@ const props = defineProps({
 
 function getGridTemplateAreas(area) {
   return area.display === 'grid' ? gridTemplateAreasMatrix(area) : []
+}
+
+function isCellHighligthed(cell) {
+  return (
+    (currentHover.value &&
+      currentHover.value.on === 'cell' &&
+      currentHover.value.area &&
+      currentHover.value.area === cell) ||
+    (overArea.value && overArea.value === cell)
+  )
 }
 
 const templateAreas = computed(() => getGridTemplateAreas(props.area))
