@@ -85,7 +85,7 @@ export function gridTemplateAreasMatrix({ grid, children }) {
 
   const chunkAreas = []
   for (let i = 0; i < rowsNumber; i++) {
-    chunkAreas[i] = Array(colsNumber).fill('.')
+    chunkAreas[i] = Array(colsNumber)
   }
 
   let validTemplate = true
@@ -99,10 +99,10 @@ export function gridTemplateAreasMatrix({ grid, children }) {
       } else {
         for (let r = row.start; r < row.end; ++r) {
           for (let c = col.start; c < col.end; ++c) {
-            if (chunkAreas[r - 1][c - 1] !== '.') {
+            if (chunkAreas[r - 1][c - 1]) {
               validTemplate = false
             }
-            chunkAreas[r - 1][c - 1] = toCssName(area.name)
+            chunkAreas[r - 1][c - 1] = area
           }
         }
       }
@@ -112,8 +112,12 @@ export function gridTemplateAreasMatrix({ grid, children }) {
   return validTemplate ? chunkAreas : undefined
 }
 
+export function templateAreasCellName(area) {
+  return area ? toCssName(area.name) : '.'
+}
+
 function matrixToTemplateAreas(matrix, separator) {
-  return matrix.reduce((prev, item) => prev + `"${item.join(' ')}"${separator}`, '').trim()
+  return matrix.reduce((prev, item) => prev + `"${item.map(templateAreasCellName).join(' ')}"${separator}`, '').trim()
 }
 
 export function gridTemplateAreas(area, separator = ' ') {
