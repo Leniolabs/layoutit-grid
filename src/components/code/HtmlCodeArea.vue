@@ -24,7 +24,7 @@
     >{{ `${ident}${OPEN_TAG}` }}<span class="token tag">{{ elementTag }}</span
     ><template v-if="includeAreaInCSS(area)"
       >{{ ' ' }}<span class="token attr-name">class</span>="<CssCodeAreaName :area="area" />"</template
-    >><span v-for="(a, i) in gridAreas" :key="`${i}-${a.id}`" :class="['area-children']" :data-area-name="a.name"
+    >><span v-for="a in gridAreas" :key="a.id" :data-area-id="a.id" :class="['area-children']" :data-area-name="a.name"
       >{{ '\n' }}<HtmlCodeArea :area="a" :options="options" :ident="ident + '  '" /></span
     >{{ `${gridAreas.length > 0 ? '\n' + ident : ''}${CLOSE_TAG}` }}<span class="token tag">{{ elementTag }}</span
     >></span
@@ -139,6 +139,7 @@ function onDragOver(areaTarget, event) {
 <style scoped lang="postcss">
 .area-tree {
   position: relative;
+  transition: opacity 0.75s;
 }
 
 .area-pad {

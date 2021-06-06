@@ -81,6 +81,7 @@ export function createAreaState({
     text,
     items,
     children,
+    id,
     parent,
   }
 }
