@@ -19,7 +19,7 @@
     @drop="onDrop(area, $event)"
     @dragover="onDragOver(area, $event)"
     @click.stop="currentArea = area"
-    ><span v-if="true || reordering" class="area-pad"></span
+    ><span v-if="reordering" class="area-pad"></span
     ><span v-if="area === currentArea && !(!area.parent && !area.children.length)" class="selected"></span
     >{{ `${ident}${OPEN_TAG}` }}<span class="token tag">{{ elementTag }}</span
     ><template v-if="includeAreaInCSS(area)"
