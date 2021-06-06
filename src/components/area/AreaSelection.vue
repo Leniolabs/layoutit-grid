@@ -5,9 +5,10 @@
     class="area-selection"
     @keyup.esc="closeSelection"
   >
+    <span v-if="selection && selection.area" class="editing-label">Editing</span>
     <input
       ref="nameInputElement"
-      v-model="gridName"
+      v-model="selection.name"
       class="area-text"
       type="text"
       placeholder="Area Name"
@@ -71,9 +72,7 @@ export default {
   props: {
     area: { type: Object, required: true },
   },
-  emits: ['editend'],
   setup(props, { expose, emit }) {
-    const gridName = ref('')
     const nameInputElement = ref(null)
 
     const grid = computed(() => props.area.grid)
@@ -82,31 +81,12 @@ export default {
       selection.value ? gridRegionToGridArea(selectionArea(selection.value)) : 'initial'
     )
 
-    function editArea(area) {
-      // TODO: if ! gridRegion
-      const gridRegion = getGridRegion(area)
-      if (gridRegion) {
-        gridName.value = area.name
-
-        selection.value = {
-          start: createSection({ col: gridRegion.col.start, row: gridRegion.row.start }),
-          end: createSection({ col: gridRegion.col.end - 1, row: gridRegion.row.end - 1 }),
-          color: area.color,
-          fresh: false,
-          area,
-          parent: props.area,
-        }
-
-        setTimeout(() => nameInputElement.value.focus(), 0)
-      }
-    }
-
     function validGridName(name) {
       return name !== '' && !(name[0] >= '0' && name[0] <= '9')
     }
 
     const saveEnabled = computed(() => {
-      const name = gridName.value
+      const name = selection.value ? selection.value.name : ''
       return (
         validGridName(name) && (isValidAreaName(name) || (selection.value.area && selection.value.area.name === name))
       )
@@ -129,10 +109,12 @@ export default {
 
       const section = sectionFromEvent(event)
       if (section) {
-        setCurrentArea(props.area)
-
         if (selection.value && selection.value.parent !== props.area) {
           selection.value = null
+        }
+
+        if (!(selection.value && selection.value.area)) {
+          setCurrentArea(props.area)
         }
 
         if (!selection.value) {
@@ -140,6 +122,7 @@ export default {
             start: section,
             end: section,
             color: getRandomColor(),
+            name: '',
             fresh: true,
             parent: props.area,
           }
@@ -177,8 +160,10 @@ export default {
           window.removeEventListener('pointermove', onPointerMove)
           window.removeEventListener('pointerup', onPointerUp)
 
-          // TODO: nextTick is not working here
-          setTimeout(() => nameInputElement.value.focus(), 100)
+          if (!(selection.value && selection.value.area)) {
+            // TODO: nextTick is not working here
+            setTimeout(() => nameInputElement.value.focus(), 100)
+          }
         }
         window.addEventListener('pointermove', onPointerMove, false)
         window.addEventListener('pointerup', onPointerUp, false)
@@ -189,13 +174,12 @@ export default {
       if (saveEnabled.value) {
         const sa = selection.value.area
         if (sa) {
-          sa.name = toCssName(gridName.value)
+          sa.name = toCssName(selection.value.name)
           sa.gridArea = gridRegionToGridArea(selectionArea(selection.value))
-          emit('editend', sa)
           overArea.value = sa
         } else {
           const newArea = createAreaState({
-            name: gridName.value,
+            name: selection.value.name,
             gridArea: gridRegionToGridArea(selectionArea(selection.value)),
             color: selection.value.color,
             parent: props.area,
@@ -204,23 +188,18 @@ export default {
           overArea.value = newArea
         }
 
-        gridName.value = ''
         selection.value = null
       }
     }
 
     function closeSelection() {
-      if (selection.value.area) {
-        emit('editend', selection.value.area)
-      }
       selection.value = null
     }
 
-    expose({ cellDown, editArea })
+    expose({ cellDown })
 
     return {
       saveEnabled,
-      gridName,
       gridArea,
       selection,
       saveSelection,
@@ -250,6 +229,12 @@ export default {
   justify-content: center;
   &:before {
     display: none;
+  }
+  .editing-label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 16px;
   }
   input {
     pointer-events: initial;

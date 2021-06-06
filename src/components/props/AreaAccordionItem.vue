@@ -55,7 +55,15 @@ import IconAdd from '../icons/IconAdd.vue'
 import IconClear from '../icons/IconClear.vue'
 import IconRemove from '../icons/IconRemove.vue'
 import CssCodeAreaName from '../Code/CssCodeAreaName.vue'
-import { mainArea, currentArea, setCurrentArea, clearArea, addImplicitArea, removeArea } from '../../store.js'
+import {
+  mainArea,
+  selection,
+  currentArea,
+  setCurrentArea,
+  clearArea,
+  addImplicitArea,
+  removeArea,
+} from '../../store.js'
 import { defineProps } from 'vue'
 
 defineProps({

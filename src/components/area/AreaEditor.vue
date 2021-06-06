@@ -1,6 +1,7 @@
 <template>
   <component
     :is="areaType"
+    v-show="!(selection && selection.area === area)"
     :ref="(el) => (componentInstance = el)"
     :class="['area-editor', { grayed: !isActive }]"
     :style="{
@@ -102,7 +103,7 @@
     </div>
     <div v-if="area.display === 'block' && area.padding !== '0'" class="padding-box"></div>
 
-    <AreaSelection v-if="area.display === 'grid'" ref="selectionEl" :area="area" @editend="editingArea = null" />
+    <AreaSelection v-if="area.display === 'grid'" ref="selectionEl" :area="area" />
   </component>
 </template>
 
@@ -120,17 +121,17 @@ import AreaSelection from './AreaSelection.vue'
 // GridEditor imported globally due to circular reference with AreaEditor
 // import FlexEditor from '../flex/FlexEditor.vue'
 
-import { ref, computed, watch, nextTick, defineAsyncComponent, toRefs, defineProps, defineEmit } from 'vue'
+import { ref, computed, watch, nextTick, toRefs, defineProps, defineEmit } from 'vue'
 import {
   mainArea,
   currentArea,
   currentHover,
   currentFocus,
   overArea,
-  setCurrentArea,
   parseUnit,
   parseValue,
   parseValueUnit,
+  selection,
   getGridArea,
   getGridRegion,
   getAreaDepth,
@@ -154,9 +155,8 @@ defineEmit(['edit'])
 const { area } = toRefs(props)
 const isActive = useIsActiveArea(area)
 
-const editingArea = ref(null)
 const areasToShow = computed(() => {
-  return props.area.children.filter((a) => a !== editingArea.value)
+  return props.area.children
   /*.flatMap((a) =>
       a.items
         ? new Array(a.items.count).fill(0).map((_, i) => {
@@ -167,10 +167,6 @@ const areasToShow = computed(() => {
 })
 
 const selectionEl = ref(null)
-function onEditArea(area) {
-  editingArea.value = area
-  selectionEl.value.editArea(area)
-}
 
 const areaType = computed(() => {
   switch (props.area.type) {

@@ -29,16 +29,7 @@
 
 <script setup>
 import { defineProps, defineEmit } from 'vue'
-import {
-  dragging,
-  setCurrentArea,
-  parseValue,
-  parseValueUnit,
-  valueUnitToString,
-  selection,
-  pause,
-  resume,
-} from '../../store.js'
+import { dragging, parseValue, parseValueUnit, valueUnitToString, selection, pause, resume } from '../../store.js'
 import { useGridDimensions } from '../../composables/area.js'
 
 function calcValue(prev, prevComp, delta) {

@@ -131,6 +131,7 @@ export const isValidGapSize = isValidTrackSize
 // This should go in grid.js, we need to check again if we can use sync:pre in the history management before
 
 export function addToDimension(dimension, val) {
+  selection.value = null
   dimension.sizes.push(val)
   dimension.lineNames.push({ active: false, name: '' })
 }
@@ -156,6 +157,7 @@ function reduceLimit(l) {
 }
 
 export function removeFromDimension(area, type, n) {
+  selection.value = null
   const { grid, children } = area
   const toRemove = [],
     toChange = []
@@ -212,6 +214,7 @@ export function removeRow(area, n) {
 
 const counter = ref(1)
 export function addImplicitArea(area) {
+  selection.value = null
   area.children.push(
     createAreaState({
       name: 'i' + counter.value++,
@@ -222,6 +225,7 @@ export function addImplicitArea(area) {
 }
 
 export function subGrid(area) {
+  selection.value = null
   clearArea(area)
   if (!area.grid) {
     area.type = 'div'

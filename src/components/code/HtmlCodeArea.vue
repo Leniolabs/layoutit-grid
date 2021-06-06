@@ -5,7 +5,7 @@
       {
         reordering: reordering && reordering.target === area && !(reordering.target === mainArea && !reordering.after),
         after: reordering && reordering.target === area && reordering.after,
-        'reorder-hint': area !== mainArea && area === currentArea && !reordering,
+        'reorder-hint': area === currentArea && canReorder(area),
         first: area.parent && area.parent.children.indexOf(area) === 0,
         last: area.parent && area.parent.children.indexOf(area) === area.parent.children.length - 1,
       },
@@ -13,7 +13,7 @@
     :style="{
       opacity: reordering && reordering.area === area ? 0.3 : 1,
     }"
-    :draggable="area !== mainArea"
+    :draggable="canReorder(area)"
     @dragstart="onDragStart(area, $event)"
     @dragend="onDragEnd(area)"
     @drop="onDrop(area, $event)"
@@ -34,7 +34,7 @@
 <script setup>
 import { defineProps, computed } from 'vue'
 import { toCssName, getElementTag, includeAreaInCSS, getGridAreaWithNamedLines } from '../../utils.js'
-import { mainArea, currentArea, reordering } from '../../store.js'
+import { mainArea, currentArea, reordering, selection } from '../../store.js'
 import CssCodeAreaName from './CssCodeAreaName.vue'
 
 // <!--span class="drop-target" v-if="reordering && reordering.target === a && ! reordering.after">{{'>\n'}}</span-->
@@ -57,12 +57,21 @@ const elementTag = computed(() => getElementTag(props.area))
 
 const gridAreas = computed(() => (props.area.display === 'grid' ? props.area.children : []))
 
+const canReorder = (area) => {
+  return (
+    area !== mainArea.value &&
+    !reordering.value &&
+    !(area.parent === mainArea.value && mainArea.value.children.length === 1)
+  )
+}
+
 function onDragStart(area, event) {
-  if (area === mainArea.value) {
+  if (!canReorder(area)) {
     return
   }
   event.stopPropagation()
   currentArea.value = area
+  selection.value = null
   reordering.value = { area, reordering: null, after: true }
 }
 
@@ -71,7 +80,6 @@ function areaIndex(area) {
 }
 
 function onDrop(areaTarget, event) {
-  console.log('drop')
   event.stopPropagation()
   const areaFrom = reordering.value.area
   const sameParent = areaTarget.parent === areaFrom.parent
@@ -79,7 +87,6 @@ function onDrop(areaTarget, event) {
   if (!sameParent) {
     areaFrom.parent.children = areaFrom.parent.children.filter((a) => a !== areaFrom)
   }
-  const iFrom = areaIndex(areaFrom)
   const i = children.findIndex((a) => a === areaTarget)
   children.splice(reordering.value.after ? i + 1 : i, 0, areaFrom)
   if (!sameParent) {
@@ -89,7 +96,6 @@ function onDrop(areaTarget, event) {
 }
 
 function onDragEnd(a) {
-  console.log('end')
   reordering.value = null
 }
 
@@ -124,7 +130,6 @@ function onDragOver(areaTarget, event) {
 
     reordering.value.target = areaTarget !== areaFrom ? areaTarget : null
     reordering.value.after = after
-    console.log('after: ' + after)
   } else {
     reordering.value.target = null
   }
