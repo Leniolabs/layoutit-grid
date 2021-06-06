@@ -15,7 +15,7 @@
               ? 'white'
               : undefined,
         }"
-        @click="currentArea = cell"
+        @click="cell && (currentArea = cell)"
         @mouseover="currentHover = { on: 'cell', area: cell, grid: area.grid, col: c + 1, row: r + 1 }"
         @mouseleave="currentHover = null"
         >{{ (c > 0 ? ' ' : '') + templateAreasCellName(cell) }}</span
