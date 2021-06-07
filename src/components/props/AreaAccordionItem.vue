@@ -54,7 +54,7 @@ import OptionsButton from '../basic/OptionsButton.vue'
 import IconAdd from '../icons/IconAdd.vue'
 import IconClear from '../icons/IconClear.vue'
 import IconRemove from '../icons/IconRemove.vue'
-import CssCodeAreaName from '../Code/CssCodeAreaName.vue'
+import CssCodeAreaName from '../code/CssCodeAreaName.vue'
 import {
   mainArea,
   selection,
@@ -107,28 +107,36 @@ defineProps({
 }
 
 .area-actions-sidebar {
+  &.active h1:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    background: rgba(255, 255, 255, 0.5);
+  }
   h1 {
     border-bottom: 1px solid rgba(68, 68, 68, 0.5);
-  }
-}
-
-.area-actions-sidebar h1 {
-  color: #d7ba7d;
-  font-size: 13px;
-  text-shadow: none;
-  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-  direction: ltr;
-  text-align: left;
-  white-space: pre;
-  word-spacing: normal;
-  word-break: normal;
-  line-height: 1.5;
-  font-weight: normal;
-  display: flex;
-  align-items: center;
-  padding: 0;
-  > * {
-    flex: 1;
+    color: #d7ba7d;
+    font-size: 13px;
+    text-shadow: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    direction: ltr;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    line-height: 1.5;
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    position: relative;
+    > * {
+      flex: 1;
+    }
   }
 }
 
