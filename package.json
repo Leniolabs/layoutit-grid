@@ -11,7 +11,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "@vueuse/core": "^4.11.2",
+    "@vueuse/core": "^5.0.1",
     "lz-string": "1.4.4",
     "nanoid": "^3.1.23",
     "pepjs": "0.5.3",
