@@ -4,7 +4,7 @@
       :style="{ 'flex-direction': flex.direction, 'flex-wrap': flex.wrap, display: 'flex', height: '100%' }"
       class="flex-container"
     >
-      <AreaEditor v-for="(a, i) in area.children" :key="`area-${a.id}-${i}`" :area="a" />
+      <AreaEditor v-for="a in area.children" :key="`area-${a.id}`" :area="a" />
     </section>
   </div>
 </template>

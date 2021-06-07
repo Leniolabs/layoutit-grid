@@ -1,5 +1,9 @@
 import { getGridRegion } from './utils/grid.js'
 import { generateNamedTemplate } from './store/area.js'
+import { customAlphabet } from 'nanoid'
+const idAlphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+const idSize = 7
+export const generateId = customAlphabet(idAlphabet, idSize)
 
 export const unitMeasureMap = {
   px: 300,
