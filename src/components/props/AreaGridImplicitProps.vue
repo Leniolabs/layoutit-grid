@@ -234,7 +234,6 @@ h2 {
 }
 
 .items {
-  margin-bottom: 12px;
   &:last-of-type {
     margin-bottom: 0;
   }
