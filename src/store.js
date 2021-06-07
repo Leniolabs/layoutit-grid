@@ -217,11 +217,11 @@ export function removeFromDimension(area, type, n) {
       ++i
     }
   }
-  for (let i = toRemove.length - 1; i >= 0; i--) {
-    area.children.splice(toRemove[i], 1)
-  }
   for (let i = toChange.length - 1; i >= 0; i--) {
     children[toChange[i].i].gridArea = toChange[i].gridArea
+  }
+  for (let i = toRemove.length - 1; i >= 0; i--) {
+    area.children.splice(toRemove[i], 1)
   }
   grid[type].sizes.splice(n, 1)
   grid[type].lineNames.splice(n, 1)
