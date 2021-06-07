@@ -6,6 +6,7 @@
         reordering: reordering && reordering.target === area && !(reordering.target === mainArea && !reordering.after),
         after: reordering && reordering.target === area && reordering.after,
         'reorder-hint': area === currentArea && canReorder(area),
+        'can-reorder': canReorder(area),
         first: area.parent && area.parent.children.indexOf(area) === 0,
         last: area.parent && area.parent.children.indexOf(area) === area.parent.children.length - 1,
       },
@@ -15,7 +16,7 @@
     }"
     :draggable="canReorder(area)"
     @dragstart="onDragStart(area, $event)"
-    @dragend="onDragEnd(area)"
+    @dragend="onDragEnd(area, $event)"
     @drop="onDrop(area, $event)"
     @dragover="onDragOver(area, $event)"
     @click.stop="currentArea = area"
@@ -70,6 +71,7 @@ function onDragStart(area, event) {
     return
   }
   event.stopPropagation()
+  event.dataTransfer.effectAllowed = 'move'
   currentArea.value = area
   selection.value = null
   reordering.value = { area, reordering: null, after: true }
@@ -95,7 +97,7 @@ function onDrop(areaTarget, event) {
   areaTarget.parent.children = children
 }
 
-function onDragEnd(a) {
+function onDragEnd(a, event) {
   reordering.value = null
 }
 
@@ -130,6 +132,7 @@ function onDragOver(areaTarget, event) {
 
     reordering.value.target = areaTarget !== areaFrom ? areaTarget : null
     reordering.value.after = after
+    event.dataTransfer.dropEffect = 'move'
   } else {
     reordering.value.target = null
   }
@@ -139,7 +142,7 @@ function onDragOver(areaTarget, event) {
 <style scoped lang="postcss">
 .area-tree {
   position: relative;
-  transition: opacity 0.75s;
+  transition: opacity 0.5s;
 }
 
 .area-pad {
@@ -163,6 +166,10 @@ function onDragOver(areaTarget, event) {
   left: 0px;
   top: -2px;
   color: #ce9178;
+  cursor: grab;
+}
+
+.can-reorder {
   cursor: grab;
 }
 

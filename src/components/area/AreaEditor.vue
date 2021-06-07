@@ -3,7 +3,7 @@
     :is="areaType"
     v-show="!(selection && selection.area === area)"
     :ref="(el) => (componentInstance = el)"
-    :class="['area-editor', { grayed: !isActive }]"
+    :class="['area-editor', { grayed: !isActive, dragging }]"
     :style="{
       position: 'relative',
       'pointer-events': 'none',
@@ -127,6 +127,7 @@ import {
   currentArea,
   currentHover,
   currentFocus,
+  dragging,
   overArea,
   parseUnit,
   parseValue,
@@ -383,7 +384,9 @@ const gridTracks = computed(() => {
   pointer-events: none;
   touch-action: none;
   height: 100%;
-  cursor: pointer;
+  &:not(.dragging) {
+    cursor: pointer;
+  }
   background: rgba(255, 255, 255, 0.7);
   /*
   &.grayed {
