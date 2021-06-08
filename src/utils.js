@@ -89,7 +89,7 @@ export function gridTemplateAreasMatrix({ grid, children }) {
 
   const chunkAreas = []
   for (let i = 0; i < rowsNumber; i++) {
-    chunkAreas[i] = Array(colsNumber)
+    chunkAreas[i] = Array(colsNumber).fill(null)
   }
 
   let validTemplate = true

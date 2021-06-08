@@ -32,8 +32,10 @@ export function areaToCSS(area, { parentGrid, templateAreas = true, validTemplat
     }
   }
 
-  css += declaration('width', area.width, 'initial')
-  css += declaration('height', area.height, 'initial')
+  if (!(!area.parent && area.width === '100%' && area.height === '100%')) {
+    css += declaration('width', area.width, 'initial')
+    css += declaration('height', area.height, 'initial')
+  }
   css += declaration('margin', area.margin, '0')
   css += declaration('padding', area.padding, '0')
 
@@ -146,4 +148,31 @@ export function areaToHTML(area, ident = 0) {
     area,
     ident + 1
   )}</${tag}>`
+}
+
+export function presentationCSS(area) {
+  return `/* For presentation only, no need to copy the code below */
+
+html, body ${area.width === '100%' && area.height === '100%' ? ', .' + area.name + ' ' : ''}{
+  height: 100%;
+  margin: 0;
+}
+
+.${area.name} * {
+  border: 1px solid red;
+  position: relative;
+}
+
+.${area.name} *:after {
+  content:attr(class);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+`
 }

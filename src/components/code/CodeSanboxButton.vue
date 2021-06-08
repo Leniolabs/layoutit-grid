@@ -12,7 +12,7 @@ import IconCodesandbox from '../icons/IconCodesandbox.vue'
 
 import { preferredExport } from '../../store.js'
 
-import { areaToCSS, areaToHTML } from '../../generateCode.js'
+import { areaToCSS, areaToHTML, presentationCSS } from '../../generateCode.js'
 
 import { defineProps, computed } from 'vue'
 
@@ -34,12 +34,10 @@ function codeSandboxJSON() {
   const cssCode = areaToCSS(props.area, props.options)
   const htmlCode = areaToHTML(props.area, 2)
 
-  const containerClass = 'container'
   return {
     files: {
       'index.html': {
-        content: `
-<!DOCTYPE html>
+        content: `<!DOCTYPE html>
 <html>
   <head>
     <link href="index.css" rel="stylesheet" />
@@ -48,25 +46,13 @@ function codeSandboxJSON() {
     ${htmlCode}
   </body>
 </html>
-      `,
+`,
       },
       'index.css': {
-        content: `
-${cssCode}
+        content: `${cssCode}
 
-/* For presentation only, no need to copy the code below */
-.${containerClass} * {
-  border: 1px solid red;
-  position: relative;
-}
-
-.${containerClass} *:after {
-  content:attr(class);
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-      `,
+${presentationCSS(props.area)}
+`,
       },
     },
   }

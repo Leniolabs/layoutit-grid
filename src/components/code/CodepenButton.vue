@@ -20,7 +20,7 @@ import IconCodepen from '../icons/IconCodepen.vue'
 
 import { preferredExport } from '../../store.js'
 
-import { areaToCSS, areaToHTML } from '../../generateCode.js'
+import { areaToCSS, areaToHTML, presentationCSS } from '../../generateCode.js'
 
 import { defineProps, ref, computed } from 'vue'
 
@@ -41,32 +41,12 @@ const codePenJSON = function () {
   const cssCode = areaToCSS(props.area, props.options)
   const htmlCode = areaToHTML(props.area)
 
-  const containerClass = 'container'
-
   return {
     title: 'New CSS Grid!',
     html: htmlCode,
-    css: `html, body, .${containerClass} { height: 100%; margin: 0; }
+    css: `${cssCode}
 
-${cssCode}
-
-/* For presentation only, no need to copy the code below */
-.${containerClass} * {
-  border: 1px solid red;
-  position: relative;
-}
-
-.${containerClass} *:after {
-  content:attr(class);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: grid;
-  align-items: center;
-  justify-content: center;
-}
+${presentationCSS(props.area)}
 `,
   }
 }
