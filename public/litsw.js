@@ -1,6 +1,10 @@
-const CACHE_NAME = 'layoutit-cache-v1'
+const CACHE_NAME = 'layoutit-cache-v2'
 
 self.addEventListener('fetch', e => {
+  if (e.request.method !== 'GET') {
+    e.respondWith(fetch(e.request));
+    return;
+  }
   // Intercept fetch to add offline behavior
   e.respondWith(
     fetch(e.request)
@@ -22,7 +26,7 @@ self.addEventListener('fetch', e => {
           .then(res => res
             // opportunity to show an offline page (should store it at install event)
             //|| caches.match('/offline.html').then(res => res)
-            )
+          )
       })
   )
 })
