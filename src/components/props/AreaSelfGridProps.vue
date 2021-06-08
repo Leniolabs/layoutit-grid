@@ -63,7 +63,6 @@ const onEdit = () => {
       name: props.area.name,
       parent: props.area.parent,
     }
-    console.log(selection.value)
   }
 }
 </script>

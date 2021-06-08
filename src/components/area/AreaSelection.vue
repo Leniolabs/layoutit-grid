@@ -44,7 +44,7 @@ import {
   selection,
 } from '../../store.js'
 
-import { ref, computed } from 'vue'
+import { ref, computed, nextTick } from 'vue'
 
 function farEnough(a, b, delta = 5) {
   return Math.abs(a.x - b.x) > delta || Math.abs(a.y - b.y) > delta
@@ -144,8 +144,7 @@ export default {
           window.removeEventListener('pointerup', onPointerUp)
 
           if (!(selection.value && selection.value.area)) {
-            // TODO: nextTick is not working here
-            setTimeout(() => nameInputElement.value.focus(), 100)
+            nextTick(() => nameInputElement.value.focus())
           }
         }
         window.addEventListener('pointermove', onPointerMove, false)

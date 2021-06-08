@@ -106,7 +106,7 @@ export function loadFromStorage() {
 }
 
 export function setCurrentArea(area) {
-  if (selection.value && selection.value.area !== area) {
+  if (selection.value && selection.value.area && selection.value.area !== area) {
     selection.value = null
   }
   currentArea.value = area

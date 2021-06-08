@@ -185,7 +185,7 @@ function onDragOver(areaTarget, event) {
   position: absolute;
   top: -11.5px;
   color: #ce9178;
-  content: '\27A4    ——————————';
+  content: '\27A4  ——————————';
   left: 0px;
 }
 .after::after {
