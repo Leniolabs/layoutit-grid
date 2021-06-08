@@ -151,19 +151,22 @@ export function areaToHTML(area, ident = 0) {
 }
 
 export function presentationCSS(area) {
-  return `/* For presentation only, no need to copy the code below */
-
-html, body ${area.width === '100%' && area.height === '100%' ? ', .' + area.name + ' ' : ''}{
+  const cssName = toCssName(area.name)
+  const needsHeight =
+    (area.width === '100%' || area.width === 'initial') && (area.height === '100%' || area.height === 'initial')
+  return `html, body ${needsHeight ? `, .${cssName} ` : ''}{
   height: 100%;
   margin: 0;
 }
+  
+/* For presentation only, no need to copy the code below */
 
-.${area.name} * {
+.${cssName} * {
   border: 1px solid red;
   position: relative;
 }
 
-.${area.name} *:after {
+.${cssName} *:after {
   content:attr(class);
   position: absolute;
   top: 0;

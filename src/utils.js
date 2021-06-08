@@ -174,7 +174,7 @@ export function onCodeInputKeydown(event, emit) {
     event.preventDefault()
     return
   }
-  if (event.code === 'Enter' || event.code === 'NumpadEnter') {
+  if (event.code === 'Enter' || event.code === 'NumpadEnter' || event.code === 'Escape') {
     event.preventDefault()
     emit('move', { action: 'right' })
     return

@@ -71,7 +71,9 @@ function onDragStart(area, event) {
     return
   }
   event.stopPropagation()
-  event.dataTransfer.effectAllowed = 'move'
+  if (event.dataTransfer) {
+    event.dataTransfer.effectAllowed = 'move'
+  }
   currentArea.value = area
   selection.value = null
   reordering.value = { area, reordering: null, after: true }
@@ -132,7 +134,9 @@ function onDragOver(areaTarget, event) {
 
     reordering.value.target = areaTarget !== areaFrom ? areaTarget : null
     reordering.value.after = after
-    event.dataTransfer.dropEffect = 'move'
+    if (event.dataTransfer) {
+      event.dataTransfer.dropEffect = 'move'
+    }
   } else {
     reordering.value.target = null
   }
@@ -181,7 +185,7 @@ function onDragOver(areaTarget, event) {
   position: absolute;
   top: -11.5px;
   color: #ce9178;
-  content: '\27A4  \23AF\23AF\23AF\23AF\23AF\23AF\23AF\23AF\23AF\23AF\23AF\23AF';
+  content: '\27A4    ——————————';
   left: 0px;
 }
 .after::after {

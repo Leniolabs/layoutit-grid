@@ -46,7 +46,7 @@ const onInput = (event) => {
     event.preventDefault()
     return
   }
-  if (code === 'Enter' || code === 'NumpadEnter') {
+  if (code === 'Enter' || code === 'NumpadEnter' || code === 'Escape') {
     event.preventDefault()
     el.value.blur()
     return

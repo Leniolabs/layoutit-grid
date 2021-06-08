@@ -7,6 +7,7 @@
     :class="[type, { first: pos === 1, last: pos === grid[type].lineNames.length }]"
     aria-label="line name"
     @input="line.name = $event.target.value"
+    @keydown="onKeydown"
     @pointerdown.stop
     @focus="currentFocus = { on: 'line', grid, type, pos }"
     @blur="currentFocus = null"
@@ -51,8 +52,17 @@ export default {
       }
     }
 
+    function onKeydown(event) {
+      const { code } = event
+      if (code === 'Enter' || code === 'NumpadEnter' || code === 'Escape') {
+        event.preventDefault()
+        inputElement.value.blur()
+        return
+      }
+    }
+
     expose({ focus, toggle })
-    return { line, inputElement, style, currentFocus }
+    return { line, inputElement, style, currentFocus, onKeydown }
   },
 }
 </script>

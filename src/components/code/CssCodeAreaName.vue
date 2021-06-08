@@ -38,7 +38,7 @@ const el = ref(null)
 const inputSetter = useInputSetter(areaName, isValidAreaName, targetText)
 const onInput = (event) => {
   const { code } = event
-  if (code === 'Enter' || code === 'NumpadEnter') {
+  if (code === 'Enter' || code === 'NumpadEnter' || code === 'Escape') {
     event.preventDefault()
     el.value.blur()
     return

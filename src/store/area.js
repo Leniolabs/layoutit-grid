@@ -1,6 +1,6 @@
 import { parseGridTemplate, lineNamesToState, createGridState } from './grid.ts'
 import { isValidTrackSize } from '../utils/grid.js'
-import { generateId } from '../utils.js'
+import { generateId, toCssName } from '../utils.js'
 
 export { isValidTrackSize }
 export {
