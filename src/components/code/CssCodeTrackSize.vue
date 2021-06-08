@@ -55,14 +55,14 @@ const isDraggingTrackLine = computed(
 .col,
 .row {
   &:hover {
-    color: white;
+    color: #eee;
   }
   &:focus {
-    color: white;
+    color: #eee;
     font-weight: 700;
   }
   &.active {
-    color: white;
+    color: #eee;
   }
 }
 </style>

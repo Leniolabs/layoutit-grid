@@ -87,7 +87,12 @@
     <div
       v-if="area != mainArea"
       class="area-info"
-      :style="{ border: `2px solid ${areaDisplayColor(area)}`, top: 0, left: 0 }"
+      :style="{
+        border: `2px solid ${areaDisplayColor(area)}`,
+        backgroundColor: isHighligthed && areaDisplayColor(area).replace(', 0.8)', ', 0.07)'),
+        top: 0,
+        left: 0,
+      }"
     >
       <div class="area-info-controls" :style="{ top: toolbarStart * 34 + 3 + 'px' }">
         <div
@@ -165,6 +170,18 @@ const areasToShow = computed(() => {
           })
         : { area: a, item: 1 }
     )*/
+})
+
+const isHighligthed = computed(() => {
+  const hover = currentHover.value
+  return (
+    (props.area.parent &&
+      !currentFocus.value &&
+      hover &&
+      ((hover.on === 'cell' && hover.area && hover.area === props.area) ||
+        (hover.on === 'html-area' && hover.area === props.area))) ||
+    (currentFocus.value && currentFocus.on === 'area' && currentFocus.area === props.area)
+  )
 })
 
 const selectionEl = ref(null)

@@ -41,10 +41,10 @@ const gridArea = computed(() => {
 <style scoped lang="postcss">
 span {
   &:hover {
-    color: white;
+    color: #eee;
   }
   &:focus {
-    color: white;
+    color: #eee;
   }
 }
 </style>

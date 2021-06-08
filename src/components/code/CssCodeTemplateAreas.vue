@@ -13,7 +13,7 @@
               : currentArea === cell
               ? '#d7ba7d'
               : isCellHighligthed(cell)
-              ? 'white'
+              ? '#eee'
               : undefined,
         }"
         @click="cell && (currentArea = cell)"
@@ -55,11 +55,11 @@ const templateAreas = computed(() => getGridTemplateAreas(props.area))
 <style scoped lang="postcss">
 span {
   &:hover {
-    color: white;
+    color: #eee;
     cursor: crosshair;
   }
   &:focus {
-    color: white;
+    color: #eee;
   }
 }
 </style>

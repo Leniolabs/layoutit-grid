@@ -43,10 +43,10 @@ const onInput = useInputSetter(lineName, isValidLineName, targetText)
 .col,
 .row {
   &:hover {
-    color: white;
+    color: #eee;
   }
   &:focus {
-    color: white;
+    color: #eee;
   }
 }
 </style>
