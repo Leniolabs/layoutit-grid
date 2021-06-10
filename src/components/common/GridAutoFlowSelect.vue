@@ -1,7 +1,7 @@
 <template>
   <div class="display-select-container">
-    <label title="Controls the auto-placement algorithm, specifying how items get flowed into the grid."
-      >grid-auto-flow:<span :title="optionTooltipsFlow[direction]">{{ modelValue }}</span>
+    <label title="Controls the auto-placement algorithm, specifying how items get flowed into the grid.">
+      grid-auto-flow: <span :title="optionTooltipsFlow[direction]">{{ modelValue }}</span>
     </label>
     <div class="radio-toolbar">
       <template v-for="option in options" :key="option">
