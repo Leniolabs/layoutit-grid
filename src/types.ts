@@ -12,7 +12,7 @@ export type UniversalUnits = GridUnit | Initial
 
 export type BasicProperties = 'center' | 'start' | 'end' | 'stretch' | Initial
 
-export type ContentProperties = BasicProperties | 'around' | 'between' | 'evenly'
+export type ContentProperties = BasicProperties | 'space-around' | 'space-between' | 'space-evenly'
 
 export type AutoFlowProperties = 'column' | 'row' | 'column dense' | 'row dense'
 
@@ -61,4 +61,3 @@ export interface ValueGapUnit extends Omit<ValueUnit, 'unit'> {
 }
 
 export * from './types/area'
-export * from './types/constans'

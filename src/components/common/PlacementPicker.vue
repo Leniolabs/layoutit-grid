@@ -2,9 +2,10 @@
   <div class="placement-select-container">
     <input :id="type" type="checkbox" :checked="modelValue != 'initial'" />
 
-    <label :for="type" :title="optionTooltipsType[type]"
-      >{{ type }}: <span :title="optionTooltips[modelValue]">{{ modelValue }}</span></label
-    >
+    <label :for="type" :title="optionTooltipsType[type]">
+      {{ type }}:
+      <span :title="optionTooltips[modelValue]">{{ modelValue }}</span>
+    </label>
     <div class="radio-toolbar">
       <template v-for="option in options" :key="option">
         <input
@@ -50,7 +51,6 @@ import IconJustifyEnd from '../icons/IconJustifyEnd.vue'
 import IconJustifyAround from '../icons/IconJustifyAround.vue'
 import IconJustifyBetween from '../icons/IconJustifyBetween.vue'
 import IconJustifyEvenly from '../icons/IconJustifyEvenly.vue'
-
 import IconAlignStart from '../icons/IconAlignStart.vue'
 import IconAlignStretch from '../icons/IconAlignStretch.vue'
 import IconAlignCenter from '../icons/IconAlignCenter.vue'
@@ -58,7 +58,16 @@ import IconAlignEnd from '../icons/IconAlignEnd.vue'
 import IconAlignAround from '../icons/IconAlignAround.vue'
 import IconAlignBetween from '../icons/IconAlignBetween.vue'
 import IconAlignEvenly from '../icons/IconAlignEvenly.vue'
-import { alignOptionsMap } from '../../constants'
+
+const optionsContent = ['stretch', 'start', 'center', 'end', 'space-around', 'space-between', 'space-evenly']
+
+const optionsItems = ['stretch', 'start', 'center', 'end']
+
+const alignOptionsMap = {
+  content: optionsContent,
+  items: optionsItems,
+  self: optionsItems,
+}
 
 const props = defineProps({
   modelValue: { type: String as PropType<ContentProperties>, default: 'stretch' },
@@ -73,9 +82,9 @@ const optionIconsJustify = {
   start: IconJustifyStart,
   center: IconJustifyCenter,
   end: IconJustifyEnd,
-  around: IconJustifyAround,
-  between: IconJustifyBetween,
-  evenly: IconJustifyEvenly,
+  'space-around': IconJustifyAround,
+  'space-between': IconJustifyBetween,
+  'space-evenly': IconJustifyEvenly,
 }
 
 const optionIconsAlign = {
@@ -83,9 +92,9 @@ const optionIconsAlign = {
   start: IconAlignStart,
   center: IconAlignCenter,
   end: IconAlignEnd,
-  around: IconAlignAround,
-  between: IconAlignBetween,
-  evenly: IconAlignEvenly,
+  'space-around': IconAlignAround,
+  'space-between': IconAlignBetween,
+  'space-evenly': IconAlignEvenly,
 }
 
 const optionTooltips = {
@@ -94,11 +103,11 @@ const optionTooltips = {
   start: 'start: items are packed flush to each other toward the start edge of the container.',
   center: 'center: items are packed flush to each other toward the center of the container.',
   end: 'end: items are packed flush to each other toward the end edge of the container.',
-  around:
+  'space-around':
     'space-around: items are evenly distributed. The empty space before the first and after the last item equals half of the space between each pair of adjacent items.',
-  between:
+  'space-between':
     'space-between: items are evenly distributed. The first item is flush with the main-start, and the last item is flush with the main-end.',
-  evenly:
+  'space-evenly':
     'space-evenly: items are evenly distributed. The spacing between each pair of adjacent items, the main-start and the first item, and the main-end and the last item, are all the same.',
 }
 
