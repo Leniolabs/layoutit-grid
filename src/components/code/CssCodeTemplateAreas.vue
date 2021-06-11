@@ -39,6 +39,8 @@ function getGridTemplateAreas(area) {
   return area.display === 'grid' ? gridTemplateAreasMatrix(area) : []
 }
 
+const templateAreas = computed(() => getGridTemplateAreas(props.area))
+
 function isCellHighligthed(cell) {
   return (
     (currentHover.value &&
@@ -48,8 +50,6 @@ function isCellHighligthed(cell) {
     (overArea.value && overArea.value === cell)
   )
 }
-
-const templateAreas = computed(() => getGridTemplateAreas(props.area))
 </script>
 
 <style scoped lang="postcss">

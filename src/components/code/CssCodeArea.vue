@@ -27,7 +27,7 @@
   <template v-if="area !== mainArea">
     <CssDecl v-if="area.justifySelf !== 'initial'" property="justify-self">{{ area.justifySelf }}</CssDecl>
     <CssDecl v-if="area.alignSelf !== 'initial'" property="align-self">{{ area.alignSelf }}</CssDecl>
-    <template v-if="gridArea">
+    <template v-if="area.gridArea !== 'auto'">
       <CssDecl property="grid-area" :ident="singleLine ? ' ' : '\n  '"
         ><CssCodeGridArea :area="area" :options="options"
       /></CssDecl>
@@ -55,7 +55,8 @@ import {
   namedTemplateColumns,
   namedTemplateRows,
   gridTemplateAreas,
-  getGridAreaWithNamedLines,
+  getCodeGridArea,
+  getCodeGridTemplateAreas,
   areaIsSingleLineInCSS,
 } from '../../utils.js'
 import { mainArea, getGridRegion } from '../../store.js'
@@ -65,32 +66,12 @@ const props = defineProps({
   area: { type: Object, required: true },
   options: { type: Object, required: true },
 })
-const cssAreaName = computed(() => props.area.name)
 
-function getGridTemplateAreas(area) {
-  return area.display === 'grid' && area.grid.col.sizes.length && area.grid.row.sizes.length
-    ? gridTemplateAreas(area, '\n    ')
-    : undefined
-}
-
-const templateAreas = computed(() => getGridTemplateAreas(props.area))
+const templateAreas = computed(() => getCodeGridTemplateAreas(props.area))
 
 const includeTemplateAreas = computed(() => props.options.templateAreas && templateAreas.value !== undefined)
 
-const gridArea = computed(() => {
-  const gridRegion = getGridRegion(props.area) // TODO: span
-  if (!gridRegion) {
-    return undefined
-  }
-  const { parent } = props.area
-  if (parent) {
-    return props.options.templateAreas && getGridTemplateAreas(parent)
-      ? cssAreaName.value
-      : getGridAreaWithNamedLines(props.area, parent.grid)
-  } else {
-    return getGridAreaWithNamedLines(props.area)
-  }
-})
+const gridArea = computed(() => getCodeGridArea(props.area))
 
 const singleLine = computed(() => areaIsSingleLineInCSS(props.area))
 

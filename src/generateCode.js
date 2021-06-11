@@ -4,7 +4,7 @@ import {
   gridTemplateAreas,
   namedTemplateColumns,
   namedTemplateRows,
-  getGridAreaWithNamedLines,
+  getCodeGridArea,
   areaIsSingleLineInCSS,
   includeAreaInCSS,
   getElementTag,
@@ -14,7 +14,7 @@ function declaration(name, value, def) {
   return value !== def ? `\n  ${name}: ${value};` : ''
 }
 
-export function areaToCSS(area, { parentGrid, templateAreas = true, validTemplateAreas = true, repeat, oldSpec }) {
+export function areaToCSS(area, { parentGrid, templateAreas = true, repeat, oldSpec }) {
   const { name, grid } = area
   const singleLine = areaIsSingleLineInCSS(area)
   const cssName = toCssName(name)
@@ -26,9 +26,8 @@ export function areaToCSS(area, { parentGrid, templateAreas = true, validTemplat
   if (area.parent && area.parent.display === 'grid') {
     css += declaration('justify-self', area.justifySelf, 'initial')
     css += declaration('align-self', area.alignSelf, 'initial')
-    const gridArea = getGridAreaWithNamedLines(area, parentGrid)
-    if (gridArea) {
-      css += `${singleLine ? ' ' : '\n  '}grid-area: ${templateAreas && validTemplateAreas ? cssName : gridArea};`
+    if (area.gridArea !== 'auto') {
+      css += `${singleLine ? ' ' : '\n  '}grid-area: ${getCodeGridArea(area, templateAreas)};`
     }
   }
 
@@ -42,10 +41,9 @@ export function areaToCSS(area, { parentGrid, templateAreas = true, validTemplat
   css += `${singleLine ? ' ' : '\n'}}\n`
 
   if (grid) {
-    const validTemplateAreas = gridTemplateAreas(area) !== undefined
     area.children.forEach((area) => {
       if (includeAreaInCSS(area)) {
-        css += '\n' + areaToCSS(area, { parentGrid: grid, templateAreas, validTemplateAreas, repeat })
+        css += '\n' + areaToCSS(area, { parentGrid: grid, templateAreas, repeat })
       }
     })
   }

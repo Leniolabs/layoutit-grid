@@ -149,20 +149,36 @@ function namedRegionSide(gridRegion, parentGrid, type, side) {
   return result
 }
 
-export function getGridAreaWithNamedLines(area, parentGrid) {
-  // TODO: remove parentGrid
-  // TODO: span
-  if (area) {
-    const gridRegion = getGridRegion(area)
-    if (gridRegion) {
-      const rowStart = namedRegionSide(gridRegion, parentGrid, 'row', 'start')
-      const colStart = namedRegionSide(gridRegion, parentGrid, 'col', 'start')
-      const rowEnd = namedRegionSide(gridRegion, parentGrid, 'row', 'end')
-      const colEnd = namedRegionSide(gridRegion, parentGrid, 'col', 'end')
-      return `${rowStart} / ${colStart} / ${rowEnd} / ${colEnd}`
-    }
+export function getGridAreaWithNamedLines(area) {
+  const parentGrid = area.parent.grid
+  const gridRegion = getGridRegion(area)
+  if (gridRegion) {
+    const rowStart = namedRegionSide(gridRegion, parentGrid, 'row', 'start')
+    const colStart = namedRegionSide(gridRegion, parentGrid, 'col', 'start')
+    const rowEnd = namedRegionSide(gridRegion, parentGrid, 'row', 'end')
+    const colEnd = namedRegionSide(gridRegion, parentGrid, 'col', 'end')
+    return `${rowStart} / ${colStart} / ${rowEnd} / ${colEnd}`
   }
-  return ''
+}
+
+export function getCodeGridArea(area, useTemplateAreas) {
+  const gridRegion = getGridRegion(area)
+  if (!gridRegion) {
+    // Auto placed areas
+    return area.gridArea
+  }
+  const { parent } = area
+  if (parent) {
+    return useTemplateAreas && getCodeGridTemplateAreas(parent) ? toCssName(area.name) : getGridAreaWithNamedLines(area)
+  } else {
+    return getGridAreaWithNamedLines(area)
+  }
+}
+
+export function getCodeGridTemplateAreas(area) {
+  return area.display === 'grid' && area.grid.col.sizes.length && area.grid.row.sizes.length
+    ? gridTemplateAreas(area, '\n    ')
+    : undefined
 }
 
 export function toCssName(name) {
