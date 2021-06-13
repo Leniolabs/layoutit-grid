@@ -43,7 +43,7 @@ function parseLimit(limit) {
 
 function parseGridLimit(s) {
   if (s === undefined || s === 'auto') {
-    return { span: 1 }
+    return { auto: true, span: 1 }
   }
   const parts = trimSplit(s, 'span')
   if (parts.length > 1) {
@@ -51,18 +51,30 @@ function parseGridLimit(s) {
     if (Number.isNaN(span) || span < 1) {
       return undefined
     }
-    return { span }
+    return { auto: false, span }
   } else {
     const limit = parseLimit(s)
     if (Number.isNaN(limit)) {
       return undefined
     }
-    return { limit }
+    return { auto: false, limit }
   }
 }
 
 function isLimit(l) {
   return l && l.limit !== undefined
+}
+
+function dimensionSpan({ start, end }) {
+  const sl = isLimit(start)
+  const el = isLimit(end)
+  if (!sl && !el) {
+    return start.auto ? end.span : start.span
+  }
+  if (sl && el) {
+    return Math.max(1, Math.abs(end.limit - start.limit))
+  }
+  return sl ? end.span : start.span
 }
 
 export function gridAreaToGridLimits(gridArea) {
@@ -77,16 +89,8 @@ export function gridAreaToGridLimits(gridArea) {
   }
   const valid = parts.length <= 4 && !!(row.start && row.end && col.start && col.end)
   if (valid) {
-    row.span = isLimit(row.start)
-      ? isLimit(row.end)
-        ? Math.abs(row.end.limit - row.start.limit)
-        : row.end.span
-      : row.start.span
-    col.span = isLimit(col.start)
-      ? isLimit(col.end)
-        ? Math.abs(col.end.limit - col.start.limit)
-        : col.end.span
-      : col.start.span
+    row.span = dimensionSpan(row)
+    col.span = dimensionSpan(col)
   }
   const auto = !valid || !((isLimit(row.start) || isLimit(row.end)) && (isLimit(col.start) || isLimit(col.end)))
   row.auto = !valid || (auto && !isLimit(row.start) && !isLimit(row.end))
@@ -124,12 +128,14 @@ function limitToLineNumber(l, count) {
   return isLimit(l) ? (l.limit > 0 ? l.limit : count + 2 + l.limit) : 0
 }
 
-function swapedIfInverted({ start, end }) {
+function swappedIfInverted({ start, end }) {
   if (start > end) {
     return { start: end, end: start }
   } else return { start, end }
 }
-
+function handleEqualLimits(limits) {
+  return limits.start === limits.end ? { start: limits.start, end: limits.end + 1 } : limits
+}
 export function getGridDimension(area, type, limits) {
   if (!limits) {
     limits = gridAreaToGridLimits(area.gridArea)
@@ -141,10 +147,12 @@ export function getGridDimension(area, type, limits) {
       const count = grid[type].sizes.length
       const s = limitToLineNumber(dim.start, count)
       const e = limitToLineNumber(dim.end, count)
-      return swapedIfInverted({
-        start: isLimit(dim.start) ? s : e - dim.start.span,
-        end: isLimit(dim.end) ? e : s + dim.end.span,
-      })
+      return handleEqualLimits(
+        swappedIfInverted({
+          start: isLimit(dim.start) ? s : e - dim.start.span,
+          end: isLimit(dim.end) ? e : s + dim.end.span,
+        })
+      )
     }
   }
 }
@@ -322,7 +330,7 @@ function placeRowLockedArea(ig, area, cursor, limits) {
   }
   const { row, col } = limits
   const gd = getGridDimension(area, 'row', limits)
-  cursor.row = gd.start + ig.ri
+  cursor.row = gd.start - ig.ri
   for (let c = cursor.col; c < ig.cols; c++) {
     if (colIsTherePlace(ig.grid, cursor.row, c, row.span, col.span)) {
       cursor.col = c
@@ -339,7 +347,7 @@ function placeColLockedArea(ig, area, cursor, limits) {
   }
   const { row, col } = limits
   const gd = getGridDimension(area, 'col', limits)
-  cursor.col = gd.start + ig.ci
+  cursor.col = gd.start - ig.ci
   for (let r = cursor.row; r < ig.rows; r++) {
     if (rowIsTherePlace(ig.grid, r, cursor.col, row.span, col.span)) {
       cursor.row = r
