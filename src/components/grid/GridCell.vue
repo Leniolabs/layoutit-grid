@@ -29,46 +29,8 @@
 
 <script setup>
 import { defineProps, defineEmit } from 'vue'
-import { dragging, parseValue, parseValueUnit, valueUnitToString, selection, pause, resume } from '../../store.js'
+import { dragging, parseValue, selection, pause, resume } from '../../store.js'
 import { useGridDimensions } from '../../composables/area.js'
-
-function calcValue(prev, prevComp, delta) {
-  const sizeAdd = (prev.value * delta) / prevComp.value
-
-  let value = +(prev.value + sizeAdd).toFixed(1)
-
-  if (value <= 0) {
-    value = 0.1
-  }
-
-  return { value, unit: prev.unit }
-}
-
-function resizableUnit(unit) {
-  return !(unit === 'auto' || unit === 'max-content' || unit === 'min-content' || unit === 'minmax')
-}
-
-function calcSize(size, computedSize, delta) {
-  const value = parseValueUnit(size)
-  if (resizableUnit(value.unit)) {
-    const computedValue = parseValueUnit(computedSize)
-    return valueUnitToString(calcValue(value, computedValue, delta))
-  }
-  return size
-}
-
-function resizeGridSizes(sizes, computedSizes, delta, line) {
-  const newSizes = [...sizes],
-    leftPos = line - 2,
-    rightPos = line - 1
-  newSizes[leftPos] = calcSize(sizes[leftPos], computedSizes[leftPos], delta)
-  newSizes[rightPos] = calcSize(sizes[rightPos], computedSizes[rightPos], -delta)
-  return newSizes
-}
-
-function farEnough(a, b, delta = 5) {
-  return Math.abs(a.x - b.x) > delta || Math.abs(a.y - b.y) > delta
-}
 
 const props = defineProps({
   section: { type: Object, required: true },
