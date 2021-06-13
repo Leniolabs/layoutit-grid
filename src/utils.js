@@ -1,4 +1,4 @@
-import { getGridRegion } from './utils/grid.js'
+import { getGridRegion, gridAreaToGridLimits } from './utils/grid.js'
 import { generateNamedTemplate } from './store/area.js'
 import { customAlphabet } from 'nanoid'
 const idAlphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
@@ -149,9 +149,20 @@ function namedRegionSide(gridRegion, parentGrid, type, side) {
   return result
 }
 
+function isSimpleExplicit({ start, end }) {
+  return start.limit > 0 && end.limit > 0 && !(start.limit === end.limit)
+}
+
+// TODO: we are not using line names in complex cases (negative indexes, span, etc)
+// It could be surprising for the user not to see the same numbers as in the grid-area input
+// in the sidebar, but there may be cases where we could still show the line names
 export function getGridAreaWithNamedLines(area) {
   const parentGrid = area.parent.grid
-  const gridRegion = getGridRegion(area)
+  const limits = gridAreaToGridLimits(area.gridArea)
+  if (!limits.valid || limits.auto || !isSimpleExplicit(limits.row) || !isSimpleExplicit(limits.col)) {
+    return area.gridArea
+  }
+  const gridRegion = getGridRegion(area, limits)
   if (gridRegion) {
     const rowStart = namedRegionSide(gridRegion, parentGrid, 'row', 'start')
     const colStart = namedRegionSide(gridRegion, parentGrid, 'col', 'start')
