@@ -107,7 +107,7 @@ export default {
       const { rows, cols, ri, ci } = props.implicitGrid
       const size = type === 'row' ? rows : cols
       const cell_i = type === 'row' ? ri : ci
-      for (let i = 2 - cell_i; i <= size + 2 - cell_i; i++) {
+      for (let i = cell_i; i <= size + cell_i; i++) {
         lines.push({ type, pos: i })
       }
       return lines
@@ -126,10 +126,10 @@ export default {
         }
       }
       const { rows, cols, ri, ci } = props.implicitGrid
-      const rs = 2 - ri,
-        cs = 2 - ci,
-        re = rows + 2 - ri,
-        ce = cols + 2 - ci
+      const rs = ri,
+        cs = ci,
+        re = rows + ri,
+        ce = cols + ci
       intersections.push({ row: rs, col: cs }, { row: rs, col: ce }, { row: re, col: cs }, { row: re, col: ce })
       return intersections
     })
@@ -219,8 +219,8 @@ export default {
       const { rows, cols, ri, ci } = props.implicitGrid
       const rowLine = row && row > 1 && row <= rowsNumber ? row : undefined
       const colLine = col && col > 1 && col <= colsNumber ? col : undefined
-      const rowEdge = row === 2 - ri || row === rows + 2 - ri ? row : undefined
-      const colEdge = col === 2 - ci || col === cols + 2 - ri ? col : undefined
+      const rowEdge = row === ri || row === rows + ri ? row : undefined
+      const colEdge = col === ci || col === cols + ri ? col : undefined
 
       handlePointerEventsInteraction(event, {
         onmove(event) {
@@ -278,7 +278,7 @@ export default {
 
         onup() {
           // Finish dragging grid lines
-          document.body.style.cursor = dragging.value.prevCursor
+          document.body.style.cursor = dragging.value ? dragging.value.prevCursor : 'initial'
           dragging.value = null
           resume(true)
         },

@@ -68,21 +68,6 @@ export function createSection({ col, row }) {
   }
 }
 
-export function gridSections(grid) {
-  const colsNumber = grid.col.sizes.length
-  const rowsNumber = grid.row.sizes.length
-  const sectionsNumber = colsNumber * rowsNumber
-
-  const sections = []
-  for (let i = 0; i < sectionsNumber; ++i) {
-    const colStart = (i % colsNumber) + 1
-    const rowStart = Math.floor(i / colsNumber) + 1
-    sections.push(createSection({ col: colStart, row: rowStart }))
-  }
-
-  return sections
-}
-
 export function gridTemplateAreasMatrix({ grid, children }) {
   const colsNumber = grid.col.sizes.length
   const rowsNumber = grid.row.sizes.length

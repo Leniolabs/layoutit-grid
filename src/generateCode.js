@@ -61,14 +61,14 @@ export function gridToCSS(area, { templateAreas = true, repeat }) {
   if (grid.col.sizes.length) {
     css += `\n  grid-template-columns: ${namedTemplateColumns(grid, repeat)};`
   }
-  if (grid.row.auto.length) {
-    css += `\n  grid-auto-columns: ${grid.row.auto.join(' ')};`
-  }
   if (grid.row.sizes.length) {
     css += `\n  grid-template-rows: ${namedTemplateRows(grid, repeat)};`
   }
   if (grid.col.auto.length) {
-    css += `\n  grid-auto-rows: ${grid.col.auto.join(' ')};`
+    css += `\n  grid-auto-columns: ${grid.col.auto.join(' ')};`
+  }
+  if (grid.row.auto.length) {
+    css += `\n  grid-auto-rows: ${grid.row.auto.join(' ')};`
   }
   css += `\n  gap: ${grid.row.gap} ${grid.col.gap};` // TODO: cssGridGap(grid)
 

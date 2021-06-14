@@ -56,6 +56,7 @@ export default {
   },
   props: {
     area: { type: Object, required: true },
+    implicitGrid: { type: Object, required: true },
   },
   setup(props, { expose, emit }) {
     const nameInputElement = ref(null)
@@ -107,6 +108,7 @@ export default {
             color: getRandomColor(),
             name: '',
             fresh: true,
+            implicitGrid: props.implicitGrid,
             parent: props.area,
           }
         }

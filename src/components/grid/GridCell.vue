@@ -1,13 +1,17 @@
 <template>
   <section
     :style="{
-      gridArea: `${section.row.start} / ${section.col.start} / ${section.row.start + 1} / ${section.col.start + 1}`,
+      gridArea,
       background: grayed ? '#e8e8e8' : '#ffffff',
     }"
     :class="{
       lastcol: section.col.start === colsNumber && section.row.start === 1,
       lastrow: section.row.start === rowsNumber && section.col.start === 1,
-      implicit: section.row.start > rowsNumber || section.col.start > colsNumber,
+      implicit:
+        section.row.start < 1 ||
+        section.row.end > rowsNumber + 1 ||
+        section.col.start < 1 ||
+        section.col.end > colsNumber + 1,
       dragging,
       grayed,
       focused,
@@ -31,6 +35,7 @@
 import { defineProps, defineEmit } from 'vue'
 import { dragging, parseValue, selection, pause, resume } from '../../store.js'
 import { useGridDimensions } from '../../composables/area.js'
+import { asValidGridArea } from '../../utils/grid.js'
 
 const props = defineProps({
   section: { type: Object, required: true },
@@ -44,6 +49,11 @@ defineEmit(['pointerdown', 'overcell'])
 import { computed } from 'vue'
 
 const grid = computed(() => props.area.grid)
+
+const gridArea = computed(() => {
+  const s = props.section
+  return asValidGridArea(s.row.start, s.col.start, s.row.end, s.col.end, props.implicitGrid)
+})
 
 const { colsNumber, rowsNumber } = useGridDimensions(grid)
 
@@ -62,16 +72,16 @@ const isDraggingRow = computed(() => isDraggingGrid.value && dragging.value.rowL
 const computePadding = (condition, gap) => (condition ? '7px' : parseValue(gap) !== 0 ? `calc(-0.5 * ${gap})` : '0')
 
 const paddingTop = computed(() =>
-  computePadding(props.section.row.start === 2 - props.implicitGrid.ri, props.area.grid.row.gap)
+  computePadding(props.section.row.start === props.implicitGrid.ri, props.area.grid.row.gap)
 )
 const paddingLeft = computed(() =>
-  computePadding(props.section.col.start === 2 - props.implicitGrid.ci, props.area.grid.col.gap)
+  computePadding(props.section.col.start === props.implicitGrid.ci, props.area.grid.col.gap)
 )
 const paddingBottom = computed(() =>
-  computePadding(props.section.row.end === props.implicitGrid.rows + 2 - props.implicitGrid.ri, props.area.grid.row.gap)
+  computePadding(props.section.row.end === props.implicitGrid.rows + props.implicitGrid.ri, props.area.grid.row.gap)
 )
 const paddingRight = computed(() =>
-  computePadding(props.section.col.end === props.implicitGrid.cols + 2 - props.implicitGrid.ci, props.area.grid.col.gap)
+  computePadding(props.section.col.end === props.implicitGrid.cols + props.implicitGrid.ci, props.area.grid.col.gap)
 )
 </script>
 

@@ -108,7 +108,7 @@
     </div>
     <div v-if="area.display === 'block' && area.padding !== '0'" class="padding-box"></div>
 
-    <AreaSelection v-if="area.display === 'grid'" ref="selectionEl" :area="area" />
+    <AreaSelection v-if="area.display === 'grid'" ref="selectionEl" :area="area" :implicit-grid="implicitGrid" />
   </component>
 </template>
 
@@ -347,9 +347,9 @@ const gridCells = computed(() => {
   }
   const { cols, rows, ri, ci } = implicitGrid.value
   const sections = []
-  for (let c = 1; c <= cols; c++) {
-    for (let r = 1; r <= rows; r++) {
-      sections.push(createSection({ col: c - (ci - 1), row: r - (ri - 1) }))
+  for (let c = 0; c < cols; c++) {
+    for (let r = 0; r < rows; r++) {
+      sections.push(createSection({ col: c + ci, row: r + ri }))
     }
   }
   return sections
@@ -381,10 +381,10 @@ function tracksFor(type) {
   const cell_i = type === 'row' ? ri : ci
   const tracks = []
   if (grid) {
-    for (let i = 1 - cell_i; i < size + 1 - cell_i; i++) {
+    for (let i = cell_i; i < size + cell_i; i++) {
       tracks.push({
         type,
-        pos: i + 1,
+        pos: i,
       })
     }
   }

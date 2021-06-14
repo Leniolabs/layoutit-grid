@@ -31,7 +31,7 @@
         },
       ]"
     >
-      {{ pos }}
+      {{ asValidLineNumber(pos, type, implicitGrid) }}
     </div>
 
     <div
@@ -52,6 +52,7 @@
 import LineName from './LineName.vue'
 import { dragging, selection, currentFocus, overArea, mainArea } from '../../store.js'
 import { ref, computed, defineProps, defineEmit } from 'vue'
+import { asValidGridArea, asValidLineNumber } from '../../utils/grid.js'
 
 export default {
   components: { LineName },
@@ -72,13 +73,12 @@ export default {
 
     // TODO: refactor implicitGrid -> { col: { size, i }, row: { size, i } }
     const firstImplicit = computed(
-      () => props.pos === 2 - (props.type === 'row' ? props.implicitGrid.ri : props.implicitGrid.ci)
+      () => props.pos === (props.type === 'row' ? props.implicitGrid.ri : props.implicitGrid.ci)
     )
     const lastImplicit = computed(
       () =>
         props.pos ===
         (props.type === 'row' ? props.implicitGrid.rows : props.implicitGrid.cols) +
-          2 -
           (props.type === 'row' ? props.implicitGrid.ri : props.implicitGrid.ci)
     )
 
@@ -93,11 +93,11 @@ export default {
 
     const gridArea = computed(() => {
       // The first line uses the same track as the second one
-      const pos = Math.max(props.pos - 1, 1)
       const { implicitGrid } = props
+      const pos = Math.max(props.pos - 1, props.type === 'row' ? implicitGrid.ri : implicitGrid.ci)
       return props.type === 'row'
-        ? `${pos} / ${2 - implicitGrid.ci} / ${pos + 1} / ${implicitGrid.cols + 2 - implicitGrid.ci}`
-        : `${2 - implicitGrid.ri} / ${pos} / ${implicitGrid.rows + 2 - implicitGrid.ri} / ${pos + 1}`
+        ? asValidGridArea(pos, implicitGrid.ci, pos + 1, implicitGrid.cols + implicitGrid.ci, implicitGrid)
+        : asValidGridArea(implicitGrid.ri, pos, implicitGrid.rows + implicitGrid.ri, pos + 1, implicitGrid)
     })
 
     const lineNameRef = ref(null)
@@ -136,6 +136,7 @@ export default {
       onMove,
       currentFocus,
       mainArea,
+      asValidLineNumber,
     }
   },
 }

@@ -16,6 +16,7 @@ import {
 } from './store/area.js'
 import { createGridState, isValidTrackSize } from './store/grid.ts'
 import { gridRegionToGridArea } from './utils.js'
+import { asValidGridArea } from './utils/grid.js'
 
 function createMainAreaState() {
   return createAreaState({
@@ -62,7 +63,8 @@ function selectionArea(selection) {
 }
 
 export function selectionGridArea(selection) {
-  return gridRegionToGridArea(selectionArea(selection))
+  const gr = selectionArea(selection)
+  return asValidGridArea(gr.row.start, gr.col.start, gr.row.end, gr.col.end, selection.implicitGrid)
 }
 
 export function newAreaName() {

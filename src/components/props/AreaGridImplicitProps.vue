@@ -6,7 +6,10 @@
         title="Specifies the size of an implicitly-created grid row track or pattern of tracks."
       >
         <h2>grid-auto-columns</h2>
-        <OptionsButton class="add-button" @click="addImplicitCol(grid, '1fr')">add<span>+</span></OptionsButton>
+        <OptionsButton class="add-button" @click="addImplicitCol(grid, '1fr')">
+          add
+          <span>+</span>
+        </OptionsButton>
       </div>
       <div v-for="column in autoColsNumber" :key="column" class="area-size area-auto-cols">
         <div
@@ -60,7 +63,10 @@
         title="Specifies the size of an implicitly-created grid column track or pattern of tracks."
       >
         <h2>grid-auto-rows</h2>
-        <OptionsButton class="add-button" @click="addImplicitRow(grid, '1fr')">add<span>+</span></OptionsButton>
+        <OptionsButton class="add-button" @click="addImplicitRow(grid, '1fr')">
+          add
+          <span>+</span>
+        </OptionsButton>
       </div>
       <div v-for="row in autoRowsNumber" :key="row" class="area-size area-auto-rows">
         <div
@@ -155,11 +161,8 @@ import {
   setImplicitColValueUnit,
 } from '../../store.js'
 
-import { useGridDimensions } from '../../composables/area.js'
 import { unitMeasureMap } from '../../utils.js'
 import { debounce } from '../../composables'
-
-const { colsNumber, rowsNumber } = useGridDimensions(grid)
 
 const autoColsNumber = computed(() => grid.value.col.auto.length)
 const autoRowsNumber = computed(() => grid.value.row.auto.length)

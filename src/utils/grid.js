@@ -45,7 +45,7 @@ function parseGridLimit(s) {
   if (s === undefined || s === 'auto') {
     return { auto: true, span: 1 }
   }
-  const parts = trimSplit(s, 'span')
+  const parts = trimSplit(s, 'span ')
   if (parts.length > 1) {
     const span = parseInt(parts[1])
     if (Number.isNaN(span) || span < 1) {
@@ -179,15 +179,16 @@ export function explicitGridAreaToGridRegion(gridArea) {
   }
 }
 
-function toValidLineNumber(l, rd) {
-  return l > 0 ? l : l - (rd + 1) - 1
+export function asValidLineNumber(n, type, implicitGrid) {
+  return n - (n > 0 ? 0 : type === 'row' ? implicitGrid.rd + 2 : implicitGrid.cd + 2)
 }
-function toValidGridArea(rs, cs, re, ce, rd, cd) {
-  const vrs = toValidLineNumber(rs, rd)
-  const vcs = toValidLineNumber(cs, cd)
-  const vre = toValidLineNumber(re, rd)
-  const vce = toValidLineNumber(ce, cd)
-  return `${vrs} / ${vcs} / ${vre} / ${vce}`
+
+export function asValidGridArea(rs, cs, re, ce, implicitGrid) {
+  return `${asValidLineNumber(rs, 'row', implicitGrid)} / ${asValidLineNumber(
+    cs,
+    'col',
+    implicitGrid
+  )} / ${asValidLineNumber(re, 'row', implicitGrid)} / ${asValidLineNumber(ce, 'col', implicitGrid)}`
 }
 
 function rowIsTherePlace(pg, r, c, rowSpan, colSpan) {
@@ -278,20 +279,28 @@ function fillCell(ig, r, c) {
   ig.grid[r - ig.ri][c - ig.ci] = true
 }
 
-function fillGridRegion(ig, gridRegion) {
-  const { row, col } = gridRegion
+function ensureRowSpace(ig, row) {
   if (row.start < ig.ri) {
     addTopRows(ig, ig.ri - row.start)
   }
-  if (row.end - 1 > ig.rows) {
-    addBottomRows(ig, row.end - 1 - ig.rows)
+  if (row.end - ig.ri > ig.rows) {
+    addBottomRows(ig, row.end - ig.ri - ig.rows)
   }
+}
+
+function ensureColSpace(ig, col) {
   if (col.start < ig.ci) {
     addLeftColumns(ig, ig.ci - col.start)
   }
-  if (col.end - 1 > ig.cols) {
-    addRightColumns(ig, col.end - 1 - ig.cols)
+  if (col.end - ig.ci > ig.cols) {
+    addRightColumns(ig, col.end - ig.ci - ig.cols)
   }
+}
+
+function fillGridRegion(ig, gridRegion) {
+  const { row, col } = gridRegion
+  ensureRowSpace(ig, row)
+  ensureColSpace(ig, col)
   for (let r = row.start; r < row.end; ++r) {
     for (let c = col.start; c < col.end; ++c) {
       fillCell(ig, r, c)
@@ -308,7 +317,7 @@ function directFillGrid(grid, r, c, rowSpan, colSpan) {
 }
 
 function directToValidGridArea(ig, rs, cs, re, ce) {
-  return toValidGridArea(rs + ig.ri, cs + ig.ci, re + ig.ri, ce + ig.ci, ig.rd, ig.cd)
+  return asValidGridArea(rs + ig.ri, cs + ig.ci, re + ig.ri, ce + ig.ci, ig)
 }
 
 function fillSpan(ig, cursor, rspan, cspan) {
@@ -330,6 +339,7 @@ function placeRowLockedArea(ig, area, cursor, limits) {
   }
   const { row, col } = limits
   const gd = getGridDimension(area, 'row', limits)
+  ensureRowSpace(ig, gd)
   cursor.row = gd.start - ig.ri
   for (let c = cursor.col; c < ig.cols; c++) {
     if (colIsTherePlace(ig.grid, cursor.row, c, row.span, col.span)) {
@@ -347,6 +357,7 @@ function placeColLockedArea(ig, area, cursor, limits) {
   }
   const { row, col } = limits
   const gd = getGridDimension(area, 'col', limits)
+  ensureColSpace(ig, gd)
   cursor.col = gd.start - ig.ci
   for (let r = cursor.row; r < ig.rows; r++) {
     if (rowIsTherePlace(ig.grid, r, cursor.col, row.span, col.span)) {
@@ -399,7 +410,7 @@ function placeAutoAreaForColDir(ig, area, cursor, limits) {
 }
 
 export function findImplicitGrid(area) {
-  // https://drafts.csswg.org/css-grid/#auto-placement-algo
+  // https://www.w3.org/TR/css-grid-1/#auto-placement-algo
 
   const children = area.children
   const grid = area.grid
@@ -436,8 +447,9 @@ export function findImplicitGrid(area) {
       }
     }
     if (dir === 'row') {
-      // Process the items locked to a given row
       let cursor = { row: 0, col: 0 }
+
+      // Process the items locked to a given row
       areas.forEach((a) => {
         denseReset(cursor)
         if (a.limits.col.auto && !a.limits.row.auto) {
@@ -445,10 +457,18 @@ export function findImplicitGrid(area) {
         }
       })
 
-      // Add columns to accomodate max span for auto placed items
+      // Process the items locked to a given column
+      areas.forEach((a) => {
+        if (a.limits.row.auto && !a.limits.col.auto) {
+          const col = getGridDimension(a.area, 'col', a.limits)
+          ensureColSpace(ig, col)
+        }
+      })
+
+      // Add columns to accommodate max span for auto placed items
       const maxColSpan = areas.reduce((span, current) => {
-        const { col } = current.limits
-        return col.auto && span < col.span ? col.span : span
+        const { col, row } = current.limits
+        return col.auto && row.auto && span < col.span ? col.span : span
       }, 1)
       if (ig.cols < maxColSpan) {
         addRightColumns(ig, maxColSpan - ig.cols)
@@ -474,8 +494,9 @@ export function findImplicitGrid(area) {
     } else {
       // dir === 'col'
 
-      // Process the items locked to a given column
       let cursor = { row: 0, col: 0 }
+
+      // Process the items locked to a given column
       areas.forEach((a) => {
         denseReset(cursor)
         if (a.limits.row.auto && !a.limits.col.auto) {
@@ -483,10 +504,18 @@ export function findImplicitGrid(area) {
         }
       })
 
-      // Add rows to accomodate max span for auto placed items
+      // Ensure space for the items locked to a given row
+      areas.forEach((a) => {
+        if (a.limits.col.auto && !a.limits.row.auto) {
+          const row = getGridDimension(a.area, 'row', a.limits)
+          ensureRowSpace(ig, row)
+        }
+      })
+
+      // Add rows to accommodate max span for auto placed items
       const maxRowSpan = areas.reduce((span, current) => {
-        const { row } = current.limits
-        return row.auto && span < row.span ? row.span : span
+        const { row, col } = current.limits
+        return row.auto && col.auto && span < row.span ? row.span : span
       }, 1)
       if (ig.rows < maxRowSpan) {
         addBottomRows(ig, maxRowSpan - ig.rows)
@@ -514,5 +543,5 @@ export function findImplicitGrid(area) {
     gridAreas = children.map(() => undefined)
     ig = { rows: 1, cols: 1, ri: 1, ci: 1 }
   }
-  return { gridAreas, implicitGrid: { cols: ig.cols, rows: ig.rows, ri: ig.ri, ci: ig.ci } }
+  return { gridAreas, implicitGrid: { cols: ig.cols, rows: ig.rows, ri: ig.ri, ci: ig.ci, rd: ig.rd, cd: ig.cd } }
 }

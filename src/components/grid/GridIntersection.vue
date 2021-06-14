@@ -2,7 +2,7 @@
   <section
     class="grid-intersection"
     :style="{
-      gridArea: `${r} / ${c} / ${r + 1} / ${c + 1}`,
+      gridArea,
     }"
   >
     <div
@@ -20,6 +20,7 @@
 <script setup>
 import { dragging } from '../../store.js'
 import { computed, defineProps, defineEmit } from 'vue'
+import { asValidGridArea } from '../../utils/grid.js'
 
 const props = defineProps({
   row: { type: Number, required: true },
@@ -36,13 +37,17 @@ const grid = computed(() => props.area.grid)
 const r = computed(() => {
   const { rows, ri } = props.implicitGrid
   const rv = props.row
-  return rv < rows + 2 - ri ? rv : rv - 1
+  return rv < rows + ri ? rv : rv - 1
 })
 
 const c = computed(() => {
   const { cols, ci } = props.implicitGrid
   const cv = props.col
-  return cv < cols + 2 - ci ? cv : cv - 1
+  return cv < cols + ci ? cv : cv - 1
+})
+
+const gridArea = computed(() => {
+  return asValidGridArea(r.value, c.value, r.value + 1, c.value + 1, props.implicitGrid)
 })
 </script>
 

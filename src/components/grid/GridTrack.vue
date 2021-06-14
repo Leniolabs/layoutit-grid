@@ -32,7 +32,8 @@
 </template>
 
 <script setup>
-import { useIsCurrentArea, useGridDimensions } from '../../composables/area.js'
+import { useIsCurrentArea } from '../../composables/area.js'
+import { asValidGridArea } from '../../utils/grid.js'
 import { dragging, currentFocus, currentHover, darkmode, parseValue } from '../../store.js'
 import { defineProps, computed, toRefs } from 'vue'
 
@@ -89,8 +90,8 @@ const isExplicitNext = computed(() => {
 const gridArea = computed(() => {
   const { pos, implicitGrid } = props
   return props.type === 'row'
-    ? `${pos} / ${2 - implicitGrid.ci} / ${pos + 1} / ${implicitGrid.cols + 2 - implicitGrid.ci}`
-    : `${2 - implicitGrid.ri} / ${pos} / ${implicitGrid.rows + 2 - implicitGrid.ri} / ${pos + 1}`
+    ? asValidGridArea(pos, implicitGrid.ci, pos + 1, implicitGrid.cols + implicitGrid.ci, props.implicitGrid)
+    : asValidGridArea(implicitGrid.ri, pos, implicitGrid.rows + implicitGrid.ri, pos + 1, props.implicitGrid)
 })
 </script>
 

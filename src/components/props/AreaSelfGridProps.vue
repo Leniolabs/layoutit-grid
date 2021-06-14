@@ -48,9 +48,9 @@ const gridAreaValue = computed(() => {
 
 const onEdit = () => {
   let gridRegion = getGridRegion(props.area)
+  const explicitAreas = findImplicitGrid(parent)
   if (!gridRegion) {
     const parent = props.area.parent
-    const explicitAreas = findImplicitGrid(parent)
     gridRegion = explicitGridAreaToGridRegion(explicitAreas.gridAreas[parent.children.indexOf(props.area)])
   }
   if (gridRegion) {
@@ -62,6 +62,7 @@ const onEdit = () => {
       area: props.area,
       name: props.area.name,
       parent: props.area.parent,
+      implicitGrid: explicitAreas.implicitGrid,
     }
   }
 }
