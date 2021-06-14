@@ -224,9 +224,9 @@ const options = computed(() => alignOptionsMap[props.type.split('-')[1] as Align
   &.default-value > div {
     opacity: 1;
     color: #fff;
-    background: #01579b;
+    background: #01579b77;
     &:hover {
-      background: #01579b;
+      background: #01579b99;
     }
     svg {
       stroke: #fff;
