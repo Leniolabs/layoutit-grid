@@ -71,6 +71,9 @@ const isDraggingTrackLine = computed(
   font-size: 13px;
   color: #aaa;
   padding: 2px;
+  &.row {
+    padding-right: 4px;
+  }
   user-select: none;
   &.active {
     color: #27ae60;
