@@ -27,30 +27,30 @@ function getCode() {
 
 <style scoped>
 ::v-deep(.token.punctuation) {
-  color: #d4d4d4;
+  color: var(--color-gray-light);
 }
 
 ::v-deep(.token.string) {
-  color: #ce9178;
+  color: var(--color-orange);
 }
 
 ::v-deep(.token.property) {
-  color: #9cdcfe;
+  color: var(--color-blue-lightest);
 }
 
 ::v-deep(.token.selector) {
-  color: #d7ba7d;
+  color: var(--color-golden);
 }
 
 ::v-deep(.token.tag) {
-  color: #569cd6;
+  color: var(--color-blue-light);
 }
 
 ::v-deep(.token.attr-name) {
-  color: #9cdcfe;
+  color: var(--color-blue-lightest);
 }
 
 ::v-deep(.token.attr-value) {
-  color: #ce9178;
+  color: var(--color-orange);
 }
 </style>

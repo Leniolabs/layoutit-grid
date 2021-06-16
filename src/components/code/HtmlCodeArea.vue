@@ -169,7 +169,7 @@ function onDragOver(areaTarget, event) {
   position: absolute;
   left: 0px;
   top: -2px;
-  color: #ce9178;
+  color: var(--color-orange);
   cursor: grab;
 }
 
@@ -184,7 +184,7 @@ function onDragOver(areaTarget, event) {
 .reordering::after {
   position: absolute;
   top: -11.5px;
-  color: #ce9178;
+  color: var(--color-orange);
   content: '\27A4  ——————————';
   left: 0px;
 }
@@ -198,6 +198,6 @@ function onDragOver(areaTarget, event) {
   left: -5px;
   height: 20px;
   width: 330px;
-  background-color: rgba(255, 255, 255, 0.123);
+  background-color: rgba(var(--color-white), 0.123);
 }
 </style>

@@ -49,9 +49,9 @@ function getSystemTheme() {
 <style scoped lang="postcss">
 button.btn-dark {
   margin-bottom: 10px;
-  background: #151515;
-  border: solid 1px #23241f;
-  color: #fff;
+  background: var(--color-black);
+  border: solid 1px var(--color-gray-darkest);
+  color: var(--color-white);
   border-radius: 25px;
   cursor: pointer;
   width: 42px;

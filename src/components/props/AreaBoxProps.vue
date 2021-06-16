@@ -51,7 +51,7 @@ label {
   display: block;
   flex: 1;
   max-width: max-content;
-  color: #9cdcfe;
+  color: var(--color-blue-lightest);
   font-weight: normal;
   font-size: 13px;
   text-shadow: none;
@@ -90,8 +90,8 @@ label {
   margin-bottom: 6px;
   .unit-select {
     height: 30px;
-    background: #fafafa;
-    color: #333;
+    background: var(--color-white);
+    color: var(--color-gray-dark);
     font-size: 14px;
     text-shadow: none;
     direction: ltr;
@@ -110,8 +110,8 @@ label {
     input {
       border: 0;
       width: 100%;
-      background: #fafafa;
-      color: #333;
+      background: var(--color-white);
+      color: var(--color-gray-dark);
       height: 30px;
       text-align: center;
       flex: 1;
@@ -160,7 +160,7 @@ button,
   }
   svg {
     width: 10px;
-    stroke: #fff;
+    stroke: var(--color-white);
     stroke-width: 6px;
   }
   &:hover {
@@ -172,9 +172,9 @@ button,
 .add-button {
   height: 30px;
   max-width: 50px;
-  background: #01579b;
+  background: var(--color-blue);
   &:hover {
-    background: #0165b4;
+    background: var(--color-add);
   }
 }
 .layout-props {

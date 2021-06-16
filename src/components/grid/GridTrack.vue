@@ -105,57 +105,57 @@ section {
   &.col {
     top: -100vh;
     height: 300vh;
-    border-right: 1px dashed #999;
+    border-right: 1px dashed var(--color-gray);
     &.col-first {
-      border-left: 1px solid #999;
+      border-left: 1px solid var(--color-gray);
     }
     &:not(.col-first):not(.col-no-gap) {
-      border-left: 1px dashed #999;
+      border-left: 1px dashed var(--color-gray);
     }
     &.col-last {
-      border-right: 1px solid #999;
+      border-right: 1px solid var(--color-gray);
       & ~ .col {
-        border-right: 1px dotted #999;
+        border-right: 1px dotted var(--color-gray);
       }
     }
   }
   &.row {
     width: 300vw;
     left: -100vw;
-    border-bottom: 1px dashed #999;
+    border-bottom: 1px dashed var(--color-gray);
     &:not(.row-first):not(.row-no-gap) {
-      border-top: 1px dashed #999;
+      border-top: 1px dashed var(--color-gray);
     }
     &.row-first {
-      border-top: 1px solid #999;
+      border-top: 1px solid var(--color-gray);
     }
     &.row-last {
-      border-bottom: 1px solid #999;
+      border-bottom: 1px solid var(--color-gray);
       & ~ .row {
-        border-bottom: 1px dotted #999;
+        border-bottom: 1px dotted var(--color-gray);
       }
     }
   }
   &.focused {
-    background: #27ae6011;
+    background: rgba(var(--color-green), 0.1);
   }
   &.remove-action {
-    background: #ac1e3d11;
+    background: rgba(var(--color-remove), 0.1);
   }
   &.darkmode {
-    border: 1px dashed #888;
+    border: 1px dashed var(--color-gray);
   }
   &:not(.row-no-gap).row.dragging-prev {
-    border-top: 1px solid #27ae60 !important;
+    border-top: 1px solid var(--color-green) !important;
   }
   &.row.dragging-next {
-    border-bottom: 1px solid #27ae60 !important;
+    border-bottom: 1px solid var(--color-green) !important;
   }
   &:not(.col-no-gap).col.dragging-prev {
-    border-left: 1px solid #27ae60 !important;
+    border-left: 1px solid var(--color-green) !important;
   }
   &.col.dragging-next {
-    border-right: 1px solid #27ae60 !important;
+    border-right: 1px solid var(--color-green) !important;
   }
 }
 </style>

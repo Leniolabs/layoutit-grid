@@ -136,7 +136,7 @@ function getPermalink() {
     align-items: center;
     justify-content: center;
     &:hover {
-      background: #323232;
+      background: var(--color-gray-dark);
     }
     &[disabled] {
       opacity: 0.35;
@@ -144,23 +144,23 @@ function getPermalink() {
   }
   .btn-trash {
     padding: 10px;
-    background: #151515;
-    border: solid 1px #23241f;
+    background: var(--color-black);
+    border: solid 1px var(--color-gray-darkest);
     max-width: 42px;
   }
   .btn-link {
     padding: 10px;
-    background: #151515;
+    background: var(--color-black);
     border: solid 1px transparent;
     &:hover {
-      background: #323232;
+      background: var(--color-gray-dark);
     }
   }
   .btn-history {
     padding: 10px;
     max-width: 42px;
-    background: #151515;
-    border: solid 1px #23241f;
+    background: var(--color-black);
+    border: solid 1px var(--color-gray-darkest);
     &:first-child {
       margin-left: 0;
       margin-right: 0;
@@ -176,10 +176,10 @@ function getPermalink() {
 }
 
 .button {
-  background: #6b16a1;
+  background: var(--color-purple);
   border: 0;
   border-radius: 50px;
-  color: #fff;
+  color: var(--color-white);
   cursor: pointer;
   display: inline-block;
   font-family: inherit;
@@ -191,11 +191,11 @@ function getPermalink() {
     float: right;
     margin: 0 0 0 10px;
     &:hover {
-      background: #323232;
+      background: var(--color-gray-dark);
     }
   }
   &.btn-default {
-    background: #b4bcc8;
+    background: var(--color-gray-light);
   }
 }
 
@@ -203,7 +203,7 @@ function getPermalink() {
   position: relative;
   max-height: calc(100% - 216px);
   overflow: auto;
-  border: solid 1px #23241f;
+  border: solid 1px var(--color-gray-darkest);
   .code-container {
     max-height: initial;
     margin-bottom: 0;
@@ -213,7 +213,7 @@ function getPermalink() {
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #555 #111;
+  scrollbar-color: var(--color-gray-middle) var(--color-black);
 }
 ::-webkit-scrollbar {
   width: 5px;
@@ -222,14 +222,14 @@ function getPermalink() {
   height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #111;
+  background: var(--color-black);
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #555;
+  background: var(--color-gray-middle);
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #777;
+  background: var(--color-gray-middle);
 }
 </style>

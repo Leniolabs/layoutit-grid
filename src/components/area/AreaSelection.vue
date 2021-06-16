@@ -198,7 +198,7 @@ export default {
 .area-selection {
   pointer-events: none;
   touch-action: none;
-  background: #fff;
+  background: var(--color-white);
   height: 100%;
   cursor: pointer;
   position: absolute;
@@ -207,7 +207,7 @@ export default {
   bottom: 0;
   right: 0;
   border: 2px solid;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(var(--color-white), 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -225,7 +225,7 @@ export default {
     text-align: center;
     border: 0;
     font-size: 24px;
-    color: #300548;
+    color: var(--color-purple-dark);
     font-family: 'Alegreya Sans', 'Helvetica Neue', Arial, sans-serif;
     background: transparent;
     width: 100%;
@@ -234,7 +234,7 @@ export default {
     background: var(--color-add);
     border: 0;
     height: 30px;
-    color: #fff;
+    color: var(--color-white);
     font-size: 13px;
     display: inline-block;
     padding: 0.375em;
@@ -248,7 +248,7 @@ export default {
       top: 0;
       width: 100%;
       height: 100%;
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(var(--color-white), 0.15);
       pointer-events: none;
       display: none;
     }
@@ -263,15 +263,15 @@ export default {
       }
     }
     &.btn-subgrid {
-      background: #6b16a1;
+      background: var(--color-purple);
       padding-top: 4px;
       &:hover {
-        background: #490c6f;
+        background: var(--color-purple-middle);
       }
       svg {
         height: 1.125rem;
         width: 1.125rem;
-        fill: #fff;
+        fill: var(--color-white);
       }
     }
     &.btn-remove {
@@ -282,7 +282,7 @@ export default {
       }
       svg {
         width: 10px;
-        stroke: #fff;
+        stroke: var(--color-white);
         stroke-width: 15px;
       }
     }

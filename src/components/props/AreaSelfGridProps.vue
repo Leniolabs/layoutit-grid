@@ -81,7 +81,7 @@ label {
   display: block;
   flex: 1 1 0%;
   max-width: max-content;
-  color: #9cdcfe;
+  color: var(--color-blue-lightest);
   font-size: 13px;
   text-shadow: none;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
@@ -97,8 +97,8 @@ label {
 }
 .input-container input {
   height: 30px;
-  background: #fafafa;
-  color: #333;
+  background: var(--color-white);
+  color: var(--color-gray-dark);
   font-size: 14px;
   text-shadow: none;
   direction: ltr;

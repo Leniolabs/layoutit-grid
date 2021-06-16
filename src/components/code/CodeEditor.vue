@@ -35,7 +35,7 @@ function copyToClipBoard() {
 <style scoped lang="postcss">
 * {
   scrollbar-width: thin;
-  scrollbar-color: #555 #111;
+  scrollbar-color: var(--color-gray-middle) var(--color-black);
 }
 ::-webkit-scrollbar {
   width: 5px;
@@ -44,19 +44,19 @@ function copyToClipBoard() {
   height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #111;
+  background: var(--color-black);
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #555;
+  background: var(--color-gray-middle);
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #777;
+  background: var(--color-gray-middle);
 }
 .code-container {
-  background: #151515;
-  border: solid 1px #23241f;
+  background: var(--color-black);
+  border: solid 1px var(--color-gray-darkest);
   overflow: auto;
   margin-bottom: 8px;
   max-width: 350px;
@@ -75,7 +75,7 @@ function copyToClipBoard() {
   left: 0;
   right: 0;
   display: block;
-  color: #aaa;
+  color: var(--color-gray);
   font-weight: 700;
   font-size: 12px;
   padding: 8px;
@@ -88,7 +88,7 @@ function copyToClipBoard() {
   top: 6px;
   right: 5px;
   position: absolute;
-  color: #eee;
+  color: var(--color-gray-lightest);
   background-color: Transparent;
   background-repeat: no-repeat;
   font-weight: 700;
@@ -105,7 +105,7 @@ function copyToClipBoard() {
 
 pre,
 code {
-  color: #d4d4d4;
+  color: var(--color-gray-light);
   font-size: 13px;
   text-shadow: none;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
@@ -128,7 +128,7 @@ code {
 pre::selection,
 code::selection {
   text-shadow: none;
-  background: #b3d4fc;
+  background: var(--color-blue-lightest);
 }
 
 @media print {
@@ -146,7 +146,7 @@ pre {
 :not(pre) > code {
   padding: 0.1em 0.3em;
   border-radius: 0.3em;
-  color: #db4c69;
-  background: #f9f2f4;
+  color: var(--color-magenta-light);
+  background: var(--color-white);
 }
 </style>

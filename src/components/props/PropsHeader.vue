@@ -24,7 +24,7 @@ import IconSubgrid from '../icons/IconSubgrid.vue'
 <style scoped lang="postcss">
 .header {
   z-index: 20000;
-  color: #fff;
+  color: var(--color-white);
   overflow: auto;
   padding: 0;
   text-align: left;
@@ -35,7 +35,7 @@ import IconSubgrid from '../icons/IconSubgrid.vue'
   @media screen and (max-width: 768px) {
     position: fixed;
     top: 0;
-    background: #1e1e1e;
+    background: var(--color-gray-darkest);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -55,7 +55,7 @@ import IconSubgrid from '../icons/IconSubgrid.vue'
   margin: 0 0.25rem;
   svg {
     z-index: 9;
-    fill: #fff;
+    fill: var(--color-white);
     height: 1.5rem;
     margin-top: 0.25rem;
     margin-left: 0.25rem;

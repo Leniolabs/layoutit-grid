@@ -98,15 +98,15 @@ section {
     background: #ddddddcc;
   }*/
   &:not(.dragging):hover {
-    background: #f6fbf6 !important;
+    background: var(--color-white) !important;
   }
   &.focused {
-    background: #f6fbf6 !important;
+    background: var(--color-white) !important;
   }
   &.implicit {
     background: transparent !important;
     &:hover {
-      background: rgba(255, 255, 255, 0.5) !important;
+      background: rgba(var(--color-white), 0.5) !important;
     }
   }
 }

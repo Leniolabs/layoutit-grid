@@ -6,10 +6,10 @@
 
 <style scoped lang="postcss">
 button {
-  background: #107292;
+  background: var(--color-teal);
   border: 0;
   border-radius: 3px;
-  color: #fff;
+  color: var(--color-white);
   cursor: pointer;
   line-height: 1;
   margin-bottom: 0.875em;
@@ -20,10 +20,10 @@ button {
   width: 100%;
   transition: all 0.2s ease-in-out;
   &.active {
-    background: #107292;
+    background: var(--color-teal);
   }
   &:hover {
-    background: #236f86;
+    background: var(--color-teal-dark);
   }
 }
 </style>

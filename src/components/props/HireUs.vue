@@ -44,7 +44,7 @@ div {
     text-align: center;
     display: block;
     text-decoration: none;
-    color: #aaa;
+    color: var(--color-gray);
     font-weight: normal;
     font-size: 13px;
     text-shadow: none;
@@ -60,7 +60,7 @@ div {
     display: block;
     background: var(--color-hire-us);
     border-radius: 30px;
-    color: #fff;
+    color: var(--color-white);
     display: block;
     font-size: 0.9rem;
     letter-spacing: 0.2px;
@@ -68,7 +68,7 @@ div {
     text-decoration: none;
     text-align: center;
     transition: all 0.2s ease-in-out;
-    text-shadow: rgba(0, 0, 0, 0.3) 0 1px 1px;
+    text-shadow: rgba(var(--color-black), 0.3) 0 1px 1px;
     max-width: max-content;
     margin-bottom: 0;
     &:hover {

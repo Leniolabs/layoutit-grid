@@ -17,11 +17,11 @@ button {
   min-width: 2.188em;
   margin-bottom: 0.626em;
   padding: 0.313em 9px;
-  text-shadow: rgba(0, 0, 0, 0.3) 0 1px 1px;
-  color: #fff;
+  text-shadow: rgba(var(--color-black), 0.3) 0 1px 1px;
+  color: var(--color-white);
   background: var(--color-add);
   &.active {
-    background: #27ae60;
+    background: var(--color-green);
   }
   &:hover {
     background: var(--color-add-active);

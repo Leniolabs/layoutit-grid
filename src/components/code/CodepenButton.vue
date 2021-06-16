@@ -56,21 +56,21 @@ ${presentationCSS(props.area)}
 .button {
   border: 0;
   border-radius: 50px;
-  color: #eee;
+  color: var(--color-gray-lightest);
   cursor: pointer;
   font-family: inherit;
   font-size: 15px;
   text-align: center;
   margin: 0 auto;
-  background: #151515;
+  background: var(--color-black);
   user-select: none;
-  border: 1px solid #23241f;
+  border: 1px solid var(--color-gray-darkest);
   display: flex;
   align-items: center;
   transition: all 0.2s ease-in-out;
   padding: 10px 15px;
   &:hover {
-    background: #323232;
+    background: var(--color-gray-dark);
   }
   span {
     margin-left: 10px;

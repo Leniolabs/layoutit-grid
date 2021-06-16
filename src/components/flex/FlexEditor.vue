@@ -28,27 +28,27 @@ const isActive = useIsActiveArea(area)
 <style scoped lang="postcss">
 .grid section.flex-container {
   overflow: auto;
-  background: #fff3c4;
+  background: var(--color-yellow-light);
   &:hover {
-    background: #fff3c4;
+    background: var(--color-yellow-light);
   }
   &.grayed {
-    background: #a79f7f;
+    background: var(--color-yellow-dark);
   }
   div {
-    border-right: 1px dashed #999;
-    border-bottom: 1px dashed #999;
+    border-right: 1px dashed var(--color-gray);
+    border-bottom: 1px dashed var(--color-gray);
     display: grid;
     align-content: center;
     width: 100%;
     &:hover {
-      background: #fff3c4;
+      background: var(--color-yellow-light);
     }
     &.selected {
-      background: #c0dfa0;
+      background: var(--color-green-ligth);
     }
     &.grayed {
-      background: #a79f7f;
+      background: var(--color-yellow-dark);
     }
   }
 }

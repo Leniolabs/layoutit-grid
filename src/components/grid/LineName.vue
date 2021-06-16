@@ -72,8 +72,8 @@ export default {
 .col {
   z-index: 1;
   pointer-events: initial;
-  background: #bbe5b3;
-  border: 1px solid green;
+  background: var(--color-green-ligth);
+  border: 1px solid var(--color-green);
   font: 0.85rem arial;
   height: max-content;
   opacity: 1;

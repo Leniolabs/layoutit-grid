@@ -22,10 +22,10 @@ const gridArea = computed(() => getCodeGridArea(props.area, props.options.templa
 <style scoped lang="postcss">
 span {
   &:hover {
-    color: #eee;
+    color: var(--color-gray-lightest);
   }
   &:focus {
-    color: #eee;
+    color: var(--color-gray-lightest);
   }
 }
 </style>

@@ -39,7 +39,7 @@ defineEmit(['update:modelValue'])
   }
 }
 .display-select {
-  background: #fff;
+  background: var(--color-white);
   border: 0 none;
   border-radius: 2px;
   width: 100%;
@@ -64,38 +64,38 @@ defineEmit(['update:modelValue'])
   cursor: pointer;
   position: relative;
   margin: 0 6px 6px 0;
-  border: solid 1px #23241f;
-  background: #151515;
+  border: solid 1px var(--color-gray-darkest);
+  background: var(--color-black);
   line-height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: #aaa;
+  color: var(--color-gray);
   svg {
-    stroke: #eee;
+    stroke: var(--color-gray-lightest);
     width: 20px;
   }
   &:hover {
-    color: #fff;
+    color: var(--color-white);
     svg {
-      stroke: #fff;
+      stroke: var(--color-white);
     }
   }
   &.default-value > div {
     opacity: 1;
-    color: #fff;
-    background: #01579b;
+    color: var(--color-white);
+    background: var(--color-blue);
     border-radius: 2px;
     &:hover {
-      background: #01579b;
+      background: var(--color-blue);
     }
   }
 }
 input[type='radio']:checked + label {
   opacity: 1;
-  color: #fff;
-  background: #01579b;
+  color: var(--color-white);
+  background: var(--color-blue);
   border-radius: 2px;
 }
 </style>

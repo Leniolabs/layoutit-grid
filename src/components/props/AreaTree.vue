@@ -205,14 +205,14 @@ function addArea() {
 .area-name > span.name::after {
   content: '{';
   display: inline-block;
-  color: #fff;
+  color: var(--color-white);
   padding: 2px 0 1px 4px;
 }
 .area-name::after {
   content: '}';
   display: inline-block;
   margin-right: 6px;
-  color: #fff;
+  color: var(--color-white);
 }
 .area-name > span.name {
   color: rgb(215, 186, 125);
@@ -220,10 +220,10 @@ function addArea() {
   padding-right: 0;
   cursor: pointer;
   &.current {
-    background: #01579b;
-    color: #fff;
+    background: var(--color-blue);
+    color: var(--color-white);
     &:after {
-      background: #151515;
+      background: var(--color-black);
       padding: 2px 0 1px 4px;
     }
   }
@@ -234,10 +234,10 @@ function addArea() {
     color: rgb(156, 220, 254);
     padding: 2px 4px;
     &.current {
-      background: #01579b;
-      color: #fff;
+      background: var(--color-blue);
+      color: var(--color-white);
       &:after {
-        background: #151515;
+        background: var(--color-black);
         padding: 2px 0 1px 4px;
       }
     }
@@ -275,7 +275,7 @@ function addArea() {
   right: 5px;
   width: 16px;
   &:hover {
-    background: #c2185b;
+    background: var(--color-magenta);
   }
 }
 

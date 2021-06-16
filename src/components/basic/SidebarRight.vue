@@ -24,7 +24,7 @@ import BrandBanner from '../props/BrandBanner.vue'
 .code-sidebar {
   //overflow: auto;
   text-align: left;
-  color: #e9e9e9;
+  color: var(--color-gray-lightest);
   padding: 105px 15px;
   height: 100vh;
   transition: transform 0.2s ease-in;
@@ -32,7 +32,7 @@ import BrandBanner from '../props/BrandBanner.vue'
   @media (max-width: 769px) {
     transform: translateX(100%);
     width: 100%;
-    background: #1e1e1e;
+    background: var(--color-gray-darkest);
     position: fixed;
     right: 0;
     bottom: 0;
