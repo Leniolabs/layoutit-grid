@@ -75,14 +75,14 @@ h2 {
         padding: 0.313em;
         font-size: 14px;
         &.dragging {
-          background: #bbe5b3;
+          background: var(--color-green-ligth);
         }
       }
       button {
         margin-bottom: 0;
-        background: #b0184b;
+        background: var(--color-magenta);
         &:hover {
-          background: #c11651;
+          background: var(--color-magenta);
         }
         svg {
           width: 100%;
@@ -91,7 +91,7 @@ h2 {
         }
       }
       select {
-        background: #fff;
+        background: var(--color-white);
         border: 0;
         width: 100%;
         font-size: 14px;
@@ -101,7 +101,7 @@ h2 {
 }
 
 .flex-item.selected {
-  background: #12906a;
+  background: var(--color-green);
 }
 
 .flex-item.selected h2:after {
@@ -111,6 +111,6 @@ h2 {
   display: inline-block;
   margin-left: 10px;
   border-radius: 50%;
-  background: #fdd835;
+  background: var(--color-yellow);
 }
 </style>

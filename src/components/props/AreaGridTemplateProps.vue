@@ -219,7 +219,7 @@ h2 {
   display: block;
   flex: 1;
   max-width: max-content;
-  color: #9cdcfe;
+  color: var(--color-blue-lightest);
   font-weight: normal;
   font-size: 13px;
   text-shadow: none;
@@ -270,8 +270,8 @@ h2 {
   margin-bottom: 6px;
   .unit-select {
     height: 30px;
-    background: #fafafa;
-    color: #333;
+    background: var(--color-white);
+    color: var(--color-gray-dark);
     font-size: 14px;
     text-shadow: none;
     direction: ltr;
@@ -290,8 +290,8 @@ h2 {
       border: 0;
       width: 100%;
       max-width: 80px;
-      background: #fafafa;
-      color: #333;
+      background: var(--color-white);
+      color: var(--color-gray-dark);
       height: 30px;
       text-align: center;
       flex: 1;
@@ -304,7 +304,7 @@ h2 {
       border-radius: 2px;
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
-      border-right: 1px solid #aaa;
+      border-right: 1px solid var(--color-gray);
     }
   }
 }
@@ -339,7 +339,7 @@ button,
   }
   svg {
     width: 10px;
-    stroke: #eee;
+    stroke: var(--color-gray-lightest);
     stroke-width: 6px;
   }
   &:hover {
@@ -351,9 +351,9 @@ button,
 .add-button {
   height: 30px;
   max-width: max-content;
-  background: #01579b;
+  background: var(--color-blue);
   padding: 0 12px;
-  color: #fff;
+  color: var(--color-white);
   font-size: 13px;
   text-shadow: none;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
@@ -364,7 +364,7 @@ button,
     display: none;
   }
   &:hover {
-    background: #014982;
+    background: var(--color-blue-dark);
   }
   &:after {
     content: '';
@@ -380,9 +380,9 @@ button,
 .area-size.area-auto-rows .input-container {
   input,
   select {
-    background: #151515;
-    color: #eee;
-    border: 1px solid #232420;
+    background: var(--color-black);
+    color: var(--color-gray-lightest);
+    border: 1px solid var(--color-gray-darkest);
   }
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {

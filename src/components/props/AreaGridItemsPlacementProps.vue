@@ -39,7 +39,7 @@ const grid = computed(() => props.area.grid)
     width: 100%;
   }
   select {
-    background: #fff;
+    background: var(--color-white);
     border: 0 none;
     border-radius: 2px;
     width: 100%;

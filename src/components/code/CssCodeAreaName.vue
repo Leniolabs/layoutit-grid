@@ -49,12 +49,12 @@ const onInput = (event) => {
 
 <style scoped lang="postcss">
 span.token.class-name {
-  color: #d7ba7d;
+  color: var(--color-golden);
   &:hover {
-    color: #eee;
+    color: var(--color-gray-lightest);
   }
   &:focus {
-    color: #eee;
+    color: var(--color-gray-lightest);
   }
   cursor: text;
 }

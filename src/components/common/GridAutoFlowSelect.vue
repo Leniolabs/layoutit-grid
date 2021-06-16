@@ -77,7 +77,7 @@ const optionTooltipsFlow = {
     word-spacing: normal;
     line-height: 30px;
     span {
-      color: #ce9178;
+      color: var(--color-orange);
     }
   }
 }
@@ -99,14 +99,14 @@ const optionTooltipsFlow = {
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   cursor: pointer;
   position: relative;
-  border: solid 1px #23241f;
-  background: #151515;
+  border: solid 1px var(--color-gray-darkest);
+  background: var(--color-black);
   line-height: 30px;
   display: flex;
   align-items: center;
   text-align: center;
   justify-content: center;
-  color: #eee;
+  color: var(--color-gray-lightest);
   height: 35px;
   max-width: 60px;
   &.dense-label {
@@ -116,38 +116,38 @@ const optionTooltipsFlow = {
     border-right: 0;
   }
   svg {
-    stroke: #eee;
+    stroke: var(--color-gray-lightest);
     width: 20px;
     stroke-width: 6px;
   }
   &:hover {
-    color: #fff;
-    background: #23241f;
+    color: var(--color-white);
+    background: var(--color-gray-darkest);
     svg {
-      stroke: #fff;
+      stroke: var(--color-white);
     }
   }
   &.default-value > div {
     opacity: 1;
-    color: #fff;
-    background: #01579b;
+    color: var(--color-white);
+    background: var(--color-blue);
     &:hover {
-      background: #01579b;
+      background: var(--color-blue);
     }
   }
 }
 input[type='checkbox']:checked + label,
 input[type='radio']:checked + label {
   opacity: 1;
-  color: #fff;
-  background: #01579b;
+  color: var(--color-white);
+  background: var(--color-blue);
   &:hover {
-    background: #01579b;
+    background: var(--color-blue);
   }
   &.dense-label {
   }
   svg {
-    stroke: #eee;
+    stroke: var(--color-gray-lightest);
   }
 }
 </style>

@@ -178,9 +178,9 @@ function onUpdateType(type) {
 <style scoped lang="postcss">
 .props-accordion-item h1 {
   width: 100%;
-  border-top: 1px solid rgba(68, 68, 68, 0.5);
+  border-top: 1px solid rgba(var(--color-gray-dark), 0.5);
 
-  color: #fff;
+  color: var(--color-white);
   font-size: 15px;
   margin: 0;
   padding: 10px 15px;
@@ -189,13 +189,13 @@ function onUpdateType(type) {
     font-weight: normal;
     font-size: 13px;
     text-shadow: none;
-    color: #d7ba7d;
+    color: var(--color-golden);
     font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   }
 }
 
 .area-actions-sidebar h1 {
-  color: #d7ba7d;
+  color: var(--color-golden);
   font-size: 13px;
   text-shadow: none;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
@@ -216,7 +216,7 @@ function onUpdateType(type) {
   text-align: center;
   padding: 5px;
   border-radius: 4px;
-  background: #ddd;
+  background: var(--color-gray-light);
   border-bottom: 1px solid black;
 }
 
@@ -227,7 +227,7 @@ function onUpdateType(type) {
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #491988 #300748;
+  scrollbar-color: var(--color-purple-middle) var(--color-purple-dark);
 }
 ::-webkit-scrollbar {
   width: 5px;
@@ -236,15 +236,15 @@ function onUpdateType(type) {
   height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #1e1e1e;
+  background: var(--color-gray-darkest);
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #666;
+  background: var(--color-gray-middle);
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #5c26a2;
+  background: var(--color-purple-dark);
 }
 
 .items {

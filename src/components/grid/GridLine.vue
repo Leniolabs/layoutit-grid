@@ -154,18 +154,18 @@ section {
     font-size: 10px;
     width: 14px;
     border-radius: 3px;
-    color: #aaa;
-    background: #fff;
+    color: var(--color-gray);
+    background: var(--color-white);
     line-height: 15px;
     text-align: center;
     //z-index: 1;
     &.grayed {
-      background: #e8e8e8;
+      background: var(--color-gray-lightest);
     }
     &.dragging,
     &.focused {
-      background: #27ae60;
-      color: #fff;
+      background: var(--color-green);
+      color: var(--color-white);
       z-index: 10000;
     }
   }

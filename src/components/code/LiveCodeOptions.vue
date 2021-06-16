@@ -80,26 +80,26 @@ const isOpen = ref(false)
     bottom: 0;
     right: 6px;
     left: 0;
-    background: rgba(21, 21, 21, 0.9);
+    background: rgba(var(--color-black), 0.9);
     padding: 10px;
     pointer-events: all;
   }
   a {
-    color: #9cdcfe;
+    color: var(--color-blue-lightest);
   }
   .checkbox-warning {
-    color: #333;
+    color: var(--color-gray-dark);
     margin-top: 5px;
     padding: 6px 10px;
     border-radius: 2px;
-    background-color: #fdd835;
+    background-color: var(--color-yellow);
     width: 100%;
     font-size: 13px;
     .auto-placement-link {
       font-weight: 600;
     }
     a {
-      color: #333;
+      color: var(--color-gray-dark);
     }
   }
   strong {
@@ -146,7 +146,7 @@ const isOpen = ref(false)
   h1 {
     width: 100%;
     position: relative;
-    color: #eee;
+    color: var(--color-gray-lightest);
     font-size: 13px;
     margin: 0;
     padding: 0;

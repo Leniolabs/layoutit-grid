@@ -55,11 +55,11 @@ function isCellHighligthed(cell) {
 <style scoped lang="postcss">
 span {
   &:hover {
-    color: #eee;
+    color: var(--color-gray-lightest);
     cursor: crosshair;
   }
   &:focus {
-    color: #eee;
+    color: var(--color-gray-lightest);
   }
 }
 </style>

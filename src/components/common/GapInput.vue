@@ -51,7 +51,7 @@ h2 {
   display: block;
   flex: 1;
   max-width: max-content;
-  color: #9cdcfe;
+  color: var(--color-blue-lightest);
   font-weight: normal;
   font-size: 13px;
   text-shadow: none;
@@ -91,8 +91,8 @@ h2 {
   margin-bottom: 6px;
   .unit-select {
     height: 30px;
-    background: #fafafa;
-    color: #333;
+    background: var(--color-white);
+    color: var(--color-gray-dark);
     font-size: 14px;
     text-shadow: none;
     direction: ltr;
@@ -111,8 +111,8 @@ h2 {
     input {
       border: 0;
       width: 100%;
-      background: #fafafa;
-      color: #333;
+      background: var(--color-white);
+      color: var(--color-gray-dark);
       height: 30px;
       text-align: center;
       flex: 1;
@@ -126,7 +126,7 @@ h2 {
       border-radius: 2px;
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
-      border-right: 1px solid #aaa;
+      border-right: 1px solid var(--color-gray);
     }
   }
 }
@@ -161,7 +161,7 @@ button,
   }
   svg {
     width: 10px;
-    stroke: #fff;
+    stroke: var(--color-white);
     stroke-width: 6px;
   }
   &:hover {
@@ -173,9 +173,9 @@ button,
 .add-button {
   height: 30px;
   max-width: 50px;
-  background: #01579b;
+  background: var(--color-blue);
   &:hover {
-    background: #0165b4;
+    background: var(--color-add);
   }
 }
 </style>

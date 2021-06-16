@@ -21,12 +21,12 @@ const fullPath = computed(() => 'https://' + props.path)
 div {
   position: fixed;
   top: 0px;
-  background: #fdd835;
+  background: var(--color-yellow);
   left: 0;
   right: 0px;
   padding: 12px 20px 10px;
-  color: #333;
-  border-bottom: 1px solid #ccc;
+  color: var(--color-gray-dark);
+  border-bottom: 1px solid var(--color-gray);
   z-index: 30000;
   word-break: break-all;
   button {
@@ -36,14 +36,14 @@ div {
     right: 8px;
     font-size: 20px;
     top: 8px;
-    color: #666;
+    color: var(--color-gray-middle);
     cursor: pointer;
     &:hover {
-      color: #222;
+      color: var(--color-black);
     }
     &:after {
       content: '';
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(var(--color-black), 0.4);
       position: fixed;
       left: 0px;
       z-index: 100000;

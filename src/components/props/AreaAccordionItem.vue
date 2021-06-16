@@ -76,9 +76,9 @@ defineProps({
   h1 {
     position: relative;
     width: 100%;
-    border-top: 1px solid rgba(68, 68, 68, 0.5);
+    border-top: 1px solid rgba(var(--color-gray-dark), 0.5);
 
-    color: #fff;
+    color: var(--color-white);
     font-size: 15px;
     margin: 0;
     padding: 10px 15px;
@@ -87,18 +87,18 @@ defineProps({
       font-weight: normal;
       font-size: 13px;
       text-shadow: none;
-      color: #d7ba7d;
+      color: var(--color-golden);
       font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
     }
   }
   &.active {
     .area-action-buttons {
       button:hover {
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(var(--color-white), 0.1);
       }
     }
     .area-name {
-      color: #fff;
+      color: var(--color-white);
       &:hover {
         background: transparent;
       }
@@ -115,11 +115,11 @@ defineProps({
     right: 0;
     bottom: 0;
     z-index: -1;
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(var(--color-white), 0.5);
   }
   h1 {
-    border-bottom: 1px solid rgba(68, 68, 68, 0.5);
-    color: #d7ba7d;
+    border-bottom: 1px solid rgba(var(--color-gray-dark), 0.5);
+    color: var(--color-golden);
     font-size: 13px;
     text-shadow: none;
     font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
@@ -146,7 +146,7 @@ defineProps({
   align-items: center;
   padding-left: 15px;
   &:hover {
-    background: #323232;
+    background: var(--color-gray-dark);
   }
 }
 
@@ -158,7 +158,7 @@ defineProps({
   text-align: center;
   padding: 5px;
   border-radius: 4px;
-  background: #ddd;
+  background: var(--color-gray-light);
   border-bottom: 1px solid black;
 }
 
@@ -181,7 +181,7 @@ defineProps({
     margin: 0;
     max-width: 40px;
     height: 40px;
-    border-left: 1px solid rgba(68, 68, 68, 0.5);
+    border-left: 1px solid rgba(var(--color-gray-dark), 0.5);
   }
 }
 
@@ -215,18 +215,18 @@ button,
   &.remove-button.clear {
     svg {
       width: 15px;
-      fill: #fff;
+      fill: var(--color-white);
       stroke: transparent;
     }
   }
   svg {
     width: 10px;
-    stroke: #fff;
+    stroke: var(--color-white);
     stroke-width: 15px;
   }
   &:hover {
     opacity: 1;
-    background: #323232;
+    background: var(--color-gray-dark);
   }
 }
 

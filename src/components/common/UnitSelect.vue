@@ -36,7 +36,7 @@ const onInput = (event: Event) => {
 
 <style scoped lang="postcss">
 .unit-select {
-  background: #fff;
+  background: var(--color-white);
   border: 0 none;
   border-radius: 2px;
 
@@ -45,6 +45,6 @@ const onInput = (event: Event) => {
   font-size: 14px;
 }
 .unit-select.focused {
-  background: #e4f5e4;
+  background: var(--color-lightest-white);
 }
 </style>
