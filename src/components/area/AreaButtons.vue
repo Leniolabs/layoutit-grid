@@ -88,7 +88,7 @@ button {
   border: 0;
   height: 30px;
   width: 30px;
-  color: #fff;
+  color: var(--color-white);
   cursor: pointer;
   pointer-events: all;
   align-items: center;
@@ -104,7 +104,7 @@ button {
     top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(var(--color-white), 0.15);
     pointer-events: none;
     display: none;
   }
@@ -131,7 +131,7 @@ button {
   &.btn-remove {
     svg {
       width: 10px;
-      stroke: #eee;
+      stroke: var(--color-gray-lightest);
       stroke-width: 15px;
     }
   }

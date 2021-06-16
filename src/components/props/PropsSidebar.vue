@@ -20,7 +20,7 @@ defineProps({
 <style scoped lang="postcss">
 .sidebar {
   z-index: 20000;
-  color: #fff;
+  color: var(--color-white);
   overflow: auto;
   padding: 0;
   text-align: left;
@@ -34,7 +34,7 @@ defineProps({
     bottom: 0;
     top: 48px;
     width: 100%;
-    background: #1e1e1e;
+    background: var(--color-gray-darkest);
     a.brand {
       display: none;
     }

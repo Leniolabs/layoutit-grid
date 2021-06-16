@@ -83,22 +83,22 @@ async function createCodeSandbox() {
 .button {
   border: 0;
   border-radius: 50px;
-  color: #eee;
+  color: var(--color-gray-lightest);
   cursor: pointer;
   font-family: inherit;
   font-size: 15px;
   text-align: center;
   margin: 0 auto;
-  background: #151515;
+  background: var(--color-black);
   user-select: none;
-  border: solid 1px #23241f;
+  border: solid 1px var(--color-gray-darkest);
   display: flex;
   align-items: center;
   transition: all 0.2s ease-in-out;
   padding: 10px 15px;
 
   &:hover {
-    background: #323232;
+    background: var(--color-gray-dark);
   }
   span {
     margin-left: 10px;

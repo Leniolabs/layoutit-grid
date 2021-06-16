@@ -22,22 +22,22 @@ function getCode() {
 
 <style scoped>
 ::v-deep(span) {
-  color: #d4d4d4;
+  color: var(--color-gray-light);
 }
 
 ::v-deep(.token.punctuation) {
-  color: #d4d4d4;
+  color: var(--color-gray-light);
 }
 
 ::v-deep(.token.tag) {
-  color: #569cd6;
+  color: var(--color-blue-light);
 }
 
 ::v-deep(.token.attr-name) {
-  color: #9cdcfe;
+  color: var(--color-blue-lightest);
 }
 
 ::v-deep(.token.attr-value) {
-  color: #ce9178;
+  color: var(--color-orange);
 }
 </style>

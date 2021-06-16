@@ -404,10 +404,10 @@ const gridTracks = computed(() => {
   &:not(.dragging) {
     cursor: pointer;
   }
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(var(--color-white), 0.7);
   /*
   &.grayed {
-    background: #dddddd;
+    background: var(--color-gray-light);
   }
   */
   &:before {
@@ -446,7 +446,7 @@ const gridTracks = computed(() => {
   text-align: left;
   white-space: pre;
   word-spacing: normal;
-  color: #fff;
+  color: var(--color-white);
   padding: 0 8px;
   margin-right: 3px;
   margin-bottom: 3px;
@@ -471,7 +471,7 @@ const gridTracks = computed(() => {
     top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(var(--color-white), 0.15);
     pointer-events: none;
     display: none;
   }
@@ -483,7 +483,7 @@ const gridTracks = computed(() => {
 .padding-box {
   width: 100%;
   height: 100%;
-  outline: 1px dashed #aaa;
-  background: white;
+  outline: 1px dashed var(--color-gray);
+  background: var(--color-white);
 }
 </style>

@@ -15,7 +15,7 @@ defineEmit(['edit'])
 <style scoped lang="postcss">
 .area-name {
   position: relative;
-  background: #ddd;
+  background: var(--color-gray-light);
   padding: 5px 10px;
   border-left: 2px solid green;
   border-radius: 2px 0 0 2px;

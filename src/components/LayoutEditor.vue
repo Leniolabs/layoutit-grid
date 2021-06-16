@@ -40,14 +40,50 @@ onUnmounted(() => removeEventListener('keydown', keyMonitor))
 
 <style lang="postcss">
 :root {
-  --color-add: #0165b4;
+  /* Green */
   --color-add-active: #50b83c;
+  --color-darkmode-active: #27ae60;
+  --color-green: var(--color-darkmode-active);
+  --color-green-ligth: #bbe5b3;
+  --color-green-dark: #032c06;
+  /* Magenta */
   --color-remove: #c2185b;
   --color-remove-active: #951246;
+  --color-magenta: var(--color-remove);
+  --color-magenta-light: #db4c69;
   --color-hire-us: var(--color-remove);
   --color-hire-us-active: var(--color-remove-active);
+  /* Blue */
+  --color-add: #0165b4;
   --color-darkmode: var(--color-add);
-  --color-darkmode-active: #27ae60;
+  --color-blue: #01579b;
+  --color-blue-dark: #014982;
+  --color-blue-darkest: #2c3e50;
+  --color-blue-light: #569cd6;
+  --color-blue-lightest: #9cdcfe;
+  /* Teal */
+  --color-teal: #107292;
+  --color-teal-dark: #236f86;
+  /* White to Black */
+  --color-white: #fafafa;
+  --color-gray-lightest: #eee;
+  --color-gray-light: #ddd;
+  --color-gray: #aaa;
+  --color-gray-middle: #555;
+  --color-gray-dark: #333;
+  --color-gray-darkest: #1e1e1e;
+  --color-black: #151515;
+  /* Purple */
+  --color-purple: #6b16a1;
+  --color-purple-middle: #490c6f;
+  --color-purple-dark: #300548;
+  --color-purple-darkest: #1d032d;
+  /* Yellow */
+  --color-golden: #d7ba7d;
+  --color-orange: #ce9178;
+  --color-yellow: #fdd835;
+  --color-yellow-dark: #a79f7f;
+  --color-yellow-light: #fff3c4;
 }
 
 *,
@@ -60,7 +96,7 @@ html,
 body {
   margin: 0;
   height: 100%;
-  background: #151515;
+  background: var(--color-black);
   font-size: 100%;
 }
 input[type='number']::-webkit-inner-spin-button,
@@ -94,10 +130,10 @@ p {
 #app {
   font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
-  color: #2c3e50;
-  background: linear-gradient(#1d032d, #300748);
-  background: #300748;
-  background: #1e1e1e;
+  color: var(--color-blue-darkest);
+  background: linear-gradient(var(--color-purple-darkest), var(--color-purple-dark));
+  background: var(--color-purple-dark);
+  background: var(--color-gray-darkest);
   height: 100%;
   display: grid;
   grid-template-columns: 275px 1fr 375px;
@@ -106,40 +142,46 @@ p {
   }
   &.darkmode {
     .grid {
-      background: repeating-linear-gradient(45deg, transparent, transparent 9px, #1d032d 9px, #1d032d 14px);
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 9px,
+        var(--color-purple-darkest) 9px,
+        var(--color-purple-darkest) 14px
+      );
     }
     .inside-row-size,
     .inside-col-size {
-      color: #fff;
+      color: var(--color-white);
     }
     .grid-section {
-      background: #300548;
+      background: var(--color-purple-dark);
       &:after,
       &:before {
-        background: #300548;
-        color: #fff;
+        background: var(--color-purple-dark);
+        color: var(--color-white);
       }
       &.grid-saved,
       &.grid-add {
-        background: #fff;
+        background: var(--color-white);
       }
       &.grayed {
-        background: #032c06;
+        background: var(--color-green-dark);
       }
     }
 
     .area-editor,
     .area-selection {
-      background: #30054899;
+      background: rgba(var(--color-purple-dark), 0.6);
     }
 
     .line-number {
-      color: #aaa;
-      background: #300548;
+      color: var(--color-gray);
+      background: var(--color-purple-dark);
       &.dragging,
       &.focused {
-        background: #27ae60;
-        color: #fff;
+        background: var(--color-green);
+        color: var(--color-white);
       }
     }
 
@@ -150,7 +192,7 @@ p {
     .editor-track-size {
       &.row,
       &.col {
-        color: #aaa;
+        color: var(--color-gray);
       }
     }
 
@@ -163,14 +205,14 @@ p {
 
     .grid-section.grayed {
       &:before {
-        background: #032c06;
+        background: var(--color-green-dark);
       }
-      background: #032c06;
+      background: var(--color-green-dark);
     }
 
     .area-selection {
       input {
-        color: #a8a8a2;
+        color: var(--color-gray);
       }
     }
   }

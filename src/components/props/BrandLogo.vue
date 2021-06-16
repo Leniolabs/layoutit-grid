@@ -23,7 +23,7 @@ import VersionLabel from './VersionLabel.vue'
   font-weight: 700;
   letter-spacing: 0.02em;
   margin: 12px 0 12px 15px;
-  color: #fff;
+  color: var(--color-white);
   text-decoration: none;
   display: flex;
   align-items: flex-end;

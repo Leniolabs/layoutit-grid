@@ -32,10 +32,10 @@ const onInput = useInputSetter(gap, isValidGapSize, targetText)
 <style scoped lang="postcss">
 span {
   &:hover {
-    color: #eee;
+    color: var(--color-gray-lightest);
   }
   &:focus {
-    color: #eee;
+    color: var(--color-gray-lightest);
   }
 }
 </style>

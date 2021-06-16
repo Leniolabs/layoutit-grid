@@ -69,14 +69,14 @@ const isDraggingTrackLine = computed(
   pointer-events: initial;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   font-size: 13px;
-  color: #aaa;
+  color: var(--color-gray);
   padding: 2px;
   &.row {
     padding-right: 4px;
   }
   user-select: none;
   &.active {
-    color: #27ae60;
+    color: var(--color-green);
   }
   &:focus {
     color: black;

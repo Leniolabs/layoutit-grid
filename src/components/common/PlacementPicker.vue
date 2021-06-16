@@ -159,7 +159,7 @@ const options = computed(() => alignOptionsMap[props.type.split('-')[1] as Align
       opacity: 1;
     }
     span {
-      color: #ce9178;
+      color: var(--color-orange);
     }
   }
 }
@@ -181,18 +181,18 @@ const options = computed(() => alignOptionsMap[props.type.split('-')[1] as Align
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   cursor: pointer;
   position: relative;
-  border: solid 1px #23241f;
+  border: solid 1px var(--color-gray-darkest);
   border-right: 0;
-  background: #151515;
+  background: var(--color-black);
   height: 35px;
   min-width: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: #aaa;
+  color: var(--color-gray);
   &:last-child {
-    border-right: solid 1px #23241f;
+    border-right: solid 1px var(--color-gray-darkest);
   }
   > div {
     position: absolute;
@@ -203,47 +203,47 @@ const options = computed(() => alignOptionsMap[props.type.split('-')[1] as Align
     display: flex;
     justify-content: center;
     &:hover {
-      background: #23241f;
+      background: var(--color-gray-darkest);
     }
   }
   svg {
-    stroke: #eee;
-    fill: #eee;
+    stroke: var(--color-gray-lightest);
+    fill: var(--color-gray-lightest);
     width: 20px;
     stroke-width: 6px;
     rect {
-      fill: #eee;
+      fill: var(--color-gray-lightest);
     }
   }
   &:hover {
-    color: #fff;
+    color: var(--color-white);
     svg {
-      stroke: #fff;
+      stroke: var(--color-white);
     }
   }
   &.default-value > div {
     opacity: 1;
-    color: #fff;
-    background: #01579b77;
+    color: var(--color-white);
+    background: rgba(var(--color-blue), 0.45);
     &:hover {
-      background: #01579b99;
+      background: rgba(var(--color-blue), 0.6);
     }
     svg {
-      stroke: #fff;
+      stroke: var(--color-white);
     }
   }
 }
 input[type='radio']:checked + label {
   opacity: 1;
-  color: #fff;
+  color: var(--color-white);
   > div {
-    background: #01579b;
+    background: var(--color-blue);
   }
   svg {
-    stroke: #fff;
+    stroke: var(--color-white);
   }
 }
 rect {
-  fill: #eee;
+  fill: var(--color-gray-lightest);
 }
 </style>

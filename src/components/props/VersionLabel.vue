@@ -29,22 +29,22 @@ function onChange(event) {
     position: absolute;
     top: 9px;
     right: 8px;
-    border-color: #555 transparent transparent transparent;
+    border-color: var(--color-gray-middle) transparent transparent transparent;
   }
   select {
-    color: #aaa;
+    color: var(--color-gray);
     font-weight: 700;
     font-family: monospace;
     font-size: 12px;
     font-style: normal;
     border: 0;
-    background: #1e1e1e;
+    background: var(--color-gray-darkest);
     -webkit-appearance: none;
     appearance: none;
     width: 40px;
     cursor: pointer;
     &:hover {
-      color: #eee;
+      color: var(--color-gray-lightest);
     }
   }
 }

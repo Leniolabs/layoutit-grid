@@ -36,7 +36,7 @@ function onHeaderClick() {
   margin: 0;
   opacity: 1;
   transition: opacity 0.1s ease-in;
-  border-bottom: 1px dashed rgba(68, 68, 68, 0.4);
+  border-bottom: 1px dashed rgba(var(--color-gray-dark), 0.4);
   &:first-of-type {
     opacity: 1;
     h1:hover {
@@ -50,13 +50,13 @@ function onHeaderClick() {
   h1 {
     width: 100%;
     position: relative;
-    color: #eee;
+    color: var(--color-gray-lightest);
     font-size: 15px;
     margin: 0;
     padding: 10px 15px;
     cursor: pointer;
     &:hover {
-      background: #151515;
+      background: var(--color-black);
     }
   }
   &.active h1 {
@@ -81,7 +81,7 @@ function onHeaderClick() {
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #491988 #300748;
+  scrollbar-color: var(--color-purple-middle) var(--color-purple-dark);
 }
 ::-webkit-scrollbar {
   width: 5px;
@@ -90,15 +90,15 @@ function onHeaderClick() {
   height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #300748;
+  background: var(--color-purple-dark);
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #491988;
+  background: var(--color-purple-middle);
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #5c26a2;
+  background: var(--color-purple);
 }
 
 .items {

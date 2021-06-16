@@ -35,7 +35,7 @@ const onInput = (event: Event) => {
   }
 }
 .area-type-select {
-  background: #fff;
+  background: var(--color-white);
   border: 0 none;
   border-radius: 2px;
   width: 100%;

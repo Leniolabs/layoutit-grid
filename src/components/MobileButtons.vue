@@ -24,7 +24,7 @@ import IconSubgrid from './icons/IconSubgrid.vue'
   .mobile-button {
     background-color: var(--color-add);
     border-radius: 50%;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    box-shadow: 0 3px 6px rgba(var(--color-black), 0.16), 0 3px 6px rgba(var(--color-black), 0.23);
     cursor: pointer;
     height: 3.5rem;
     width: 3.5rem;
@@ -32,7 +32,7 @@ import IconSubgrid from './icons/IconSubgrid.vue'
     border: 0;
     svg {
       z-index: 9;
-      fill: #fff;
+      fill: var(--color-white);
       height: 2rem;
       margin-top: 12px;
       margin-left: 12px;
