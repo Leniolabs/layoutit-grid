@@ -143,7 +143,7 @@ const options = computed(() => alignOptionsMap[props.type.split('-')[1] as Align
   > label {
     display: block;
     flex: 1 1 0%;
-    color: rgb(156, 220, 254);
+    color: var(--color-blue-lightest);
     font-size: 13px;
     text-shadow: none;
     font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
@@ -224,9 +224,9 @@ const options = computed(() => alignOptionsMap[props.type.split('-')[1] as Align
   &.default-value > div {
     opacity: 1;
     color: var(--color-white);
-    background: rgba(var(--color-blue), 0.45);
+    background: rgba(var(--color-blue-rgb), 0.45);
     &:hover {
-      background: rgba(var(--color-blue), 0.6);
+      background: rgba(var(--color-blue-rgb), 0.6);
     }
     svg {
       stroke: var(--color-white);

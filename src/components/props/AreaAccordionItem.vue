@@ -71,7 +71,7 @@ defineProps({
   h1 {
     position: relative;
     width: 100%;
-    border-top: 1px solid rgba(var(--color-gray-dark), 0.5);
+    border-top: 1px solid rgba(var(--color-gray-dark-rgb), 0.5);
 
     color: var(--color-white);
     font-size: 15px;
@@ -89,7 +89,7 @@ defineProps({
   &.active {
     .area-action-buttons {
       button:hover {
-        background: rgba(var(--color-white), 0.1);
+        background: rgba(var(--color-white-rgb), 0.1);
       }
     }
     .area-name {
@@ -110,10 +110,10 @@ defineProps({
     right: 0;
     bottom: 0;
     z-index: -1;
-    background: rgba(var(--color-white), 0.5);
+    background: rgba(var(--color-white-rgb), 0.5);
   }
   h1 {
-    border-bottom: 1px solid rgba(var(--color-gray-dark), 0.5);
+    border-bottom: 1px solid rgba(var(--color-gray-dark-rgb), 0.5);
     color: var(--color-golden);
     font-size: 13px;
     text-shadow: none;
@@ -176,7 +176,7 @@ defineProps({
     margin: 0;
     max-width: 40px;
     height: 40px;
-    border-left: 1px solid rgba(var(--color-gray-dark), 0.5);
+    border-left: 1px solid rgba(var(--color-gray-dark-rgb), 0.5);
   }
 }
 

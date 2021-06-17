@@ -36,7 +36,7 @@ function onHeaderClick() {
   margin: 0;
   opacity: 1;
   transition: opacity 0.1s ease-in;
-  border-bottom: 1px dashed rgba(var(--color-gray-dark), 0.4);
+  border-bottom: 1px dashed rgba(var(--color-gray-dark-rgb), 0.4);
   &:first-of-type {
     opacity: 1;
     h1:hover {

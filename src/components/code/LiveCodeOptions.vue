@@ -79,7 +79,7 @@ const isOpen = ref(false)
     bottom: 0;
     right: 6px;
     left: 0;
-    background: rgba(var(--color-black), 0.9);
+    background: rgba(var(--color-black-rgb), 0.9);
     padding: 10px;
     pointer-events: all;
   }

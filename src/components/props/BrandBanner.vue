@@ -6,7 +6,7 @@
 
 <style scoped lang="postcss">
 .version-container {
-  border-top: 1px solid rgba(var(--color-gray-dark), 0.5);
+  border-top: 1px solid rgba(var(--color-gray-dark-rgb), 0.5);
   position: absolute;
   bottom: 0;
   left: 0;

@@ -68,7 +68,7 @@ div {
     text-decoration: none;
     text-align: center;
     transition: all 0.2s ease-in-out;
-    text-shadow: rgba(var(--color-black), 0.3) 0 1px 1px;
+    text-shadow: rgba(var(--color-black-rgb), 0.3) 0 1px 1px;
     max-width: max-content;
     margin-bottom: 0;
     &:hover {

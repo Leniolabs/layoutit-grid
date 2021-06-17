@@ -38,10 +38,13 @@ onUnmounted(() => removeEventListener('keydown', keyMonitor))
   --color-add-active: #50b83c;
   --color-darkmode-active: #27ae60;
   --color-green: var(--color-darkmode-active);
+  --color-green-rgb: 39, 174, 96;
   --color-green-ligth: #bbe5b3;
+  --color-green-hover: #f6fbf6;
   --color-green-dark: #032c06;
   /* Magenta */
   --color-remove: #c2185b;
+  --color-remove-rgb: 194, 24, 91;
   --color-remove-active: #951246;
   --color-magenta: var(--color-remove);
   --color-magenta-light: #db4c69;
@@ -51,6 +54,7 @@ onUnmounted(() => removeEventListener('keydown', keyMonitor))
   --color-add: #0165b4;
   --color-darkmode: var(--color-add);
   --color-blue: #01579b;
+  --color-blue-rgb: 1, 87, 155;
   --color-blue-dark: #014982;
   --color-blue-darkest: #2c3e50;
   --color-blue-light: #569cd6;
@@ -60,17 +64,21 @@ onUnmounted(() => removeEventListener('keydown', keyMonitor))
   --color-teal-dark: #236f86;
   /* White to Black */
   --color-white: #fafafa;
+  --color-white-rgb: 250, 250, 250;
   --color-gray-lightest: #eee;
   --color-gray-light: #ddd;
   --color-gray: #aaa;
   --color-gray-middle: #555;
   --color-gray-dark: #333;
+  --color-gray-dark-rgb: 51, 51, 51;
   --color-gray-darkest: #1e1e1e;
   --color-black: #151515;
+  --color-black-rgb: 21, 21, 21;
   /* Purple */
   --color-purple: #6b16a1;
   --color-purple-middle: #490c6f;
   --color-purple-dark: #300548;
+  --color-purple-dark-rgb: 48, 5, 72;
   --color-purple-darkest: #1d032d;
   /* Yellow */
   --color-golden: #d7ba7d;
@@ -166,7 +174,7 @@ p {
 
     .area-editor,
     .area-selection {
-      background: rgba(var(--color-purple-dark), 0.6);
+      background: rgba(var(--color-purple-dark-rgb), 0.6);
     }
 
     .line-number {

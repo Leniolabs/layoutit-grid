@@ -159,7 +159,7 @@ function onUpdateType(type) {
 <style scoped lang="postcss">
 .props-accordion-item h1 {
   width: 100%;
-  border-top: 1px solid rgba(var(--color-gray-dark), 0.5);
+  border-top: 1px solid rgba(var(--color-gray-dark-rgb), 0.5);
 
   color: var(--color-white);
   font-size: 15px;

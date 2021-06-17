@@ -197,6 +197,6 @@ function onDragOver(areaTarget, event) {
   left: -5px;
   height: 20px;
   width: 330px;
-  background-color: rgba(var(--color-white), 0.123);
+  background-color: rgba(var(--color-white-rgb), 0.123);
 }
 </style>

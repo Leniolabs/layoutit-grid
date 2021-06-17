@@ -156,7 +156,7 @@ function addArea() {
 <style scoped lang="postcss">
 .area-tree {
   padding-left: v-bind(depth);
-  color: rgb(212, 212, 212);
+  color: var(--color-gray-lightest);
   font-size: 13px;
   text-shadow: none;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
@@ -181,13 +181,13 @@ function addArea() {
   height: 10px;
   content: '>';
   opacity: 1;
-  color: rgb(255, 255, 255);
+  color: var(--color-white);
 }
 
 .reordering.after::after {
   margin-left: v-bind(depth);
   height: 10px;
-  color: rgb(255, 255, 255);
+  color: var(--color-white);
   opacity: 1;
   content: '>';
 }
@@ -212,7 +212,7 @@ function addArea() {
   color: var(--color-white);
 }
 .area-name > span.name {
-  color: rgb(215, 186, 125);
+  color: var(--color-golden);
   padding: 2px 4px;
   padding-right: 0;
   cursor: pointer;
@@ -228,7 +228,7 @@ function addArea() {
 
 :not(.has-display) {
   &.area-name > span.name {
-    color: rgb(156, 220, 254);
+    color: var(--color-blue-lightest);
     padding: 2px 4px;
     &.current {
       background: var(--color-blue);
@@ -262,7 +262,7 @@ function addArea() {
   svg {
     height: 10px;
     width: 10px;
-    stroke: rgb(215, 186, 125);
+    stroke: var(--color-golden);
   }
 }
 
