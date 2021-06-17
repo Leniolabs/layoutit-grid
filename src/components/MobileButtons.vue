@@ -9,8 +9,6 @@
   </div>
 </template>
 
-<script setup></script>
-
 <style scoped lang="postcss">
 .mobile-buttons {
   display: none;

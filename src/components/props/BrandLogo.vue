@@ -12,7 +12,6 @@
     <VersionLabel />
   </div>
 </template>
-<script setup></script>
 <style scoped lang="postcss">
 .brand-logo {
   font-family: 'Alegreya Sans', 'Helvetica Neue', Arial, sans-serif;
