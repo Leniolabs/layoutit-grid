@@ -137,10 +137,10 @@ section {
     }
   }
   &.focused {
-    background: rgba(var(--color-green), 0.1);
+    background: rgba(var(--color-green-rgb), 0.1);
   }
   &.remove-action {
-    background: rgba(var(--color-remove), 0.1);
+    background: rgba(var(--color-remove-rgb), 0.1);
   }
   &.darkmode {
     border: 1px dashed var(--color-gray);

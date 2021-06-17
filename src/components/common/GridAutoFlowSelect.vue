@@ -67,7 +67,7 @@ const optionTooltipsFlow = {
   > label {
     display: block;
     flex: 1 1 0%;
-    color: rgb(156, 220, 254);
+    color: var(--color-blue-lightest);
     font-size: 13px;
     text-shadow: none;
     font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;

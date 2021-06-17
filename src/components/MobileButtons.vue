@@ -19,7 +19,7 @@
   .mobile-button {
     background-color: var(--color-add);
     border-radius: 50%;
-    box-shadow: 0 3px 6px rgba(var(--color-black), 0.16), 0 3px 6px rgba(var(--color-black), 0.23);
+    box-shadow: 0 3px 6px rgba(var(--color-black-rgb), 0.16), 0 3px 6px rgba(var(--color-black-rgb), 0.23);
     cursor: pointer;
     height: 3.5rem;
     width: 3.5rem;

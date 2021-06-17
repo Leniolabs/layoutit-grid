@@ -106,7 +106,7 @@ section {
   &.implicit {
     background: transparent !important;
     &:hover {
-      background: rgba(var(--color-white), 0.5) !important;
+      background: rgba(var(--color-white-rgb), 0.5) !important;
     }
   }
 }

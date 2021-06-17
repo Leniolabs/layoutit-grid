@@ -43,7 +43,7 @@ div {
     }
     &:after {
       content: '';
-      background: rgba(var(--color-black), 0.4);
+      background: rgba(var(--color-black-rgb), 0.4);
       position: fixed;
       left: 0px;
       z-index: 100000;

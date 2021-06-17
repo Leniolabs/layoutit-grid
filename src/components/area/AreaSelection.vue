@@ -202,7 +202,7 @@ export default {
   bottom: 0;
   right: 0;
   border: 2px solid;
-  background: rgba(var(--color-white), 0.7);
+  background: rgba(var(--color-white-rgb), 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -243,7 +243,7 @@ export default {
       top: 0;
       width: 100%;
       height: 100%;
-      background: rgba(var(--color-white), 0.15);
+      background: rgba(var(--color-white-rgb), 0.15);
       pointer-events: none;
       display: none;
     }
