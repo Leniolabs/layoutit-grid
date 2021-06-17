@@ -6,8 +6,6 @@
 </template>
 
 <script setup>
-import GapInput from '../common/GapInput.vue'
-
 import { defineProps, computed } from 'vue'
 
 const props = defineProps({

@@ -16,8 +16,6 @@
 </template>
 
 <script setup>
-import IconCodepen from '../icons/IconCodepen.vue'
-
 import { preferredExport } from '../../store.js'
 
 import { areaToCSS, areaToHTML, presentationCSS } from '../../generateCode.js'

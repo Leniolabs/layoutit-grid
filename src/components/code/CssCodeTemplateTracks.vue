@@ -25,9 +25,6 @@
 </template>
 
 <script setup>
-import CssCodeTrackSize from './CssCodeTrackSize.vue'
-import CssCodeLineName from './CssCodeLineName.vue'
-
 import { isValidTrackSize, parseGridTemplate } from '../../store.js'
 import { defineProps, ref, computed } from 'vue'
 

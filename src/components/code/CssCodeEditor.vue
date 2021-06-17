@@ -11,9 +11,6 @@
 <script setup>
 import { defineProps } from 'vue'
 import { areaToCSS } from '../../generateCode.js'
-import CodeEditor from './CodeEditor.vue'
-import CssCodeArea from './CssCodeArea.vue'
-import CssCodeAreaOldSpec from './CssCodeAreaOldSpec.vue'
 
 const props = defineProps({
   area: { type: Object, default: null },

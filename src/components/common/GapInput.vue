@@ -14,7 +14,6 @@
 </template>
 
 <script setup lang="ts">
-import UnitSelect from './UnitSelect.vue'
 import type { PropType } from 'vue'
 import type { ValueGapUnit, DefaultUnit, Cell } from '../../types'
 import { defineProps, computed } from 'vue'

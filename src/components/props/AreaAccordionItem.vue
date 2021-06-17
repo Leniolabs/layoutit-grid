@@ -50,11 +50,6 @@
 </template>
 
 <script setup>
-import OptionsButton from '../basic/OptionsButton.vue'
-import IconAdd from '../icons/IconAdd.vue'
-import IconClear from '../icons/IconClear.vue'
-import IconRemove from '../icons/IconRemove.vue'
-import CssCodeAreaName from '../code/CssCodeAreaName.vue'
 import {
   mainArea,
   selection,

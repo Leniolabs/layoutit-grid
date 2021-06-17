@@ -31,8 +31,6 @@
 </template>
 
 <script>
-import IconRemove from '../icons/IconRemove.vue'
-
 import { gridRegionToGridArea, createSection, toCssName } from '../../utils.js'
 import {
   createAreaState,
@@ -51,9 +49,6 @@ function farEnough(a, b, delta = 5) {
 }
 
 export default {
-  components: {
-    IconRemove,
-  },
   props: {
     area: { type: Object, required: true },
     implicitGrid: { type: Object, required: true },

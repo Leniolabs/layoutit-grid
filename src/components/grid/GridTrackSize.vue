@@ -10,7 +10,6 @@
 </template>
 
 <script setup>
-import TrackSize from './TrackSize.vue'
 import { useIsCurrentArea } from '../../composables/area.js'
 import { defineProps, computed, toRefs } from 'vue'
 import { asValidGridArea } from '../../utils/grid.js'

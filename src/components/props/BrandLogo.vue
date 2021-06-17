@@ -12,9 +12,6 @@
     <VersionLabel />
   </div>
 </template>
-<script setup>
-import VersionLabel from './VersionLabel.vue'
-</script>
 <style scoped lang="postcss">
 .brand-logo {
   font-family: 'Alegreya Sans', 'Helvetica Neue', Arial, sans-serif;

@@ -53,7 +53,6 @@
 
 <script setup>
 import { defineProps, ref } from 'vue'
-import SlideCheckbox from '../basic/SlideCheckbox.vue'
 
 defineProps({
   modelValue: { type: Object, required: true },

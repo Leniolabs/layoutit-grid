@@ -6,9 +6,6 @@
 </template>
 
 <script setup lang="ts">
-import BrandLogo from './BrandLogo.vue'
-import AreaProps from './AreaProps.vue'
-
 import { defineProps } from 'vue'
 import { currentArea, currentView } from '../../store.js'
 

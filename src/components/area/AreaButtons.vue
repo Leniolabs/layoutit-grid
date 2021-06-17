@@ -45,12 +45,6 @@
 </template>
 
 <script setup>
-import IconRemove from '../icons/IconRemove.vue'
-import IconClear from '../icons/IconClear.vue'
-import IconSubgrid from '../icons/IconSubgrid.vue'
-import IconFlex from '../icons/IconFlex.vue'
-import IconEdit from '../icons/IconEdit.vue'
-
 import { computed, defineProps, defineEmit } from 'vue'
 import {
   mainArea,
