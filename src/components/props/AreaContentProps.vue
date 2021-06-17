@@ -28,8 +28,6 @@
 </template>
 
 <script setup>
-import DisplaySelect from '../common/DisplaySelect.vue'
-
 import { defineProps, ref } from 'vue'
 import { createAreaState, createFlexState, createGridState } from '../../store'
 import { currentArea } from '../../store.js'

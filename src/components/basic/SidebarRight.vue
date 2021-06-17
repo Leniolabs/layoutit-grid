@@ -16,8 +16,6 @@
 
 <script setup>
 import { currentView } from '../../store.js'
-import IconGithub from '../icons/IconGithub.vue'
-import BrandBanner from '../props/BrandBanner.vue'
 </script>
 
 <style scoped lang="postcss">

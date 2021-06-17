@@ -50,10 +50,6 @@
 </template>
 
 <script setup>
-import AreaInfo from './AreaInfo.vue'
-import PieChart from '../content/PieChart.vue'
-import ElementImage from './ElementImage.vue'
-import ElementParagraph from './ElementParagraph.vue'
 // GridEditor imported globally due to circular reference with AreaEditor
 // import FlexEditor from '../flex/FlexEditor.vue'
 

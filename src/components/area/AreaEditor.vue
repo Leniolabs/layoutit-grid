@@ -113,16 +113,6 @@
 </template>
 
 <script setup>
-import GridCell from '../grid/GridCell.vue'
-import GridTrack from '../grid/GridTrack.vue'
-import GridTrackSize from '../grid/GridTrackSize.vue'
-import AreaBox from './AreaBox.vue'
-import AreaButtons from './AreaButtons.vue'
-import PieChart from '../content/PieChart.vue'
-import ElementImage from './ElementImage.vue'
-import ElementParagraph from './ElementParagraph.vue'
-import ElementButton from './ElementButton.vue'
-import AreaSelection from './AreaSelection.vue'
 // GridEditor imported globally due to circular reference with AreaEditor
 // import FlexEditor from '../flex/FlexEditor.vue'
 

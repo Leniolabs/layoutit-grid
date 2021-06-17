@@ -51,9 +51,6 @@
 </template>
 
 <script setup>
-import IconAdd from '../icons/IconAdd.vue'
-import IconRemove from '../icons/IconRemove.vue'
-
 import { defineProps, ref, computed } from 'vue'
 import {
   mainArea,

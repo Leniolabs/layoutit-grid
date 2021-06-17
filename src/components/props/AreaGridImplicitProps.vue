@@ -114,12 +114,6 @@
 </template>
 
 <script setup>
-import IconRemove from '../icons/IconRemove.vue'
-import IconAdd from '../icons/IconAdd.vue'
-import UnitSelect from '../common/UnitSelect.vue'
-import OptionsButton from '../basic/OptionsButton.vue'
-import GridAutoFlowSelect from '../common/GridAutoFlowSelect.vue'
-
 import { defineProps, computed } from 'vue'
 
 const props = defineProps({

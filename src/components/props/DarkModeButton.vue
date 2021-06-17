@@ -12,7 +12,6 @@
 <script setup>
 import { onMounted, watch } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
-import IconDark from '../icons/IconDark.vue'
 import { darkmode } from '../../store'
 
 const themeStorage = useLocalStorage('layoutit-grid-theme', null)

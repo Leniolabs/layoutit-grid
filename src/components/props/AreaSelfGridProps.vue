@@ -20,8 +20,6 @@
 </template>
 
 <script setup>
-import PlacementPicker from '../common/PlacementPicker.vue'
-import OptionsButton from '../basic/OptionsButton.vue'
 import { inputSetter } from '../../composables'
 import { selection, isValidGridArea, getGridRegion, selectionGridArea } from '../../store.js'
 import { createSection } from '../../utils.js'

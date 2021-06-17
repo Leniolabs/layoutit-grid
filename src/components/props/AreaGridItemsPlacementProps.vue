@@ -17,8 +17,6 @@
 </template>
 
 <script setup>
-import PlacementPicker from '../common/PlacementPicker.vue'
-
 import { defineProps, computed } from 'vue'
 
 const props = defineProps({

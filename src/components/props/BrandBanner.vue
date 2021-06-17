@@ -4,10 +4,6 @@
   </div>
 </template>
 
-<script setup>
-import HireUs from './HireUs.vue'
-</script>
-
 <style scoped lang="postcss">
 .version-container {
   border-top: 1px solid rgba(var(--color-gray-dark), 0.5);

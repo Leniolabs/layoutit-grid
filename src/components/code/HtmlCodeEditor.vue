@@ -7,8 +7,6 @@
 <script setup>
 import { defineProps } from 'vue'
 import { areaToHTML } from '../../generateCode.js'
-import CodeEditor from './CodeEditor.vue'
-import HtmlCodeArea from './HtmlCodeArea.vue'
 
 const props = defineProps({
   area: { type: Object, default: null },
