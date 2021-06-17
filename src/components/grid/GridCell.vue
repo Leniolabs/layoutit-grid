@@ -98,10 +98,10 @@ section {
     background: #ddddddcc;
   }*/
   &:not(.dragging):hover {
-    background: var(--color-white) !important;
+    background: var(--color-green-hover) !important;
   }
   &.focused {
-    background: var(--color-white) !important;
+    background: var(--color-green-hover) !important;
   }
   &.implicit {
     background: transparent !important;

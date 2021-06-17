@@ -40,6 +40,7 @@ onUnmounted(() => removeEventListener('keydown', keyMonitor))
   --color-green: var(--color-darkmode-active);
   --color-green-rgb: 39, 174, 96;
   --color-green-ligth: #bbe5b3;
+  --color-green-hover: #f6fbf6;
   --color-green-dark: #032c06;
   /* Magenta */
   --color-remove: #c2185b;
