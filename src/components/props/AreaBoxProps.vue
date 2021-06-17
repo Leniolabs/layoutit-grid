@@ -29,7 +29,6 @@
 </template>
 
 <script setup>
-import AreaSize from '../common/AreaSize.vue'
 import { defineProps, computed } from 'vue'
 import { inputSetter } from '../../composables'
 import { isValidMargin, isValidPadding } from '../../store.js'

@@ -9,10 +9,7 @@
   </div>
 </template>
 
-<script setup>
-import IconSidebar from './icons/IconSidebar.vue'
-import IconSubgrid from './icons/IconSubgrid.vue'
-</script>
+<script setup></script>
 
 <style scoped lang="postcss">
 .mobile-buttons {

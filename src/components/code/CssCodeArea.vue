@@ -43,11 +43,6 @@
 </template>
 
 <script setup>
-import CssCodeTemplateTracks from './CssCodeTemplateTracks.vue'
-import CssCodeAreaName from './CssCodeAreaName.vue'
-import CssCodeGridArea from './CssCodeGridArea.vue'
-import CssCodeTemplateAreas from './CssCodeTemplateAreas.vue'
-import CssCodeGap from './CssCodeGap.vue'
 import CssDecl from './CssCodeDeclaration.vue'
 
 import { defineProps, computed } from 'vue'

@@ -20,8 +20,6 @@
 </template>
 
 <script setup lang="ts">
-import UnitSelect from './UnitSelect.vue'
-
 import { defineProps, computed } from 'vue'
 import type { PropType } from 'vue'
 //@ts-ignore

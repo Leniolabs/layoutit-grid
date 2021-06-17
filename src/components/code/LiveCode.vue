@@ -30,20 +30,6 @@
 </template>
 
 <script setup>
-import IconTrash from '../icons/IconTrash.vue'
-import IconRefresh from '../icons/IconRefresh.vue'
-import IconLink from '../icons/IconLink.vue'
-import IconUndo from '../icons/IconUndo.vue'
-import IconRedo from '../icons/IconRedo.vue'
-import DarkModeButton from '../props/DarkModeButton.vue'
-import SidebarButton from '../basic/SidebarButton.vue'
-import CodepenButton from './CodepenButton.vue'
-import CodeSanboxButton from './CodeSanboxButton.vue'
-import PermalinkBar from './PermalinkBar.vue'
-import LiveCodeOptions from './LiveCodeOptions.vue'
-import HtmlCodeEditor from './HtmlCodeEditor.vue'
-import CssCodeEditor from './CssCodeEditor.vue'
-
 import { defineProps, ref, computed, onMounted, watch } from 'vue'
 
 import { undo, redo, canUndo, canRedo, mainArea, restart, preferredExport } from '../../store.js'

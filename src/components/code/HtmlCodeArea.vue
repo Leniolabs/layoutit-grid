@@ -36,7 +36,6 @@
 import { defineProps, computed } from 'vue'
 import { toCssName, getElementTag, includeAreaInCSS } from '../../utils.js'
 import { mainArea, currentArea, reordering, selection } from '../../store.js'
-import CssCodeAreaName from './CssCodeAreaName.vue'
 
 // <!--span class="drop-target" v-if="reordering && reordering.target === a && ! reordering.after">{{'>\n'}}</span-->
 // <!--span class="drop-target" v-if="reordering && reordering.target === a && reordering.after">{{'\n>'}}</span-->

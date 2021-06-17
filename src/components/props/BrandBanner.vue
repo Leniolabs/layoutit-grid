@@ -4,9 +4,7 @@
   </div>
 </template>
 
-<script setup>
-import HireUs from './HireUs.vue'
-</script>
+<script setup></script>
 
 <style scoped lang="postcss">
 .version-container {

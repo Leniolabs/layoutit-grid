@@ -27,9 +27,6 @@
 </template>
 
 <script setup>
-import AreaName from './AreaName.vue'
-import AreaButtons from './AreaButtons.vue'
-
 import { computed, toRefs, defineProps, defineEmit } from 'vue'
 import { getAreaDepth, getGridRegion } from '../../store.js'
 import { useIsMainArea } from '../../composables/area.js'

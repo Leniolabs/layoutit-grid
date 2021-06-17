@@ -49,13 +49,11 @@
 </template>
 
 <script>
-import LineName from './LineName.vue'
 import { dragging, selection, currentFocus, overArea, mainArea } from '../../store.js'
 import { ref, computed, defineProps, defineEmit } from 'vue'
 import { asValidGridArea, asValidLineNumber } from '../../utils/grid.js'
 
 export default {
-  components: { LineName },
   props: {
     type: { type: String, required: true },
     pos: { type: Number, required: true },

@@ -34,8 +34,6 @@
 
 <script>
 import { useMagicKeys } from '@vueuse/core'
-import GridLine from './GridLine.vue'
-import GridIntersection from './GridIntersection.vue'
 import { handlePointerEventsInteraction } from '../../utils.js'
 import {
   currentArea,
@@ -55,7 +53,6 @@ import { defineProps, ref, computed, watch, toRefs, onBeforeUpdate, nextTick } f
 const { shift } = useMagicKeys()
 
 export default {
-  components: { GridLine, GridIntersection },
   props: {
     area: { type: Object, required: true },
     computedStyles: { type: Object, default: null },

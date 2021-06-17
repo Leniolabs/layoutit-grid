@@ -14,7 +14,6 @@ import { defineProps, computed, toRefs } from 'vue'
 import { mainArea, currentArea } from '../../store.js'
 import { deselectCurrentArea } from '../../store.js'
 import { useIsActiveArea } from '../../composables/area.js'
-import AreaEditor from '../area/AreaEditor.vue'
 
 const props = defineProps({
   area: { type: Object, required: true },

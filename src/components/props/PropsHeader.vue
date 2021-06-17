@@ -11,14 +11,8 @@
 </template>
 
 <script setup>
-import BrandLogo from './BrandLogo.vue'
-import AreaProps from './AreaProps.vue'
-
 import { defineProps, computed } from 'vue'
 import { currentArea, currentView } from '../../store.js'
-
-import IconSidebar from '../icons/IconSidebar.vue'
-import IconSubgrid from '../icons/IconSubgrid.vue'
 </script>
 
 <style scoped lang="postcss">

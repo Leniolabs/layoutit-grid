@@ -12,12 +12,6 @@
 </template>
 
 <script setup>
-import AreaEditor from './area/AreaEditor.vue'
-import SidebarRight from './basic/SidebarRight.vue'
-import PropsSidebar from './props/PropsSidebar.vue'
-import PropsHeader from './props/PropsHeader.vue'
-import LiveCode from './code/LiveCode.vue'
-
 import { defineProps, ref, computed, onMounted, onUnmounted } from 'vue'
 import { mainArea, loadFromStorage, currentArea, currentView } from '../store.js'
 import { keyMonitor } from '../utils/keyMonitor'
