@@ -23,6 +23,9 @@
         focused: isTrackFocused || isTrackHover,
         'focused-track-next': isNextTrackFocused || isNextTrackHover,
         'remove-action': isTrackHover && currentHover.action === 'remove',
+        // There is a bug that prevents extending the grid lines with the current
+        // implementation if there aren't at least 2 explicit tracks
+        extend: grid.col.sizes.length > 1 && grid.row.sizes.length > 1,
       },
     ]"
     :style="{
@@ -103,8 +106,10 @@ section {
   position: relative;
   overflow: hidden;
   &.col {
-    top: -100vh;
-    height: 300vh;
+    &.extend {
+      top: -100vh;
+      height: 300vh;
+    }
     border-right: 1px dashed var(--color-gray);
     &.col-first {
       border-left: 1px solid var(--color-gray);
@@ -120,8 +125,11 @@ section {
     }
   }
   &.row {
-    width: 300vw;
-    left: -100vw;
+    &.extend {
+      width: 300vw;
+      left: -100vw;
+    }
+
     border-bottom: 1px dashed var(--color-gray);
     &:not(.row-first):not(.row-no-gap) {
       border-top: 1px dashed var(--color-gray);
