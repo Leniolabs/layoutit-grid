@@ -11,7 +11,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: [
         'favicon.ico',
-        'img/icons/icon-36x36.png',
+        'img/icons/icon-44x44.png',
         'img/icons/safari-pinned-tab.svg',
         'img/screenshot.png',
       ],
