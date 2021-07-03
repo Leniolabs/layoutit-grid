@@ -6,6 +6,7 @@
     "dev": "vite",
     "start": "vite",
     "build": "vue-tsc --noEmit && vite build",
+    "build-serve": "npm run build && vite preview",
     "lint": "eslint --ext .js,.vue src",
     "lint:fix": "eslint --ext .js,.vue src --fix",
     "postinstall": "patch-package"
