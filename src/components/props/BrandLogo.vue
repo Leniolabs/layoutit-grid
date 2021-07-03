@@ -1,7 +1,7 @@
 <template>
   <div>
     <a href="https://layoutit.com/" rel="noopener" target="_blank" class="brand-logo">
-      <img width="128" height="128" src="/img/icons/icon-128x128.png" alt="Layoutit" />
+      <img width="36" height="36" src="/img/icons/icon-36x36.png" alt="Layoutit" />
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 135 36" overflow="visible">
         <path
           fill="#fafafa"
@@ -33,6 +33,7 @@
   img {
     margin-right: 10px;
     height: 1em;
+    width: 1em;
     display: inline-block;
     position: relative;
     top: -2px;
