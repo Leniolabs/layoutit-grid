@@ -6,3 +6,5 @@ dist
 debug.log
 package-lock.json
 yarn.lock
+# intellij stuff
+.idea/
