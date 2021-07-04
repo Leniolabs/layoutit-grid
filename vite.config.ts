@@ -84,9 +84,6 @@ const LayouitPlugin = (): Plugin => {
 }
 
 export default defineConfig({
-  build: {
-    manifest: true,
-  },
   plugins: [
     vuePlugin(),
     viteComponentsPlugin(),
