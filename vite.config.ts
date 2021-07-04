@@ -48,12 +48,32 @@ const LayouitPlugin = (): Plugin => {
             })
             const moduleName = fileName.startsWith('/') ? fileName : `${base}${fileName}`
             const module = `<script type="module" crossorigin src="${moduleName}"></script>`
-            return html.replace(
+            // return html.replace(
+            //   module,
+            //   `<link rel="modulepreload" href="${moduleName}" />\n${
+            //     dynamicImportsEntries ? dynamicImportsEntries.filter((dy) => !!dy).join('\n') : ''
+            //   }\n${module}`
+            // )
+            let result = html.replace(
               module,
               `<link rel="modulepreload" href="${moduleName}" />\n${
                 dynamicImportsEntries ? dynamicImportsEntries.filter((dy) => !!dy).join('\n') : ''
               }\n${module}`
             )
+            // the css will be something like this
+            // '<link rel="stylesheet" href="/assets/index.c517effc.css">'
+            // we just replace it with the new one non blocking
+            result = result.replace(
+              /<link rel="stylesheet" href="(.*?)">/g,
+              `<link
+              rel="preload"
+              as="style"
+              onload="this.onload=null;this.rel='stylesheet'"
+              href="$1"
+            />
+            <noscript><link rel="stylesheet" href="$1"></noscript>`
+            )
+            return result
           }
         }
 
