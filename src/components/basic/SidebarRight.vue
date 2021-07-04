@@ -20,7 +20,7 @@ import { currentView } from '../../store.js'
 
 <style scoped lang="postcss">
 .code-sidebar {
-  //overflow: auto;
+  /*overflow: auto;*/
   text-align: left;
   color: var(--color-gray-lightest);
   padding: 105px 15px;

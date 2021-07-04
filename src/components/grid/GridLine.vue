@@ -156,7 +156,7 @@ section {
     background: var(--color-white);
     line-height: 15px;
     text-align: center;
-    //z-index: 1;
+    /*z-index: 1;*/
     &.grayed {
       background: var(--color-gray-lightest);
     }
