@@ -27,7 +27,7 @@ const LayouitPlugin = (): Plugin => {
     transformIndexHtml: {
       enforce: 'post',
       transform(html, ctx) {
-        /* THIS VERSION HAVE NOT ACCESS TO CSS AND ASSETS: SEE manifest.json */
+        /* VITE WILL NOT EXPOSE CSS NOR ASSETS */
         if (ctx.bundle) {
           const assets = Object.entries(ctx.bundle).reduce((acc, [key, value]) => {
             if (value['isEntry'] === true) {
@@ -71,7 +71,7 @@ const LayouitPlugin = (): Plugin => {
               onload="this.onload=null;this.rel='stylesheet'"
               href="$1"
             />
-            <noscript><link rel="stylesheet" href="$1"></noscript>`
+            <noscript><link rel="stylesheet" href="$1" /></noscript>`
             )
             return result
           }
