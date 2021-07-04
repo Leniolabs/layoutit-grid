@@ -1,16 +1,81 @@
 import { defineConfig } from 'vite'
+import type { ResolvedConfig, Plugin } from 'vite'
 import vuePlugin from '@vitejs/plugin-vue'
 import viteComponentsPlugin from 'vite-plugin-components'
 import { VitePWA } from 'vite-plugin-pwa'
+import { OutputAsset, OutputChunk } from 'rollup'
+
+const LayouitPlugin = (): Plugin => {
+  let viteConfig: ResolvedConfig
+  const mainEntryName = 'LAYOUTIT-MAIN-ENTRY'
+
+  const transformDynamicImport = (base: string, entry: string, map: Map<string, OutputAsset | OutputChunk>) => {
+    const module = map.get(entry)
+    if (module && module['isDynamicEntry'] === true) {
+      return `<link rel="modulepreload" href="${entry.startsWith('/') ? entry : `/${entry}`}" />`
+    }
+    return null
+  }
+
+  return {
+    name: 'vite-layouit-grid-inject',
+    enforce: 'post',
+    apply: 'build',
+    configResolved(config) {
+      viteConfig = config
+    },
+    transformIndexHtml: {
+      enforce: 'post',
+      transform(html, ctx) {
+        /* THIS VERSION HAVE NOT ACCESS TO CSS AND ASSETS: SEE manifest.json */
+        if (ctx.bundle) {
+          const assets = Object.entries(ctx.bundle).reduce((acc, [key, value]) => {
+            if (value['isEntry'] === true) {
+              acc.set(mainEntryName, value as OutputChunk)
+            } else {
+              acc.set(key, value as OutputAsset | OutputChunk)
+            }
+            return acc
+          }, new Map<string, OutputAsset | OutputChunk>())
+          const mainEntry: OutputChunk | undefined = assets.has(mainEntryName)
+            ? (assets.get(mainEntryName) as OutputChunk)
+            : undefined
+          if (mainEntry) {
+            const { base = '/' } = viteConfig
+            const { fileName, dynamicImports = [] } = mainEntry
+            const dynamicImportsEntries = dynamicImports.map((dy) => {
+              return transformDynamicImport(base, dy, assets)
+            })
+            const moduleName = fileName.startsWith('/') ? fileName : `${base}${fileName}`
+            const module = `<script type="module" crossorigin src="${moduleName}"></script>`
+            return html.replace(
+              module,
+              `<link rel="modulepreload" href="${moduleName}" />\n${
+                dynamicImportsEntries ? dynamicImportsEntries.filter((dy) => !!dy).join('\n') : ''
+              }\n${module}`
+            )
+          }
+        }
+
+        return html
+      },
+    },
+  }
+}
 
 export default defineConfig({
+  build: {
+    manifest: true,
+  },
   plugins: [
     vuePlugin(),
     viteComponentsPlugin(),
+    LayouitPlugin(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: [
         'favicon.ico',
+        'robots.txt',
         'img/icons/icon-44x44.png',
         'img/icons/safari-pinned-tab.svg',
         'img/screenshot.png',
