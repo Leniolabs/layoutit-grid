@@ -63,9 +63,11 @@ Your dev server will start and be running at
 
 ## Libs and Tools used
 
-- [Vite](https://github.com/vitejs/vite)
-- [Vue 3](https://v3.vuejs.org)
-- [Vueuse](https://vueuse.js.org/)
+- [Vue 3](https://v3.vuejs.org) Vue.js - The Progressive JavaScript Framework.
+- [Vueuse](https://vueuse.js.org/) Collection of essential Vue Composition Utilities
+- [Vite](https://github.com/vitejs/vite) Next generation frontend tooling. It's fast!
+- [vite-plugin-pwa](https://github.com/antfu/vite-plugin-pwa) Zero-config PWA for Vite
+- [vite-plugin-components](https://github.com/antfu/vite-plugin-components) On demand components auto importing for Vite
 
 ## Mentions
 
