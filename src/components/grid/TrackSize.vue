@@ -69,6 +69,8 @@ const isDraggingTrackLine = computed(
   pointer-events: initial;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   font-size: 13px;
+  /* todo@fix:a11y: #757575 */
+  /*color: #757575;*/
   color: var(--color-gray);
   padding: 2px;
   &.row {

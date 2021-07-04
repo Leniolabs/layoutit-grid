@@ -74,7 +74,7 @@ ${presentationCSS(props.area)}
     margin-left: 10px;
   }
   &.expanded {
-    //padding: 10px 20px;
+    /*padding: 10px 20px;*/
   }
 }
 </style>

@@ -16,7 +16,10 @@
       "/@/*": ["src/*"]
     },
     "lib": ["esnext", "dom"],
-    "types": ["vite/client"]
+    "types": [
+      "vite/client",
+      "vite-plugin-pwa/client"
+    ]
   },
   "include": [
     "src/**/*.ts",

@@ -103,7 +103,7 @@ async function createCodeSandbox() {
   }
   padding: 10px;
   &.expanded {
-    //padding: 10px 20px;
+    /*padding: 10px 20px;*/
   }
 }
 </style>

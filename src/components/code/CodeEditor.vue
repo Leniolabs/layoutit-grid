@@ -79,8 +79,8 @@ function copyToClipBoard() {
   font-weight: 700;
   font-size: 12px;
   padding: 8px;
-  //border-top-left-radius: 4px;
-  //border-top-right-radius: 4px;
+  /*border-top-left-radius: 4px;*/
+  /*border-top-right-radius: 4px;*/
   user-select: none;
 }
 

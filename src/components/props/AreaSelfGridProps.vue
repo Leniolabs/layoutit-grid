@@ -73,7 +73,7 @@ const onEdit = () => {
 }
 .layout-props {
   padding-top: 8px;
-  //padding-right: 10px;
+  /*padding-right: 10px;*/
 }
 label {
   display: block;

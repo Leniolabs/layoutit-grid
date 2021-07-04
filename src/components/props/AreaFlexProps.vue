@@ -64,7 +64,7 @@ h2 {
       padding-right: 10px;
       grid-gap: 0 5px;
       border-radius: 2px;
-      //overflow: hidden;
+      /*overflow: hidden;*/
       height: 30px;
       margin-bottom: 6px;
       input {
