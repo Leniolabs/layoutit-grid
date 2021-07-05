@@ -24,12 +24,16 @@ const LayouitPlugin = (): Plugin => {
     configResolved(config) {
       viteConfig = config
     },
+    async buildEnd(error) {
+      if (error)
+        throw error
+    },
     transformIndexHtml: {
       enforce: 'post',
-      transform(html, ctx) {
+      transform(html, { bundle }) {
         /* VITE WILL NOT EXPOSE CSS NOR ASSETS */
-        if (ctx.bundle) {
-          const assets = Object.entries(ctx.bundle).reduce((acc, [key, value]) => {
+        if (bundle) {
+          const assets = Object.entries(bundle).reduce((acc, [key, value]) => {
             if (value['isEntry'] === true) {
               acc.set(mainEntryName, value as OutputChunk)
             } else {
