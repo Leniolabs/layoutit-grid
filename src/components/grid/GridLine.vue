@@ -111,7 +111,7 @@ export default {
       lineEl.style.pointerEvents = 'none'
       const cellEl = document.elementFromPoint(event.clientX, event.clientY)
       lineEl.style.pointerEvents = 'initial'
-      const { colStart, rowStart } = cellEl.dataset
+      const { colStart, rowStart } = cellEl.dataset || {}
       if (colStart !== undefined && rowStart !== undefined) {
         emit('overcell', { col: +colStart, row: +rowStart })
         return
