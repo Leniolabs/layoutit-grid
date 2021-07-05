@@ -89,6 +89,8 @@ export default defineConfig({
     viteComponentsPlugin(),
     LayouitPlugin(),
     VitePWA({
+      base: '/',
+      scope: '/',
       registerType: 'autoUpdate',
       includeAssets: [
         'favicon.ico',
@@ -102,13 +104,11 @@ export default defineConfig({
         // short_name: 'CSS Grid Generator',
         short_name: 'LayoutIt Grid',
         description: 'Layoutit Grid is an interactive open source CSS Grid generator.',
-        start_url: '/',
         display: 'standalone',
         orientation: 'portrait-primary',
         background_color: '#1D032D',
         lang: 'en',
         theme_color: '#1D032D',
-        scope: '/',
         categories: ['education', 'personalization', 'productivity', 'utilities'],
         screenshots: [
           {
