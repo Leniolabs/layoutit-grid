@@ -12,7 +12,7 @@ const LayouitPlugin = (): Plugin => {
   const transformDynamicImport = (base: string, entry: string, map: Map<string, OutputAsset | OutputChunk>) => {
     const module = map.get(entry)
     if (module && module['isDynamicEntry'] === true) {
-      return `<link rel="modulepreload" href="${entry.startsWith('/') ? entry : `/${entry}`}" />`
+      return `<link rel="modulepreload" href="${entry.startsWith('/') ? entry : `${base}${entry}`}" />`
     }
     return null
   }
