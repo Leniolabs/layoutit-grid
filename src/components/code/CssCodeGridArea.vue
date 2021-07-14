@@ -4,7 +4,6 @@
 
 <script setup>
 import { dragging, currentArea } from '../../store.js'
-import { defineProps, computed } from 'vue'
 import { getCodeGridArea, getCodeGridTemplateAreas } from '../../utils.js'
 
 const props = defineProps({

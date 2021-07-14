@@ -12,7 +12,6 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { mainArea, loadFromStorage, currentArea, currentView } from '../store.js'
 import { keyMonitor } from '../utils/keyMonitor'
 

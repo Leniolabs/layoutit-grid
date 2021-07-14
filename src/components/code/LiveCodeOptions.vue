@@ -52,8 +52,6 @@
 </template>
 
 <script setup>
-import { defineProps, ref } from 'vue'
-
 defineProps({
   modelValue: { type: Object, required: true },
 })

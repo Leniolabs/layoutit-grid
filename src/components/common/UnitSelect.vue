@@ -5,7 +5,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import type { PropType } from 'vue'
 import type { UnitSelectType, UnitsInterface } from '../../types'
 // @ts-ignore

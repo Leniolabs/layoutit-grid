@@ -27,7 +27,6 @@
 </template>
 
 <script setup>
-import { computed, toRefs } from 'vue'
 import { getAreaDepth, getGridRegion } from '../../store.js'
 import { useIsMainArea } from '../../composables/area.js'
 

@@ -30,7 +30,6 @@
 </template>
 
 <script setup>
-import { computed, toRefs } from 'vue'
 import { getAreaDepth, areaDisplayColor } from '../../store.js'
 import { useIsMainArea } from '../../composables/area.js'
 

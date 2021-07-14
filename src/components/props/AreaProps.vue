@@ -106,8 +106,6 @@
 // import AreaTree from './AreaTree.vue'
 
 import { currentArea, setCurrentArea, mainArea, removeArea } from '../../store.js'
-import { defineProps, ref, computed, watch, onBeforeUpdate, nextTick } from 'vue'
-
 const props = defineProps({
   area: { type: Object, required: true },
 })

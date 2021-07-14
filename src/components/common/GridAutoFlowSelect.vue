@@ -30,7 +30,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed } from 'vue'
 import type { PropType } from 'vue'
 import IconFlowCol from '../icons/IconFlowCol.vue'
 import IconFlowDense from '../icons/IconFlowDense.vue'

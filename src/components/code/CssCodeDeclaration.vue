@@ -4,7 +4,6 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
 defineProps({
   property: { type: String, required: true },
   ident: { type: String, default: '\n  ' },

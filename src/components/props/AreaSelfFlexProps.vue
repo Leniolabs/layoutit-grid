@@ -37,7 +37,6 @@
 </template>
 
 <script setup>
-import { defineProps, computed } from 'vue'
 import { isValidFlexBasis } from '../../store.js'
 import { inputSetter } from '../../composables'
 

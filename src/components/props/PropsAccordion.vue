@@ -5,9 +5,6 @@
 </template>
 
 <script setup>
-import { defineProps, computed } from 'vue'
-
-// name: 'AreaProps',
 defineProps({
   accordion: { type: Object, required: true },
 })

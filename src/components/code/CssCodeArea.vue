@@ -45,7 +45,6 @@
 <script setup>
 import CssDecl from './CssCodeDeclaration.vue'
 
-import { defineProps, computed } from 'vue'
 import {
   namedTemplateColumns,
   namedTemplateRows,

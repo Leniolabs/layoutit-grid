@@ -1,18 +1,14 @@
 <template>
   <div class="code-container">
-    <span class="header"
-      >{{ type.toUpperCase() }}
-      <button class="copy-button" @click="copyToClipBoard">
-        {{ copied === 0 ? 'Copy' : 'Copied' }}
-      </button>
+    <span class="header">
+      {{ type.toUpperCase() }}
+      <button class="copy-button" @click="copyToClipBoard">{{ copied === 0 ? 'Copy' : 'Copied' }}</button>
     </span>
-    <pre><code><slot/></code></pre>
+    <pre><code><slot /></code></pre>
   </div>
 </template>
 
 <script setup>
-import { defineProps, ref } from 'vue'
-
 import { useClipboard } from '@vueuse/core'
 
 const { copy } = useClipboard()

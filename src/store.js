@@ -1,4 +1,3 @@
-import { ref, watch } from 'vue'
 import { useRefHistory, useLocalStorage } from '@vueuse/core'
 
 export * from './store/grid.ts'

@@ -38,7 +38,6 @@
 import { useIsCurrentArea } from '../../composables/area.js'
 import { asValidGridArea } from '../../utils/grid.js'
 import { dragging, currentFocus, currentHover, darkmode, parseValue } from '../../store.js'
-import { defineProps, computed, toRefs } from 'vue'
 
 const props = defineProps({
   type: { type: String, required: true },

@@ -45,8 +45,6 @@ const props = defineProps({
 })
 defineEmits(['pointerdown', 'overcell'])
 
-import { computed } from 'vue'
-
 const grid = computed(() => props.area.grid)
 
 const gridArea = computed(() => {

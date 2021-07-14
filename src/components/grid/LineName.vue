@@ -17,7 +17,6 @@
 <script>
 import { useLineNameWidth } from '../../composables/lineName.js'
 import { parseValue, currentFocus } from '../../store.js'
-import { ref, computed, nextTick } from 'vue'
 
 export default {
   props: {

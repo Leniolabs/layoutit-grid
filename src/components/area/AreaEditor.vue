@@ -116,7 +116,6 @@
 // GridEditor imported globally due to circular reference with AreaEditor
 // import FlexEditor from '../flex/FlexEditor.vue'
 
-import { ref, computed, watch, nextTick, toRefs } from 'vue'
 import {
   mainArea,
   currentArea,

@@ -12,8 +12,6 @@ import { preferredExport } from '../../store.js'
 
 import { areaToCSS, areaToHTML, presentationCSS } from '../../generateCode.js'
 
-import { defineProps, computed } from 'vue'
-
 const props = defineProps({
   area: { type: Object, required: true },
   options: { type: Object, required: true },

@@ -18,7 +18,6 @@
 import { dragging, currentFocus, isValidTrackSize } from '../../store.js'
 import { targetText } from '../../utils.js'
 import { useInputSetter } from '../../composables'
-import { defineProps, ref, computed } from 'vue'
 
 const props = defineProps({
   grid: { type: Object, required: true },

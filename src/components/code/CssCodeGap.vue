@@ -12,7 +12,6 @@
 </template>
 
 <script setup>
-import { defineProps, computed, nextTick } from 'vue'
 import { isValidGapSize } from '../../store.js'
 import { onCodeInputKeydown, toCssName, targetText } from '../../utils.js'
 import { useInputSetter } from '../../composables'

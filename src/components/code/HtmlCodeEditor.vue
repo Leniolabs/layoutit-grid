@@ -5,7 +5,6 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
 import { areaToHTML } from '../../generateCode.js'
 
 const props = defineProps({

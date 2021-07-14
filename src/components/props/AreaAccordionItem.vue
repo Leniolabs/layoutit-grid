@@ -59,7 +59,6 @@ import {
   addImplicitArea,
   removeArea,
 } from '../../store.js'
-import { defineProps } from 'vue'
 
 defineProps({
   area: { type: Object, required: true },

@@ -20,7 +20,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed } from 'vue'
 import type { PropType } from 'vue'
 //@ts-ignore
 import { parseValueUnit } from '../../store.js'

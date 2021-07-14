@@ -23,7 +23,6 @@
 import { inputSetter } from '../../composables'
 import { selection, isValidGridArea, getGridRegion, selectionGridArea } from '../../store.js'
 import { createSection } from '../../utils.js'
-import { defineProps, computed } from 'vue'
 import { findImplicitGrid, explicitGridAreaToGridRegion } from '../../utils/grid.js'
 
 const props = defineProps({

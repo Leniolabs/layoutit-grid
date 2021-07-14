@@ -27,7 +27,6 @@
 
 <script setup>
 import { dragging, currentArea, currentHover, overArea } from '../../store.js'
-import { defineProps, computed } from 'vue'
 import { gridTemplateAreasMatrix, templateAreasCellName } from '../../utils.js'
 
 const props = defineProps({

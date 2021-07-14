@@ -30,8 +30,6 @@
 </template>
 
 <script setup>
-import { defineProps, ref, computed, onMounted, watch } from 'vue'
-
 import { undo, redo, canUndo, canRedo, mainArea, restart, preferredExport } from '../../store.js'
 
 import { areaToCSS, areaToHTML } from '../../generateCode.js'

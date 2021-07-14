@@ -26,7 +26,6 @@
 </template>
 
 <script setup>
-import { defineProps, computed } from 'vue'
 import { getGridRegion } from '../../store.js'
 import { namedTemplateColumns, namedTemplateRows, toCssName } from '../../utils.js'
 

@@ -18,7 +18,6 @@
 
 <script setup>
 import { dragging, currentArea, currentHover, currentFocus, isValidAreaName } from '../../store.js'
-import { defineProps, ref, computed, nextTick } from 'vue'
 import { onCodeInputKeydown, toCssName, targetText } from '../../utils.js'
 import { pause, resume } from '../../store.js'
 import { useInputSetter } from '../../composables'

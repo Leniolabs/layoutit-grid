@@ -18,7 +18,6 @@
 
 <script setup>
 import { dragging, currentFocus, isValidLineName, parseGridTemplate } from '../../store.js'
-import { defineProps, computed } from 'vue'
 
 import { namedTemplateColumns, namedTemplateRows, onCodeInputKeydown, targetText } from '../../utils.js'
 import { useInputSetter } from '../../composables/index.js'

@@ -11,7 +11,6 @@
 </template>
 
 <script setup>
-import { defineProps, computed } from 'vue'
 import { currentArea, currentView } from '../../store.js'
 </script>
 

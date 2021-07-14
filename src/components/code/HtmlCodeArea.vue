@@ -33,7 +33,6 @@
 </template>
 
 <script setup>
-import { defineProps, computed } from 'vue'
 import { toCssName, getElementTag, includeAreaInCSS } from '../../utils.js'
 import { mainArea, currentArea, reordering, selection } from '../../store.js'
 

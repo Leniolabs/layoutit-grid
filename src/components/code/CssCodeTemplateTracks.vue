@@ -26,7 +26,6 @@
 
 <script setup>
 import { isValidTrackSize, parseGridTemplate } from '../../store.js'
-import { defineProps, ref, computed } from 'vue'
 
 import { namedTemplateColumns, namedTemplateRows } from '../../utils.js'
 

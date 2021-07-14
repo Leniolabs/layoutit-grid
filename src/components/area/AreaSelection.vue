@@ -42,8 +42,6 @@ import {
   selection,
 } from '../../store.js'
 
-import { ref, computed, nextTick } from 'vue'
-
 function farEnough(a, b, delta = 5) {
   return Math.abs(a.x - b.x) > delta || Math.abs(a.y - b.y) > delta
 }

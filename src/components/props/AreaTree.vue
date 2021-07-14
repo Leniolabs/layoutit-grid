@@ -51,7 +51,6 @@
 </template>
 
 <script setup>
-import { defineProps, ref, computed } from 'vue'
 import {
   mainArea,
   currentArea,

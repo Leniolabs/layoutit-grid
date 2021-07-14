@@ -6,7 +6,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
 import { currentArea, currentView } from '../../store.js'
 
 defineProps({

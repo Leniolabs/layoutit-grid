@@ -11,8 +11,6 @@
 </template>
 
 <script setup>
-import { defineProps, ref } from 'vue'
-
 const props = defineProps({
   name: { type: String, required: true },
   heading: { type: String, required: true },

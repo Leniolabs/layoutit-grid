@@ -11,7 +11,6 @@
 
 <script setup>
 import { useIsCurrentArea } from '../../composables/area.js'
-import { defineProps, computed, toRefs } from 'vue'
 import { asValidGridArea } from '../../utils/grid.js'
 
 const props = defineProps({

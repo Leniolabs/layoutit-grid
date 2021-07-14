@@ -10,7 +10,6 @@
 </template>
 
 <script setup>
-import { defineProps, computed, toRefs } from 'vue'
 import { mainArea, currentArea } from '../../store.js'
 import { deselectCurrentArea } from '../../store.js'
 import { useIsActiveArea } from '../../composables/area.js'

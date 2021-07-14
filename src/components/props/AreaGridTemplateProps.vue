@@ -108,8 +108,6 @@
 </template>
 
 <script setup>
-import { defineProps, computed } from 'vue'
-
 const props = defineProps({
   area: { type: Object, required: true },
 })

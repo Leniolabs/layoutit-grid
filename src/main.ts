@@ -1,3 +1,4 @@
+import 'vue-global-api'
 import { createApp } from 'vue'
 import App from './App.vue'
 import GridEditor from './components/grid/GridEditor.vue'

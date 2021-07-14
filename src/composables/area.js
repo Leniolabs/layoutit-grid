@@ -1,4 +1,3 @@
-import { computed } from 'vue'
 import { mainArea, currentArea } from '../store.js'
 
 export function useIsMainArea(area) {

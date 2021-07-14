@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import { onBeforeUpdate } from 'vue'
 import { useMagicKeys } from '@vueuse/core'
 import { handlePointerEventsInteraction } from '../../utils.js'
 import {
@@ -47,8 +48,6 @@ import {
   parseValueUnit,
 } from '../../store.js'
 import { useIsCurrentArea, useIsActiveArea } from '../../composables/area.js'
-
-import { defineProps, ref, computed, watch, toRefs, onBeforeUpdate, nextTick } from 'vue'
 
 const { shift } = useMagicKeys()
 

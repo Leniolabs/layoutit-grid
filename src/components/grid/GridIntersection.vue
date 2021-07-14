@@ -19,7 +19,6 @@
 
 <script setup>
 import { dragging } from '../../store.js'
-import { computed } from 'vue'
 import { asValidGridArea } from '../../utils/grid.js'
 
 const props = defineProps({

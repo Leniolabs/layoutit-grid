@@ -50,7 +50,6 @@
 
 <script>
 import { dragging, selection, currentFocus, overArea, mainArea } from '../../store.js'
-import { ref, computed } from 'vue'
 import { asValidGridArea, asValidLineNumber } from '../../utils/grid.js'
 
 export default {
