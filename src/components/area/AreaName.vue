@@ -1,15 +1,14 @@
 <template>
-  <span :style="{ 'border-color': area.color }" class="area-name" title="Area Name" @click="$emit('edit')">{{
-    area.name
-  }}</span>
+  <span :style="{ 'border-color': area.color }" class="area-name" title="Area Name" @click="$emit('edit')">
+    {{ area.name }}
+  </span>
 </template>
 
 <script setup>
-import { defineProps, defineEmit } from 'vue'
 defineProps({
   area: { type: Object, required: true },
 })
-defineEmit(['edit'])
+defineEmits(['edit'])
 </script>
 
 <style scoped lang="postcss">

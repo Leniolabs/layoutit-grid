@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, defineEmit } from 'vue'
+import { computed } from 'vue'
 import type { PropType } from 'vue'
 import type { UnitSelectType, UnitsInterface } from '../../types'
 // @ts-ignore
@@ -25,7 +25,7 @@ const props = defineProps({
   focused: { type: Boolean, default: false },
 })
 
-const emit = defineEmit(['update:modelValue'])
+const emit = defineEmits(['update:modelValue'])
 
 const options = computed(() => units[props.type])
 

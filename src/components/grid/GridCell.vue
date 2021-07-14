@@ -32,7 +32,6 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmit } from 'vue'
 import { dragging, parseValue, selection, pause, resume } from '../../store.js'
 import { useGridDimensions } from '../../composables/area.js'
 import { asValidGridArea } from '../../utils/grid.js'
@@ -44,7 +43,7 @@ const props = defineProps({
   focused: { type: Boolean, default: false },
   implicitGrid: { type: Object, required: true },
 })
-defineEmit(['pointerdown', 'overcell'])
+defineEmits(['pointerdown', 'overcell'])
 
 import { computed } from 'vue'
 

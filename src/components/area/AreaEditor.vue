@@ -116,7 +116,7 @@
 // GridEditor imported globally due to circular reference with AreaEditor
 // import FlexEditor from '../flex/FlexEditor.vue'
 
-import { ref, computed, watch, nextTick, toRefs, defineProps, defineEmit } from 'vue'
+import { ref, computed, watch, nextTick, toRefs } from 'vue'
 import {
   mainArea,
   currentArea,
@@ -146,7 +146,7 @@ const props = defineProps({
   gridarea: { type: String, default: undefined },
 })
 
-defineEmit(['edit'])
+defineEmits(['edit'])
 
 const { area } = toRefs(props)
 const isActive = useIsActiveArea(area)

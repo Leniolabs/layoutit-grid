@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import { computed, toRefs, defineProps, defineEmit } from 'vue'
+import { computed, toRefs } from 'vue'
 import { getAreaDepth, areaDisplayColor } from '../../store.js'
 import { useIsMainArea } from '../../composables/area.js'
 
@@ -39,7 +39,7 @@ defineProps({
   gridarea: { type: String, default: undefined },
 })
 
-defineEmit(['edit'])
+defineEmits(['edit'])
 
 /*
 const { area } = toRefs(props)

@@ -8,13 +8,11 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmit } from 'vue'
-
 defineProps({
   modelValue: { type: String, default: 'box' },
 })
 
-const emit = defineEmit(['update:modelValue'])
+const emit = defineEmits(['update:modelValue'])
 
 const options = ['div', 'p', 'button', 'image', 'component']
 

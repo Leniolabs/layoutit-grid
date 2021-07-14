@@ -17,7 +17,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmit } from 'vue'
 import type { PropType } from 'vue'
 
 const options = ['block', 'flex', 'grid'] as const
@@ -26,7 +25,7 @@ type Option = typeof options[number]
 defineProps({
   modelValue: { type: String as PropType<Option>, default: 'block' },
 })
-defineEmit(['update:modelValue'])
+defineEmits(['update:modelValue'])
 </script>
 
 <style scoped lang="postcss">

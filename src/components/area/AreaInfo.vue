@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import { computed, toRefs, defineProps, defineEmit } from 'vue'
+import { computed, toRefs } from 'vue'
 import { getAreaDepth, getGridRegion } from '../../store.js'
 import { useIsMainArea } from '../../composables/area.js'
 
@@ -35,7 +35,7 @@ const props = defineProps({
   area: { type: Object, required: true },
 })
 
-defineEmit(['edit'])
+defineEmits(['edit'])
 
 const { area } = toRefs(props)
 const isMain = useIsMainArea(area)

@@ -8,12 +8,11 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmit } from 'vue'
 defineProps({
   modelValue: { type: Boolean, default: false },
   id: { type: String, required: true },
 })
-defineEmit(['update:modelValue'])
+defineEmits(['update:modelValue'])
 </script>
 
 <style lang="postcss" scoped>

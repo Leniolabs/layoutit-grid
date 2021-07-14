@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, defineEmit } from 'vue'
+import { computed } from 'vue'
 import type { PropType } from 'vue'
 import type { ContentProperties, AlignOptionsType } from '../../types'
 import IconJustifyStart from '../icons/IconJustifyStart.vue'
@@ -75,7 +75,7 @@ const props = defineProps({
   focused: { type: Boolean, default: false },
   initial: { type: String, default: 'initial' },
 })
-defineEmit(['update:modelValue'])
+defineEmits(['update:modelValue'])
 
 const optionIconsJustify = {
   stretch: IconJustifyStretch,

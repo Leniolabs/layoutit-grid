@@ -1,7 +1,8 @@
 <template>
   <div class="display-select-container">
     <label title="Controls the auto-placement algorithm, specifying how items get flowed into the grid.">
-      grid-auto-flow: <span :title="optionTooltipsFlow[direction]">{{ modelValue }}</span>
+      grid-auto-flow:
+      <span :title="optionTooltipsFlow[direction]">{{ modelValue }}</span>
     </label>
     <div class="radio-toolbar">
       <template v-for="option in options" :key="option">
@@ -29,7 +30,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { defineProps, defineEmit, computed } from 'vue'
+import { computed } from 'vue'
 import type { PropType } from 'vue'
 import IconFlowCol from '../icons/IconFlowCol.vue'
 import IconFlowDense from '../icons/IconFlowDense.vue'
@@ -48,7 +49,7 @@ const optionIconsFlow = {
   dense: IconFlowDense,
 }
 
-const emit = defineEmit(['update:modelValue'])
+const emit = defineEmits(['update:modelValue'])
 
 const direction = computed(() => props.modelValue.split(' dense')[0])
 const dense = computed(() => props.modelValue.includes('dense'))

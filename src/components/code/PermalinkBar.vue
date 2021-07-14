@@ -1,18 +1,18 @@
 <template>
   <div>
-    <span>Your grid has been saved! </span>
+    <span>Your grid has been saved!</span>
     <a :href="fullPath" rel="noopener" target="_blank">{{ path }}</a>
     <button @click="$emit('close')">×</button>
   </div>
 </template>
 
 <script setup>
-import { computed, defineProps, defineEmit } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps({
   path: { type: String, required: true },
 })
-defineEmit(['close'])
+defineEmits(['close'])
 
 const fullPath = computed(() => 'https://' + props.path)
 </script>

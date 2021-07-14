@@ -45,7 +45,7 @@
 </template>
 
 <script setup>
-import { computed, defineProps, defineEmit } from 'vue'
+import { computed } from 'vue'
 import {
   mainArea,
   currentArea,
@@ -64,7 +64,7 @@ const props = defineProps({
   area: { type: Object, required: true },
 })
 
-defineEmit(['edit'])
+defineEmits(['edit'])
 
 const hasDisplay = computed(() => props.area.grid || props.area.flex)
 

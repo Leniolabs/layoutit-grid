@@ -19,7 +19,7 @@
 
 <script setup>
 import { dragging } from '../../store.js'
-import { computed, defineProps, defineEmit } from 'vue'
+import { computed } from 'vue'
 import { asValidGridArea } from '../../utils/grid.js'
 
 const props = defineProps({
@@ -30,7 +30,7 @@ const props = defineProps({
   rowgap: { type: String, default: '0px' },
   implicitGrid: { type: Object, required: true },
 })
-defineEmit(['down'])
+defineEmits(['down'])
 
 const grid = computed(() => props.area.grid)
 

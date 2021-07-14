@@ -16,7 +16,6 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
 defineProps({
   area: { type: Object, required: true },
   style: { type: Object, required: true },
