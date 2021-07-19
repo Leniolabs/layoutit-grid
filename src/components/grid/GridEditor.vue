@@ -37,7 +37,6 @@ import { onBeforeUpdate } from 'vue'
 import { useMagicKeys } from '@vueuse/core'
 import { handlePointerEventsInteraction } from '../../utils.js'
 import {
-  currentArea,
   setCurrentArea,
   valueUnitToString,
   pause,
@@ -200,7 +199,6 @@ export default {
       setCurrentArea(props.area)
 
       const initialPos = { x: event.clientX, y: event.clientY }
-      const initialTime = new Date().getTime()
       const initialRowSizes = [...grid.value.row.sizes]
       const initialRowComputedSizes = props.computedStyles.gridTemplateRows.split(/\s/g)
       const initialColSizes = [...grid.value.col.sizes]
@@ -230,6 +228,8 @@ export default {
               pause()
             } else if (!props.area.parent && (colEdge || rowEdge)) {
               // Resize main container
+              /* We can not resize the main container to simulate a viewport resize
+                 We need to do this directly at the viewport level. Disabling for the moment
               dragging.value = {
                 grid: grid.value,
                 colLine: colEdge,
@@ -237,6 +237,7 @@ export default {
                 type: 'container',
                 prevCursor: document.body.style.cursor,
               }
+              */
             }
           }
           if (dragging.value) {

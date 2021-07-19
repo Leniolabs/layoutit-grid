@@ -20,11 +20,11 @@
           : 'repeating-linear-gradient(45deg, white, white 9px, #f8f8f8 9px, #f8f8f8 14px)',
       'user-select': 'none',
       'z-index': 0,
+      ...displayStyles,
       // Force a minimum width and height so areas are still visible when the
       // user changes items placement or there are in implicit tracks
-      ...(area.width === 'initial' && { 'min-width': 'max(24px,50%)' }),
-      ...(area.height === 'initial' && { 'min-height': 'max(24px,50%)' }),
-      ...displayStyles,
+      ...(area.width === 'auto' && { 'min-width': area.parent ? 'max(24px,50%)' : '100%' }),
+      ...(area.height === 'auto' && { 'min-height': area.parent ? 'max(24px,50%)' : '100%' }),
     }"
     :area="area"
     :data-area-name="area.name"
@@ -226,8 +226,8 @@ function gridAreaStyles(area, gridArea) {
     'flex-basis': area.flexBasis,
     margin: area.margin,
     padding: area.padding,
-    width: area.width,
-    height: area.parent && area.parent.display === 'block' && area.height === 'initial' ? '100px' : area.height,
+    width: area.with !== 'auto' && area.width,
+    height: area.height !== 'auto' && area.parent,
   }
 }
 

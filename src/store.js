@@ -25,8 +25,8 @@ function createMainAreaState() {
     grid: createGridState(),
     justifySelf: 'center',
     alignSelf: 'center',
-    width: '100%',
-    height: '100%',
+    width: 'auto',
+    height: 'auto',
     color: '#1e1e1e',
   })
 }

@@ -3,7 +3,7 @@ import { parseValue, parseUnit } from '../utils/grid.js'
 export { parseValue, parseUnit }
 // @ts-ignore
 export { validGridUnits, parseValueUnit, isValidTrackSize } from '../utils/grid.js'
-import { GridDimension, GridState, LineName, ValueUnit, UniversalUnits, GridUnit } from '../types'
+import { GridDimension, GridState, LineName, ValueUnit, GridUnit } from '../types'
 
 export function gridTemplateToArr(str: string): string[] {
   return str.split(/(?!\(.*)\s(?![^(]*?\))/g)
@@ -163,7 +163,7 @@ export function removeImplicitCol(grid: GridState, n: number) {
   grid.col.auto.splice(n, 1)
 }
 
-export function withChangedValue(current: UniversalUnits, newValue: string) {
+export function withChangedValue(current: GridUnit, newValue: string) {
   return valueUnitToString({ value: newValue, unit: parseUnit(current) })
 }
 

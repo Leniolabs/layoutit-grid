@@ -6,7 +6,7 @@
     <div class="area-size">
       <div class="input-container">
         <input
-          v-if="size.unit !== 'initial'"
+          v-if="size.unit !== 'auto'"
           :value="size.value"
           aria-label="size value"
           type="number"
@@ -27,7 +27,7 @@ import { parseValueUnit } from '../../store.js'
 import { unitMeasureMap } from '../../utils.js'
 //@ts-ignore
 import { inputSetter } from '../../composables'
-import type { AreaType, AreaState, ValueUnit, UniversalUnits } from '../../types'
+import type { AreaType, AreaState, ValueUnit, GridUnit } from '../../types'
 
 const props = defineProps({
   area: { type: Object as PropType<AreaState>, required: true },
@@ -48,7 +48,7 @@ function setSizeValue({ target }: Event) {
 }
 
 function setSizeUnit({ target }: Event) {
-  const unit = (target as HTMLInputElement).value as UniversalUnits
+  const unit = (target as HTMLInputElement).value as GridUnit
   // TODO: Adjust value to avoid jump
   size.value = { value: unitMeasureMap[unit], unit }
 }

@@ -47,8 +47,8 @@ export function createAreaState({
   grid = null,
   flex = null,
   gridArea = 'auto',
-  width = 'initial',
-  height = 'initial',
+  width = 'auto',
+  height = 'auto',
   margin = '0',
   padding = '0',
   justifySelf = 'initial',
@@ -242,9 +242,16 @@ export function parseArea(json) {
   const area = {
     justifySelf: 'center',
     alignSelf: 'center',
-    width: '100%',
-    height: '100%',
+    width: 'auto',
+    height: 'auto',
     ...(design.version ? design.area : design),
+  }
+  // Compatibility
+  if (area.width === 'initial') {
+    area.width = 'auto'
+  }
+  if (area.height === 'initial') {
+    area.height = 'auto'
   }
   return parentify(createAreaState(rewireAreas(area)))
 }

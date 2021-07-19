@@ -32,10 +32,10 @@
         ><CssCodeGridArea :area="area" :options="options"
       /></CssDecl>
     </template>
-    <CssDecl v-if="area.width !== 'initial'" property="width">{{ area.width }}</CssDecl>
-    <CssDecl v-if="area.height !== 'initial'" property="height">{{ area.height }}</CssDecl>
     <CssDecl v-if="area.margin !== '0'" property="margin">{{ area.margin }}</CssDecl>
     <CssDecl v-if="area.padding !== '0'" property="padding">{{ area.padding }}</CssDecl> </template
+  ><CssDecl v-if="area.width !== 'auto'" property="width">{{ area.width }}</CssDecl>
+  <CssDecl v-if="area.height !== 'auto'" property="height">{{ area.height }}</CssDecl
   >{{ (singleLine ? '' : '\n') + '}'
   }}<template v-for="(a, i) in areasToInclude" :key="`area-${a.id}-${i}`"
     >{{ '\n' }}<CssCodeArea :area="a" :options="options"

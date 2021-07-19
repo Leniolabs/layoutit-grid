@@ -8,8 +8,6 @@ export type Initial = 'initial'
 
 export type GlobalPropierties = Initial | 'inherit' | 'unset'
 
-export type UniversalUnits = GridUnit | Initial
-
 export type BasicProperties = 'center' | 'start' | 'end' | 'stretch' | Initial
 
 export type ContentProperties = BasicProperties | 'space-around' | 'space-between' | 'space-evenly'
@@ -30,8 +28,8 @@ export interface UnitsInterface {
   flex: DefaultUnit[]
   grid: GridUnit[]
   default: DefaultUnit[]
-  size: UniversalUnits[]
-  auto: UniversalUnits[]
+  size: GridUnit[]
+  auto: GridUnit[]
 }
 
 export interface GridDimension {
@@ -53,7 +51,7 @@ export interface GridState {
 
 export interface ValueUnit {
   value: string | number
-  unit: UniversalUnits
+  unit: GridUnit
 }
 
 export interface ValueGapUnit extends Omit<ValueUnit, 'unit'> {

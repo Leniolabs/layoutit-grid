@@ -31,9 +31,9 @@ export function areaToCSS(area, { parentGrid, templateAreas = true, repeat, oldS
     }
   }
 
-  if (!(!area.parent && area.width === '100%' && area.height === '100%')) {
-    css += declaration('width', area.width, 'initial')
-    css += declaration('height', area.height, 'initial')
+  if (!(!area.parent && area.width === 'auto' && area.height === 'auto')) {
+    css += declaration('width', area.width, 'auto')
+    css += declaration('height', area.height, 'auto')
   }
   css += declaration('margin', area.margin, '0')
   css += declaration('padding', area.padding, '0')
@@ -150,8 +150,7 @@ export function areaToHTML(area, ident = 0) {
 
 export function presentationCSS(area) {
   const cssName = toCssName(area.name)
-  const needsHeight =
-    (area.width === '100%' || area.width === 'initial') && (area.height === '100%' || area.height === 'initial')
+  const needsHeight = area.height === 'auto'
   return `html, body ${needsHeight ? `, .${cssName} ` : ''}{
   height: 100%;
   margin: 0;

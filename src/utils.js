@@ -36,8 +36,8 @@ export function areaIsSingleLineInCSS(area) {
     area.alignSelf === 'initial' &&
     area.margin === '0' &&
     area.padding === '0' &&
-    area.width === 'initial' &&
-    area.height === 'initial'
+    area.width === 'auto' &&
+    area.height === 'auto'
   )
 }
 
