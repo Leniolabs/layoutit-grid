@@ -20,7 +20,6 @@ export function valueUnitToString({ value, unit }: ValueUnit): string {
     case 'min-content':
     case 'max-content':
     case 'auto':
-    case 'initial':
       return unit
     default:
       return `${value}${unit}`
