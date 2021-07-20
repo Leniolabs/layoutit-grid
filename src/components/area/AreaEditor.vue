@@ -227,7 +227,7 @@ function gridAreaStyles(area, gridArea) {
     margin: area.margin,
     padding: area.padding,
     width: area.with !== 'auto' && area.width,
-    height: area.height !== 'auto' && area.parent,
+    height: area.height !== 'auto' && area.height,
   }
 }
 

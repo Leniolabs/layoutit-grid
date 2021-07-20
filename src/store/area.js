@@ -207,6 +207,14 @@ export function rewireAreas(area) {
     area.children = []
   }
   area.children.forEach(rewireAreas)
+
+  // Compatibility
+  if (area.width === 'initial') {
+    area.width = 'auto'
+  }
+  if (area.height === 'initial') {
+    area.height = 'auto'
+  }
   return area
 }
 
@@ -245,13 +253,6 @@ export function parseArea(json) {
     width: 'auto',
     height: 'auto',
     ...(design.version ? design.area : design),
-  }
-  // Compatibility
-  if (area.width === 'initial') {
-    area.width = 'auto'
-  }
-  if (area.height === 'initial') {
-    area.height = 'auto'
   }
   return parentify(createAreaState(rewireAreas(area)))
 }
