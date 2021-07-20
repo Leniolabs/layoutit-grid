@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue-demi'
+import { onMounted } from 'vue'
 import { registerSW } from 'virtual:pwa-register'
 
 import LayoutEditor from './components/LayoutEditor.vue'

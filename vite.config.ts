@@ -60,8 +60,7 @@ const LayouitPlugin = (): Plugin => {
             // )
             let result = html.replace(
               module,
-              `<link rel="modulepreload" href="${moduleName}" />\n${
-                dynamicImportsEntries ? dynamicImportsEntries.filter((dy) => !!dy).join('\n') : ''
+              `<link rel="modulepreload" href="${moduleName}" />\n${dynamicImportsEntries ? dynamicImportsEntries.filter((dy) => !!dy).join('\n') : ''
               }\n${module}`
             )
             // the css will be something like this
