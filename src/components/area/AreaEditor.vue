@@ -9,7 +9,6 @@
       'pointer-events': 'none',
       'touch-action': 'none',
       ...gridAreaStyles(area, gridarea),
-      overflow: 'hidden',
       'touch-action': 'none',
       position: 'relative',
       background:

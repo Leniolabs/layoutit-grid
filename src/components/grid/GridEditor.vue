@@ -120,12 +120,15 @@ export default {
           intersections.push({ row, col })
         }
       }
+      /* This will be needed directly in the main LayoutEditor, and not here once we add the resizing
+         of viewport feature
       const { rows, cols, ri, ci } = props.implicitGrid
       const rs = ri,
         cs = ci,
         re = rows + ri,
         ce = cols + ci
       intersections.push({ row: rs, col: cs }, { row: rs, col: ce }, { row: re, col: cs }, { row: re, col: ce })
+      */
       return intersections
     })
 

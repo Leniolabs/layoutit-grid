@@ -105,10 +105,12 @@ section {
   position: relative;
   overflow: hidden;
   &.col {
+    /*
     &.extend {
       top: -100vh;
       height: 300vh;
     }
+    */
     border-right: 1px dashed var(--color-gray);
     &.col-first {
       border-left: 1px solid var(--color-gray);
@@ -124,10 +126,12 @@ section {
     }
   }
   &.row {
+    /*
     &.extend {
       width: 300vw;
       left: -100vw;
     }
+    */
 
     border-bottom: 1px dashed var(--color-gray);
     &:not(.row-first):not(.row-no-gap) {
