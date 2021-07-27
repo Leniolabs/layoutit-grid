@@ -388,7 +388,7 @@ const gridTracks = computed(() => {
   position: relative;
   pointer-events: none;
   touch-action: none;
-  height: 100%;
+
   &:not(.dragging) {
     cursor: pointer;
   }
