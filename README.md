@@ -12,6 +12,8 @@ Go to https://grid.layoutit.com/ and start playing :dart:
 
 <img width="398" src="./assets/layoutit-grid-showcase-v2.gif">
 
+This App is not currently intended to be used as a library, but may in the future. The package in npm is just a placeholder to help discovering the github repository at this point.
+
 ## Why we built a Generator
 
 Generators can be a stepping stone when you are learning new concepts. Layoutit Grid helps you experience the power of CSS Grid by materializing your designs in a few clicks along with the code to make it happen. This gives you the early wins that you need to push forward with the learning process. For some of us, generators permanently remain in our toolboxes. Not because we do not know how to craft the layouts by hand, but because having the visual feedback loop help us to quickly convert our ideas into code. So we keep playing with them.
