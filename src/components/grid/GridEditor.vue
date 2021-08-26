@@ -32,7 +32,7 @@
   />
 </template>
 
-<script>
+<script setup>
 import { onBeforeUpdate } from 'vue'
 import { useMagicKeys } from '@vueuse/core'
 import { handlePointerEventsInteraction } from '../../utils.js'
@@ -52,261 +52,245 @@ const { shift } = useMagicKeys()
 
 const { dragging } = useAppState()
 
-export default {
-  props: {
-    area: { type: Object, required: true },
-    computedStyles: { type: Object, default: null },
-    computedGap: {
-      type: Object,
-      default: () => {
-        return { col: '0px', row: '0px' }
-      },
+const props = defineProps({
+  area: { type: Object, required: true },
+  computedStyles: { type: Object, default: null },
+  computedGap: {
+    type: Object,
+    default: () => {
+      return { col: '0px', row: '0px' }
     },
-    implicitGrid: { type: Object, required: true },
-    grayed: { type: Boolean, default: false },
   },
-  emits: ['overcell'],
-  setup(props, { expose }) {
-    const grid = computed(() => props.area.grid)
+  implicitGrid: { type: Object, required: true },
+  grayed: { type: Boolean, default: false },
+})
 
-    const gridLineRefs = ref({ col: [], row: [] })
-    onBeforeUpdate(() => {
-      gridLineRefs.value = { col: [], row: [] }
-    })
+defineEmits(['overcell'])
 
-    function gridSizesForView(type) {
-      return grid.value[type].sizes
-        .map((size) => {
-          const unit = parseUnit(size)
-          switch (unit) {
-            case 'auto':
-              return '200px'
-            case 'min-content':
-              return '100px'
-            case 'max-content':
-              return '300px'
-            default:
-              return size
-          }
-        })
-        .join(' ')
-    }
+const grid = computed(() => props.area.grid)
 
-    const gridTemplateRows = computed(() => gridSizesForView('row'))
-    const gridTemplateColumns = computed(() => gridSizesForView('col'))
+const gridLineRefs = ref({ col: [], row: [] })
+onBeforeUpdate(() => {
+  gridLineRefs.value = { col: [], row: [] }
+})
 
-    const { area } = toRefs(props)
-    const isCurrent = useIsCurrentArea(area)
-    const isActive = useIsActiveArea(area)
-
-    function linesFor(type) {
-      const lines = []
-      const { rows, cols, ri, ci } = props.implicitGrid
-      const size = type === 'row' ? rows : cols
-      const cell_i = type === 'row' ? ri : ci
-      for (let i = cell_i; i <= size + cell_i; i++) {
-        lines.push({ type, pos: i })
+function gridSizesForView(type) {
+  return grid.value[type].sizes
+    .map((size) => {
+      const unit = parseUnit(size)
+      switch (unit) {
+        case 'auto':
+          return '200px'
+        case 'min-content':
+          return '100px'
+        case 'max-content':
+          return '300px'
+        default:
+          return size
       }
-      return lines
-    }
-    const gridLines = computed(() => {
-      return [...linesFor('row'), ...linesFor('col')]
     })
+    .join(' ')
+}
 
-    const gridIntersections = computed(() => {
-      const rowEnd = grid.value.row.sizes.length
-      const colEnd = grid.value.col.sizes.length
-      const intersections = []
-      for (let row = 2; row <= rowEnd; row++) {
-        for (let col = 2; col <= colEnd; col++) {
-          intersections.push({ row, col })
+const gridTemplateRows = computed(() => gridSizesForView('row'))
+const gridTemplateColumns = computed(() => gridSizesForView('col'))
+
+const { area } = toRefs(props)
+const isCurrent = useIsCurrentArea(area)
+const isActive = useIsActiveArea(area)
+
+function linesFor(type) {
+  const lines = []
+  const { rows, cols, ri, ci } = props.implicitGrid
+  const size = type === 'row' ? rows : cols
+  const cell_i = type === 'row' ? ri : ci
+  for (let i = cell_i; i <= size + cell_i; i++) {
+    lines.push({ type, pos: i })
+  }
+  return lines
+}
+const gridLines = computed(() => {
+  return [...linesFor('row'), ...linesFor('col')]
+})
+
+const gridIntersections = computed(() => {
+  const rowEnd = grid.value.row.sizes.length
+  const colEnd = grid.value.col.sizes.length
+  const intersections = []
+  for (let row = 2; row <= rowEnd; row++) {
+    for (let col = 2; col <= colEnd; col++) {
+      intersections.push({ row, col })
+    }
+  }
+  /* This will be needed directly in the main LayoutEditor, and not here once we add the resizing
+      of viewport feature
+  const { rows, cols, ri, ci } = props.implicitGrid
+  const rs = ri,
+    cs = ci,
+    re = rows + ri,
+    ce = cols + ci
+  intersections.push({ row: rs, col: cs }, { row: rs, col: ce }, { row: re, col: cs }, { row: re, col: ce })
+  */
+  return intersections
+})
+
+function toViewGap(gap) {
+  // Defaults to 1px so grid gap doesn't disappear
+  // return parseValue(gap) === 0 ? '1px' : gap
+  return gap
+}
+
+const gridGap = computed(() => {
+  return `${toViewGap(grid.value.row.gap)} ${toViewGap(grid.value.col.gap)}`
+})
+
+function calcValue(prev, prevComp, delta) {
+  const sizeAdd = (prev.value * delta) / prevComp.value
+
+  let value = +(prev.value + sizeAdd).toFixed(shift.value ? 2 : 1)
+
+  if (value <= 0) {
+    value = 0.1
+  }
+
+  return { value, unit: prev.unit }
+}
+
+function calcContainerValue(prev, delta) {
+  const sizeAdd = (prev.value * delta) / prev.value
+
+  let value = +(prev.value + sizeAdd).toFixed(shift.value ? 2 : 1)
+
+  if (value <= 0) {
+    value = 0.1
+  }
+
+  return { value, unit: prev.unit }
+}
+
+function resizableUnit(unit) {
+  return !(unit === 'auto' || unit === 'max-content' || unit === 'min-content' || unit === 'minmax')
+}
+
+function calcSize(size, computedSize, delta) {
+  const value = parseValueUnit(size)
+  if (resizableUnit(value.unit)) {
+    const computedValue = parseValueUnit(computedSize)
+    return valueUnitToString(calcValue(value, computedValue, delta))
+  }
+  return size
+}
+
+function resizeGridSizes(sizes, computedSizes, delta, line) {
+  const newSizes = [...sizes],
+    leftPos = line - 2,
+    rightPos = line - 1
+  newSizes[leftPos] = calcSize(sizes[leftPos], computedSizes[leftPos], delta)
+  newSizes[rightPos] = calcSize(sizes[rightPos], computedSizes[rightPos], -delta)
+  return newSizes
+}
+
+function handleLineDown(event, { row, col }) {
+  event.stopPropagation() // TODO: ...
+  event.preventDefault()
+  if (document.activeElement) {
+    document.activeElement.blur()
+  }
+
+  if (dragging.value) {
+    return
+  }
+
+  setCurrentArea(props.area)
+
+  const initialPos = { x: event.clientX, y: event.clientY }
+  const initialRowSizes = [...grid.value.row.sizes]
+  const initialRowComputedSizes = props.computedStyles.gridTemplateRows.split(/\s/g)
+  const initialColSizes = [...grid.value.col.sizes]
+  const initialColComputedSizes = props.computedStyles.gridTemplateColumns.split(/\s/g)
+  const rowsNumber = grid.value.row.sizes.length
+  const colsNumber = grid.value.col.sizes.length
+  const initialWidth = parseValueUnit(props.area.width)
+  const initialComputedWidth = parseValueUnit(props.computedStyles.width)
+  const initialHeight = parseValueUnit(props.area.height)
+  const initialComputedHeight = parseValueUnit(props.computedStyles.height)
+
+  const { rows, cols, ri, ci } = props.implicitGrid
+  const rowLine = row && row > 1 && row <= rowsNumber ? row : undefined
+  const colLine = col && col > 1 && col <= colsNumber ? col : undefined
+  const rowEdge = row === ri || row === rows + ri ? row : undefined
+  const colEdge = col === ci || col === cols + ri ? col : undefined
+
+  handlePointerEventsInteraction(event, {
+    onmove(event) {
+      const pos = { x: event.clientX, y: event.clientY }
+
+      if (!dragging.value) {
+        if (colLine || rowLine) {
+          // Start dragging grid lines
+          dragging.value = { grid: grid.value, rowLine, colLine, prevCursor: document.body.style.cursor }
+          document.body.style.cursor = col && row ? 'move' : col ? 'col-resize' : 'row-resize'
+          pause()
+        } else if (!props.area.parent && (colEdge || rowEdge)) {
+          // Resize main container
+          /* We can not resize the main container to simulate a viewport resize
+              We need to do this directly at the viewport level. Disabling for the moment
+          dragging.value = {
+            grid: grid.value,
+            colLine: colEdge,
+            rowLine: rowEdge,
+            type: 'container',
+            prevCursor: document.body.style.cursor,
+          }
+          */
         }
       }
-      /* This will be needed directly in the main LayoutEditor, and not here once we add the resizing
-         of viewport feature
-      const { rows, cols, ri, ci } = props.implicitGrid
-      const rs = ri,
-        cs = ci,
-        re = rows + ri,
-        ce = cols + ci
-      intersections.push({ row: rs, col: cs }, { row: rs, col: ce }, { row: re, col: cs }, { row: re, col: ce })
-      */
-      return intersections
-    })
-
-    function toViewGap(gap) {
-      // Defaults to 1px so grid gap doesn't disappear
-      // return parseValue(gap) === 0 ? '1px' : gap
-      return gap
-    }
-
-    const gridGap = computed(() => {
-      return `${toViewGap(grid.value.row.gap)} ${toViewGap(grid.value.col.gap)}`
-    })
-
-    function calcValue(prev, prevComp, delta) {
-      const sizeAdd = (prev.value * delta) / prevComp.value
-
-      let value = +(prev.value + sizeAdd).toFixed(shift.value ? 2 : 1)
-
-      if (value <= 0) {
-        value = 0.1
-      }
-
-      return { value, unit: prev.unit }
-    }
-
-    function calcContainerValue(prev, delta) {
-      const sizeAdd = (prev.value * delta) / prev.value
-
-      let value = +(prev.value + sizeAdd).toFixed(shift.value ? 2 : 1)
-
-      if (value <= 0) {
-        value = 0.1
-      }
-
-      return { value, unit: prev.unit }
-    }
-
-    function resizableUnit(unit) {
-      return !(unit === 'auto' || unit === 'max-content' || unit === 'min-content' || unit === 'minmax')
-    }
-
-    function calcSize(size, computedSize, delta) {
-      const value = parseValueUnit(size)
-      if (resizableUnit(value.unit)) {
-        const computedValue = parseValueUnit(computedSize)
-        return valueUnitToString(calcValue(value, computedValue, delta))
-      }
-      return size
-    }
-
-    function resizeGridSizes(sizes, computedSizes, delta, line) {
-      const newSizes = [...sizes],
-        leftPos = line - 2,
-        rightPos = line - 1
-      newSizes[leftPos] = calcSize(sizes[leftPos], computedSizes[leftPos], delta)
-      newSizes[rightPos] = calcSize(sizes[rightPos], computedSizes[rightPos], -delta)
-      return newSizes
-    }
-
-    function handleLineDown(event, { row, col }) {
-      event.stopPropagation() // TODO: ...
-      event.preventDefault()
-      if (document.activeElement) {
-        document.activeElement.blur()
-      }
-
       if (dragging.value) {
-        return
+        if (dragging.value.type === 'container') {
+          if (colEdge !== undefined) {
+            const delta = (colEdge === 1 ? -1 : 1) * (pos.x - initialPos.x)
+            props.area.width = valueUnitToString(calcValue(initialWidth, initialComputedWidth, 2 * delta))
+          }
+          if (rowEdge !== undefined) {
+            const delta = (rowEdge === 1 ? -1 : 1) * (pos.y - initialPos.y)
+            props.area.height = valueUnitToString(calcValue(initialHeight, initialComputedHeight, 2 * delta))
+          }
+        } else {
+          if (dragging.value.rowLine !== undefined) {
+            // Drag row line by updating row sizes
+            grid.value.row.sizes = resizeGridSizes(
+              initialRowSizes,
+              initialRowComputedSizes,
+              pos.y - initialPos.y,
+              dragging.value.rowLine
+            )
+          }
+          if (dragging.value.colLine !== undefined) {
+            // Drag col line by updating col sizes
+            grid.value.col.sizes = resizeGridSizes(
+              initialColSizes,
+              initialColComputedSizes,
+              pos.x - initialPos.x,
+              dragging.value.colLine
+            )
+          }
+        }
       }
+    },
 
-      setCurrentArea(props.area)
+    onup() {
+      // Finish dragging grid lines
+      document.body.style.cursor = dragging.value ? dragging.value.prevCursor : 'initial'
+      dragging.value = null
+      resume(true)
+    },
 
-      const initialPos = { x: event.clientX, y: event.clientY }
-      const initialRowSizes = [...grid.value.row.sizes]
-      const initialRowComputedSizes = props.computedStyles.gridTemplateRows.split(/\s/g)
-      const initialColSizes = [...grid.value.col.sizes]
-      const initialColComputedSizes = props.computedStyles.gridTemplateColumns.split(/\s/g)
-      const rowsNumber = grid.value.row.sizes.length
-      const colsNumber = grid.value.col.sizes.length
-      const initialWidth = parseValueUnit(props.area.width)
-      const initialComputedWidth = parseValueUnit(props.computedStyles.width)
-      const initialHeight = parseValueUnit(props.area.height)
-      const initialComputedHeight = parseValueUnit(props.computedStyles.height)
-
-      const { rows, cols, ri, ci } = props.implicitGrid
-      const rowLine = row && row > 1 && row <= rowsNumber ? row : undefined
-      const colLine = col && col > 1 && col <= colsNumber ? col : undefined
-      const rowEdge = row === ri || row === rows + ri ? row : undefined
-      const colEdge = col === ci || col === cols + ri ? col : undefined
-
-      handlePointerEventsInteraction(event, {
-        onmove(event) {
-          const pos = { x: event.clientX, y: event.clientY }
-
-          if (!dragging.value) {
-            if (colLine || rowLine) {
-              // Start dragging grid lines
-              dragging.value = { grid: grid.value, rowLine, colLine, prevCursor: document.body.style.cursor }
-              document.body.style.cursor = col && row ? 'move' : col ? 'col-resize' : 'row-resize'
-              pause()
-            } else if (!props.area.parent && (colEdge || rowEdge)) {
-              // Resize main container
-              /* We can not resize the main container to simulate a viewport resize
-                 We need to do this directly at the viewport level. Disabling for the moment
-              dragging.value = {
-                grid: grid.value,
-                colLine: colEdge,
-                rowLine: rowEdge,
-                type: 'container',
-                prevCursor: document.body.style.cursor,
-              }
-              */
-            }
-          }
-          if (dragging.value) {
-            if (dragging.value.type === 'container') {
-              if (colEdge !== undefined) {
-                const delta = (colEdge === 1 ? -1 : 1) * (pos.x - initialPos.x)
-                props.area.width = valueUnitToString(calcValue(initialWidth, initialComputedWidth, 2 * delta))
-              }
-              if (rowEdge !== undefined) {
-                const delta = (rowEdge === 1 ? -1 : 1) * (pos.y - initialPos.y)
-                props.area.height = valueUnitToString(calcValue(initialHeight, initialComputedHeight, 2 * delta))
-              }
-            } else {
-              if (dragging.value.rowLine !== undefined) {
-                // Drag row line by updating row sizes
-                grid.value.row.sizes = resizeGridSizes(
-                  initialRowSizes,
-                  initialRowComputedSizes,
-                  pos.y - initialPos.y,
-                  dragging.value.rowLine
-                )
-              }
-              if (dragging.value.colLine !== undefined) {
-                // Drag col line by updating col sizes
-                grid.value.col.sizes = resizeGridSizes(
-                  initialColSizes,
-                  initialColComputedSizes,
-                  pos.x - initialPos.x,
-                  dragging.value.colLine
-                )
-              }
-            }
-          }
-        },
-
-        onup() {
-          // Finish dragging grid lines
-          document.body.style.cursor = dragging.value ? dragging.value.prevCursor : 'initial'
-          dragging.value = null
-          resume(true)
-        },
-
-        onclick() {
-          if (!dragging.value) {
-            gridLineRefs.value[col ? 'col' : 'row'][col || row].toggleLineName()
-          }
-        },
-      })
-    }
-
-    return {
-      grid,
-      gridLineRefs,
-      gridSizesForView,
-      gridTemplateRows,
-      gridTemplateColumns,
-      isCurrent,
-      isActive,
-      gridLines,
-      gridIntersections,
-      gridGap,
-      handleLineDown,
-    }
-  },
+    onclick() {
+      if (!dragging.value) {
+        gridLineRefs.value[col ? 'col' : 'row'][col || row].toggleLineName()
+      }
+    },
+  })
 }
 </script>
 

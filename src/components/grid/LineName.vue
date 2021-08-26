@@ -14,58 +14,54 @@
   />
 </template>
 
-<script>
+<script setup>
 import { useLineNameWidth } from '../../composables/lineName.js'
 import { useAppState, parseValue } from '../../store.js'
 
 const { currentFocus } = useAppState()
 
-export default {
-  props: {
-    grid: { type: Object, required: true },
-    type: { type: String, required: true }, // 'col' or 'row'
-    pos: { type: Number, required: true },
-    gap: { type: String, default: '0px' },
-  },
-  setup(props, { expose }) {
-    const line = computed(() => props.grid[props.type].lineNames[props.pos - 1])
+const props = defineProps({
+  grid: { type: Object, required: true },
+  type: { type: String, required: true }, // 'col' or 'row'
+  pos: { type: Number, required: true },
+  gap: { type: String, default: '0px' },
+})
 
-    const lineNameWidth = useLineNameWidth(line, '14px arial', 30)
+const line = computed(() => props.grid[props.type].lineNames[props.pos - 1])
 
-    const style = computed(() => {
-      const g = parseValue(props.gap)
-      const s = { width: lineNameWidth.value + 'px' }
-      if (props.pos > 1 && props.pos < props.grid[props.type].lineNames.length) {
-        return { ...s, ...(props.type === 'row' ? { bottom: -11 - g / 2 + 'px' } : { right: -2 - g / 2 + 'px' }) }
-      }
-      return s
-    })
+const lineNameWidth = useLineNameWidth(line, '14px arial', 30)
 
-    const inputElement = ref(null)
+const style = computed(() => {
+  const g = parseValue(props.gap)
+  const s = { width: lineNameWidth.value + 'px' }
+  if (props.pos > 1 && props.pos < props.grid[props.type].lineNames.length) {
+    return { ...s, ...(props.type === 'row' ? { bottom: -11 - g / 2 + 'px' } : { right: -2 - g / 2 + 'px' }) }
+  }
+  return s
+})
 
-    function focus() {
-      inputElement.value.focus()
-    }
+const inputElement = ref(null)
 
-    function toggle() {
-      if ((line.value.active = !line.value.active)) {
-        nextTick(focus)
-      }
-    }
-
-    function onKeydown(event) {
-      const { code } = event
-      if (code === 'Enter' || code === 'NumpadEnter' || code === 'Escape') {
-        event.preventDefault()
-        inputElement.value.blur()
-        return
-      }
-    }
-
-    expose({ focus, toggle })
-    return { line, inputElement, style, currentFocus, onKeydown }
-  },
+function focus() {
+  inputElement.value.focus()
 }
+
+function toggle() {
+  if ((line.value.active = !line.value.active)) {
+    nextTick(focus)
+  }
+}
+
+function onKeydown(event) {
+  const { code } = event
+  if (code === 'Enter' || code === 'NumpadEnter' || code === 'Escape') {
+    event.preventDefault()
+    inputElement.value.blur()
+    return
+  }
+}
+
+defineExpose({ focus, toggle })
 </script>
 
 <style scoped lang="postcss">

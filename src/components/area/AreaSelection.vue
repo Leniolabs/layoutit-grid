@@ -30,7 +30,7 @@
   </section>
 </template>
 
-<script>
+<script setup>
 import { gridRegionToGridArea, createSection, toCssName } from '../../utils.js'
 import {
   useAppState,
@@ -47,145 +47,131 @@ function farEnough(a, b, delta = 5) {
   return Math.abs(a.x - b.x) > delta || Math.abs(a.y - b.y) > delta
 }
 
-export default {
-  props: {
-    area: { type: Object, required: true },
-    implicitGrid: { type: Object, required: true },
-  },
-  setup(props, { expose, emit }) {
-    const nameInputElement = ref(null)
+const props = defineProps({
+  area: { type: Object, required: true },
+  implicitGrid: { type: Object, required: true },
+})
 
-    const grid = computed(() => props.area.grid)
+const nameInputElement = ref(null)
 
-    const gridArea = computed(() => (selection.value ? selectionGridArea(selection.value) : 'initial'))
+const grid = computed(() => props.area.grid)
 
-    function validGridName(name) {
-      return name !== '' && !(name[0] >= '0' && name[0] <= '9')
+const gridArea = computed(() => (selection.value ? selectionGridArea(selection.value) : 'initial'))
+
+function validGridName(name) {
+  return name !== '' && !(name[0] >= '0' && name[0] <= '9')
+}
+
+const saveEnabled = computed(() => {
+  const name = selection.value ? selection.value.name : ''
+  return validGridName(name) && (isValidAreaName(name) || (selection.value.area && selection.value.area.name === name))
+})
+
+function sectionFromEvent(event) {
+  const el = document.elementFromPoint(event.clientX, event.clientY)
+  if (el) {
+    const { colStart, rowStart } = el.dataset
+    if (colStart !== undefined && rowStart !== undefined) {
+      return createSection({ col: +colStart, row: +rowStart })
     }
+  }
+  return undefined
+}
 
-    const saveEnabled = computed(() => {
-      const name = selection.value ? selection.value.name : ''
-      return (
-        validGridName(name) && (isValidAreaName(name) || (selection.value.area && selection.value.area.name === name))
-      )
-    })
+function cellDown(event) {
+  event.stopPropagation()
+  event.preventDefault()
 
-    function sectionFromEvent(event) {
-      const el = document.elementFromPoint(event.clientX, event.clientY)
-      if (el) {
-        const { colStart, rowStart } = el.dataset
-        if (colStart !== undefined && rowStart !== undefined) {
-          return createSection({ col: +colStart, row: +rowStart })
-        }
-      }
-      return undefined
-    }
-
-    function cellDown(event) {
-      event.stopPropagation()
-      event.preventDefault()
-
-      const section = sectionFromEvent(event)
-      if (section) {
-        if (selection.value && selection.value.parent !== props.area) {
-          selection.value = null
-        }
-
-        if (!(selection.value && selection.value.area)) {
-          setCurrentArea(props.area)
-        }
-
-        if (!selection.value) {
-          selection.value = {
-            start: section,
-            end: section,
-            color: getRandomColor(),
-            name: '',
-            fresh: true,
-            implicitGrid: props.implicitGrid,
-            parent: props.area,
-          }
-        }
-
-        selection.value.dragging = {
-          initial: { x: event.clientX, y: event.clientY },
-          section,
-        }
-
-        const onPointerMove = (event) => {
-          const sectionOver = sectionFromEvent(event)
-          if (sectionOver) {
-            const { dragging, fresh } = selection.value
-            if (dragging) {
-              if (fresh) {
-                selection.value.end = sectionOver
-              } else {
-                if (farEnough(dragging.initial, { x: event.clientX, y: event.clientY })) {
-                  selection.value.fresh = true
-                  selection.value.start = section
-                }
-              }
-              dragging.section = sectionOver
-            }
-          }
-        }
-
-        const onPointerUp = () => {
-          if (selection.value.dragging) {
-            selection.value.end = selection.value.dragging.section
-            selection.value.dragging = null
-          }
-          selection.value.fresh = false
-          window.removeEventListener('pointermove', onPointerMove)
-          window.removeEventListener('pointerup', onPointerUp)
-
-          if (!(selection.value && selection.value.area)) {
-            nextTick(() => nameInputElement.value.focus())
-          }
-        }
-        window.addEventListener('pointermove', onPointerMove, false)
-        window.addEventListener('pointerup', onPointerUp, false)
-      }
-    }
-
-    function saveSelection() {
-      if (saveEnabled.value) {
-        const sa = selection.value.area
-        if (sa) {
-          sa.name = toCssName(selection.value.name)
-          sa.gridArea = selectionGridArea(selection.value)
-          overArea.value = sa
-        } else {
-          const newArea = createAreaState({
-            name: selection.value.name,
-            gridArea: selectionGridArea(selection.value),
-            color: selection.value.color,
-            parent: props.area,
-          })
-          props.area.children.push(newArea)
-          overArea.value = newArea
-        }
-
-        selection.value = null
-      }
-    }
-
-    function closeSelection() {
+  const section = sectionFromEvent(event)
+  if (section) {
+    if (selection.value && selection.value.parent !== props.area) {
       selection.value = null
     }
 
-    expose({ cellDown })
-
-    return {
-      saveEnabled,
-      gridArea,
-      selection,
-      saveSelection,
-      closeSelection,
-      nameInputElement,
+    if (!(selection.value && selection.value.area)) {
+      setCurrentArea(props.area)
     }
-  },
+
+    if (!selection.value) {
+      selection.value = {
+        start: section,
+        end: section,
+        color: getRandomColor(),
+        name: '',
+        fresh: true,
+        implicitGrid: props.implicitGrid,
+        parent: props.area,
+      }
+    }
+
+    selection.value.dragging = {
+      initial: { x: event.clientX, y: event.clientY },
+      section,
+    }
+
+    const onPointerMove = (event) => {
+      const sectionOver = sectionFromEvent(event)
+      if (sectionOver) {
+        const { dragging, fresh } = selection.value
+        if (dragging) {
+          if (fresh) {
+            selection.value.end = sectionOver
+          } else {
+            if (farEnough(dragging.initial, { x: event.clientX, y: event.clientY })) {
+              selection.value.fresh = true
+              selection.value.start = section
+            }
+          }
+          dragging.section = sectionOver
+        }
+      }
+    }
+
+    const onPointerUp = () => {
+      if (selection.value.dragging) {
+        selection.value.end = selection.value.dragging.section
+        selection.value.dragging = null
+      }
+      selection.value.fresh = false
+      window.removeEventListener('pointermove', onPointerMove)
+      window.removeEventListener('pointerup', onPointerUp)
+
+      if (!(selection.value && selection.value.area)) {
+        nextTick(() => nameInputElement.value.focus())
+      }
+    }
+    window.addEventListener('pointermove', onPointerMove, false)
+    window.addEventListener('pointerup', onPointerUp, false)
+  }
 }
+
+function saveSelection() {
+  if (saveEnabled.value) {
+    const sa = selection.value.area
+    if (sa) {
+      sa.name = toCssName(selection.value.name)
+      sa.gridArea = selectionGridArea(selection.value)
+      overArea.value = sa
+    } else {
+      const newArea = createAreaState({
+        name: selection.value.name,
+        gridArea: selectionGridArea(selection.value),
+        color: selection.value.color,
+        parent: props.area,
+      })
+      props.area.children.push(newArea)
+      overArea.value = newArea
+    }
+
+    selection.value = null
+  }
+}
+
+function closeSelection() {
+  selection.value = null
+}
+
+defineExpose({ cellDown })
 </script>
 
 <style scoped lang="postcss">
