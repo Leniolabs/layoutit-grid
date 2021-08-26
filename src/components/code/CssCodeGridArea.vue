@@ -3,7 +3,6 @@
 </template>
 
 <script setup>
-import { dragging, currentArea } from '../../store.js'
 import { getCodeGridArea, getCodeGridTemplateAreas } from '../../utils.js'
 
 const props = defineProps({

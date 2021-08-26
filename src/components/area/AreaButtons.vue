@@ -46,9 +46,7 @@
 
 <script setup>
 import {
-  mainArea,
-  currentArea,
-  overArea,
+  useAppState,
   setCurrentArea,
   createGridState,
   createFlexState,
@@ -56,8 +54,9 @@ import {
   clearArea,
   removeArea,
   subGrid,
-  dragging,
 } from '../../store.js'
+
+const { mainArea, currentArea, overArea, dragging } = useAppState()
 
 const props = defineProps({
   area: { type: Object, required: true },

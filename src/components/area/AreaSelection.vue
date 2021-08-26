@@ -33,14 +33,15 @@
 <script>
 import { gridRegionToGridArea, createSection, toCssName } from '../../utils.js'
 import {
+  useAppState,
   createAreaState,
   setCurrentArea,
   getRandomColor,
   isValidAreaName,
   selectionGridArea,
-  overArea,
-  selection,
 } from '../../store.js'
+
+const { overArea, selection } = useAppState()
 
 function farEnough(a, b, delta = 5) {
   return Math.abs(a.x - b.x) > delta || Math.abs(a.y - b.y) > delta

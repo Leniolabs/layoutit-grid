@@ -21,9 +21,11 @@
 
 <script setup>
 import { inputSetter } from '../../composables'
-import { selection, isValidGridArea, getGridRegion, selectionGridArea } from '../../store.js'
+import { useAppState, isValidGridArea, getGridRegion, selectionGridArea } from '../../store.js'
 import { createSection } from '../../utils.js'
 import { findImplicitGrid, explicitGridAreaToGridRegion } from '../../utils/grid.js'
+
+const { selection } = useAppState()
 
 const props = defineProps({
   area: { type: Object, required: true },

@@ -15,7 +15,9 @@
 </template>
 
 <script setup>
-import { currentView } from '../../store.js'
+import { useAppState } from '../../store.js'
+
+let { currentView } = useAppState()
 </script>
 
 <style scoped lang="postcss">

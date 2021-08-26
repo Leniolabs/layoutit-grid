@@ -17,7 +17,9 @@
 </template>
 
 <script setup>
-import { dragging, currentFocus, isValidLineName, parseGridTemplate } from '../../store.js'
+import { useAppState, isValidLineName, parseGridTemplate } from '../../store.js'
+
+const { dragging, currentFocus } = useAppState()
 
 import { namedTemplateColumns, namedTemplateRows, onCodeInputKeydown, targetText } from '../../utils.js'
 import { useInputSetter } from '../../composables/index.js'

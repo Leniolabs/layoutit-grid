@@ -114,6 +114,7 @@ const props = defineProps({
 const grid = computed(() => props.area.grid)
 
 import {
+  useAppState,
   addCol,
   addRow,
   getRowValue,
@@ -126,11 +127,8 @@ import {
   removeCol,
   parseUnit,
   parseValue,
-  dragging,
   withChangedValue,
   withChangedUnit,
-  currentFocus,
-  currentHover,
   setRowValueUnit,
   setColValueUnit,
   addImplicitCol,
@@ -150,6 +148,8 @@ import {
 import { useGridDimensions } from '../../composables/area.js'
 import { unitMeasureMap } from '../../utils.js'
 import { debounce } from '../../composables'
+
+const { dragging, currentFocus, currentHover } = useAppState()
 
 const { colsNumber, rowsNumber } = useGridDimensions(grid)
 

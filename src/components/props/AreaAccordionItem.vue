@@ -50,15 +50,9 @@
 </template>
 
 <script setup>
-import {
-  mainArea,
-  selection,
-  currentArea,
-  setCurrentArea,
-  clearArea,
-  addImplicitArea,
-  removeArea,
-} from '../../store.js'
+import { useAppState, setCurrentArea, clearArea, addImplicitArea, removeArea } from '../../store.js'
+
+const { mainArea, selection, currentArea } = useAppState()
 
 defineProps({
   area: { type: Object, required: true },

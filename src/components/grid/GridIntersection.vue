@@ -18,8 +18,10 @@
 </template>
 
 <script setup>
-import { dragging } from '../../store.js'
+import { useAppState } from '../../store.js'
 import { asValidGridArea } from '../../utils/grid.js'
+
+const { dragging } = useAppState()
 
 const props = defineProps({
   row: { type: Number, required: true },

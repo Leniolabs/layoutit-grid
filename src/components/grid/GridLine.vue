@@ -49,8 +49,10 @@
 </template>
 
 <script>
-import { dragging, selection, currentFocus, overArea, mainArea } from '../../store.js'
+import { useAppState } from '../../store.js'
 import { asValidGridArea, asValidLineNumber } from '../../utils/grid.js'
+
+const { dragging, selection, currentFocus, overArea, mainArea } = useAppState()
 
 export default {
   props: {

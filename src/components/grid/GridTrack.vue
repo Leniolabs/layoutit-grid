@@ -37,7 +37,9 @@
 <script setup>
 import { useIsCurrentArea } from '../../composables/area.js'
 import { asValidGridArea } from '../../utils/grid.js'
-import { dragging, currentFocus, currentHover, darkmode, parseValue } from '../../store.js'
+import { useAppState, parseValue } from '../../store.js'
+
+const { dragging, currentFocus, currentHover, darkmode } = useAppState()
 
 const props = defineProps({
   type: { type: String, required: true },

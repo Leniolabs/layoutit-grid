@@ -12,8 +12,10 @@
 </template>
 
 <script setup>
-import { mainArea, loadFromStorage, currentArea, currentView } from '../store.js'
+import { loadFromStorage, useAppState } from '../store.js'
 import { keyMonitor } from '../utils/keyMonitor'
+
+const { mainArea, currentView } = useAppState()
 
 defineProps({
   saveDesign: { type: Function, default: null },

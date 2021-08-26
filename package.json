@@ -13,18 +13,18 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "@vueuse/core": "^5.1.4",
+    "@vueuse/core": "^6.0.0",
     "lz-string": "1.4.4",
     "nanoid": "^3.1.23",
     "pepjs": "0.5.3",
-    "vue": "3.1.5",
+    "vue": "^3.2.6",
     "vue-global-api": "^0.2.4"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.26.0",
     "@typescript-eslint/parser": "^4.26.0",
-    "@vitejs/plugin-vue": "1.2.5",
-    "@vue/compiler-sfc": "3.1.5",
+    "@vitejs/plugin-vue": "^1.6.0",
+    "@vue/compiler-sfc": "^3.2.6",
     "@vue/eslint-config-typescript": "^7.0.0",
     "eslint": "^7.27.0",
     "eslint-config-prettier": "^8.3.0",
@@ -36,7 +36,7 @@
     "postcss-nested": "^5.0.5",
     "prettier": "^2.3.0",
     "typescript": "^4.3.2",
-    "vite": "^2.4.3",
+    "vite": "^2.5.1",
     "vite-plugin-components": "^0.12.2",
     "vite-plugin-pwa": "^0.8.1",
     "vue-eslint-parser": "^7.6.0",

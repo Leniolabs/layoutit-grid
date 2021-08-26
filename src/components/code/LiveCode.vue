@@ -30,10 +30,12 @@
 </template>
 
 <script setup>
-import { undo, redo, canUndo, canRedo, mainArea, restart, preferredExport } from '../../store.js'
+import { useAppState, undo, redo, restart } from '../../store.js'
 
 import { areaToCSS, areaToHTML } from '../../generateCode.js'
 import { useLocalStorage } from '@vueuse/core'
+
+const { mainArea, preferredExport, canUndo, canRedo } = useAppState()
 
 const props = defineProps({
   area: { type: Object, required: true },

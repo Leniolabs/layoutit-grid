@@ -29,7 +29,6 @@
 
 <script setup>
 import { createAreaState, createFlexState, createGridState } from '../../store'
-import { currentArea } from '../../store.js'
 import { inputSetter } from '../../composables'
 
 const props = defineProps({

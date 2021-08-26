@@ -17,10 +17,12 @@
 </template>
 
 <script setup>
-import { dragging, currentFocus, currentHover, isValidTrackSize, parseGridTemplate } from '../../store.js'
+import { useAppState, isValidTrackSize, parseGridTemplate } from '../../store.js'
 import { useInputSetter } from '../../composables'
 
 import { namedTemplateColumns, namedTemplateRows, onCodeInputKeydown, targetText } from '../../utils.js'
+
+const { dragging, currentFocus, currentHover } = useAppState()
 
 const props = defineProps({
   grid: { type: Object, required: true },

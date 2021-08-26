@@ -34,7 +34,9 @@
 
 <script setup>
 import { toCssName, getElementTag, includeAreaInCSS } from '../../utils.js'
-import { mainArea, currentArea, reordering, selection } from '../../store.js'
+import { useAppState } from '../../store.js'
+
+const { mainArea, currentArea, reordering, selection } = useAppState()
 
 // <!--span class="drop-target" v-if="reordering && reordering.target === a && ! reordering.after">{{'>\n'}}</span-->
 // <!--span class="drop-target" v-if="reordering && reordering.target === a && reordering.after">{{'\n>'}}</span-->

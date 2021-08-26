@@ -88,7 +88,9 @@ const LayouitPlugin = (): Plugin => {
 
 export default defineConfig({
   plugins: [
-    vuePlugin(),
+    vuePlugin({
+      refTransform: true
+    }),
     viteComponentsPlugin(),
     LayouitPlugin(),
     VitePWA({

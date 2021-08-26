@@ -105,7 +105,10 @@
 <script setup>
 // import AreaTree from './AreaTree.vue'
 
-import { currentArea, setCurrentArea, mainArea, removeArea } from '../../store.js'
+import { useAppState, setCurrentArea, removeArea } from '../../store.js'
+
+const { currentArea, mainArea } = useAppState()
+
 const props = defineProps({
   area: { type: Object, required: true },
 })

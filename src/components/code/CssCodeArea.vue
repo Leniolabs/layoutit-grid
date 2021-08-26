@@ -53,7 +53,9 @@ import {
   getCodeGridTemplateAreas,
   areaIsSingleLineInCSS,
 } from '../../utils.js'
-import { mainArea, getGridRegion } from '../../store.js'
+import { useAppState, getGridRegion } from '../../store.js'
+
+const { mainArea } = useAppState()
 
 // name: 'CssCodeArea',
 const props = defineProps({

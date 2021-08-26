@@ -53,8 +53,10 @@
 // GridEditor imported globally due to circular reference with AreaEditor
 // import FlexEditor from '../flex/FlexEditor.vue'
 
-import { mainArea, currentArea, setCurrentArea } from '../../store.js'
+import { useAppState } from '../../store.js'
 import { useIsActiveArea } from '../../composables/area.js'
+
+const { mainArea, currentArea } = useAppState()
 
 // name: 'ElementPreview',
 const props = defineProps({

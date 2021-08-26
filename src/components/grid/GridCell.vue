@@ -32,9 +32,11 @@
 </template>
 
 <script setup>
-import { dragging, parseValue, selection, pause, resume } from '../../store.js'
+import { useAppState, parseValue, pause, resume } from '../../store.js'
 import { useGridDimensions } from '../../composables/area.js'
 import { asValidGridArea } from '../../utils/grid.js'
+
+const { dragging, selection } = useAppState()
 
 const props = defineProps({
   section: { type: Object, required: true },

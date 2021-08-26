@@ -10,9 +10,10 @@
 </template>
 
 <script setup>
-import { mainArea, currentArea } from '../../store.js'
-import { deselectCurrentArea } from '../../store.js'
+import { useAppState, deselectCurrentArea } from '../../store.js'
 import { useIsActiveArea } from '../../composables/area.js'
+
+const { mainArea, currentArea } = useAppState()
 
 const props = defineProps({
   area: { type: Object, required: true },

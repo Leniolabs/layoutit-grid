@@ -26,8 +26,10 @@
 </template>
 
 <script setup>
-import { dragging, currentArea, currentHover, overArea } from '../../store.js'
+import { useAppState } from '../../store.js'
 import { gridTemplateAreasMatrix, templateAreasCellName } from '../../utils.js'
+
+const { dragging, currentArea, currentHover, overArea } = useAppState()
 
 const props = defineProps({
   area: { type: Object, required: true },

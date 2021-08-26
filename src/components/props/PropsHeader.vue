@@ -10,10 +10,6 @@
   </div>
 </template>
 
-<script setup>
-import { currentArea, currentView } from '../../store.js'
-</script>
-
 <style scoped lang="postcss">
 .header {
   z-index: 20000;

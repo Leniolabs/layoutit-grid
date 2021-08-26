@@ -15,9 +15,11 @@
 </template>
 
 <script setup>
-import { dragging, currentFocus, isValidTrackSize } from '../../store.js'
+import { useAppState, isValidTrackSize } from '../../store.js'
 import { targetText } from '../../utils.js'
 import { useInputSetter } from '../../composables'
+
+const { dragging, currentFocus } = useAppState()
 
 const props = defineProps({
   grid: { type: Object, required: true },

@@ -116,16 +116,10 @@
 // import FlexEditor from '../flex/FlexEditor.vue'
 
 import {
-  mainArea,
-  currentArea,
-  currentHover,
-  currentFocus,
-  dragging,
-  overArea,
+  useAppState,
   parseUnit,
   parseValue,
   parseValueUnit,
-  selection,
   getGridArea,
   getGridRegion,
   getAreaDepth,
@@ -135,6 +129,8 @@ import {
 import { findImplicitGrid, explicitGridAreaToGridRegion } from '../../utils/grid.js'
 import { useIsActiveArea } from '../../composables/area.js'
 import { createSection } from '../../utils.js'
+
+const { mainArea, currentArea, currentHover, currentFocus, dragging, overArea, selection } = useAppState()
 
 // name: 'AreaEditor',
 

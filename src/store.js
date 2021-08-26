@@ -42,6 +42,17 @@ export const currentView = ref('editor')
 export const darkmode = ref(false)
 export const selection = ref(null)
 
+export const useMainArea = () => mainArea
+export const useCurrentArea = () => currentArea
+export const useOverArea = () => useOverArea
+export const useDragging = () => dragging
+export const useReordering = () => reordering
+export const useCurrentFocus = () => currentFocus
+export const useCurrentHover = () => currentHover
+export const useCurrentView = () => currentView
+export const useDarkmode = () => darkmode
+export const useSelection = () => selection
+
 export const preferredExport = useLocalStorage('layoutit-grid-preferred-export', 'codepen')
 
 const areaNameCounter = ref(1)
@@ -258,3 +269,21 @@ export function subGrid(area) {
   }
   setCurrentArea(area)
 }
+
+const appState = {
+  mainArea,
+  currentArea,
+  overArea,
+  dragging,
+  reordering,
+  currentFocus,
+  currentHover,
+  currentView,
+  darkmode,
+  selection,
+  preferredExport,
+  canUndo,
+  canRedo,
+}
+
+export const useAppState = () => appState

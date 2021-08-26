@@ -16,7 +16,9 @@
 
 <script>
 import { useLineNameWidth } from '../../composables/lineName.js'
-import { parseValue, currentFocus } from '../../store.js'
+import { useAppState, parseValue } from '../../store.js'
+
+const { currentFocus } = useAppState()
 
 export default {
   props: {

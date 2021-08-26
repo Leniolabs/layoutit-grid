@@ -17,10 +17,11 @@
 </template>
 
 <script setup>
-import { dragging, currentArea, currentHover, currentFocus, isValidAreaName } from '../../store.js'
+import { useAppState, isValidAreaName, pause, resume } from '../../store.js'
 import { onCodeInputKeydown, toCssName, targetText } from '../../utils.js'
-import { pause, resume } from '../../store.js'
 import { useInputSetter } from '../../composables'
+
+let { dragging, currentArea, currentHover, currentFocus } = useAppState()
 
 const props = defineProps({
   area: { type: Object, required: true },
@@ -32,14 +33,14 @@ const areaName = computed({
   set: (str) => (props.area.name = str),
 })
 
-const el = ref(null)
+let el = $ref(null)
 
 const inputSetter = useInputSetter(areaName, isValidAreaName, targetText)
 const onInput = (event) => {
   const { code } = event
   if (code === 'Enter' || code === 'NumpadEnter' || code === 'Escape') {
     event.preventDefault()
-    el.value.blur()
+    el.blur()
     return
   }
   return inputSetter(event)

@@ -51,17 +51,9 @@
 </template>
 
 <script setup>
-import {
-  mainArea,
-  currentArea,
-  removeArea,
-  createAreaState,
-  newAreaName,
-  getRandomColor,
-  reordering,
-} from '../../store.js'
+import { useAppState, removeArea, createAreaState, newAreaName, getRandomColor, getAreaDepth } from '../../store.js'
 
-import { getAreaDepth } from '../../store.js'
+const { mainArea, currentArea, reordering } = useAppState()
 
 const depth = computed(() => 10 + getAreaDepth(props.area) * 2 + 'px')
 

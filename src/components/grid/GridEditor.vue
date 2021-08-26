@@ -37,11 +37,11 @@ import { onBeforeUpdate } from 'vue'
 import { useMagicKeys } from '@vueuse/core'
 import { handlePointerEventsInteraction } from '../../utils.js'
 import {
+  useAppState,
   setCurrentArea,
   valueUnitToString,
   pause,
   resume,
-  dragging,
   parseValue,
   parseUnit,
   parseValueUnit,
@@ -49,6 +49,8 @@ import {
 import { useIsCurrentArea, useIsActiveArea } from '../../composables/area.js'
 
 const { shift } = useMagicKeys()
+
+const { dragging } = useAppState()
 
 export default {
   props: {
