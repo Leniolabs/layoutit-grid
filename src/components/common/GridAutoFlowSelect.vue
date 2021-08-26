@@ -73,7 +73,6 @@ const optionTooltipsFlow = {
     font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
     direction: ltr;
     text-align: left;
-    white-space: pre;
     word-spacing: normal;
     line-height: 30px;
     span {
