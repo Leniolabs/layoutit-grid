@@ -6,6 +6,7 @@
     :style="style"
     :class="[type, { first: pos === 1, last: pos === grid[type].lineNames.length }]"
     aria-label="line name"
+    maxlength="20"
     @input="line.name = $event.target.value"
     @keydown="onKeydown"
     @pointerdown.stop
@@ -105,7 +106,7 @@ defineExpose({ focus, toggle })
   &:not(.last) {
     border-bottom-right-radius: 6px;
   }
-  bottom: 0;
+  bottom: 1px;
   right: -2px;
   transform-origin: 0 12px;
   transform: translateX(100%) translateY(10px) rotate(-90deg);
