@@ -29,7 +29,7 @@
 import { useAppState } from '../../store.js'
 import { gridTemplateAreasMatrix, templateAreasCellName } from '../../utils.js'
 
-const { dragging, currentArea, currentHover, overArea } = useAppState()
+let { dragging, currentArea, currentHover, overArea } = $(useAppState())
 
 const props = defineProps({
   area: { type: Object, required: true },
@@ -40,15 +40,12 @@ function getGridTemplateAreas(area) {
   return area.display === 'grid' ? gridTemplateAreasMatrix(area) : []
 }
 
-const templateAreas = computed(() => getGridTemplateAreas(props.area))
+let templateAreas = $computed(() => getGridTemplateAreas(props.area))
 
 function isCellHighligthed(cell) {
   return (
-    (currentHover.value &&
-      currentHover.value.on === 'cell' &&
-      currentHover.value.area &&
-      currentHover.value.area === cell) ||
-    (overArea.value && overArea.value === cell)
+    (currentHover && currentHover.on === 'cell' && currentHover.area && currentHover.area === cell) ||
+    (overArea && overArea === cell)
   )
 }
 </script>

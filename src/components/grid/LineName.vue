@@ -18,7 +18,7 @@
 import { useLineNameWidth } from '../../composables/lineName.js'
 import { useAppState, parseValue } from '../../store.js'
 
-const { currentFocus } = useAppState()
+let { currentFocus } = $(useAppState())
 
 const props = defineProps({
   grid: { type: Object, required: true },
@@ -27,27 +27,27 @@ const props = defineProps({
   gap: { type: String, default: '0px' },
 })
 
-const line = computed(() => props.grid[props.type].lineNames[props.pos - 1])
+let line = $computed(() => props.grid[props.type].lineNames[props.pos - 1])
 
-const lineNameWidth = useLineNameWidth(line, '14px arial', 30)
+let lineNameWidth = $(useLineNameWidth($$(line), '14px arial', 30))
 
-const style = computed(() => {
+let style = $computed(() => {
   const g = parseValue(props.gap)
-  const s = { width: lineNameWidth.value + 'px' }
+  const s = { width: lineNameWidth + 'px' }
   if (props.pos > 1 && props.pos < props.grid[props.type].lineNames.length) {
     return { ...s, ...(props.type === 'row' ? { bottom: -11 - g / 2 + 'px' } : { right: -2 - g / 2 + 'px' }) }
   }
   return s
 })
 
-const inputElement = ref(null)
+let inputElement = $ref(null)
 
 function focus() {
-  inputElement.value.focus()
+  inputElement.focus()
 }
 
 function toggle() {
-  if ((line.value.active = !line.value.active)) {
+  if ((line.active = !line.active)) {
     nextTick(focus)
   }
 }
@@ -56,7 +56,7 @@ function onKeydown(event) {
   const { code } = event
   if (code === 'Enter' || code === 'NumpadEnter' || code === 'Escape') {
     event.preventDefault()
-    inputElement.value.blur()
+    inputElement.blur()
     return
   }
 }

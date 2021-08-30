@@ -14,24 +14,24 @@ import { onMounted, watch } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
 import { darkmode } from '../../store'
 
-const themeStorage = useLocalStorage('layoutit-grid-theme', null)
+let themeStorage = $(useLocalStorage('layoutit-grid-theme', null))
 
 function toggleDarkmode() {
-  darkmode.value = !darkmode.value
-  themeStorage.value = darkmode.value ? 'dark' : 'light'
+  darkmode = !darkmode
+  themeStorage = darkmode ? 'dark' : 'light'
 }
 
 function switchToSystemTheme() {
-  darkmode.value = getSystemTheme() === 'dark'
-  themeStorage.value = null
+  darkmode = getSystemTheme() === 'dark'
+  themeStorage = null
 }
 
 onMounted(() => {
-  darkmode.value = (themeStorage.value || getSystemTheme()) === 'dark'
+  darkmode = (themeStorage || getSystemTheme()) === 'dark'
 })
 
-watch(darkmode, () => {
-  document.getElementById('app').classList[darkmode.value ? 'add' : 'remove']('darkmode')
+watch($$(darkmode), () => {
+  document.getElementById('app').classList[darkmode ? 'add' : 'remove']('darkmode')
 })
 
 function getSystemTheme() {

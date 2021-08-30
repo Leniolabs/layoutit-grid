@@ -130,7 +130,7 @@ import { findImplicitGrid, explicitGridAreaToGridRegion } from '../../utils/grid
 import { useIsActiveArea } from '../../composables/area.js'
 import { createSection } from '../../utils.js'
 
-const { mainArea, currentArea, currentHover, currentFocus, dragging, overArea, selection } = useAppState()
+let { mainArea, currentArea, currentHover, currentFocus, dragging, overArea, selection } = $(useAppState())
 
 // name: 'AreaEditor',
 
@@ -142,10 +142,9 @@ const props = defineProps({
 
 defineEmits(['edit'])
 
-const { area } = toRefs(props)
-const isActive = useIsActiveArea(area)
+let isActive = $(useIsActiveArea(toRef(props, 'area')))
 
-const areasToShow = computed(() => {
+let areasToShow = $computed(() => {
   return props.area.children
   /*.flatMap((a) =>
       a.items
@@ -156,21 +155,21 @@ const areasToShow = computed(() => {
     )*/
 })
 
-const isHighligthed = computed(() => {
-  const hover = currentHover.value
+let isHighligthed = $computed(() => {
+  const hover = currentHover
   return (
     (props.area.parent &&
-      !currentFocus.value &&
+      !currentFocus &&
       hover &&
       ((hover.on === 'cell' && hover.area && hover.area === props.area) ||
         (hover.on === 'html-area' && hover.area === props.area))) ||
-    (currentFocus.value && currentFocus.on === 'area' && currentFocus.area === props.area)
+    (currentFocus && currentFocus.on === 'area' && currentFocus.area === props.area)
   )
 })
 
-const selectionEl = ref(null)
+let selectionEl = $ref(null)
 
-const areaType = computed(() => {
+let areaType = $computed(() => {
   switch (props.area.type) {
     case 'image':
       return ElementImage
@@ -251,7 +250,7 @@ function flexStyles(flex) {
   }
 }
 
-const displayStyles = computed(() => {
+let displayStyles = $computed(() => {
   switch (props.area.display) {
     case 'grid':
       return props.area.grid ? gridStyles(props.area.grid) : {}
@@ -262,38 +261,38 @@ const displayStyles = computed(() => {
   }
 })
 
-const grid = computed(() => props.area.grid)
-const componentInstance = ref(null)
-const computedStyles = ref(null)
-const computedGap = ref({ col: '0px', row: '0px' })
+let grid = $computed(() => props.area.grid)
+let componentInstance = $ref(null)
+let computedStyles = $ref(null)
+let computedGap = $ref({ col: '0px', row: '0px' })
 watch(
-  grid,
+  $$(grid),
   () => {
     nextTick(() => {
-      if (grid.value) {
-        computedStyles.value = window.getComputedStyle(componentInstance.value)
-        const colGap = parseValueUnit(grid.value.col.gap)
-        const rowGap = parseValueUnit(grid.value.row.gap)
-        computedGap.value = {
+      if (grid) {
+        computedStyles = window.getComputedStyle(componentInstance)
+        const colGap = parseValueUnit(grid.col.gap)
+        const rowGap = parseValueUnit(grid.row.gap)
+        computedGap = {
           col:
             colGap.unit === '%'
-              ? (parseValue(computedStyles.value.width) / 100) * colGap.value + 'px'
-              : computedStyles.value.columnGap,
+              ? (parseValue(computedStyles.width) / 100) * colGap.value + 'px'
+              : computedStyles.columnGap,
           row:
             rowGap.unit === '%'
-              ? (parseValue(computedStyles.value.height) / 100) * rowGap.value + 'px'
-              : computedStyles.value.rowGap,
+              ? (parseValue(computedStyles.height) / 100) * rowGap.value + 'px'
+              : computedStyles.rowGap,
         }
       } else {
-        computedStyles.value = null
-        computedGap.value = { col: '0px', row: '0px' }
+        computedStyles = null
+        computedGap = { col: '0px', row: '0px' }
       }
     })
   },
   { immediate: true, deep: true, flush: 'post' }
 )
 
-const explicitAreas = computed(() => {
+let explicitAreas = $computed(() => {
   if (props.area.display === 'grid') {
     return findImplicitGrid(props.area)
   } else {
@@ -301,9 +300,9 @@ const explicitAreas = computed(() => {
   }
 })
 
-watch(explicitAreas, () => {
+watch($$(explicitAreas), () => {
   if (props.area.display === 'grid') {
-    const { ri, ci, cols, rows } = explicitAreas.value.implicitGrid
+    const { ri, ci, cols, rows } = explicitAreas.implicitGrid
     const { row, col } = props.area.grid
     if (ri > 1 || rows - ri >= row.sizes.length) {
       if (row.auto.length === 0) {
@@ -318,18 +317,18 @@ watch(explicitAreas, () => {
   }
 })
 
-const implicitGrid = computed(() => explicitAreas.value.implicitGrid)
+let implicitGrid = $computed(() => explicitAreas.implicitGrid)
 
-const toolbarStart = computed(() => {
+let toolbarStart = $computed(() => {
   const gridRegion = getGridRegion(props.area)
   return gridRegion ? (gridRegion.col.start === 1 && gridRegion.row.start === 1 ? getAreaDepth(props.area) - 1 : 0) : 0
 })
 
-const gridCells = computed(() => {
+let gridCells = $computed(() => {
   if (!props.area.grid) {
     return []
   }
-  const { cols, rows, ri, ci } = implicitGrid.value
+  const { cols, rows, ri, ci } = implicitGrid
   const sections = []
   for (let c = 0; c < cols; c++) {
     for (let r = 0; r < rows; r++) {
@@ -339,28 +338,28 @@ const gridCells = computed(() => {
   return sections
 })
 
-const gridRegions = computed(() => explicitAreas.value.gridAreas.map(explicitGridAreaToGridRegion))
+let gridRegions = $computed(() => explicitAreas.gridAreas.map(explicitGridAreaToGridRegion))
 
 function onOverCell({ row, col }) {
   const { children } = props.area
   for (let i = children.length - 1; i >= 0; i--) {
-    const r = gridRegions.value[i]
+    const r = gridRegions[i]
     if (r.row.start <= row && r.row.end > row && r.col.start <= col && r.col.end > col) {
-      overArea.value = children[i]
+      overArea = children[i]
       return
     }
   }
-  overArea.value = props.area
+  overArea = props.area
 }
 
 function isFocused(section) {
-  const c = currentHover.value
-  return c && c.on === 'cell' && c.grid === grid.value && c.row === section.row.start && c.col === section.col.start
+  const c = currentHover
+  return c && c.on === 'cell' && c.grid === grid && c.row === section.row.start && c.col === section.col.start
 }
 
 function tracksFor(type) {
   const { grid } = props.area
-  const { rows, cols, ri, ci } = implicitGrid.value
+  const { rows, cols, ri, ci } = implicitGrid
   const size = type === 'row' ? rows : cols
   const cell_i = type === 'row' ? ri : ci
   const tracks = []
@@ -374,7 +373,7 @@ function tracksFor(type) {
   }
   return tracks
 }
-const gridTracks = computed(() => {
+let gridTracks = $computed(() => {
   return [...tracksFor('row'), ...tracksFor('col')]
 })
 </script>

@@ -17,7 +17,7 @@
 <script setup>
 import { useAppState } from '../../store.js'
 
-let { currentView } = useAppState()
+let { currentView } = $(useAppState())
 </script>
 
 <style scoped lang="postcss">

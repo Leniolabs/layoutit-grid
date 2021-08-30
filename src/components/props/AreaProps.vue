@@ -107,34 +107,34 @@
 
 import { useAppState, setCurrentArea, removeArea } from '../../store.js'
 
-const { currentArea, mainArea } = useAppState()
+let { currentArea, mainArea } = $(useAppState())
 
 const props = defineProps({
   area: { type: Object, required: true },
 })
-const accordion = ref({ active: 'explicit-grid' })
-const currentGrid = computed(() => props.area.grid)
-const currentFlex = computed(() => props.area.flex)
+let accordion = $ref({ active: 'explicit-grid' })
+let currentGrid = $computed(() => props.area.grid)
+let currentFlex = $computed(() => props.area.flex)
 
 function concatenateParents(area, list = [area]) {
   const { parent } = area
   return parent ? concatenateParents(parent, [parent, ...list]) : list
 }
 
-const areaPath = computed(() => concatenateParents(props.area))
+let areaPath = $computed(() => concatenateParents(props.area))
 
-watch(currentArea, () => {
-  if (accordion.value.active !== 'tree') {
-    if (currentArea.value.display === 'grid') {
-      accordion.value.active = 'explicit-grid'
+watch($$(currentArea), () => {
+  if (accordion.active !== 'tree') {
+    if (currentArea.display === 'grid') {
+      accordion.active = 'explicit-grid'
     } else {
-      const { parent } = currentArea.value
+      const { parent } = currentArea
       if (parent && parent.display === 'grid') {
-        accordion.value.active = 'self-grid'
+        accordion.active = 'self-grid'
       } else if (parent && parent.display === 'flex') {
-        accordion.value.active = 'self-flex'
+        accordion.active = 'self-flex'
       } else {
-        accordion.value.active = 'box'
+        accordion.active = 'box'
       }
     }
   }

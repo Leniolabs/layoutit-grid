@@ -33,7 +33,7 @@ const props = defineProps({
   area: { type: Object as PropType<AreaState>, required: true },
   type: { type: String as PropType<AreaType>, required: true },
 })
-const size = computed({
+let size = $computed({
   get: (): ValueUnit => {
     return parseValueUnit(props.area[props.type])
   },
@@ -44,13 +44,13 @@ const size = computed({
 
 function setSizeValue({ target }: Event) {
   const value = (target as HTMLInputElement).value
-  size.value = { ...size.value, value }
+  size = { ...size.value, value }
 }
 
 function setSizeUnit({ target }: Event) {
   const unit = (target as HTMLInputElement).value as GridUnit
   // TODO: Adjust value to avoid jump
-  size.value = { value: unitMeasureMap[unit], unit }
+  size = { value: unitMeasureMap[unit], unit }
 }
 
 const onSizeInput = inputSetter(setSizeValue)

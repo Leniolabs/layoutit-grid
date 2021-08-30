@@ -15,14 +15,14 @@
 import { loadFromStorage, useAppState } from '../store.js'
 import { keyMonitor } from '../utils/keyMonitor'
 
-const { mainArea, currentView } = useAppState()
+let { mainArea, currentView } = $(useAppState())
 
 defineProps({
   saveDesign: { type: Function, default: null },
 })
 
 function toggleView(view) {
-  currentView.value = currentView.value === view ? 'editor' : view
+  currentView = currentView === view ? 'editor' : view
 }
 
 onMounted(() => {

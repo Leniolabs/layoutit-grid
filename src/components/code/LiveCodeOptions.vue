@@ -56,7 +56,7 @@ defineProps({
   modelValue: { type: Object, required: true },
 })
 
-const isOpen = ref(false)
+let isOpen = $ref(false)
 </script>
 
 <style scoped lang="postcss">

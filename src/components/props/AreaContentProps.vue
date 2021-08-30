@@ -50,11 +50,11 @@ function onUpdateDisplay(value) {
   }
 }
 
-const counter = ref(1)
+let counter = $ref(1)
 function addImplicitArea() {
   props.area.children.push(
     createAreaState({
-      name: 'a' + counter.value++,
+      name: 'a' + counter++,
       parent: props.area,
     })
   )

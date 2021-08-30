@@ -36,10 +36,9 @@ const props = defineProps({
 
 defineEmits(['edit'])
 
-const { area } = toRefs(props)
-const isMain = useIsMainArea(area)
+let isMain = $(useIsMainArea(toRef(props, 'area')))
 
-const toolbarStart = computed(() => {
+let toolbarStart = $computed(() => {
   const gridRegion = getGridRegion(props.area)
   return gridRegion ? (gridRegion.col.start === 1 && gridRegion.row.start === 1 ? getAreaDepth(props.area) - 1 : 0) : 0
 })

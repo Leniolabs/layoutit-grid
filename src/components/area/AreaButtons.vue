@@ -56,7 +56,7 @@ import {
   subGrid,
 } from '../../store.js'
 
-const { mainArea, currentArea, overArea, dragging } = useAppState()
+let { mainArea, currentArea, overArea, dragging } = $(useAppState())
 
 const props = defineProps({
   area: { type: Object, required: true },
@@ -64,11 +64,11 @@ const props = defineProps({
 
 defineEmits(['edit'])
 
-const hasDisplay = computed(() => props.area.grid || props.area.flex)
+let hasDisplay = $computed(() => props.area.grid || props.area.flex)
 
 function subFlex() {
   clearArea(props.area)
-  if (!area.flex) {
+  if (!props.area.flex) {
     props.area.flex = createFlexState()
   }
   setCurrentArea(props.area)

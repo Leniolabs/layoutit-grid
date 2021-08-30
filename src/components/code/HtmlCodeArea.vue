@@ -36,7 +36,7 @@
 import { toCssName, getElementTag, includeAreaInCSS } from '../../utils.js'
 import { useAppState } from '../../store.js'
 
-const { mainArea, currentArea, reordering, selection } = useAppState()
+let { mainArea, currentArea, reordering, selection } = $(useAppState())
 
 // <!--span class="drop-target" v-if="reordering && reordering.target === a && ! reordering.after">{{'>\n'}}</span-->
 // <!--span class="drop-target" v-if="reordering && reordering.target === a && reordering.after">{{'\n>'}}</span-->
@@ -53,17 +53,13 @@ const props = defineProps({
 })
 const OPEN_TAG = '<'
 const CLOSE_TAG = '</'
-const cssAreaName = computed(() => toCssName(props.area.name))
-const elementTag = computed(() => getElementTag(props.area))
+let cssAreaName = $computed(() => toCssName(props.area.name))
+let elementTag = $computed(() => getElementTag(props.area))
 
-const gridAreas = computed(() => (props.area.display === 'grid' ? props.area.children : []))
+let gridAreas = $computed(() => (props.area.display === 'grid' ? props.area.children : []))
 
 const canReorder = (area) => {
-  return (
-    area !== mainArea.value &&
-    !reordering.value &&
-    !(area.parent === mainArea.value && mainArea.value.children.length === 1)
-  )
+  return area !== mainArea && !reordering && !(area.parent === mainArea && mainArea.children.length === 1)
 }
 
 function onDragStart(area, event) {
@@ -74,9 +70,9 @@ function onDragStart(area, event) {
   if (event.dataTransfer) {
     event.dataTransfer.effectAllowed = 'move'
   }
-  currentArea.value = area
-  selection.value = null
-  reordering.value = { area, reordering: null, after: true }
+  currentArea = area
+  selection = null
+  reordering = { area, reordering: null, after: true }
 }
 
 function areaIndex(area) {
@@ -85,14 +81,14 @@ function areaIndex(area) {
 
 function onDrop(areaTarget, event) {
   event.stopPropagation()
-  const areaFrom = reordering.value.area
+  const areaFrom = reordering.area
   const sameParent = areaTarget.parent === areaFrom.parent
   const children = sameParent ? areaTarget.parent.children.filter((a) => a !== areaFrom) : areaTarget.parent.children
   if (!sameParent) {
     areaFrom.parent.children = areaFrom.parent.children.filter((a) => a !== areaFrom)
   }
   const i = children.findIndex((a) => a === areaTarget)
-  children.splice(reordering.value.after ? i + 1 : i, 0, areaFrom)
+  children.splice(reordering.after ? i + 1 : i, 0, areaFrom)
   if (!sameParent) {
     areaFrom.parent = areaTarget.parent
   }
@@ -100,7 +96,7 @@ function onDrop(areaTarget, event) {
 }
 
 function onDragEnd(a, event) {
-  reordering.value = null
+  reordering = null
 }
 
 function measure(el) {
@@ -114,12 +110,12 @@ function afterMiddleHeight(event) {
   return (event.clientY - top) / height > 0.5
 }
 function onDragOver(areaTarget, event) {
-  if (!reordering.value) {
+  if (!reordering) {
     return
   }
   event.stopPropagation()
 
-  const areaFrom = reordering.value.area
+  const areaFrom = reordering.area
   const after = afterMiddleHeight(event)
   let noop = false
   if (areaFrom.parent === areaTarget.parent) {
@@ -132,13 +128,13 @@ function onDragOver(areaTarget, event) {
   if (areaTarget !== areaFrom && !noop) {
     event.preventDefault()
 
-    reordering.value.target = areaTarget !== areaFrom ? areaTarget : null
-    reordering.value.after = after
+    reordering.target = areaTarget !== areaFrom ? areaTarget : null
+    reordering.after = after
     if (event.dataTransfer) {
       event.dataTransfer.dropEffect = 'move'
     }
   } else {
-    reordering.value.target = null
+    reordering.target = null
   }
 }
 </script>

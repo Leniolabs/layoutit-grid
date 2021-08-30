@@ -55,7 +55,7 @@ import {
 } from '../../utils.js'
 import { useAppState, getGridRegion } from '../../store.js'
 
-const { mainArea } = useAppState()
+let { mainArea } = $(useAppState())
 
 // name: 'CssCodeArea',
 const props = defineProps({
@@ -63,15 +63,15 @@ const props = defineProps({
   options: { type: Object, required: true },
 })
 
-const templateAreas = computed(() => getCodeGridTemplateAreas(props.area))
+let templateAreas = $computed(() => getCodeGridTemplateAreas(props.area))
 
-const includeTemplateAreas = computed(() => props.options.templateAreas && templateAreas.value !== undefined)
+let includeTemplateAreas = $computed(() => props.options.templateAreas && templateAreas !== undefined)
 
-const gridArea = computed(() => getCodeGridArea(props.area))
+let gridArea = $computed(() => getCodeGridArea(props.area))
 
-const singleLine = computed(() => areaIsSingleLineInCSS(props.area))
+let singleLine = $computed(() => areaIsSingleLineInCSS(props.area))
 
-const areasToInclude = computed(() =>
+let areasToInclude = $computed(() =>
   props.area.children.filter((area) => !(areaIsSingleLineInCSS(area) && area.gridArea === 'auto'))
 )
 </script>

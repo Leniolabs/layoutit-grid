@@ -21,21 +21,21 @@ import { useAppState, isValidAreaName, pause, resume } from '../../store.js'
 import { onCodeInputKeydown, toCssName, targetText } from '../../utils.js'
 import { useInputSetter } from '../../composables'
 
-let { dragging, currentArea, currentHover, currentFocus } = useAppState()
+let { dragging, currentArea, currentHover, currentFocus } = $(useAppState())
 
 const props = defineProps({
   area: { type: Object, required: true },
   color: { type: String, default: null },
 })
 
-const areaName = computed({
+let areaName = $computed({
   get: () => toCssName(props.area.name),
   set: (str) => (props.area.name = str),
 })
 
 let el = $ref(null)
 
-const inputSetter = useInputSetter(areaName, isValidAreaName, targetText)
+const inputSetter = useInputSetter($$(areaName), isValidAreaName, targetText)
 const onInput = (event) => {
   const { code } = event
   if (code === 'Enter' || code === 'NumpadEnter' || code === 'Escape') {

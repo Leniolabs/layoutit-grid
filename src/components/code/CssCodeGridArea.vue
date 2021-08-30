@@ -10,11 +10,11 @@ const props = defineProps({
   options: { type: Object, required: true },
 })
 
-const templateAreas = computed(() => getCodeGridTemplateAreas(props.area))
+let templateAreas = $computed(() => getCodeGridTemplateAreas(props.area))
 
-const includeTemplateAreas = computed(() => props.options.templateAreas && templateAreas.value !== undefined)
+let includeTemplateAreas = $computed(() => props.options.templateAreas && templateAreas !== undefined)
 
-const gridArea = computed(() => getCodeGridArea(props.area, props.options.templateAreas))
+let gridArea = $computed(() => getCodeGridArea(props.area, props.options.templateAreas))
 </script>
 
 <style scoped lang="postcss">

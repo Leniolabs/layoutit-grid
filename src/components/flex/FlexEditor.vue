@@ -13,15 +13,14 @@
 import { useAppState, deselectCurrentArea } from '../../store.js'
 import { useIsActiveArea } from '../../composables/area.js'
 
-const { mainArea, currentArea } = useAppState()
+let { mainArea, currentArea } = $(useAppState())
 
 const props = defineProps({
   area: { type: Object, required: true },
 })
-const flex = computed(() => props.area.flex)
+let flex = $computed(() => props.area.flex)
 
-const { area } = toRefs(props)
-const isActive = useIsActiveArea(area)
+let isActive = $(useIsActiveArea(toRef(props, 'area')))
 </script>
 
 <style scoped lang="postcss">

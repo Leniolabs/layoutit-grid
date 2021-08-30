@@ -117,7 +117,7 @@
 const props = defineProps({
   area: { type: Object, required: true },
 })
-const grid = computed(() => props.area.grid)
+let grid = $computed(() => props.area.grid)
 
 import {
   addCol,
@@ -156,8 +156,8 @@ import {
 import { unitMeasureMap } from '../../utils.js'
 import { debounce } from '../../composables'
 
-const autoColsNumber = computed(() => grid.value.col.auto.length)
-const autoRowsNumber = computed(() => grid.value.row.auto.length)
+let autoColsNumber = $computed(() => grid.col.auto.length)
+let autoRowsNumber = $computed(() => grid.row.auto.length)
 
 function unitHasValue(unit) {
   return !(unit === 'initial' || unit === 'auto' || unit === 'min-content' || unit === 'max-content')
@@ -179,18 +179,18 @@ function onColUnitInput(unit, col) {
 
 const onSizeValueInput = debounce((type, track, value) => {
   if (type === 'row') {
-    setRowValue(grid.value, track, value)
+    setRowValue(grid, track, value)
   } else {
-    setColValue(grid.value, track, value)
+    setColValue(grid, track, value)
   }
 })
 const onAutoSizeValueInput = debounce((type, value) => {
-  grid.value[type].auto = withChangedValue(grid.value[type].auto, value)
+  grid[type].auto = withChangedValue(grid[type].auto, value)
 })
 
 function isFocused(type, track) {
-  const tf = currentFocus.value
-  return tf && tf.on === 'track' && tf.grid === grid.value && tf.type === type && tf.track === track
+  const tf = currentFocus
+  return tf && tf.on === 'track' && tf.grid === grid && tf.type === type && tf.track === track
 }
 
 function onImplicitRowUnitInput(unit, row) {
@@ -203,9 +203,9 @@ function onImplicitColUnitInput(unit, col) {
 
 const onImplicitSizeValueInput = debounce((type, track, value) => {
   if (type === 'row') {
-    setImplicitRowValue(grid.value, track, value)
+    setImplicitRowValue(grid, track, value)
   } else {
-    setImplicitColValue(grid.value, track, value)
+    setImplicitColValue(grid, track, value)
   }
 })
 </script>

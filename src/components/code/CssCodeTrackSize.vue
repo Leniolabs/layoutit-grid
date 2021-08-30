@@ -22,7 +22,7 @@ import { useInputSetter } from '../../composables'
 
 import { namedTemplateColumns, namedTemplateRows, onCodeInputKeydown, targetText } from '../../utils.js'
 
-const { dragging, currentFocus, currentHover } = useAppState()
+let { dragging, currentFocus, currentHover } = $(useAppState())
 
 const props = defineProps({
   grid: { type: Object, required: true },
@@ -31,24 +31,24 @@ const props = defineProps({
   el: { type: Object, required: true },
 })
 
-const trackSize = computed({
+let trackSize = $computed({
   get: () => props.grid[props.type].sizes[props.track - 1],
   set: (value) => (props.grid[props.type].sizes[props.track - 1] = value),
 })
 
-const isFocused = computed(() => {
-  const cf = currentFocus.value
+let isFocused = $computed(() => {
+  const cf = currentFocus
   return cf && cf.on === 'track' && cf.grid === props.grid && cf.type === props.type && cf.track === props.track
 })
 
-const onInput = useInputSetter(trackSize, isValidTrackSize, targetText)
+const onInput = useInputSetter($$(trackSize), isValidTrackSize, targetText)
 
-const isDraggingGrid = computed(() => dragging.value && dragging.value.grid === props.grid)
+let isDraggingGrid = $computed(() => dragging && dragging.grid === props.grid)
 
-const isDraggingTrackLine = computed(
+let isDraggingTrackLine = $computed(
   () =>
-    isDraggingGrid.value &&
-    (props.track === dragging.value[props.type + 'Line'] || props.track === dragging.value[props.type + 'Line'] - 1)
+    isDraggingGrid &&
+    (props.track === dragging[props.type + 'Line'] || props.track === dragging[props.type + 'Line'] - 1)
 )
 </script>
 

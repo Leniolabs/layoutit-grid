@@ -20,12 +20,12 @@ const props = defineProps({
   grid: { type: Object, required: true },
   type: { type: String, required: true },
 })
-const gap = computed({
+let gap = $computed({
   get: () => props.grid[props.type].gap,
   set: (value) => (props.grid[props.type].gap = value),
 })
 
-const onInput = useInputSetter(gap, isValidGapSize, targetText)
+const onInput = useInputSetter($$(gap), isValidGapSize, targetText)
 </script>
 
 <style scoped lang="postcss">

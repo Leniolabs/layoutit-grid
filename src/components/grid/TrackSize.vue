@@ -19,7 +19,7 @@ import { useAppState, isValidTrackSize } from '../../store.js'
 import { targetText } from '../../utils.js'
 import { useInputSetter } from '../../composables'
 
-const { dragging, currentFocus } = useAppState()
+let { dragging, currentFocus } = $(useAppState())
 
 const props = defineProps({
   grid: { type: Object, required: true },
@@ -27,19 +27,19 @@ const props = defineProps({
   track: { type: Number, required: true },
 })
 
-const el = ref(null)
+let el = $ref(null)
 
-const isFocused = computed(() => {
-  const cf = currentFocus.value
+let isFocused = $computed(() => {
+  const cf = currentFocus
   return cf && cf.on === 'track' && cf.grid === props.grid && cf.type === props.type && cf.track === props.track
 })
 
-const trackSize = computed({
+let trackSize = $computed({
   get: () => props.grid[props.type].sizes[props.track - 1],
   set: (value) => (props.grid[props.type].sizes[props.track - 1] = value),
 })
 
-const inputSetter = useInputSetter(trackSize, isValidTrackSize, targetText)
+const inputSetter = useInputSetter($$(trackSize), isValidTrackSize, targetText)
 
 const onInput = (event) => {
   const { code } = event
@@ -49,18 +49,18 @@ const onInput = (event) => {
   }
   if (code === 'Enter' || code === 'NumpadEnter' || code === 'Escape') {
     event.preventDefault()
-    el.value.blur()
+    el.blur()
     return
   }
   return inputSetter(event)
 }
 
-const isDraggingGrid = computed(() => dragging.value && dragging.value.grid === props.grid)
+let isDraggingGrid = $computed(() => dragging && dragging.grid === props.grid)
 
-const isDraggingTrackLine = computed(
+let isDraggingTrackLine = $computed(
   () =>
-    isDraggingGrid.value &&
-    (props.track === dragging.value[props.type + 'Line'] || props.track === dragging.value[props.type + 'Line'] - 1)
+    isDraggingGrid &&
+    (props.track === dragging[props.type + 'Line'] || props.track === dragging[props.type + 'Line'] - 1)
 )
 </script>
 

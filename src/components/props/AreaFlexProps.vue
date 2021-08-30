@@ -29,7 +29,7 @@
 const props = defineProps({
   area: { type: Object, required: true },
 })
-const flex = computed(() => props.area.flex)
+let flex = $computed(() => props.area.flex)
 </script>
 
 <style scoped lang="postcss">

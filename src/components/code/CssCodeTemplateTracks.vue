@@ -34,11 +34,11 @@ const props = defineProps({
   type: { type: String, required: true },
   repeat: { type: Boolean, default: false },
 })
-const isInteractive = computed(() => {
+let isInteractive = $computed(() => {
   return !(props.repeat && props.grid[props.type].lineNames.every((l) => !l.active))
 })
 
-const multiline = computed(() => {
+let multiline = $computed(() => {
   const { lineNames } = props.grid[props.type]
   return lineNames.some((line) => line.name !== '' && line.active === true)
 })
@@ -47,11 +47,11 @@ function separatorBeforeItem(i) {
   return multiline.value && i === 0 ? '\n    ' : ''
 }
 function separatorAfterItem(i) {
-  const isLast = i === trackSizesAndLineNames.value.length - 1
-  return trackSizesAndLineNames.value[i].type === 'size' && !isLast && multiline.value ? '\n    ' : isLast ? '' : ' '
+  const isLast = i === trackSizesAndLineNames.length - 1
+  return trackSizesAndLineNames[i].type === 'size' && !isLast && multiline.value ? '\n    ' : isLast ? '' : ' '
 }
 
-const trackSizesAndLineNames = computed(() => {
+let trackSizesAndLineNames = $computed(() => {
   const { sizes, lineNames } = props.grid[props.type]
   const items = []
   for (var i = 0; i < lineNames.length; i++) {
@@ -69,8 +69,8 @@ const trackSizesAndLineNames = computed(() => {
 function onMove(event, i) {
   switch (event.action) {
     case 'right':
-      if (i + 1 < trackSizesAndLineNames.value.length) {
-        trackSizesAndLineNames.value[i + 1].el.value.focus()
+      if (i + 1 < trackSizesAndLineNames.length) {
+        trackSizesAndLineNames[i + 1].el.value.focus()
       } else {
         if (document.activeElement) {
           document.activeElement.blur()
@@ -79,7 +79,7 @@ function onMove(event, i) {
       break
     case 'left':
       if (i - 1 >= 0) {
-        trackSizesAndLineNames.value[i - 1].el.value.focus()
+        trackSizesAndLineNames[i - 1].el.value.focus()
       } else {
         if (document.activeElement) {
           document.activeElement.blur()

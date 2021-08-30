@@ -21,7 +21,7 @@
 import { useAppState } from '../../store.js'
 import { asValidGridArea } from '../../utils/grid.js'
 
-const { dragging } = useAppState()
+let { dragging } = $(useAppState())
 
 const props = defineProps({
   row: { type: Number, required: true },
@@ -33,22 +33,22 @@ const props = defineProps({
 })
 defineEmits(['down'])
 
-const grid = computed(() => props.area.grid)
+let grid = $computed(() => props.area.grid)
 
-const r = computed(() => {
+let r = $computed(() => {
   const { rows, ri } = props.implicitGrid
   const rv = props.row
   return rv < rows + ri ? rv : rv - 1
 })
 
-const c = computed(() => {
+let c = $computed(() => {
   const { cols, ci } = props.implicitGrid
   const cv = props.col
   return cv < cols + ci ? cv : cv - 1
 })
 
-const gridArea = computed(() => {
-  return asValidGridArea(r.value, c.value, r.value + 1, c.value + 1, props.implicitGrid)
+let gridArea = $computed(() => {
+  return asValidGridArea(r, c, r + 1, c + 1, props.implicitGrid)
 })
 </script>
 

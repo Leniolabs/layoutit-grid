@@ -56,7 +56,7 @@
 import { useAppState } from '../../store.js'
 import { useIsActiveArea } from '../../composables/area.js'
 
-const { mainArea, currentArea } = useAppState()
+let { mainArea, currentArea } = $(useAppState())
 
 // name: 'ElementPreview',
 const props = defineProps({
@@ -65,10 +65,9 @@ const props = defineProps({
 })
 defineEmits(['edit'])
 
-const { area } = toRefs(props)
-const isActive = useIsActiveArea(area)
+let isActive = $(useIsActiveArea(toRef(props, 'area')))
 
-const areaType = computed(() => {
+let areaType = $computed(() => {
   switch (props.area.type) {
     case 'image':
       return ElementImage
