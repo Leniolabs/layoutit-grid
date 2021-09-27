@@ -52,7 +52,7 @@
 import { useAppState } from '../../store.js'
 import { asValidGridArea, asValidLineNumber } from '../../utils/grid.js'
 
-const { dragging, selection, currentFocus, overArea, mainArea } = useAppState()
+let { dragging, selection, currentFocus, overArea, mainArea } = $(useAppState())
 
 const props = defineProps({
   type: { type: String, required: true },
@@ -65,32 +65,32 @@ const props = defineProps({
 
 const emit = defineEmits(['down', 'overcell'])
 
-const grid = computed(() => props.area.grid)
+let grid = $computed(() => props.area.grid)
 
-const firstExplicit = computed(() => props.pos === 1)
-const lastExplicit = computed(() => props.pos === grid.value[props.type].lineNames.length)
+let firstExplicit = $computed(() => props.pos === 1)
+let lastExplicit = $computed(() => props.pos === grid[props.type].lineNames.length)
 
 // TODO: refactor implicitGrid -> { col: { size, i }, row: { size, i } }
-const firstImplicit = computed(
+let firstImplicit = $computed(
   () => props.pos === (props.type === 'row' ? props.implicitGrid.ri : props.implicitGrid.ci)
 )
-const lastImplicit = computed(
+let lastImplicit = $computed(
   () =>
     props.pos ===
     (props.type === 'row' ? props.implicitGrid.rows : props.implicitGrid.cols) +
       (props.type === 'row' ? props.implicitGrid.ri : props.implicitGrid.ci)
 )
 
-const isExplicit = computed(() => {
-  return props.pos >= 1 && props.pos <= grid.value[props.type].lineNames.length
+let isExplicit = $computed(() => {
+  return props.pos >= 1 && props.pos <= grid[props.type].lineNames.length
 })
 
-const showNumber = computed(() => {
-  const otherLineNames = grid.value[props.type === 'col' ? 'row' : 'col'].lineNames
-  return !(lastImplicit.value && otherLineNames[0].active)
+let showNumber = $computed(() => {
+  const otherLineNames = grid[props.type === 'col' ? 'row' : 'col'].lineNames
+  return !(lastImplicit && otherLineNames[0].active)
 })
 
-const gridArea = computed(() => {
+let gridArea = $computed(() => {
   // The first line uses the same track as the second one
   const { implicitGrid } = props
   const pos = Math.max(props.pos - 1, props.type === 'row' ? implicitGrid.ri : implicitGrid.ci)
@@ -99,13 +99,13 @@ const gridArea = computed(() => {
     : asValidGridArea(implicitGrid.ri, pos, implicitGrid.rows + implicitGrid.ri, pos + 1, implicitGrid)
 })
 
-const lineNameRef = ref(null)
+let lineNameRef = $ref(null)
 function toggleLineName() {
-  lineNameRef.value.toggle()
+  lineNameRef.toggle()
 }
 
 function onMove(event) {
-  if (dragging.value) {
+  if (dragging) {
     return
   }
   const lineEl = event.target

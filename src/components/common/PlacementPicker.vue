@@ -124,7 +124,7 @@ const optionTooltipsType = {
 
 type OptionTooltipsType = keyof typeof optionTooltipsType
 
-const options = computed(() => alignOptionsMap[props.type.split('-')[1] as AlignOptionsType])
+let options = $computed(() => alignOptionsMap[props.type.split('-')[1] as AlignOptionsType])
 </script>
 
 <style scoped lang="postcss">

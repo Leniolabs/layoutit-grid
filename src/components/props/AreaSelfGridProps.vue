@@ -25,7 +25,7 @@ import { useAppState, isValidGridArea, getGridRegion, selectionGridArea } from '
 import { createSection } from '../../utils.js'
 import { findImplicitGrid, explicitGridAreaToGridRegion } from '../../utils/grid.js'
 
-const { selection } = useAppState()
+let { selection } = $(useAppState())
 
 const props = defineProps({
   area: { type: Object, required: true },
@@ -34,12 +34,12 @@ const setGridArea = inputSetter((value) => {
   props.area.gridArea = value
 }, isValidGridArea)
 
-const isEditing = computed(() => {
-  return selection.value && selection.value.area === props.area
+let isEditing = $computed(() => {
+  return selection && selection.area === props.area
 })
-const gridAreaValue = computed(() => {
-  if (isEditing.value) {
-    return selectionGridArea(selection.value)
+let gridAreaValue = $computed(() => {
+  if (isEditing) {
+    return selectionGridArea(selection)
   } else {
     return props.area.gridArea
   }
@@ -53,7 +53,7 @@ const onEdit = () => {
     gridRegion = explicitGridAreaToGridRegion(explicitAreas.gridAreas[parent.children.indexOf(props.area)])
   }
   if (gridRegion) {
-    selection.value = {
+    selection = {
       start: createSection({ col: gridRegion.col.start, row: gridRegion.row.start }),
       end: createSection({ col: gridRegion.col.end - 1, row: gridRegion.row.end - 1 }),
       color: props.area.color,

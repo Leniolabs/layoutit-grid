@@ -18,7 +18,7 @@
 <script setup>
 import { useAppState } from '../../store.js'
 
-const { preferredExport } = useAppState()
+let { preferredExport } = $(useAppState())
 
 import { areaToCSS, areaToHTML, presentationCSS } from '../../generateCode.js'
 
@@ -26,13 +26,13 @@ const props = defineProps({
   area: { type: Object, required: true },
   options: { type: Object, required: true },
 })
-const expanded = computed(() => preferredExport.value === 'codepen')
+let expanded = $computed(() => preferredExport === 'codepen')
 
 function onSubmit(event) {
   event.preventDefault()
   document.getElementById('codepenData').value = JSON.stringify(codePenJSON())
   document.getElementById('codepenForm').submit()
-  preferredExport.value = 'codepen'
+  preferredExport = 'codepen'
 }
 
 const codePenJSON = function () {

@@ -19,11 +19,11 @@ const props = defineProps({
   area: { type: Object, required: true },
   implicitGrid: { type: Object, required: true },
 })
-const grid = computed(() => props.area.grid)
+let grid = $computed(() => props.area.grid)
 
-const isCurrent = useIsCurrentArea(toRefs(props).area)
+let isCurrent = $(useIsCurrentArea(toRef(props, 'area')))
 
-const gridArea = computed(() => {
+let gridArea = $computed(() => {
   const { pos, implicitGrid } = props
   return props.type === 'row'
     ? asValidGridArea(pos, implicitGrid.ci, pos + 1, implicitGrid.cols + implicitGrid.ci, props.implicitGrid)

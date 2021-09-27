@@ -13,7 +13,7 @@ const props = defineProps({
 })
 defineEmits(['close'])
 
-const fullPath = computed(() => 'https://' + props.path)
+let fullPath = $computed(() => 'https://' + props.path)
 </script>
 
 <style scoped lang="postcss">

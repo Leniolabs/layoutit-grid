@@ -26,7 +26,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue'])
 
-const options = computed(() => units[props.type])
+let options = $computed(() => units[props.type])
 
 const onInput = (event: Event) => {
   emit('update:modelValue', (event.target as HTMLInputElement).value)

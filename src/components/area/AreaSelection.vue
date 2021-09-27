@@ -41,30 +41,30 @@ import {
   selectionGridArea,
 } from '../../store.js'
 
-const { overArea, selection } = useAppState()
+let { overArea, selection } = $(useAppState())
 
 function farEnough(a, b, delta = 5) {
   return Math.abs(a.x - b.x) > delta || Math.abs(a.y - b.y) > delta
 }
 
-const props = defineProps({
+let props = defineProps({
   area: { type: Object, required: true },
   implicitGrid: { type: Object, required: true },
 })
 
-const nameInputElement = ref(null)
+let nameInputElement = $ref(null)
 
-const grid = computed(() => props.area.grid)
+let grid = $computed(() => props.area.grid)
 
-const gridArea = computed(() => (selection.value ? selectionGridArea(selection.value) : 'initial'))
+let gridArea = $computed(() => (selection ? selectionGridArea(selection) : 'initial'))
 
 function validGridName(name) {
   return name !== '' && !(name[0] >= '0' && name[0] <= '9')
 }
 
-const saveEnabled = computed(() => {
-  const name = selection.value ? selection.value.name : ''
-  return validGridName(name) && (isValidAreaName(name) || (selection.value.area && selection.value.area.name === name))
+let saveEnabled = $computed(() => {
+  const name = selection ? selection.name : ''
+  return validGridName(name) && (isValidAreaName(name) || (selection.area && selection.area.name === name))
 })
 
 function sectionFromEvent(event) {
@@ -84,16 +84,16 @@ function cellDown(event) {
 
   const section = sectionFromEvent(event)
   if (section) {
-    if (selection.value && selection.value.parent !== props.area) {
-      selection.value = null
+    if (selection && selection.parent !== props.area) {
+      selection = null
     }
 
-    if (!(selection.value && selection.value.area)) {
+    if (!(selection && selection.area)) {
       setCurrentArea(props.area)
     }
 
-    if (!selection.value) {
-      selection.value = {
+    if (!selection) {
+      selection = {
         start: section,
         end: section,
         color: getRandomColor(),
@@ -104,7 +104,7 @@ function cellDown(event) {
       }
     }
 
-    selection.value.dragging = {
+    selection.dragging = {
       initial: { x: event.clientX, y: event.clientY },
       section,
     }
@@ -112,14 +112,14 @@ function cellDown(event) {
     const onPointerMove = (event) => {
       const sectionOver = sectionFromEvent(event)
       if (sectionOver) {
-        const { dragging, fresh } = selection.value
+        const { dragging, fresh } = selection
         if (dragging) {
           if (fresh) {
-            selection.value.end = sectionOver
+            selection.end = sectionOver
           } else {
             if (farEnough(dragging.initial, { x: event.clientX, y: event.clientY })) {
-              selection.value.fresh = true
-              selection.value.start = section
+              selection.fresh = true
+              selection.start = section
             }
           }
           dragging.section = sectionOver
@@ -128,16 +128,16 @@ function cellDown(event) {
     }
 
     const onPointerUp = () => {
-      if (selection.value.dragging) {
-        selection.value.end = selection.value.dragging.section
-        selection.value.dragging = null
+      if (selection.dragging) {
+        selection.end = selection.dragging.section
+        selection.dragging = null
       }
-      selection.value.fresh = false
+      selection.fresh = false
       window.removeEventListener('pointermove', onPointerMove)
       window.removeEventListener('pointerup', onPointerUp)
 
-      if (!(selection.value && selection.value.area)) {
-        nextTick(() => nameInputElement.value.focus())
+      if (!(selection && selection.area)) {
+        nextTick(() => nameInputElement.focus())
       }
     }
     window.addEventListener('pointermove', onPointerMove, false)
@@ -146,29 +146,29 @@ function cellDown(event) {
 }
 
 function saveSelection() {
-  if (saveEnabled.value) {
-    const sa = selection.value.area
+  if (saveEnabled) {
+    const sa = selection.area
     if (sa) {
-      sa.name = toCssName(selection.value.name)
-      sa.gridArea = selectionGridArea(selection.value)
-      overArea.value = sa
+      sa.name = toCssName(selection.name)
+      sa.gridArea = selectionGridArea(selection)
+      overArea = sa
     } else {
       const newArea = createAreaState({
-        name: selection.value.name,
-        gridArea: selectionGridArea(selection.value),
-        color: selection.value.color,
+        name: selection.name,
+        gridArea: selectionGridArea(selection),
+        color: selection.color,
         parent: props.area,
       })
       props.area.children.push(newArea)
-      overArea.value = newArea
+      overArea = newArea
     }
 
-    selection.value = null
+    selection = null
   }
 }
 
 function closeSelection() {
-  selection.value = null
+  selection = null
 }
 
 defineExpose({ cellDown })

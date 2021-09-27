@@ -17,13 +17,13 @@ const props = defineProps({
   type: { type: String, required: true },
   getCode: { type: Function, required: true },
 })
-const copied = ref(0)
+let copied = $ref(0)
 
 function copyToClipBoard() {
   copy(props.getCode())
-  copied.value++
+  copied++
   setTimeout(() => {
-    copied.value--
+    copied--
   }, 2000)
 }
 </script>

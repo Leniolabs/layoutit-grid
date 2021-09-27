@@ -39,7 +39,7 @@ import { useIsCurrentArea } from '../../composables/area.js'
 import { asValidGridArea } from '../../utils/grid.js'
 import { useAppState, parseValue } from '../../store.js'
 
-const { dragging, currentFocus, currentHover, darkmode } = useAppState()
+let { dragging, currentFocus, currentHover, darkmode } = $(useAppState())
 
 const props = defineProps({
   type: { type: String, required: true },
@@ -47,51 +47,49 @@ const props = defineProps({
   area: { type: Object, required: true },
   implicitGrid: { type: Object, required: true },
 })
-const grid = computed(() => props.area.grid)
+let grid = $computed(() => props.area.grid)
 
-const isCurrent = useIsCurrentArea(toRefs(props).area)
+let isCurrent = $(useIsCurrentArea(toRef(props, 'area')))
 
-const isDraggingGrid = computed(() => dragging.value && dragging.value.grid === grid.value)
+let isDraggingGrid = $computed(() => dragging && dragging.grid === grid)
 
 function isHover(pos) {
-  const f = currentHover.value
-  return (
-    !currentFocus.value && f && f.on === 'track' && f.grid === grid.value && f.type === props.type && f.track === pos
-  )
+  const f = currentHover
+  return !currentFocus && f && f.on === 'track' && f.grid === grid && f.type === props.type && f.track === pos
 }
-const isTrackHover = computed(() => isHover(props.pos))
-const isNextTrackHover = computed(() => isHover(props.pos + 1))
+let isTrackHover = $computed(() => isHover(props.pos))
+let isNextTrackHover = $computed(() => isHover(props.pos + 1))
 
 function isFocused(pos) {
-  const f = currentFocus.value
-  return f && f.on === 'track' && f.grid === grid.value && f.type === props.type && f.track === pos
+  const f = currentFocus
+  return f && f.on === 'track' && f.grid === grid && f.type === props.type && f.track === pos
 }
 
-const isTrackFocused = computed(() => isFocused(props.pos))
-const isNextTrackFocused = computed(() => isFocused(props.pos + 1))
+let isTrackFocused = $computed(() => isFocused(props.pos))
+let isNextTrackFocused = $computed(() => isFocused(props.pos + 1))
 
 function isLineFocused(pos) {
-  const f = currentFocus.value
-  return f && f.on === 'line' && f.grid === grid.value && f.type === props.type && f.pos === pos
+  const f = currentFocus
+  return f && f.on === 'line' && f.grid === grid && f.type === props.type && f.pos === pos
 }
 function isLineHover(pos) {
-  const f = currentHover.value
-  return !currentFocus.value && f && f.on === 'line' && f.grid === grid.value && f.type === props.type && f.pos === pos
+  const f = currentHover
+  return !currentFocus && f && f.on === 'line' && f.grid === grid && f.type === props.type && f.pos === pos
 }
 
-const isLineDraggingPrev = computed(() => isDraggingGrid.value && dragging.value[props.type + 'Line'] === props.pos)
-const isLineFocusedPrev = computed(() => isLineFocused(props.pos))
-const isLineDraggingNext = computed(() => isDraggingGrid.value && dragging.value[props.type + 'Line'] === props.pos + 1)
-const isLineFocusedNext = computed(() => isLineFocused(props.pos + 1))
+let isLineDraggingPrev = $computed(() => isDraggingGrid && dragging[props.type + 'Line'] === props.pos)
+let isLineFocusedPrev = $computed(() => isLineFocused(props.pos))
+let isLineDraggingNext = $computed(() => isDraggingGrid && dragging[props.type + 'Line'] === props.pos + 1)
+let isLineFocusedNext = $computed(() => isLineFocused(props.pos + 1))
 
-const isExplicitPrev = computed(() => {
-  return props.pos >= 1 && props.pos <= grid.value[props.type].lineNames.length
+let isExplicitPrev = $computed(() => {
+  return props.pos >= 1 && props.pos <= grid[props.type].lineNames.length
 })
-const isExplicitNext = computed(() => {
-  return props.pos + 1 >= 1 && props.pos + 1 <= grid.value[props.type].lineNames.length
+let isExplicitNext = $computed(() => {
+  return props.pos + 1 >= 1 && props.pos + 1 <= grid[props.type].lineNames.length
 })
 
-const gridArea = computed(() => {
+let gridArea = $computed(() => {
   const { pos, implicitGrid } = props
   return props.type === 'row'
     ? asValidGridArea(pos, implicitGrid.ci, pos + 1, implicitGrid.cols + implicitGrid.ci, props.implicitGrid)

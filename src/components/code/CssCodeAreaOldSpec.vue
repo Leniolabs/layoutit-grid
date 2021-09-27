@@ -34,12 +34,12 @@ const props = defineProps({
   area: { type: Object, default: null },
   options: { type: Object, default: null },
 })
-const cssAreaName = computed(() => toCssName(props.area.name))
+let cssAreaName = $computed(() => toCssName(props.area.name))
 
-const gridAreas = computed(() => (props.area.display === 'grid' ? props.area.children : []))
+let gridAreas = $computed(() => (props.area.display === 'grid' ? props.area.children : []))
 
 // TODO:
-const gridRegion = computed(() => getGridRegion(props.area))
+let gridRegion = $computed(() => getGridRegion(props.area))
 </script>
 
 <style scoped lang="postcss"></style>

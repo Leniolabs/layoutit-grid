@@ -48,9 +48,9 @@ import {
 } from '../../store.js'
 import { useIsCurrentArea, useIsActiveArea } from '../../composables/area.js'
 
-const { shift } = useMagicKeys()
+let { shift } = $(useMagicKeys())
 
-const { dragging } = useAppState()
+let { dragging } = $(useAppState())
 
 const props = defineProps({
   area: { type: Object, required: true },
@@ -67,15 +67,15 @@ const props = defineProps({
 
 defineEmits(['overcell'])
 
-const grid = computed(() => props.area.grid)
+let grid = $computed(() => props.area.grid)
 
-const gridLineRefs = ref({ col: [], row: [] })
+let gridLineRefs = $ref({ col: [], row: [] })
 onBeforeUpdate(() => {
-  gridLineRefs.value = { col: [], row: [] }
+  gridLineRefs = { col: [], row: [] }
 })
 
 function gridSizesForView(type) {
-  return grid.value[type].sizes
+  return grid[type].sizes
     .map((size) => {
       const unit = parseUnit(size)
       switch (unit) {
@@ -92,12 +92,11 @@ function gridSizesForView(type) {
     .join(' ')
 }
 
-const gridTemplateRows = computed(() => gridSizesForView('row'))
-const gridTemplateColumns = computed(() => gridSizesForView('col'))
+let gridTemplateRows = $computed(() => gridSizesForView('row'))
+let gridTemplateColumns = $computed(() => gridSizesForView('col'))
 
-const { area } = toRefs(props)
-const isCurrent = useIsCurrentArea(area)
-const isActive = useIsActiveArea(area)
+let isCurrent = $(useIsCurrentArea(toRef(props, 'area')))
+let isActive = $(useIsActiveArea(toRef(props, 'area')))
 
 function linesFor(type) {
   const lines = []
@@ -109,13 +108,13 @@ function linesFor(type) {
   }
   return lines
 }
-const gridLines = computed(() => {
+let gridLines = $computed(() => {
   return [...linesFor('row'), ...linesFor('col')]
 })
 
-const gridIntersections = computed(() => {
-  const rowEnd = grid.value.row.sizes.length
-  const colEnd = grid.value.col.sizes.length
+let gridIntersections = $computed(() => {
+  const rowEnd = grid.row.sizes.length
+  const colEnd = grid.col.sizes.length
   const intersections = []
   for (let row = 2; row <= rowEnd; row++) {
     for (let col = 2; col <= colEnd; col++) {
@@ -140,14 +139,14 @@ function toViewGap(gap) {
   return gap
 }
 
-const gridGap = computed(() => {
-  return `${toViewGap(grid.value.row.gap)} ${toViewGap(grid.value.col.gap)}`
+let gridGap = $computed(() => {
+  return `${toViewGap(grid.row.gap)} ${toViewGap(grid.col.gap)}`
 })
 
 function calcValue(prev, prevComp, delta) {
   const sizeAdd = (prev.value * delta) / prevComp.value
 
-  let value = +(prev.value + sizeAdd).toFixed(shift.value ? 2 : 1)
+  let value = +(prev.value + sizeAdd).toFixed(shift ? 2 : 1)
 
   if (value <= 0) {
     value = 0.1
@@ -159,7 +158,7 @@ function calcValue(prev, prevComp, delta) {
 function calcContainerValue(prev, delta) {
   const sizeAdd = (prev.value * delta) / prev.value
 
-  let value = +(prev.value + sizeAdd).toFixed(shift.value ? 2 : 1)
+  let value = +(prev.value + sizeAdd).toFixed(shift ? 2 : 1)
 
   if (value <= 0) {
     value = 0.1
@@ -197,19 +196,19 @@ function handleLineDown(event, { row, col }) {
     document.activeElement.blur()
   }
 
-  if (dragging.value) {
+  if (dragging) {
     return
   }
 
   setCurrentArea(props.area)
 
   const initialPos = { x: event.clientX, y: event.clientY }
-  const initialRowSizes = [...grid.value.row.sizes]
+  const initialRowSizes = [...grid.row.sizes]
   const initialRowComputedSizes = props.computedStyles.gridTemplateRows.split(/\s/g)
-  const initialColSizes = [...grid.value.col.sizes]
+  const initialColSizes = [...grid.col.sizes]
   const initialColComputedSizes = props.computedStyles.gridTemplateColumns.split(/\s/g)
-  const rowsNumber = grid.value.row.sizes.length
-  const colsNumber = grid.value.col.sizes.length
+  const rowsNumber = grid.row.sizes.length
+  const colsNumber = grid.col.sizes.length
   const initialWidth = parseValueUnit(props.area.width)
   const initialComputedWidth = parseValueUnit(props.computedStyles.width)
   const initialHeight = parseValueUnit(props.area.height)
@@ -225,18 +224,18 @@ function handleLineDown(event, { row, col }) {
     onmove(event) {
       const pos = { x: event.clientX, y: event.clientY }
 
-      if (!dragging.value) {
+      if (!dragging) {
         if (colLine || rowLine) {
           // Start dragging grid lines
-          dragging.value = { grid: grid.value, rowLine, colLine, prevCursor: document.body.style.cursor }
+          dragging = { grid, rowLine, colLine, prevCursor: document.body.style.cursor }
           document.body.style.cursor = col && row ? 'move' : col ? 'col-resize' : 'row-resize'
           pause()
         } else if (!props.area.parent && (colEdge || rowEdge)) {
           // Resize main container
           /* We can not resize the main container to simulate a viewport resize
               We need to do this directly at the viewport level. Disabling for the moment
-          dragging.value = {
-            grid: grid.value,
+          dragging = {
+            grid: grid,
             colLine: colEdge,
             rowLine: rowEdge,
             type: 'container',
@@ -245,8 +244,8 @@ function handleLineDown(event, { row, col }) {
           */
         }
       }
-      if (dragging.value) {
-        if (dragging.value.type === 'container') {
+      if (dragging) {
+        if (dragging.type === 'container') {
           if (colEdge !== undefined) {
             const delta = (colEdge === 1 ? -1 : 1) * (pos.x - initialPos.x)
             props.area.width = valueUnitToString(calcValue(initialWidth, initialComputedWidth, 2 * delta))
@@ -256,22 +255,22 @@ function handleLineDown(event, { row, col }) {
             props.area.height = valueUnitToString(calcValue(initialHeight, initialComputedHeight, 2 * delta))
           }
         } else {
-          if (dragging.value.rowLine !== undefined) {
+          if (dragging.rowLine !== undefined) {
             // Drag row line by updating row sizes
-            grid.value.row.sizes = resizeGridSizes(
+            grid.row.sizes = resizeGridSizes(
               initialRowSizes,
               initialRowComputedSizes,
               pos.y - initialPos.y,
-              dragging.value.rowLine
+              dragging.rowLine
             )
           }
-          if (dragging.value.colLine !== undefined) {
+          if (dragging.colLine !== undefined) {
             // Drag col line by updating col sizes
-            grid.value.col.sizes = resizeGridSizes(
+            grid.col.sizes = resizeGridSizes(
               initialColSizes,
               initialColComputedSizes,
               pos.x - initialPos.x,
-              dragging.value.colLine
+              dragging.colLine
             )
           }
         }
@@ -280,14 +279,14 @@ function handleLineDown(event, { row, col }) {
 
     onup() {
       // Finish dragging grid lines
-      document.body.style.cursor = dragging.value ? dragging.value.prevCursor : 'initial'
-      dragging.value = null
+      document.body.style.cursor = dragging ? dragging.prevCursor : 'initial'
+      dragging = null
       resume(true)
     },
 
     onclick() {
-      if (!dragging.value) {
-        gridLineRefs.value[col ? 'col' : 'row'][col || row].toggleLineName()
+      if (!dragging) {
+        gridLineRefs[col ? 'col' : 'row'][col || row].toggleLineName()
       }
     },
   })

@@ -23,7 +23,7 @@ const props = defineProps({
   grid: { type: Object, required: true },
   type: { type: String as PropType<Cell>, required: true }, // 'row' or 'col'
 })
-const gap = computed({
+let gap = $computed({
   get: (): ValueGapUnit => {
     return parseValueUnit(props.grid[props.type].gap)
   },
@@ -35,12 +35,12 @@ const gap = computed({
 function setGapUnit(event: Event) {
   const unit = (event.target as HTMLInputElement).value as DefaultUnit
   // TODO: Adjust value to avoid jump
-  gap.value = { ...gap.value, unit }
+  gap = { ...gap, unit }
 }
 
 function setGapValue(event: Event) {
   const value = (event.target as HTMLInputElement).value
-  gap.value = { ...gap.value, value }
+  gap = { ...gap, value }
 }
 </script>
 

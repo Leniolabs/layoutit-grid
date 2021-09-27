@@ -20,7 +20,7 @@
 const props = defineProps({
   area: { type: Object, required: true },
 })
-const grid = computed(() => props.area.grid)
+let grid = $computed(() => props.area.grid)
 </script>
 
 <style scoped lang="postcss">

@@ -19,11 +19,11 @@ const props = defineProps({
   independent: { type: Boolean, default: false },
   startOpened: { type: Boolean, default: false },
 })
-const opened = ref(props.startOpened)
+let opened = $ref(props.startOpened)
 
 function onHeaderClick() {
-  opened.value = !opened.value
-  props.accordion.active = opened.value ? props.name : ''
+  opened = !opened
+  props.accordion.active = opened ? props.name : ''
 }
 </script>
 

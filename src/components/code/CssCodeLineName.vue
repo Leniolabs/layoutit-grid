@@ -19,7 +19,7 @@
 <script setup>
 import { useAppState, isValidLineName, parseGridTemplate } from '../../store.js'
 
-const { dragging, currentFocus } = useAppState()
+let { dragging, currentFocus } = $(useAppState())
 
 import { namedTemplateColumns, namedTemplateRows, onCodeInputKeydown, targetText } from '../../utils.js'
 import { useInputSetter } from '../../composables/index.js'
@@ -31,13 +31,13 @@ const props = defineProps({
   el: { type: Object, required: true },
 })
 
-const line = computed(() => props.grid[props.type].lineNames[props.pos - 1])
-const lineName = computed({
-  get: () => line.value.name,
-  set: (str) => (line.value.name = str),
+let line = $computed(() => props.grid[props.type].lineNames[props.pos - 1])
+let lineName = $computed({
+  get: () => line.name,
+  set: (str) => (line.name = str),
 })
 
-const onInput = useInputSetter(lineName, isValidLineName, targetText)
+const onInput = useInputSetter($$(lineName), isValidLineName, targetText)
 </script>
 
 <style scoped lang="postcss">

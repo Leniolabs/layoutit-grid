@@ -10,7 +10,7 @@
 <script setup>
 import { useAppState } from '../../store.js'
 
-const { preferredExport } = useAppState()
+let { preferredExport } = $(useAppState())
 
 import { areaToCSS, areaToHTML, presentationCSS } from '../../generateCode.js'
 
@@ -18,7 +18,7 @@ const props = defineProps({
   area: { type: Object, required: true },
   options: { type: Object, required: true },
 })
-const expanded = computed(() => preferredExport.value === 'codesandbox')
+let expanded = $computed(() => preferredExport === 'codesandbox')
 
 async function compressForCodesandbox(input) {
   const { default: LZString } = await import('lz-string')

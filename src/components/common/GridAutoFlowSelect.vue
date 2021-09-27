@@ -50,11 +50,11 @@ const optionIconsFlow = {
 
 const emit = defineEmits(['update:modelValue'])
 
-const direction = computed(() => props.modelValue.split(' dense')[0])
-const dense = computed(() => props.modelValue.includes('dense'))
+let direction = $computed(() => props.modelValue.split(' dense')[0])
+let dense = $computed(() => props.modelValue.includes('dense'))
 
 const onInput = (event: Event) => {
-  emit('update:modelValue', direction.value + (dense.value ? '' : ' dense'))
+  emit('update:modelValue', direction + (dense ? '' : ' dense'))
 }
 const optionTooltipsFlow = {
   row: 'row: items are placed by filling each row in turn, adding new rows as necessary. If neither row nor column is provided, row is assumed.',

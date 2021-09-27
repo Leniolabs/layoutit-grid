@@ -35,36 +35,36 @@ import { useAppState, undo, redo, restart } from '../../store.js'
 import { areaToCSS, areaToHTML } from '../../generateCode.js'
 import { useLocalStorage } from '@vueuse/core'
 
-const { mainArea, preferredExport, canUndo, canRedo } = useAppState()
+let { mainArea, preferredExport, canUndo, canRedo } = $(useAppState())
 
 const props = defineProps({
   area: { type: Object, required: true },
   saveDesign: { type: Function, default: null },
 })
 
-const options = ref({
+let options = $ref({
   templateAreas: true,
   oldSpec: false,
   repeat: false,
 })
 
-const storedOptions = useLocalStorage('layoutit-grid-options', JSON.stringify(options.value))
+let storedOptions = $(useLocalStorage('layoutit-grid-options', JSON.stringify(options)))
 
 watch(
-  options,
+  $$(options),
   () => {
-    storedOptions.value = JSON.stringify(options.value)
+    storedOptions = JSON.stringify(options)
   },
   { deep: true }
 )
 const updateOption = (parsed, option) => {
   const value = parsed[option]
   if (value !== undefined) {
-    options.value[option] = value === true
+    options[option] = value === true
   }
 }
 onMounted(() => {
-  const val = storedOptions.value
+  const val = storedOptions
   if (val !== undefined) {
     const parsed = JSON.parse(val)
     updateOption(parsed, 'templateAreas')
@@ -73,23 +73,23 @@ onMounted(() => {
   }
 })
 
-const cssCode = computed(() => {
-  return areaToCSS(props.area, options.value)
+let cssCode = $computed(() => {
+  return areaToCSS(props.area, options)
 })
 
-const htmlCode = computed(() => {
+let htmlCode = $computed(() => {
   return areaToHTML(props.area)
 })
 
-const showPermalink = ref(false)
-const permalink = ref('')
+let showPermalink = $ref(false)
+let permalink = $ref('')
 
 function getPermalink() {
   // Permalink supports depends on the deployed editor
   if (props.saveDesign) {
-    props.saveDesign(mainArea.value).then((path) => {
-      permalink.value = path
-      showPermalink.value = true
+    props.saveDesign(mainArea).then((path) => {
+      permalink = path
+      showPermalink = true
     })
   }
 }

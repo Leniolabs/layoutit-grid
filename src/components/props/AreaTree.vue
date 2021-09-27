@@ -53,9 +53,9 @@
 <script setup>
 import { useAppState, removeArea, createAreaState, newAreaName, getRandomColor, getAreaDepth } from '../../store.js'
 
-const { mainArea, currentArea, reordering } = useAppState()
+let { mainArea, currentArea, reordering } = $(useAppState())
 
-const depth = computed(() => 10 + getAreaDepth(props.area) * 2 + 'px')
+let depth = $computed(() => 10 + getAreaDepth(props.area) * 2 + 'px')
 
 // name: 'AreaTree',
 
@@ -65,8 +65,8 @@ const props = defineProps({
 
 function onDragStart(area, event) {
   event.stopPropagation()
-  currentArea.value = area
-  reordering.value = { area, reordering: null, after: true }
+  currentArea = area
+  reordering = { area, reordering: null, after: true }
 }
 
 function areaIndex(area) {
@@ -75,7 +75,7 @@ function areaIndex(area) {
 
 function onDrop(areaTarget, event) {
   event.stopPropagation()
-  const areaFrom = reordering.value.area
+  const areaFrom = reordering.area
   const sameParent = areaTarget.parent === areaFrom.parent
   const children = sameParent ? areaTarget.parent.children.filter((a) => a !== areaFrom) : areaTarget.parent.children
   if (!sameParent) {
@@ -83,7 +83,7 @@ function onDrop(areaTarget, event) {
   }
   const iFrom = areaIndex(areaFrom)
   const i = children.findIndex((a) => a === areaTarget)
-  children.splice(reordering.value.after ? i + 1 : i, 0, areaFrom)
+  children.splice(reordering.after ? i + 1 : i, 0, areaFrom)
   if (!sameParent) {
     areaFrom.parent = areaTarget.parent
   }
@@ -91,7 +91,7 @@ function onDrop(areaTarget, event) {
 }
 
 function onDragEnd(a) {
-  reordering.value = null
+  reordering = null
 }
 
 function measure(el) {
@@ -107,7 +107,7 @@ function afterMiddleHeight(event) {
 function onDragOver(areaTarget, event) {
   event.stopPropagation()
 
-  const areaFrom = reordering.value.area
+  const areaFrom = reordering.area
   const after = afterMiddleHeight(event)
   let noop = false
   if (areaFrom.parent === areaTarget.parent) {
@@ -120,17 +120,17 @@ function onDragOver(areaTarget, event) {
   if (areaTarget !== areaFrom && !noop) {
     event.preventDefault()
 
-    reordering.value.target = areaTarget !== areaFrom ? areaTarget : null
-    reordering.value.after = after
+    reordering.target = areaTarget !== areaFrom ? areaTarget : null
+    reordering.after = after
   } else {
-    reordering.value.target = null
+    reordering.target = null
   }
 }
 
-const showChildren = ref(true)
+let showChildren = $ref(true)
 
-const currentGrid = computed(() => props.area.grid)
-const currentFlex = computed(() => props.area.flex)
+let currentGrid = $computed(() => props.area.grid)
+let currentFlex = $computed(() => props.area.flex)
 
 function addArea() {
   props.area.children.push(
@@ -140,7 +140,7 @@ function addArea() {
       color: getRandomColor(),
     })
   )
-  showChildren.value = true
+  showChildren = true
 }
 </script>
 

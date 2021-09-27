@@ -8,7 +8,7 @@
 <script setup lang="ts">
 import { useAppState } from '../../store.js'
 
-let { currentArea, currentView } = useAppState()
+let { currentArea, currentView } = $(useAppState())
 
 defineProps({
   area: { type: Object, required: true },
