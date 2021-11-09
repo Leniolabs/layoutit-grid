@@ -10,9 +10,7 @@ import { useAppState } from '../../store.js'
 
 let { currentArea, currentView } = $(useAppState())
 
-defineProps({
-  area: { type: Object, required: true },
-})
+defineProps<{ area }>()
 </script>
 
 <style scoped lang="postcss">

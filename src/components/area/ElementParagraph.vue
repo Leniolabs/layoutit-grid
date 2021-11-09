@@ -5,11 +5,8 @@
   </p>
 </template>
 
-<script setup>
-defineProps({
-  area: { type: Object, required: true },
-  style: { type: Object, required: true },
-})
+<script setup lang="ts">
+defineProps<{ area; style }>()
 </script>
 
 <style scoped lang="postcss"></style>

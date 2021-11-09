@@ -26,17 +26,15 @@
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { getAreaDepth, getGridRegion } from '../../store.js'
 import { useIsMainArea } from '../../composables/area.js'
 
-const props = defineProps({
-  area: { type: Object, required: true },
-})
+const { area } = defineProps<{ area }>()
 
 defineEmits(['edit'])
 
-let isMain = $(useIsMainArea(toRef(props, 'area')))
+let isMain = $(useIsMainArea(computed(() => area)))
 
 let toolbarStart = $computed(() => {
   const gridRegion = getGridRegion(props.area)

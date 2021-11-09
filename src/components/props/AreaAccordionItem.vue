@@ -49,14 +49,12 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useAppState, setCurrentArea, clearArea, addImplicitArea, removeArea } from '../../store.js'
 
 let { mainArea, selection, currentArea } = $(useAppState())
 
-defineProps({
-  area: { type: Object, required: true },
-})
+defineProps<{ area }>()
 </script>
 
 <style scoped lang="postcss">

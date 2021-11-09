@@ -16,7 +16,7 @@
   >
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useAppState, isValidLineName, parseGridTemplate } from '../../store.js'
 
 let { dragging, currentFocus } = $(useAppState())
@@ -24,14 +24,14 @@ let { dragging, currentFocus } = $(useAppState())
 import { namedTemplateColumns, namedTemplateRows, onCodeInputKeydown, targetText } from '../../utils.js'
 import { useInputSetter } from '../../composables/index.js'
 
-const props = defineProps({
-  grid: { type: Object, required: true },
-  type: { type: String, required: true },
-  pos: { type: Number, required: true },
-  el: { type: Object, required: true },
-})
+const { grid, type, pos, el } = defineProps<{
+  grid
+  type: string
+  pos: number
+  el
+}>()
 
-let line = $computed(() => props.grid[props.type].lineNames[props.pos - 1])
+let line = $computed(() => grid[type].lineNames[pos - 1])
 let lineName = $computed({
   get: () => line.name,
   set: (str) => (line.name = str),

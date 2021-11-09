@@ -36,16 +36,15 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { isValidFlexBasis } from '../../store.js'
 import { inputSetter } from '../../composables'
 
-const props = defineProps({
-  area: { type: Object, required: true },
-})
-const onFlexGrowInput = inputSetter((value) => (props.area.flexGrow = value))
-const onFlexShrinkInput = inputSetter((value) => (props.area.Shrink = value))
-const onFlexBasisInput = inputSetter((value) => (props.area.flexBasis = value), isValidFlexBasis)
+const { area } = defineProps<{ area }>()
+
+const onFlexGrowInput = inputSetter((value) => (area.flexGrow = value))
+const onFlexShrinkInput = inputSetter((value) => (area.Shrink = value))
+const onFlexBasisInput = inputSetter((value) => (area.flexBasis = value), isValidFlexBasis)
 </script>
 
 <style scoped lang="postcss">

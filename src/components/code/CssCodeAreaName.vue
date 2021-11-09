@@ -16,21 +16,18 @@
   >
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useAppState, isValidAreaName, pause, resume } from '../../store.js'
 import { onCodeInputKeydown, toCssName, targetText } from '../../utils.js'
 import { useInputSetter } from '../../composables'
 
 let { dragging, currentArea, currentHover, currentFocus } = $(useAppState())
 
-const props = defineProps({
-  area: { type: Object, required: true },
-  color: { type: String, default: null },
-})
+const { area, color } = defineProps<{ area; color?: string }>()
 
 let areaName = $computed({
-  get: () => toCssName(props.area.name),
-  set: (str) => (props.area.name = str),
+  get: () => toCssName(area.name),
+  set: (str) => (area.name = str),
 })
 
 let el = $ref(null)

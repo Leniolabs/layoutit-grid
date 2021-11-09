@@ -30,7 +30,7 @@
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { gridRegionToGridArea, createSection, toCssName } from '../../utils.js'
 import {
   useAppState,
@@ -47,14 +47,11 @@ function farEnough(a, b, delta = 5) {
   return Math.abs(a.x - b.x) > delta || Math.abs(a.y - b.y) > delta
 }
 
-let props = defineProps({
-  area: { type: Object, required: true },
-  implicitGrid: { type: Object, required: true },
-})
+let { area, implicitGrid } = defineProps<{ area; implicitGrid }>()
 
 let nameInputElement = $ref(null)
 
-let grid = $computed(() => props.area.grid)
+let grid = $computed(() => area.grid)
 
 let gridArea = $computed(() => (selection ? selectionGridArea(selection) : 'initial'))
 
@@ -84,12 +81,12 @@ function cellDown(event) {
 
   const section = sectionFromEvent(event)
   if (section) {
-    if (selection && selection.parent !== props.area) {
+    if (selection && selection.parent !== area) {
       selection = null
     }
 
     if (!(selection && selection.area)) {
-      setCurrentArea(props.area)
+      setCurrentArea(area)
     }
 
     if (!selection) {
@@ -99,8 +96,8 @@ function cellDown(event) {
         color: getRandomColor(),
         name: '',
         fresh: true,
-        implicitGrid: props.implicitGrid,
-        parent: props.area,
+        implicitGrid: implicitGrid,
+        parent: area,
       }
     }
 
@@ -157,9 +154,9 @@ function saveSelection() {
         name: selection.name,
         gridArea: selectionGridArea(selection),
         color: selection.color,
-        parent: props.area,
+        parent: area,
       })
-      props.area.children.push(newArea)
+      area.children.push(newArea)
       overArea = newArea
     }
 

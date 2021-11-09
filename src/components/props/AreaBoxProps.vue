@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-props">
+  <div class="layout-">
     <AreaSize :area="area" type="width" />
     <AreaSize :area="area" type="height" />
 
@@ -28,19 +28,18 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { inputSetter } from '../../composables'
 import { isValidMargin, isValidPadding } from '../../store.js'
 
-const props = defineProps({
-  area: { type: Object, required: true },
-})
+const { area } = defineProps<{ area }>()
+
 const setMargin = inputSetter((value) => {
-  props.area.margin = value
+  area.margin = value
 }, isValidMargin)
 
 const setPadding = inputSetter((value) => {
-  props.area.padding = value
+  area.padding = value
 }, isValidPadding)
 </script>
 
@@ -175,7 +174,7 @@ button,
     background: var(--color-add);
   }
 }
-.layout-props {
+.layout- {
   padding-top: 8px;
   display: flex;
   > * {

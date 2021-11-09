@@ -15,17 +15,15 @@
   </form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useAppState } from '../../store.js'
 
 let { preferredExport } = $(useAppState())
 
 import { areaToCSS, areaToHTML, presentationCSS } from '../../generateCode.js'
 
-const props = defineProps({
-  area: { type: Object, required: true },
-  options: { type: Object, required: true },
-})
+const { area, options } = defineProps<{ area; options }>()
+
 let expanded = $computed(() => preferredExport === 'codepen')
 
 function onSubmit(event) {
@@ -36,15 +34,15 @@ function onSubmit(event) {
 }
 
 const codePenJSON = function () {
-  const cssCode = areaToCSS(props.area, props.options)
-  const htmlCode = areaToHTML(props.area)
+  const cssCode = areaToCSS(area, options)
+  const htmlCode = areaToHTML(area)
 
   return {
     title: 'New CSS Grid!',
     html: htmlCode,
     css: `${cssCode}
 
-${presentationCSS(props.area)}
+${presentationCSS(area)}
 `,
   }
 }

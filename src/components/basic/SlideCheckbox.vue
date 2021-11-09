@@ -7,11 +7,11 @@
   </div>
 </template>
 
-<script setup>
-defineProps({
-  modelValue: { type: Boolean, default: false },
-  id: { type: String, required: true },
-})
+<script setup lang="ts">
+const { id, modelValue = false } = defineProps<{
+  id: string
+  modelValue?: boolean
+}>()
 defineEmits(['update:modelValue'])
 </script>
 

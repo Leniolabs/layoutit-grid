@@ -32,8 +32,8 @@
   />
 </template>
 
-<script setup>
-import { onBeforeUpdate } from 'vue'
+<script setup lang="ts">
+import { onBeforeUpdate, computed } from 'vue'
 import { useMagicKeys } from '@vueuse/core'
 import { handlePointerEventsInteraction } from '../../utils.js'
 import {
@@ -52,22 +52,23 @@ let { shift } = $(useMagicKeys())
 
 let { dragging } = $(useAppState())
 
-const props = defineProps({
-  area: { type: Object, required: true },
-  computedStyles: { type: Object, default: null },
-  computedGap: {
-    type: Object,
-    default: () => {
-      return { col: '0px', row: '0px' }
-    },
-  },
-  implicitGrid: { type: Object, required: true },
-  grayed: { type: Boolean, default: false },
-})
+const {
+  area,
+  implicitGrid,
+  computedStyles = null,
+  computedGap = null,
+  grayed = false,
+} = defineProps<{
+  area
+  implicitGrid
+  computedStyles?
+  computedGap?
+  grayed?: boolean
+}>()
 
 defineEmits(['overcell'])
 
-let grid = $computed(() => props.area.grid)
+let grid = $computed(() => area.grid)
 
 let gridLineRefs = $ref({ col: [], row: [] })
 onBeforeUpdate(() => {
@@ -95,12 +96,12 @@ function gridSizesForView(type) {
 let gridTemplateRows = $computed(() => gridSizesForView('row'))
 let gridTemplateColumns = $computed(() => gridSizesForView('col'))
 
-let isCurrent = $(useIsCurrentArea(toRef(props, 'area')))
-let isActive = $(useIsActiveArea(toRef(props, 'area')))
+let isCurrent = $(useIsCurrentArea(computed(() => area)))
+let isActive = $(useIsActiveArea(computed(() => area)))
 
 function linesFor(type) {
   const lines = []
-  const { rows, cols, ri, ci } = props.implicitGrid
+  const { rows, cols, ri, ci } = implicitGrid
   const size = type === 'row' ? rows : cols
   const cell_i = type === 'row' ? ri : ci
   for (let i = cell_i; i <= size + cell_i; i++) {
@@ -123,7 +124,7 @@ let gridIntersections = $computed(() => {
   }
   /* This will be needed directly in the main LayoutEditor, and not here once we add the resizing
       of viewport feature
-  const { rows, cols, ri, ci } = props.implicitGrid
+  const { rows, cols, ri, ci } = implicitGrid
   const rs = ri,
     cs = ci,
     re = rows + ri,
@@ -200,21 +201,21 @@ function handleLineDown(event, { row, col }) {
     return
   }
 
-  setCurrentArea(props.area)
+  setCurrentArea(area)
 
   const initialPos = { x: event.clientX, y: event.clientY }
   const initialRowSizes = [...grid.row.sizes]
-  const initialRowComputedSizes = props.computedStyles.gridTemplateRows.split(/\s/g)
+  const initialRowComputedSizes = computedStyles.gridTemplateRows.split(/\s/g)
   const initialColSizes = [...grid.col.sizes]
-  const initialColComputedSizes = props.computedStyles.gridTemplateColumns.split(/\s/g)
+  const initialColComputedSizes = computedStyles.gridTemplateColumns.split(/\s/g)
   const rowsNumber = grid.row.sizes.length
   const colsNumber = grid.col.sizes.length
-  const initialWidth = parseValueUnit(props.area.width)
-  const initialComputedWidth = parseValueUnit(props.computedStyles.width)
-  const initialHeight = parseValueUnit(props.area.height)
-  const initialComputedHeight = parseValueUnit(props.computedStyles.height)
+  const initialWidth = parseValueUnit(area.width)
+  const initialComputedWidth = parseValueUnit(computedStyles.width)
+  const initialHeight = parseValueUnit(area.height)
+  const initialComputedHeight = parseValueUnit(computedStyles.height)
 
-  const { rows, cols, ri, ci } = props.implicitGrid
+  const { rows, cols, ri, ci } = implicitGrid
   const rowLine = row && row > 1 && row <= rowsNumber ? row : undefined
   const colLine = col && col > 1 && col <= colsNumber ? col : undefined
   const rowEdge = row === ri || row === rows + ri ? row : undefined
@@ -230,7 +231,7 @@ function handleLineDown(event, { row, col }) {
           dragging = { grid, rowLine, colLine, prevCursor: document.body.style.cursor }
           document.body.style.cursor = col && row ? 'move' : col ? 'col-resize' : 'row-resize'
           pause()
-        } else if (!props.area.parent && (colEdge || rowEdge)) {
+        } else if (!area.parent && (colEdge || rowEdge)) {
           // Resize main container
           /* We can not resize the main container to simulate a viewport resize
               We need to do this directly at the viewport level. Disabling for the moment
@@ -248,11 +249,11 @@ function handleLineDown(event, { row, col }) {
         if (dragging.type === 'container') {
           if (colEdge !== undefined) {
             const delta = (colEdge === 1 ? -1 : 1) * (pos.x - initialPos.x)
-            props.area.width = valueUnitToString(calcValue(initialWidth, initialComputedWidth, 2 * delta))
+            area.width = valueUnitToString(calcValue(initialWidth, initialComputedWidth, 2 * delta))
           }
           if (rowEdge !== undefined) {
             const delta = (rowEdge === 1 ? -1 : 1) * (pos.y - initialPos.y)
-            props.area.height = valueUnitToString(calcValue(initialHeight, initialComputedHeight, 2 * delta))
+            area.height = valueUnitToString(calcValue(initialHeight, initialComputedHeight, 2 * delta))
           }
         } else {
           if (dragging.rowLine !== undefined) {

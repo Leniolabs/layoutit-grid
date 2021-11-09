@@ -8,16 +8,13 @@
   >
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { areaToCSS } from '../../generateCode.js'
 
-const props = defineProps({
-  area: { type: Object, default: null },
-  options: { type: Object, default: null },
-})
+const { area, options } = defineProps<{ area; options }>()
 
 function getCode() {
-  return areaToCSS(props.area, props.options)
+  return areaToCSS(area, options)
 }
 </script>
 

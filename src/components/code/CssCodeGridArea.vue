@@ -2,19 +2,16 @@
   <span class="token string">{{ gridArea }}</span>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { getCodeGridArea, getCodeGridTemplateAreas } from '../../utils.js'
 
-const props = defineProps({
-  area: { type: Object, required: true },
-  options: { type: Object, required: true },
-})
+const { area, options } = defineProps<{ area; options }>()
 
-let templateAreas = $computed(() => getCodeGridTemplateAreas(props.area))
+let templateAreas = $computed(() => getCodeGridTemplateAreas(area))
 
-let includeTemplateAreas = $computed(() => props.options.templateAreas && templateAreas !== undefined)
+let includeTemplateAreas = $computed(() => options.templateAreas && templateAreas !== undefined)
 
-let gridArea = $computed(() => getCodeGridArea(props.area, props.options.templateAreas))
+let gridArea = $computed(() => getCodeGridArea(area, options.templateAreas))
 </script>
 
 <style scoped lang="postcss">

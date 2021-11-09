@@ -32,7 +32,7 @@
   >
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { toCssName, getElementTag, includeAreaInCSS } from '../../utils.js'
 import { useAppState } from '../../store.js'
 
@@ -44,19 +44,22 @@ let { mainArea, currentArea, reordering, selection } = $(useAppState())
 /*
 
 */
+const {
+  area,
+  options,
+  ident = '',
+} = defineProps<{
+  area
+  options
+  ident?: string
+}>()
 
-// name: 'HtmlCodeArea',
-const props = defineProps({
-  area: { type: Object, required: true },
-  options: { type: Object, required: true },
-  ident: { type: String, default: '' },
-})
 const OPEN_TAG = '<'
 const CLOSE_TAG = '</'
-let cssAreaName = $computed(() => toCssName(props.area.name))
-let elementTag = $computed(() => getElementTag(props.area))
+let cssAreaName = $computed(() => toCssName(area.name))
+let elementTag = $computed(() => getElementTag(area))
 
-let gridAreas = $computed(() => (props.area.display === 'grid' ? props.area.children : []))
+let gridAreas = $computed(() => (area.display === 'grid' ? area.children : []))
 
 const canReorder = (area) => {
   return area !== mainArea && !reordering && !(area.parent === mainArea && mainArea.children.length === 1)

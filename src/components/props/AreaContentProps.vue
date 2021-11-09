@@ -27,44 +27,43 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { createAreaState, createFlexState, createGridState } from '../../store'
 import { inputSetter } from '../../composables'
 
-const props = defineProps({
-  area: { type: Object, required: true },
-})
+const { area } = defineProps<{ area }>()
+
 const onAreaTextInput = inputSetter((value) => (area.text = value))
 
 function onUpdateDisplay(value) {
-  props.area.display = value
-  if (props.area.display === 'flex') {
-    if (!props.area.flex) {
-      props.area.flex = createFlexState()
+  area.display = value
+  if (area.display === 'flex') {
+    if (!area.flex) {
+      area.flex = createFlexState()
     }
   }
-  if (props.area.display === 'grid') {
-    if (!props.area.grid) {
-      props.area.grid = createGridState()
+  if (area.display === 'grid') {
+    if (!area.grid) {
+      area.grid = createGridState()
     }
   }
 }
 
 let counter = $ref(1)
 function addImplicitArea() {
-  props.area.children.push(
+  area.children.push(
     createAreaState({
       name: 'a' + counter++,
-      parent: props.area,
+      parent: area,
     })
   )
 }
 
 function addItems() {
-  props.area.children.push(
+  area.children.push(
     createAreaState({
       name: '10 photos',
-      parent: props.area,
+      parent: area,
       type: 'image',
       items: {
         count: 10,

@@ -7,17 +7,15 @@
   </form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useAppState } from '../../store.js'
 
 let { preferredExport } = $(useAppState())
 
 import { areaToCSS, areaToHTML, presentationCSS } from '../../generateCode.js'
 
-const props = defineProps({
-  area: { type: Object, required: true },
-  options: { type: Object, required: true },
-})
+const { area, options } = defineProps<{ area; options }>()
+
 let expanded = $computed(() => preferredExport === 'codesandbox')
 
 async function compressForCodesandbox(input) {
@@ -29,8 +27,8 @@ async function compressForCodesandbox(input) {
 }
 
 function codeSandboxJSON() {
-  const cssCode = areaToCSS(props.area, props.options)
-  const htmlCode = areaToHTML(props.area, 2)
+  const cssCode = areaToCSS(area, options)
+  const htmlCode = areaToHTML(area, 2)
 
   return {
     files: {
@@ -49,7 +47,7 @@ function codeSandboxJSON() {
       'index.css': {
         content: `${cssCode}
 
-${presentationCSS(props.area)}
+${presentationCSS(area)}
 `,
       },
     },

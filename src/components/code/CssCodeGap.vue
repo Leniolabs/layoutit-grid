@@ -11,18 +11,19 @@
   >
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { isValidGapSize } from '../../store.js'
 import { onCodeInputKeydown, toCssName, targetText } from '../../utils.js'
 import { useInputSetter } from '../../composables'
 
-const props = defineProps({
-  grid: { type: Object, required: true },
-  type: { type: String, required: true },
-})
+const { grid, type } = defineProps<{
+  grid
+  type: string
+}>()
+
 let gap = $computed({
-  get: () => props.grid[props.type].gap,
-  set: (value) => (props.grid[props.type].gap = value),
+  get: () => grid[type].gap,
+  set: (value) => (grid[type].gap = value),
 })
 
 const onInput = useInputSetter($$(gap), isValidGapSize, targetText)

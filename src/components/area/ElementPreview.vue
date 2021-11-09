@@ -49,7 +49,7 @@
   </component>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // GridEditor imported globally due to circular reference with AreaEditor
 // import FlexEditor from '../flex/FlexEditor.vue'
 
@@ -59,10 +59,11 @@ import { useIsActiveArea } from '../../composables/area.js'
 let { mainArea, currentArea } = $(useAppState())
 
 // name: 'ElementPreview',
-const props = defineProps({
-  area: { type: Object, required: true },
-  item: { type: Number, default: 1 },
-})
+const { area, item = 1 } = defineProps<{
+  area
+  item?: number
+}>()
+
 defineEmits(['edit'])
 
 let isActive = $(useIsActiveArea(toRef(props, 'area')))

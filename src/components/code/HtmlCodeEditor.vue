@@ -4,16 +4,13 @@
   </CodeEditor>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { areaToHTML } from '../../generateCode.js'
 
-const props = defineProps({
-  area: { type: Object, default: null },
-  options: { type: Object, default: null },
-})
+const { area, options } = defineProps<{ area; options }>()
 
 function getCode() {
-  return areaToHTML(props.area)
+  return areaToHTML(area)
 }
 </script>
 

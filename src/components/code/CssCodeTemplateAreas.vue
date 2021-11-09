@@ -25,22 +25,19 @@
   </span>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useAppState } from '../../store.js'
 import { gridTemplateAreasMatrix, templateAreasCellName } from '../../utils.js'
 
 let { dragging, currentArea, currentHover, overArea } = $(useAppState())
 
-const props = defineProps({
-  area: { type: Object, required: true },
-  options: { type: Object, required: true },
-})
+const { area, options } = defineProps<{ area; options }>()
 
 function getGridTemplateAreas(area) {
   return area.display === 'grid' ? gridTemplateAreasMatrix(area) : []
 }
 
-let templateAreas = $computed(() => getGridTemplateAreas(props.area))
+let templateAreas = $computed(() => getGridTemplateAreas(area))
 
 function isCellHighligthed(cell) {
   return (

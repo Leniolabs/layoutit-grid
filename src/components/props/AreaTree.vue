@@ -50,18 +50,16 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useAppState, removeArea, createAreaState, newAreaName, getRandomColor, getAreaDepth } from '../../store.js'
 
 let { mainArea, currentArea, reordering } = $(useAppState())
 
-let depth = $computed(() => 10 + getAreaDepth(props.area) * 2 + 'px')
+let depth = $computed(() => 10 + getAreaDepth(area) * 2 + 'px')
 
 // name: 'AreaTree',
 
-const props = defineProps({
-  area: { type: Object, required: true },
-})
+const { area } = defineProps<{ area }>()
 
 function onDragStart(area, event) {
   event.stopPropagation()
@@ -87,7 +85,7 @@ function onDrop(areaTarget, event) {
   if (!sameParent) {
     areaFrom.parent = areaTarget.parent
   }
-  props.area.children = children
+  area.children = children
 }
 
 function onDragEnd(a) {
@@ -129,14 +127,14 @@ function onDragOver(areaTarget, event) {
 
 let showChildren = $ref(true)
 
-let currentGrid = $computed(() => props.area.grid)
-let currentFlex = $computed(() => props.area.flex)
+let currentGrid = $computed(() => area.grid)
+let currentFlex = $computed(() => area.flex)
 
 function addArea() {
-  props.area.children.push(
+  area.children.push(
     createAreaState({
       name: newAreaName(),
-      parent: props.area,
+      parent: area,
       color: getRandomColor(),
     })
   )

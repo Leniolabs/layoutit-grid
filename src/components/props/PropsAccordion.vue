@@ -4,10 +4,8 @@
   </div>
 </template>
 
-<script setup>
-defineProps({
-  accordion: { type: Object, required: true },
-})
+<script setup lang="ts">
+defineProps<{ accordion }>()
 </script>
 
 <style scoped lang="postcss"></style>

@@ -4,10 +4,8 @@
   </span>
 </template>
 
-<script setup>
-defineProps({
-  area: { type: Object, required: true },
-})
+<script setup lang="ts">
+defineProps<{ area }>()
 defineEmits(['edit'])
 </script>
 

@@ -8,9 +8,9 @@
 </template>
 
 <script setup lang="ts">
-defineProps({
-  modelValue: { type: String, default: 'box' },
-})
+const { modelValue = 'box' } = defineProps<{
+  modelValue: string
+}>()
 
 const emit = defineEmits(['update:modelValue'])
 

@@ -29,14 +29,14 @@
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { getAreaDepth, areaDisplayColor } from '../../store.js'
 import { useIsMainArea } from '../../composables/area.js'
 
-defineProps({
-  area: { type: Object, required: true },
-  gridarea: { type: String, default: undefined },
-})
+const { area, gridarea } = defineProps<{
+  area
+  gridarea?: string
+}>()
 
 defineEmits(['edit'])
 

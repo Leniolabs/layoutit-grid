@@ -34,66 +34,66 @@
   ></section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useIsCurrentArea } from '../../composables/area.js'
 import { asValidGridArea } from '../../utils/grid.js'
 import { useAppState, parseValue } from '../../store.js'
 
 let { dragging, currentFocus, currentHover, darkmode } = $(useAppState())
 
-const props = defineProps({
-  type: { type: String, required: true },
-  pos: { type: Number, required: true },
-  area: { type: Object, required: true },
-  implicitGrid: { type: Object, required: true },
-})
-let grid = $computed(() => props.area.grid)
+const { type, pos, area, implicitGrid } = defineProps<{
+  type: string
+  pos: number
+  area
+  implicitGrid
+}>()
 
-let isCurrent = $(useIsCurrentArea(toRef(props, 'area')))
+let grid = $computed(() => area.grid)
+
+let isCurrent = $(useIsCurrentArea(computed(() => area)))
 
 let isDraggingGrid = $computed(() => dragging && dragging.grid === grid)
 
 function isHover(pos) {
   const f = currentHover
-  return !currentFocus && f && f.on === 'track' && f.grid === grid && f.type === props.type && f.track === pos
+  return !currentFocus && f && f.on === 'track' && f.grid === grid && f.type === type && f.track === pos
 }
-let isTrackHover = $computed(() => isHover(props.pos))
-let isNextTrackHover = $computed(() => isHover(props.pos + 1))
+let isTrackHover = $computed(() => isHover(pos))
+let isNextTrackHover = $computed(() => isHover(pos + 1))
 
 function isFocused(pos) {
   const f = currentFocus
-  return f && f.on === 'track' && f.grid === grid && f.type === props.type && f.track === pos
+  return f && f.on === 'track' && f.grid === grid && f.type === type && f.track === pos
 }
 
-let isTrackFocused = $computed(() => isFocused(props.pos))
-let isNextTrackFocused = $computed(() => isFocused(props.pos + 1))
+let isTrackFocused = $computed(() => isFocused(pos))
+let isNextTrackFocused = $computed(() => isFocused(pos + 1))
 
 function isLineFocused(pos) {
   const f = currentFocus
-  return f && f.on === 'line' && f.grid === grid && f.type === props.type && f.pos === pos
+  return f && f.on === 'line' && f.grid === grid && f.type === type && f.pos === pos
 }
 function isLineHover(pos) {
   const f = currentHover
-  return !currentFocus && f && f.on === 'line' && f.grid === grid && f.type === props.type && f.pos === pos
+  return !currentFocus && f && f.on === 'line' && f.grid === grid && f.type === type && f.pos === pos
 }
 
-let isLineDraggingPrev = $computed(() => isDraggingGrid && dragging[props.type + 'Line'] === props.pos)
-let isLineFocusedPrev = $computed(() => isLineFocused(props.pos))
-let isLineDraggingNext = $computed(() => isDraggingGrid && dragging[props.type + 'Line'] === props.pos + 1)
-let isLineFocusedNext = $computed(() => isLineFocused(props.pos + 1))
+let isLineDraggingPrev = $computed(() => isDraggingGrid && dragging[type + 'Line'] === pos)
+let isLineFocusedPrev = $computed(() => isLineFocused(pos))
+let isLineDraggingNext = $computed(() => isDraggingGrid && dragging[type + 'Line'] === pos + 1)
+let isLineFocusedNext = $computed(() => isLineFocused(pos + 1))
 
 let isExplicitPrev = $computed(() => {
-  return props.pos >= 1 && props.pos <= grid[props.type].lineNames.length
+  return pos >= 1 && pos <= grid[type].lineNames.length
 })
 let isExplicitNext = $computed(() => {
-  return props.pos + 1 >= 1 && props.pos + 1 <= grid[props.type].lineNames.length
+  return pos + 1 >= 1 && pos + 1 <= grid[type].lineNames.length
 })
 
 let gridArea = $computed(() => {
-  const { pos, implicitGrid } = props
-  return props.type === 'row'
-    ? asValidGridArea(pos, implicitGrid.ci, pos + 1, implicitGrid.cols + implicitGrid.ci, props.implicitGrid)
-    : asValidGridArea(implicitGrid.ri, pos, implicitGrid.rows + implicitGrid.ri, pos + 1, props.implicitGrid)
+  return type === 'row'
+    ? asValidGridArea(pos, implicitGrid.ci, pos + 1, implicitGrid.cols + implicitGrid.ci, implicitGrid)
+    : asValidGridArea(implicitGrid.ri, pos, implicitGrid.rows + implicitGrid.ri, pos + 1, implicitGrid)
 })
 </script>
 

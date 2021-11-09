@@ -42,7 +42,7 @@
   /></template>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import CssDecl from './CssCodeDeclaration.vue'
 
 import {
@@ -58,21 +58,18 @@ import { useAppState, getGridRegion } from '../../store.js'
 let { mainArea } = $(useAppState())
 
 // name: 'CssCodeArea',
-const props = defineProps({
-  area: { type: Object, required: true },
-  options: { type: Object, required: true },
-})
+const { area, options } = defineProps<{ area; options }>()
 
-let templateAreas = $computed(() => getCodeGridTemplateAreas(props.area))
+let templateAreas = $computed(() => getCodeGridTemplateAreas(area))
 
-let includeTemplateAreas = $computed(() => props.options.templateAreas && templateAreas !== undefined)
+let includeTemplateAreas = $computed(() => options.templateAreas && templateAreas !== undefined)
 
-let gridArea = $computed(() => getCodeGridArea(props.area))
+let gridArea = $computed(() => getCodeGridArea(area))
 
-let singleLine = $computed(() => areaIsSingleLineInCSS(props.area))
+let singleLine = $computed(() => areaIsSingleLineInCSS(area))
 
 let areasToInclude = $computed(() =>
-  props.area.children.filter((area) => !(areaIsSingleLineInCSS(area) && area.gridArea === 'auto'))
+  area.children.filter((area) => !(areaIsSingleLineInCSS(area) && area.gridArea === 'auto'))
 )
 </script>
 

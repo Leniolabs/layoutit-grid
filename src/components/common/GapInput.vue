@@ -14,21 +14,21 @@
 </template>
 
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import type { ValueGapUnit, DefaultUnit, Cell } from '../../types'
 //@ts-ignore
 import { parseValueUnit } from '../../store.js'
 
-const props = defineProps({
-  grid: { type: Object, required: true },
-  type: { type: String as PropType<Cell>, required: true }, // 'row' or 'col'
-})
+const { grid, type } = defineProps<{
+  grid
+  type: Cell // 'row' or 'col'
+}>()
+
 let gap = $computed({
   get: (): ValueGapUnit => {
-    return parseValueUnit(props.grid[props.type].gap)
+    return parseValueUnit(grid[type].gap)
   },
   set: ({ value, unit }) => {
-    props.grid[props.type].gap = value + unit
+    grid[type].gap = value + unit
   },
 })
 

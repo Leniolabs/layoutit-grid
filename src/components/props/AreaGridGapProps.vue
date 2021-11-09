@@ -5,11 +5,10 @@
   </div>
 </template>
 
-<script setup>
-const props = defineProps({
-  area: { type: Object, required: true },
-})
-let grid = $computed(() => props.area.grid)
+<script setup lang="ts">
+const { area } = defineProps<{ area }>()
+
+let grid = $computed(() => area.grid)
 </script>
 
 <style scoped lang="postcss">

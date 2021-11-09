@@ -25,11 +25,10 @@
   </div>
 </template>
 
-<script setup>
-const props = defineProps({
-  area: { type: Object, required: true },
-})
-let flex = $computed(() => props.area.flex)
+<script setup lang="ts">
+const { area } = defineProps<{ area }>()
+
+let flex = $computed(() => area.flex)
 </script>
 
 <style scoped lang="postcss">

@@ -17,38 +17,46 @@
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useAppState } from '../../store.js'
 import { asValidGridArea } from '../../utils/grid.js'
 
 let { dragging } = $(useAppState())
 
-const props = defineProps({
-  row: { type: Number, required: true },
-  col: { type: Number, required: true },
-  area: { type: Object, required: true },
-  colgap: { type: String, default: '0px' },
-  rowgap: { type: String, default: '0px' },
-  implicitGrid: { type: Object, required: true },
-})
+const {
+  row,
+  col,
+  area,
+  implicitGrid,
+  colgap = '0px',
+  rowgap = '0px',
+} = defineProps<{
+  row: number
+  col: number
+  area
+  implicitGrid
+  colgap?: string
+  rowgap?: string
+}>()
+
 defineEmits(['down'])
 
-let grid = $computed(() => props.area.grid)
+let grid = $computed(() => area.grid)
 
 let r = $computed(() => {
-  const { rows, ri } = props.implicitGrid
-  const rv = props.row
+  const { rows, ri } = implicitGrid
+  const rv = row
   return rv < rows + ri ? rv : rv - 1
 })
 
 let c = $computed(() => {
-  const { cols, ci } = props.implicitGrid
-  const cv = props.col
+  const { cols, ci } = implicitGrid
+  const cv = col
   return cv < cols + ci ? cv : cv - 1
 })
 
 let gridArea = $computed(() => {
-  return asValidGridArea(r, c, r + 1, c + 1, props.implicitGrid)
+  return asValidGridArea(r, c, r + 1, c + 1, implicitGrid)
 })
 </script>
 

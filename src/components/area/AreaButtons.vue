@@ -44,7 +44,7 @@
   </template>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {
   useAppState,
   setCurrentArea,
@@ -58,13 +58,11 @@ import {
 
 let { mainArea, currentArea, overArea, dragging } = $(useAppState())
 
-const props = defineProps({
-  area: { type: Object, required: true },
-})
+const { area } = defineProps<{ area }>()
 
 defineEmits(['edit'])
 
-let hasDisplay = $computed(() => props.area.grid || props.area.flex)
+let hasDisplay = $computed(() => area.grid || area.flex)
 
 function subFlex() {
   clearArea(props.area)

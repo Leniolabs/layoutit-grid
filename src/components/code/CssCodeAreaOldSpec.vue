@@ -25,21 +25,18 @@
   /></template>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { getGridRegion } from '../../store.js'
 import { namedTemplateColumns, namedTemplateRows, toCssName } from '../../utils.js'
 
-// name: 'CssCodeAreaOldSpec',
-const props = defineProps({
-  area: { type: Object, default: null },
-  options: { type: Object, default: null },
-})
-let cssAreaName = $computed(() => toCssName(props.area.name))
+const { area, options } = defineProps<{ area; options }>()
 
-let gridAreas = $computed(() => (props.area.display === 'grid' ? props.area.children : []))
+let cssAreaName = $computed(() => toCssName(area.name))
+
+let gridAreas = $computed(() => (area.display === 'grid' ? area.children : []))
 
 // TODO:
-let gridRegion = $computed(() => getGridRegion(props.area))
+let gridRegion = $computed(() => getGridRegion(area))
 </script>
 
 <style scoped lang="postcss"></style>

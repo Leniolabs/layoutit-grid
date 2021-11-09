@@ -5,10 +5,9 @@
   </div>
 </template>
 
-<script setup>
-const props = defineProps({
-  area: { type: Object, required: true },
-})
+<script setup lang="ts">
+const { area } = defineProps<{ area }>()
+
 let grid = $computed(() => props.area.grid)
 </script>
 

@@ -51,10 +51,10 @@
   </div>
 </template>
 
-<script setup>
-defineProps({
-  modelValue: { type: Object, required: true },
-})
+<script setup lang="ts">
+defineProps<{
+  modelValue
+}>()
 
 let isOpen = $ref(false)
 </script>

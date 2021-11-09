@@ -11,15 +11,13 @@
   </SidebarRight>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { loadFromStorage, useAppState } from '../store.js'
 import { keyMonitor } from '../utils/keyMonitor'
 
 let { mainArea, currentView } = $(useAppState())
 
-defineProps({
-  saveDesign: { type: Function, default: null },
-})
+const { saveDesign } = defineProps<{ saveDesign?: (area) => string }>()
 
 function toggleView(view) {
   currentView = currentView === view ? 'editor' : view

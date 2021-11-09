@@ -111,7 +111,7 @@
   </component>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // GridEditor imported globally due to circular reference with AreaEditor
 // import FlexEditor from '../flex/FlexEditor.vue'
 
@@ -134,18 +134,22 @@ let { mainArea, currentArea, currentHover, currentFocus, dragging, overArea, sel
 
 // name: 'AreaEditor',
 
-const props = defineProps({
-  area: { type: Object, required: true },
-  item: { type: Number, default: 1 },
-  gridarea: { type: String, default: undefined },
-})
+const {
+  area,
+  item = 1,
+  gridarea,
+} = defineProps<{
+  area
+  item?: number
+  gridarea?: string
+}>()
 
 defineEmits(['edit'])
 
-let isActive = $(useIsActiveArea(toRef(props, 'area')))
+let isActive = $(useIsActiveArea(computed(() => area)))
 
 let areasToShow = $computed(() => {
-  return props.area.children
+  return area.children
   /*.flatMap((a) =>
       a.items
         ? new Array(a.items.count).fill(0).map((_, i) => {
@@ -158,19 +162,19 @@ let areasToShow = $computed(() => {
 let isHighligthed = $computed(() => {
   const hover = currentHover
   return (
-    (props.area.parent &&
+    (area.parent &&
       !currentFocus &&
       hover &&
-      ((hover.on === 'cell' && hover.area && hover.area === props.area) ||
-        (hover.on === 'html-area' && hover.area === props.area))) ||
-    (currentFocus && currentFocus.on === 'area' && currentFocus.area === props.area)
+      ((hover.on === 'cell' && hover.area && hover.area === area) ||
+        (hover.on === 'html-area' && hover.area === area))) ||
+    (currentFocus && currentFocus.on === 'area' && currentFocus.area === area)
   )
 })
 
 let selectionEl = $ref(null)
 
 let areaType = $computed(() => {
-  switch (props.area.type) {
+  switch (area.type) {
     case 'image':
       return ElementImage
     case 'p':
@@ -251,17 +255,17 @@ function flexStyles(flex) {
 }
 
 let displayStyles = $computed(() => {
-  switch (props.area.display) {
+  switch (area.display) {
     case 'grid':
-      return props.area.grid ? gridStyles(props.area.grid) : {}
+      return area.grid ? gridStyles(area.grid) : {}
     case 'flex':
-      return props.area.flex ? flexStyles(props.area.flex) : {}
+      return area.flex ? flexStyles(area.flex) : {}
     default:
       return {}
   }
 })
 
-let grid = $computed(() => props.area.grid)
+let grid = $computed(() => area.grid)
 let componentInstance = $ref(null)
 let computedStyles = $ref(null)
 let computedGap = $ref({ col: '0px', row: '0px' })
@@ -293,17 +297,17 @@ watch(
 )
 
 let explicitAreas = $computed(() => {
-  if (props.area.display === 'grid') {
-    return findImplicitGrid(props.area)
+  if (area.display === 'grid') {
+    return findImplicitGrid(area)
   } else {
     return { gridAreas: [], implicitGrid: {} }
   }
 })
 
 watch($$(explicitAreas), () => {
-  if (props.area.display === 'grid') {
+  if (area.display === 'grid') {
     const { ri, ci, cols, rows } = explicitAreas.implicitGrid
-    const { row, col } = props.area.grid
+    const { row, col } = area.grid
     if (ri > 1 || rows - ri >= row.sizes.length) {
       if (row.auto.length === 0) {
         row.auto.push('1fr')
@@ -320,12 +324,12 @@ watch($$(explicitAreas), () => {
 let implicitGrid = $computed(() => explicitAreas.implicitGrid)
 
 let toolbarStart = $computed(() => {
-  const gridRegion = getGridRegion(props.area)
-  return gridRegion ? (gridRegion.col.start === 1 && gridRegion.row.start === 1 ? getAreaDepth(props.area) - 1 : 0) : 0
+  const gridRegion = getGridRegion(area)
+  return gridRegion ? (gridRegion.col.start === 1 && gridRegion.row.start === 1 ? getAreaDepth(area) - 1 : 0) : 0
 })
 
 let gridCells = $computed(() => {
-  if (!props.area.grid) {
+  if (!area.grid) {
     return []
   }
   const { cols, rows, ri, ci } = implicitGrid
@@ -341,7 +345,7 @@ let gridCells = $computed(() => {
 let gridRegions = $computed(() => explicitAreas.gridAreas.map(explicitGridAreaToGridRegion))
 
 function onOverCell({ row, col }) {
-  const { children } = props.area
+  const { children } = area
   for (let i = children.length - 1; i >= 0; i--) {
     const r = gridRegions[i]
     if (r.row.start <= row && r.row.end > row && r.col.start <= col && r.col.end > col) {
@@ -349,7 +353,7 @@ function onOverCell({ row, col }) {
       return
     }
   }
-  overArea = props.area
+  overArea = area
 }
 
 function isFocused(section) {
@@ -358,7 +362,7 @@ function isFocused(section) {
 }
 
 function tracksFor(type) {
-  const { grid } = props.area
+  const { grid } = area
   const { rows, cols, ri, ci } = implicitGrid
   const size = type === 'row' ? rows : cols
   const cell_i = type === 'row' ? ri : ci

@@ -7,13 +7,14 @@
   </div>
 </template>
 
-<script setup>
-const props = defineProps({
-  path: { type: String, required: true },
-})
+<script setup lang="ts">
+const { path } = defineProps<{
+  path
+}>()
+
 defineEmits(['close'])
 
-let fullPath = $computed(() => 'https://' + props.path)
+let fullPath = $computed(() => 'https://' + path)
 </script>
 
 <style scoped lang="postcss">

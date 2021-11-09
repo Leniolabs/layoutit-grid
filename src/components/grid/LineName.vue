@@ -15,28 +15,33 @@
   />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useLineNameWidth } from '../../composables/lineName.js'
 import { useAppState, parseValue } from '../../store.js'
 
 let { currentFocus } = $(useAppState())
 
-const props = defineProps({
-  grid: { type: Object, required: true },
-  type: { type: String, required: true }, // 'col' or 'row'
-  pos: { type: Number, required: true },
-  gap: { type: String, default: '0px' },
-})
+const {
+  grid,
+  type,
+  pos,
+  gap = '0px',
+} = defineProps<{
+  grid
+  type: string
+  pos: number
+  gap?: string
+}>()
 
-let line = $computed(() => props.grid[props.type].lineNames[props.pos - 1])
+let line = $computed(() => grid[type].lineNames[pos - 1])
 
 let lineNameWidth = $(useLineNameWidth($$(line), '14px arial', 30))
 
 let style = $computed(() => {
-  const g = parseValue(props.gap)
+  const g = parseValue(gap)
   const s = { width: lineNameWidth + 'px' }
-  if (props.pos > 1 && props.pos < props.grid[props.type].lineNames.length) {
-    return { ...s, ...(props.type === 'row' ? { bottom: -11 - g / 2 + 'px' } : { right: -2 - g / 2 + 'px' }) }
+  if (pos > 1 && pos < grid[type].lineNames.length) {
+    return { ...s, ...(type === 'row' ? { bottom: -11 - g / 2 + 'px' } : { right: -2 - g / 2 + 'px' }) }
   }
   return s
 })

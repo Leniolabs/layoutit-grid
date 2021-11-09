@@ -20,7 +20,6 @@
 </template>
 
 <script setup lang="ts">
-import type { PropType } from 'vue'
 //@ts-ignore
 import { parseValueUnit } from '../../store.js'
 //@ts-ignore
@@ -29,16 +28,17 @@ import { unitMeasureMap } from '../../utils.js'
 import { inputSetter } from '../../composables'
 import type { AreaType, AreaState, ValueUnit, GridUnit } from '../../types'
 
-const props = defineProps({
-  area: { type: Object as PropType<AreaState>, required: true },
-  type: { type: String as PropType<AreaType>, required: true },
-})
+const { area, type } = defineProps<{
+  area: AreaState
+  type: AreaType
+}>()
+
 let size = $computed({
   get: (): ValueUnit => {
-    return parseValueUnit(props.area[props.type])
+    return parseValueUnit(area[type])
   },
   set: (s: ValueUnit) => {
-    props.area[props.type] = s.value + s.unit
+    area[type] = s.value + s.unit
   },
 })
 

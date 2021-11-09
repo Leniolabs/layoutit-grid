@@ -41,7 +41,6 @@
 </template>
 
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import type { ContentProperties, AlignOptionsType } from '../../types'
 import IconJustifyStart from '../icons/IconJustifyStart.vue'
 import IconJustifyStretch from '../icons/IconJustifyStretch.vue'
@@ -68,12 +67,17 @@ const alignOptionsMap = {
   self: optionsItems,
 }
 
-const props = defineProps({
-  modelValue: { type: String as PropType<ContentProperties>, default: 'stretch' },
-  type: { type: String as PropType<OptionTooltipsType>, default: 'justify-content' }, // [ justify | align ]-[ content, items, self ]
-  focused: { type: Boolean, default: false },
-  initial: { type: String, default: 'initial' },
-})
+const {
+  modelValue = 'stretch',
+  type = 'justify-content', // [ justify | align ]-[ content, items, self ]
+  focused = false,
+  initial = 'initial',
+} = defineProps<{
+  modelValue?: ContentProperties
+  type?: OptionTooltipsType // [ justify | align ]-[ content, items, self ]
+  focused?: boolean
+  initial?: string
+}>()
 defineEmits(['update:modelValue'])
 
 const optionIconsJustify = {
@@ -124,7 +128,7 @@ const optionTooltipsType = {
 
 type OptionTooltipsType = keyof typeof optionTooltipsType
 
-let options = $computed(() => alignOptionsMap[props.type.split('-')[1] as AlignOptionsType])
+let options = $computed(() => alignOptionsMap[type.split('-')[1] as AlignOptionsType])
 </script>
 
 <style scoped lang="postcss">

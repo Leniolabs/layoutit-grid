@@ -29,7 +29,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useAppState, undo, redo, restart } from '../../store.js'
 
 import { areaToCSS, areaToHTML } from '../../generateCode.js'
@@ -37,10 +37,10 @@ import { useLocalStorage } from '@vueuse/core'
 
 let { mainArea, preferredExport, canUndo, canRedo } = $(useAppState())
 
-const props = defineProps({
-  area: { type: Object, required: true },
-  saveDesign: { type: Function, default: null },
-})
+const { area, saveDesign } = defineProps<{
+  area
+  saveDesign?: (area) => string
+}>()
 
 let options = $ref({
   templateAreas: true,
@@ -74,11 +74,11 @@ onMounted(() => {
 })
 
 let cssCode = $computed(() => {
-  return areaToCSS(props.area, options)
+  return areaToCSS(area, options)
 })
 
 let htmlCode = $computed(() => {
-  return areaToHTML(props.area)
+  return areaToHTML(area)
 })
 
 let showPermalink = $ref(false)
@@ -86,8 +86,8 @@ let permalink = $ref('')
 
 function getPermalink() {
   // Permalink supports depends on the deployed editor
-  if (props.saveDesign) {
-    props.saveDesign(mainArea).then((path) => {
+  if (saveDesign) {
+    saveDesign(mainArea).then((path) => {
       permalink = path
       showPermalink = true
     })

@@ -30,15 +30,14 @@
   </div>
 </template>
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import IconFlowCol from '../icons/IconFlowCol.vue'
 import IconFlowDense from '../icons/IconFlowDense.vue'
 import IconFlowRow from '../icons/IconFlowRow.vue'
 import type { AutoFlowProperties } from '../../types'
 
-const props = defineProps({
-  modelValue: { type: String as PropType<AutoFlowProperties>, default: 'row' },
-})
+const { modelValue = 'row' } = defineProps<{
+  modelValue: AutoFlowProperties
+}>()
 
 const options = ['row', 'column'] as const
 
@@ -50,8 +49,8 @@ const optionIconsFlow = {
 
 const emit = defineEmits(['update:modelValue'])
 
-let direction = $computed(() => props.modelValue.split(' dense')[0])
-let dense = $computed(() => props.modelValue.includes('dense'))
+let direction = $computed(() => modelValue.split(' dense')[0])
+let dense = $computed(() => modelValue.includes('dense'))
 
 const onInput = (event: Event) => {
   emit('update:modelValue', direction + (dense ? '' : ' dense'))

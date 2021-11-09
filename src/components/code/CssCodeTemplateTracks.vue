@@ -24,22 +24,27 @@
   }}</span>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { isValidTrackSize, parseGridTemplate } from '../../store.js'
 
 import { namedTemplateColumns, namedTemplateRows } from '../../utils.js'
 
-const props = defineProps({
-  grid: { type: Object, required: true },
-  type: { type: String, required: true },
-  repeat: { type: Boolean, default: false },
-})
+const {
+  grid,
+  type,
+  repeat = false,
+} = defineProps<{
+  grid
+  type: string
+  repeat?: boolean
+}>()
+
 let isInteractive = $computed(() => {
-  return !(props.repeat && props.grid[props.type].lineNames.every((l) => !l.active))
+  return !(repeat && grid[type].lineNames.every((l) => !l.active))
 })
 
 let multiline = $computed(() => {
-  const { lineNames } = props.grid[props.type]
+  const { lineNames } = grid[type]
   return lineNames.some((line) => line.name !== '' && line.active === true)
 })
 
@@ -52,7 +57,7 @@ function separatorAfterItem(i) {
 }
 
 let trackSizesAndLineNames = $computed(() => {
-  const { sizes, lineNames } = props.grid[props.type]
+  const { sizes, lineNames } = grid[type]
   const items = []
   for (var i = 0; i < lineNames.length; i++) {
     const { active, name } = lineNames[i]

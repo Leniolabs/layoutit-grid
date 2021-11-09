@@ -107,11 +107,10 @@
   </div>
 </template>
 
-<script setup>
-const props = defineProps({
-  area: { type: Object, required: true },
-})
-const grid = computed(() => props.area.grid)
+<script setup lang="ts">
+const { area } = defineProps<{ area }>()
+
+const grid = computed(() => area.grid)
 
 import {
   useAppState,
@@ -167,11 +166,11 @@ function defaultValueForUnit(unit) {
 }
 
 function onRowUnitInput(unit, row) {
-  setRowValueUnit(props.area.grid, row, { value: defaultValueForUnit(unit), unit })
+  setRowValueUnit(area.grid, row, { value: defaultValueForUnit(unit), unit })
 }
 
 function onColUnitInput(unit, col) {
-  setColValueUnit(props.area.grid, col, { value: defaultValueForUnit(unit), unit })
+  setColValueUnit(area.grid, col, { value: defaultValueForUnit(unit), unit })
 }
 
 const onSizeValueInput = debounce((type, track, value) => {
@@ -191,11 +190,11 @@ function isFocused(type, track) {
 }
 
 function onImplicitRowUnitInput(unit, row) {
-  setImplicitRowValueUnit(props.area.grid, row, { value: defaultValueForUnit(unit), unit })
+  setImplicitRowValueUnit(area.grid, row, { value: defaultValueForUnit(unit), unit })
 }
 
 function onImplicitColUnitInput(unit, col) {
-  setImplicitColValueUnit(props.area.grid, col, { value: defaultValueForUnit(unit), unit })
+  setImplicitColValueUnit(area.grid, col, { value: defaultValueForUnit(unit), unit })
 }
 
 const onImplicitSizeValueInput = debounce((type, track, value) => {

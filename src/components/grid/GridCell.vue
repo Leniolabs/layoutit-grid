@@ -31,27 +31,34 @@
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useAppState, parseValue, pause, resume } from '../../store.js'
 import { useGridDimensions } from '../../composables/area.js'
 import { asValidGridArea } from '../../utils/grid.js'
 
 let { dragging, selection } = $(useAppState())
 
-const props = defineProps({
-  section: { type: Object, required: true },
-  area: { type: Object, required: true },
-  grayed: { type: Boolean, default: false },
-  focused: { type: Boolean, default: false },
-  implicitGrid: { type: Object, required: true },
-})
+const {
+  section,
+  area,
+  implicitGrid,
+  grayed = false,
+  focused = false,
+} = defineProps<{
+  section
+  area
+  implicitGrid
+  grayed?: boolean
+  focused?: boolean
+}>()
+
 defineEmits(['pointerdown', 'overcell'])
 
-let grid = $computed(() => props.area.grid)
+let grid = $computed(() => area.grid)
 
 let gridArea = $computed(() => {
-  const s = props.section
-  return asValidGridArea(s.row.start, s.col.start, s.row.end, s.col.end, props.implicitGrid)
+  const s = section
+  return asValidGridArea(s.row.start, s.col.start, s.row.end, s.col.end, implicitGrid)
 })
 
 let { colsNumber, rowsNumber } = $(useGridDimensions($$(grid)))
@@ -59,26 +66,22 @@ let { colsNumber, rowsNumber } = $(useGridDimensions($$(grid)))
 let isDraggingGrid = $computed(() => dragging && dragging.grid === grid)
 
 let isDraggingSection = $computed(
-  () => isDraggingGrid && (dragging.colLine === props.section.col.start || dragging.rowLine === props.section.row.start)
+  () => isDraggingGrid && (dragging.colLine === section.col.start || dragging.rowLine === section.row.start)
 )
 
-let isDraggingCol = $computed(() => isDraggingGrid && dragging.colLine === props.section.col.start)
+let isDraggingCol = $computed(() => isDraggingGrid && dragging.colLine === section.col.start)
 
-let isDraggingRow = $computed(() => isDraggingGrid && dragging.rowLine === props.section.row.start)
+let isDraggingRow = $computed(() => isDraggingGrid && dragging.rowLine === section.row.start)
 
 let computePadding = (condition, gap) => (condition ? '7px' : parseValue(gap) !== 0 ? `calc(-0.5 * ${gap})` : '0')
 
-let paddingTop = $computed(() =>
-  computePadding(props.section.row.start === props.implicitGrid.ri, props.area.grid.row.gap)
-)
-let paddingLeft = $computed(() =>
-  computePadding(props.section.col.start === props.implicitGrid.ci, props.area.grid.col.gap)
-)
+let paddingTop = $computed(() => computePadding(section.row.start === implicitGrid.ri, area.grid.row.gap))
+let paddingLeft = $computed(() => computePadding(section.col.start === implicitGrid.ci, area.grid.col.gap))
 let paddingBottom = $computed(() =>
-  computePadding(props.section.row.end === props.implicitGrid.rows + props.implicitGrid.ri, props.area.grid.row.gap)
+  computePadding(section.row.end === implicitGrid.rows + implicitGrid.ri, area.grid.row.gap)
 )
 let paddingRight = $computed(() =>
-  computePadding(props.section.col.end === props.implicitGrid.cols + props.implicitGrid.ci, props.area.grid.col.gap)
+  computePadding(section.col.end === implicitGrid.cols + implicitGrid.ci, area.grid.col.gap)
 )
 </script>
 

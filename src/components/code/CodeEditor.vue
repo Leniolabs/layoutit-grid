@@ -8,19 +8,20 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useClipboard } from '@vueuse/core'
 
 const { copy } = useClipboard()
 
-const props = defineProps({
-  type: { type: String, required: true },
-  getCode: { type: Function, required: true },
-})
+const { type, getCode } = defineProps<{
+  type: string
+  getCode: () => string
+}>()
+
 let copied = $ref(0)
 
 function copyToClipBoard() {
-  copy(props.getCode())
+  copy(getCode())
   copied++
   setTimeout(() => {
     copied--

@@ -17,14 +17,13 @@
 </template>
 
 <script setup lang="ts">
-import type { PropType } from 'vue'
-
 const options = ['block', 'flex', 'grid'] as const
 type Option = typeof options[number]
 
-defineProps({
-  modelValue: { type: String as PropType<Option>, default: 'block' },
-})
+const { modelValue = 'block' } = defineProps<{
+  modelValue?: Option
+}>()
+
 defineEmits(['update:modelValue'])
 </script>
 

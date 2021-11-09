@@ -3,11 +3,11 @@
   >: <span class="token string"><slot /></span>;
 </template>
 
-<script setup>
-defineProps({
-  property: { type: String, required: true },
-  ident: { type: String, default: '\n  ' },
-})
+<script setup lang="ts">
+const { property, ident = '\n  ' } = defineProps<{
+  property: string
+  ident?: string
+}>()
 </script>
 
 <style scoped lang="postcss"></style>

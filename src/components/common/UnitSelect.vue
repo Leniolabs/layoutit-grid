@@ -5,7 +5,6 @@
 </template>
 
 <script setup lang="ts">
-import type { PropType } from 'vue'
 import type { UnitSelectType, UnitsInterface } from '../../types'
 // @ts-ignore
 import { validGridUnits } from '../../store.js'
@@ -18,15 +17,19 @@ const units = {
   auto: [...validGridUnits, 'initial'],
 } as UnitsInterface
 
-const props = defineProps({
-  modelValue: { type: String, default: 'px' },
-  type: { type: String as PropType<UnitSelectType>, default: 'default' },
-  focused: { type: Boolean, default: false },
-})
+const {
+  modelValue = 'px',
+  type = 'default',
+  focused = false,
+} = defineProps<{
+  modelValue?: string
+  type?: UnitSelectType
+  focused?: boolean
+}>()
 
 const emit = defineEmits(['update:modelValue'])
 
-let options = $computed(() => units[props.type])
+let options = $computed(() => units[type])
 
 const onInput = (event: Event) => {
   emit('update:modelValue', (event.target as HTMLInputElement).value)

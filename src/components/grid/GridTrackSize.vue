@@ -9,25 +9,25 @@
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useIsCurrentArea } from '../../composables/area.js'
 import { asValidGridArea } from '../../utils/grid.js'
 
-const props = defineProps({
-  type: { type: String, required: true },
-  pos: { type: Number, required: true },
-  area: { type: Object, required: true },
-  implicitGrid: { type: Object, required: true },
-})
-let grid = $computed(() => props.area.grid)
+const { type, pos, area, implicitGrid } = defineProps<{
+  type: string
+  pos: number
+  area
+  implicitGrid
+}>()
 
-let isCurrent = $(useIsCurrentArea(toRef(props, 'area')))
+let grid = $computed(() => area.grid)
+
+let isCurrent = $(useIsCurrentArea(computed(() => area)))
 
 let gridArea = $computed(() => {
-  const { pos, implicitGrid } = props
-  return props.type === 'row'
-    ? asValidGridArea(pos, implicitGrid.ci, pos + 1, implicitGrid.cols + implicitGrid.ci, props.implicitGrid)
-    : asValidGridArea(implicitGrid.ri, pos, implicitGrid.rows + implicitGrid.ri, pos + 1, props.implicitGrid)
+  return type === 'row'
+    ? asValidGridArea(pos, implicitGrid.ci, pos + 1, implicitGrid.cols + implicitGrid.ci, implicitGrid)
+    : asValidGridArea(implicitGrid.ri, pos, implicitGrid.rows + implicitGrid.ri, pos + 1, implicitGrid)
 })
 </script>
 

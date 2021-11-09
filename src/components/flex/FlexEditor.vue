@@ -9,16 +9,15 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useAppState, deselectCurrentArea } from '../../store.js'
 import { useIsActiveArea } from '../../composables/area.js'
 
 let { mainArea, currentArea } = $(useAppState())
 
-const props = defineProps({
-  area: { type: Object, required: true },
-})
-let flex = $computed(() => props.area.flex)
+const { area } = defineProps<{ area }>()
+
+let flex = $computed(() => area.flex)
 
 let isActive = $(useIsActiveArea(toRef(props, 'area')))
 </script>

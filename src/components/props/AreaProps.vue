@@ -102,26 +102,25 @@
   </PropsAccordion>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // import AreaTree from './AreaTree.vue'
 
 import { useAppState, setCurrentArea, removeArea } from '../../store.js'
 
 let { currentArea, mainArea } = $(useAppState())
 
-const props = defineProps({
-  area: { type: Object, required: true },
-})
+const { area } = defineProps<{ area }>()
+
 let accordion = $ref({ active: 'explicit-grid' })
-let currentGrid = $computed(() => props.area.grid)
-let currentFlex = $computed(() => props.area.flex)
+let currentGrid = $computed(() => area.grid)
+let currentFlex = $computed(() => area.flex)
 
 function concatenateParents(area, list = [area]) {
   const { parent } = area
   return parent ? concatenateParents(parent, [parent, ...list]) : list
 }
 
-let areaPath = $computed(() => concatenateParents(props.area))
+let areaPath = $computed(() => concatenateParents(area))
 
 watch($$(currentArea), () => {
   if (accordion.active !== 'tree') {
@@ -141,17 +140,17 @@ watch($$(currentArea), () => {
 })
 
 function onUpdateType(type) {
-  props.area.type = type
+  area.type = type
   if (type === 'p') {
-    if (!props.area.text) {
-      props.area.text = 'Paragraph'
-      props.area.display = 'block'
+    if (!area.text) {
+      area.text = 'Paragraph'
+      area.display = 'block'
     }
   }
   if (type === 'button') {
-    if (!props.area.text) {
-      props.area.text = 'Action'
-      props.area.display = 'block'
+    if (!area.text) {
+      area.text = 'Action'
+      area.display = 'block'
     }
   }
 }
