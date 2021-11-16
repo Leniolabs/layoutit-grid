@@ -1,0 +1,18 @@
+
+root = true
+
+[*]
+indent_size = 2
+charset = utf-8
+end_of_line = lf
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+max_line_length = 120
+
+[*.md]
+max_line_length = off
+
+[package.json]
+indent_style = space
+indent_size = 2
