@@ -155,7 +155,7 @@ export function presentationCSS(area) {
   height: 100%;
   margin: 0;
 }
-  
+
 /* For presentation only, no need to copy the code below */
 
 .${cssName} * {
@@ -174,5 +174,12 @@ export function presentationCSS(area) {
   align-items: center;
   justify-content: center;
 }
+`
+}
+
+export function areaToIndexCSS(area, options) {
+  return `${areaToCSS(area, options)}
+
+${presentationCSS(area)}
 `
 }

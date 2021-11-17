@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { areaToCSS, areaToHTML, presentationCSS } from '../../generateCode.js'
+import { areaToHTML, areaToIndexCSS } from '../../generateCode.js'
 
 const { area, options } = defineProps<{ area; options }>()
 
@@ -11,29 +11,27 @@ async function compressForCodesandbox(input) {
     .replace(/=+$/, '') // Remove ending '='
 }
 
-function codeSandboxJSON() {
-  const cssCode = areaToCSS(area, options)
-  const htmlCode = areaToHTML(area, 2)
-
-  return {
-    files: {
-      'index.html': {
-        content: `<!DOCTYPE html>
+function areaToIndexHTML(area) {
+  return `<!DOCTYPE html>
 <html>
   <head>
     <link href="index.css" rel="stylesheet" />
   </head>
   <body>
-    ${htmlCode}
+    ${areaToHTML(area, 2)}
   </body>
 </html>
-`,
+`
+}
+
+function codeSandboxJSON() {
+  return {
+    files: {
+      'index.html': {
+        content: areaToIndexHTML(area, false),
       },
       'index.css': {
-        content: `${cssCode}
-
-${presentationCSS(area)}
-`,
+        content: areaToIndexCSS(area, options),
       },
     },
   }
