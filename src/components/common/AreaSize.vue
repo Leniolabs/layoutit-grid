@@ -44,7 +44,7 @@ let size = $computed({
 
 function setSizeValue({ target }: Event) {
   const value = (target as HTMLInputElement).value
-  size = { ...size.value, value }
+  size = { ...size, value }
 }
 
 function setSizeUnit({ target }: Event) {
