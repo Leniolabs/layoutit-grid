@@ -1,22 +1,7 @@
-<template>
-  <form>
-    <button :class="['button', { expanded }]" type="button" title="Create CodeSandbox" @click="createCodeSandbox">
-      <IconCodesandbox />
-      <span v-if="expanded">Create CodeSandbox</span>
-    </button>
-  </form>
-</template>
-
 <script setup lang="ts">
-import { useAppState } from '../../store.js'
-
-let { preferredExport } = $(useAppState())
-
 import { areaToCSS, areaToHTML, presentationCSS } from '../../generateCode.js'
 
 const { area, options } = defineProps<{ area; options }>()
-
-let expanded = $computed(() => preferredExport === 'codesandbox')
 
 async function compressForCodesandbox(input) {
   const { default: LZString } = await import('lz-string')
@@ -67,7 +52,6 @@ function sendFormData(url, data) {
 }
 
 async function createCodeSandbox() {
-  preferredExport.value = 'codesandbox'
   const parameters = await compressForCodesandbox(JSON.stringify(codeSandboxJSON()))
   const response = await sendFormData('https://codesandbox.io/api/v1/sandboxes/define', { parameters, json: 1 })
   const json = await response.json()
@@ -75,33 +59,10 @@ async function createCodeSandbox() {
 }
 </script>
 
-<style scoped lang="postcss">
-.button {
-  border: 0;
-  border-radius: 50px;
-  color: var(--color-gray-lightest);
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 15px;
-  text-align: center;
-  margin: 0 auto;
-  background: var(--color-black);
-  user-select: none;
-  border: solid 1px var(--color-gray-darkest);
-  display: flex;
-  align-items: center;
-  transition: all 0.2s ease-in-out;
-  padding: 10px 15px;
-
-  &:hover {
-    background: var(--color-gray-dark);
-  }
-  span {
-    margin-left: 10px;
-  }
-  padding: 10px;
-  &.expanded {
-    /*padding: 10px 20px;*/
-  }
-}
-</style>
+<template>
+  <form>
+    <ExportButton app="codesandbox" title="Create CodeSandbox" @click="createCodeSandbox">
+      <IconCodesandbox />
+    </ExportButton>
+  </form>
+</template>
