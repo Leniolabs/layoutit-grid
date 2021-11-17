@@ -85,7 +85,7 @@
               :value="getRowUnit(grid, row - 1)"
               type="grid"
               :focused="
-                isFocused('row', row) || (dragging && (dragging.rowLine === row || dragging.rowLine === row + 1))
+                isFocused('row', row) || !!(dragging && (dragging.rowLine === row || dragging.rowLine === row + 1))
               "
               :aria-label="`row ${row} unit`"
               @input="onRowUnitInput($event.target.value, row - 1)"

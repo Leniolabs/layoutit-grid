@@ -30,36 +30,36 @@ let { selection } = $(useAppState())
 const { area } = defineProps<{ area }>()
 
 const setGridArea = inputSetter((value) => {
-  props.area.gridArea = value
+  area.gridArea = value
 }, isValidGridArea)
 
 let isEditing = $computed(() => {
-  return selection && selection.area === props.area
+  return selection && selection.area === area
 })
 let gridAreaValue = $computed(() => {
   if (isEditing) {
     return selectionGridArea(selection)
   } else {
-    return props.area.gridArea
+    return area.gridArea
   }
 })
 
 const onEdit = () => {
-  let gridRegion = getGridRegion(props.area)
-  const explicitAreas = findImplicitGrid(parent)
+  let gridRegion = getGridRegion(area)
+  const explicitAreas = findImplicitGrid(area.parent)
   if (!gridRegion) {
-    const parent = props.area.parent
-    gridRegion = explicitGridAreaToGridRegion(explicitAreas.gridAreas[parent.children.indexOf(props.area)])
+    const parent = area.parent
+    gridRegion = explicitGridAreaToGridRegion(explicitAreas.gridAreas[parent.children.indexOf(area)])
   }
   if (gridRegion) {
     selection = {
       start: createSection({ col: gridRegion.col.start, row: gridRegion.row.start }),
       end: createSection({ col: gridRegion.col.end - 1, row: gridRegion.row.end - 1 }),
-      color: props.area.color,
+      color: area.color,
       fresh: false,
-      area: props.area,
-      name: props.area.name,
-      parent: props.area.parent,
+      area: area,
+      name: area.name,
+      parent: area.parent,
       implicitGrid: explicitAreas.implicitGrid,
     }
   }

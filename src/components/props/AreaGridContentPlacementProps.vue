@@ -8,7 +8,7 @@
 <script setup lang="ts">
 const { area } = defineProps<{ area }>()
 
-let grid = $computed(() => props.area.grid)
+let grid = $computed(() => area.grid)
 </script>
 
 <style scoped lang="postcss"></style>

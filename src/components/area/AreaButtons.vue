@@ -65,11 +65,11 @@ defineEmits(['edit'])
 let hasDisplay = $computed(() => area.grid || area.flex)
 
 function subFlex() {
-  clearArea(props.area)
-  if (!props.area.flex) {
-    props.area.flex = createFlexState()
+  clearArea(area)
+  if (!area.flex) {
+    area.flex = createFlexState()
   }
-  setCurrentArea(props.area)
+  setCurrentArea(area)
 }
 </script>
 

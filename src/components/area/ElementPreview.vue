@@ -69,7 +69,7 @@ defineEmits(['edit'])
 let isActive = $(useIsActiveArea(toRef(props, 'area')))
 
 let areaType = $computed(() => {
-  switch (props.area.type) {
+  switch (area.type) {
     case 'image':
       return ElementImage
     case 'p':

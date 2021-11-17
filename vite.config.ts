@@ -87,6 +87,7 @@ const LayouitPlugin = (): Plugin => {
 }
 
 export default defineConfig({
+  dedupe: ['vue'],
   plugins: [
     vuePlugin({
       refTransform: true,

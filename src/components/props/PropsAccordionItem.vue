@@ -10,20 +10,28 @@
   </div>
 </template>
 
-<script setup>
-const props = defineProps({
-  name: { type: String, required: true },
-  heading: { type: String, required: true },
-  closedHeading: { type: String, default: '' },
-  accordion: { type: Object, default: undefined },
-  independent: { type: Boolean, default: false },
-  startOpened: { type: Boolean, default: false },
-})
-let opened = $ref(props.startOpened)
+<script setup lang="ts">
+const {
+  name,
+  heading,
+  accordion,
+  closedHeading = '',
+  independent = false,
+  startOpened = false,
+} = defineProps<{
+  name: string
+  heading: string
+  accordion?
+  closedHeading?: string
+  independent?: boolean
+  startOpened?: boolean
+}>()
+
+let opened = $ref(startOpened)
 
 function onHeaderClick() {
   opened = !opened
-  props.accordion.active = opened ? props.name : ''
+  accordion.active = opened ? name : ''
 }
 </script>
 

@@ -37,8 +37,8 @@ defineEmits(['edit'])
 let isMain = $(useIsMainArea(computed(() => area)))
 
 let toolbarStart = $computed(() => {
-  const gridRegion = getGridRegion(props.area)
-  return gridRegion ? (gridRegion.col.start === 1 && gridRegion.row.start === 1 ? getAreaDepth(props.area) - 1 : 0) : 0
+  const gridRegion = getGridRegion(area)
+  return gridRegion ? (gridRegion.col.start === 1 && gridRegion.row.start === 1 ? getAreaDepth(area) - 1 : 0) : 0
 })
 </script>
 
