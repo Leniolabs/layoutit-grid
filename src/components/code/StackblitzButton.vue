@@ -67,7 +67,7 @@ async function createStackblitz() {
 </script>
 
 <template>
-  <ExportButton app="stackblitz" title="Create Stackblitz" @click="createStackblitz">
+  <ExportButton app="stackblitz" title="Stackblitz" @click="createStackblitz">
     <IconStackblitz />
   </ExportButton>
 </template>

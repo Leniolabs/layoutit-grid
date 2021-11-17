@@ -34,7 +34,7 @@ ${presentationCSS(area)}
     @submit="onSubmit"
   >
     <input id="codepenData" type="hidden" name="data" />
-    <ExportButton app="codepen" title="Create CodePen" type="submit">
+    <ExportButton app="codepen" title="CodePen" type="submit">
       <IconCodepen />
     </ExportButton>
   </form>

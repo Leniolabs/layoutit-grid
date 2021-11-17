@@ -59,7 +59,7 @@ async function createCodeSandbox() {
 
 <template>
   <form>
-    <ExportButton app="codesandbox" title="Create CodeSandbox" @click="createCodeSandbox">
+    <ExportButton app="codesandbox" title="CodeSandbox" @click="createCodeSandbox">
       <IconCodesandbox />
     </ExportButton>
   </form>
