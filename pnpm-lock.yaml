@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@stackblitz/sdk': ^1.5.3
   '@typescript-eslint/eslint-plugin': ^4.26.0
   '@typescript-eslint/parser': ^4.26.0
   '@vitejs/plugin-vue': ^1.9.4
@@ -31,6 +32,7 @@ specifiers:
   workbox-window: 6.4.0
 
 dependencies:
+  '@stackblitz/sdk': 1.5.3
   '@vueuse/core': 6.5.3_vue@3.2.21
   lz-string: 1.4.4
   nanoid: 3.1.28
@@ -1305,6 +1307,10 @@ packages:
       picomatch: 2.3.0
       rollup: 2.60.0
     dev: true
+
+  /@stackblitz/sdk/1.5.3:
+    resolution: {integrity: sha512-4fCa1YGdGXiWsCEsFQN+O6RP4JibmEMO58S9wzbFSko6lu1zLqkTBomRt1LCF7TImWeJaSSMDMqin58bey+N9Q==}
+    dev: false
 
   /@surma/rollup-plugin-off-main-thread/2.2.3:
     resolution: {integrity: sha512-lR8q/9W7hZpMWweNiAKU7NQerBnzQQLvi8qnTDU/fxItPhtZVMbPV3lbCwjhIlNBe9Bbr5V+KHshvWmVSG9cxQ==}

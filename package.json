@@ -12,6 +12,7 @@
     "lint:fix": "eslint --ext .js,.vue src --fix"
   },
   "dependencies": {
+    "@stackblitz/sdk": "^1.5.3",
     "@vueuse/core": "^6.0.0",
     "lz-string": "1.4.4",
     "nanoid": "^3.1.23",

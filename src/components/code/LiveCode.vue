@@ -18,6 +18,7 @@
     <div class="buttons">
       <CodepenButton :area="area" :options="options" />
       <CodeSanboxButton :area="area" :options="options" />
+      <StackblitzButton :area="area" :options="options" />
     </div>
   </div>
   <div style="height: 100%">
