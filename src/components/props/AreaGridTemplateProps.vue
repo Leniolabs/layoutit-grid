@@ -110,7 +110,7 @@
 <script setup lang="ts">
 const { area } = defineProps<{ area }>()
 
-const grid = computed(() => area.grid)
+let grid = $computed(() => area.grid)
 
 import {
   useAppState,
