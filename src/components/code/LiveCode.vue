@@ -2,16 +2,22 @@
   <PermalinkBar v-show="showPermalink" :path="permalink" @close="showPermalink = false" />
   <div class="buttons-wrapper">
     <div class="buttons">
-      <SidebarButton :disabled="!canUndo" class="btn-history" aria-label="Undo" @click="undo">
+      <SidebarButton :disabled="!canUndo" class="btn-history" title="Undo" aria-label="Undo" @click="undo">
         <IconUndo />
       </SidebarButton>
-      <SidebarButton :disabled="!canRedo" class="btn-history" aria-label="Redo" @click="redo">
+      <SidebarButton :disabled="!canRedo" class="btn-history" title="Redo" aria-label="Redo" @click="redo">
         <IconRedo />
       </SidebarButton>
-      <SidebarButton aria-label="Restart" class="btn-trash" @click="restart">
+      <SidebarButton aria-label="Restart" class="btn-trash" title="Restart" @click="restart">
         <IconRefresh />
       </SidebarButton>
-      <SidebarButton :disabled="!saveDesign" class="btn-link" aria-label="Get Shareable Link" @click="getPermalink">
+      <SidebarButton
+        :disabled="!saveDesign"
+        class="btn-link"
+        title="Get Shareable Link"
+        aria-label="Get Shareable Link"
+        @click="getPermalink"
+      >
         <IconLink />
       </SidebarButton>
     </div>
