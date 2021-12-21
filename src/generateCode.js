@@ -18,7 +18,7 @@ export function areaToCSS(area, { parentGrid, templateAreas = true, repeat, oldS
   const { name, grid } = area
   const singleLine = areaIsSingleLineInCSS(area)
   const cssName = toCssName(name)
-  let css = `.${cssName} {${singleLine ? '' : '\n'}`
+  let css = `.${cssName} {`
   if (grid) {
     css += gridToCSS(area, { templateAreas, repeat })
   }
