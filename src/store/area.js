@@ -1,4 +1,5 @@
 import { parseGridTemplate, lineNamesToState, createGridState } from './grid.ts'
+import { createFlexState } from './flex.js'
 import { isValidTrackSize } from '../utils/grid.js'
 import { generateId, toCssName } from '../utils.js'
 

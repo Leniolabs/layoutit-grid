@@ -1,10 +1,10 @@
 <template>
-  <div class="props-accordion-item" :class="{ active: !!accordion && accordion.active === name }">
-    <h1 :class="{ independent }" @click="onHeaderClick">
+  <div class="props-accordion-item" :class="{ active: heading && !!accordion && accordion.active === name }">
+    <h1 v-if="heading" :class="{ independent }" @click="onHeaderClick">
       {{ (!opened && closedHeading) || heading }}
       <slot name="buttons"></slot>
     </h1>
-    <div v-if="(independent && opened) || accordion.active === name" class="props-accordion-content">
+    <div v-if="!heading || (independent && opened) || accordion.active === name" class="props-accordion-content">
       <slot />
     </div>
   </div>
@@ -20,7 +20,7 @@ const {
   startOpened = false,
 } = defineProps<{
   name: string
-  heading: string
+  heading?: string
   accordion?
   closedHeading?: string
   independent?: boolean

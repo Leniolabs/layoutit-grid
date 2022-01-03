@@ -19,25 +19,19 @@
       </div>
 
       <div class="area-action-buttons">
-        <OptionsButton
-          v-show="area.display === 'block'"
-          title="Remove this area from the grid"
-          class="remove-button"
-          @click.stop="removeArea(area)"
-        >
+        <OptionsButton title="Remove area" class="remove-button" @click.stop="removeArea(area)">
           <IconRemove />
         </OptionsButton>
-        <OptionsButton
+        <!--OptionsButton
           v-show="area.display !== 'block'"
           :disabled="!area.parent"
           class="remove-button clear"
-          title="Clear this area of subgrids"
+          title="Clear area"
           @click="clearArea(area)"
         >
           <IconClear />
-        </OptionsButton>
+        </OptionsButton-->
         <OptionsButton
-          v-show="area.display === 'grid'"
           class="add-area-button"
           title="Add implicit element to this grid area"
           @click="addImplicitArea(area)"

@@ -3,12 +3,10 @@
     <div>
       <AreaAccordionItem v-for="a in areaPath" :key="a.id" :area="a" :name="a.name" :accordion="accordion" />
 
-      <!--
-    <div class="area-type">{{ area.type === 'div' ? area.display : area.type }} props</div>
-    <PropsAccordionItem name="display" :heading="`Display (${area.display})`" :accordion="accordion">
-      <AreaContentProps :area="area" />
-    </PropsAccordionItem>
-      -->
+      <br />
+      <PropsAccordionItem name="display" :accordion="accordion">
+        <AreaContentProps :area="area" />
+      </PropsAccordionItem>
 
       <template v-if="area.display === 'grid'">
         <PropsAccordionItem
@@ -86,19 +84,19 @@
         <AreaTypeSelect v-if="area.parent" :model-value="area.type" @update:modelValue="onUpdateType" />
       </PropsAccordionItem> 
       -->
-
-      <PropsAccordionItem
-        v-if="area.children.length"
-        name="children"
-        :independent="true"
-        :start-opened="true"
-        heading="Children"
-        :accordion="accordion"
-        class="child-accordion"
-      >
-        <AreaAccordionItem v-for="a in area.children" :key="`child-${a.id}`" :area="a" />
-      </PropsAccordionItem>
     </div>
+
+    <PropsAccordionItem
+      v-if="area.children.length"
+      name="children"
+      :independent="true"
+      :start-opened="true"
+      heading="Children"
+      :accordion="accordion"
+      class="child-accordion"
+    >
+      <AreaAccordionItem v-for="a in area.children" :key="`child-${a.id}`" :area="a" />
+    </PropsAccordionItem>
   </PropsAccordion>
 </template>
 

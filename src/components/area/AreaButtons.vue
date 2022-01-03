@@ -10,8 +10,8 @@
     <IconEdit />
   </button>-->
   <template v-if="!dragging && (currentArea === area || overArea === area)">
-    <button
-      v-show="!hasDisplay"
+    <!--button
+      v-show="area.display !== 'grid'"
       aria-label="Add sub grid"
       class="btn-subgrid"
       title="Add subgrid"
@@ -20,19 +20,13 @@
     >
       <IconSubgrid />
     </button>
-    <!--button v-show="!hasDisplay" aria-label="Add flex" class="btn-subgrid" @click="subFlex(area)">
+    <button v-show="!hasDisplay" aria-label="Add flex" class="btn-subgrid" @click="subFlex(area)">
       <IconFlex />
     </button-->
-    <button
-      v-show="!hasDisplay"
-      aria-label="Remove area"
-      class="btn-remove"
-      title="Remove area"
-      @click="removeArea(area)"
-    >
+    <button aria-label="Remove area" class="btn-remove" title="Remove area" @click="removeArea(area)">
       <IconRemove />
     </button>
-    <button
+    <!--button
       v-show="hasDisplay"
       aria-label="Clear area"
       class="btn-remove btn-clear"
@@ -40,7 +34,7 @@
       @click="clearArea(area)"
     >
       <IconClear />
-    </button>
+    </button-->
   </template>
 </template>
 
@@ -61,8 +55,6 @@ let { mainArea, currentArea, overArea, dragging } = $(useAppState())
 const { area } = defineProps<{ area }>()
 
 defineEmits(['edit'])
-
-let hasDisplay = $computed(() => area.grid || area.flex)
 
 function subFlex() {
   clearArea(area)

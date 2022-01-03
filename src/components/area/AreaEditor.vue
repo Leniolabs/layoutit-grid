@@ -20,10 +20,7 @@
       'user-select': 'none',
       'z-index': 0,
       ...displayStyles,
-      // Force a minimum width and height so areas are still visible when the
-      // user changes items placement or there are in implicit tracks
-      ...(area.width === 'auto' && { 'min-width': area.parent ? 'max(24px,50%)' : '100%' }),
-      ...(area.height === 'auto' && { 'min-height': area.parent ? 'max(24px,50%)' : '100%' }),
+      ...autoSizeStyles,
     }"
     :area="area"
     :data-area-name="area.name"
@@ -263,6 +260,21 @@ let displayStyles = $computed(() => {
     default:
       return {}
   }
+})
+
+let autoSizeStyles = $computed(() => {
+  // Force a minimum width and height so areas are still visible when the
+  // user changes items placement or there are in implicit tracks
+  if (!area.parent || area.parent.display === 'grid') {
+    return {
+      ...(area.width === 'auto' && { 'min-width': area.parent ? 'max(24px,50%)' : '100%' }),
+      ...(area.height === 'auto' && { 'min-height': area.parent ? 'max(24px,50%)' : '100%' }),
+    }
+  }
+  if (area.parent.display === 'block') {
+    return area.height === 'auto' ? { height: '75px' } : {}
+  }
+  return {}
 })
 
 let grid = $computed(() => area.grid)
