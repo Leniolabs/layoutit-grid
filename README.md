@@ -37,12 +37,12 @@ Or https
 ```bash
 git clone https://github.com/leniolabs/layoutit-grid.git
 ```
-
-In the repo folder run
-
+### Run it
+1. Install `pnpm` (https://pnpm.io/installation)
+2. In the repo folder run
 ```bash
-npm install
-npm start
+pnpm install
+pnpm start
 ```
 
 Your dev server will start and be running at
@@ -55,9 +55,9 @@ Your dev server will start and be running at
 
 | Command         | Description                   |
 | --------------- | ----------------------------- |
-| `npm install`   | Install the dependencies      |
-| `npm start`     | Run the project (in dev mode) |
-| `npm run build` | Build for deployment          |
+| `pnpm install`   | Install the dependencies      |
+| `pnpm start`     | Run the project (in dev mode) |
+| `pnpm run build` | Build for deployment          |
 
 ## Contributing
 
