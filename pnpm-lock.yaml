@@ -21,8 +21,8 @@ specifiers:
   postcss-nested: ^5.0.5
   prettier: ^2.3.0
   typescript: ^4.3.2
+  unplugin-vue-components: ^0.14.0
   vite: ^2.6.14
-  vite-plugin-components: ^0.12.2
   vite-plugin-pwa: ^0.11.5
   vue: ^3.2.21
   vue-eslint-parser: ^7.6.0
@@ -56,8 +56,8 @@ devDependencies:
   postcss-nested: 5.0.6
   prettier: 2.4.1
   typescript: 4.4.3
+  unplugin-vue-components: artifactory.g.devqa.gcp.dev.paypalinc.com/unplugin-vue-components/0.14.13_vite@2.6.14+vue@3.2.21
   vite: 2.6.14
-  vite-plugin-components: 0.12.2_vite@2.6.14
   vite-plugin-pwa: 0.11.5_vite@2.6.14
   vue-eslint-parser: 7.11.0_eslint@7.32.0
   vue-tsc: 0.2.3_typescript@4.4.3
@@ -2168,164 +2168,28 @@ packages:
       is-symbol: 1.0.4
     dev: true
 
-  /esbuild-android-arm64/0.13.14:
-    resolution: {integrity: sha512-Q+Xhfp827r+ma8/DJgpMRUbDZfefsk13oePFEXEIJ4gxFbNv5+vyiYXYuKm43/+++EJXpnaYmEnu4hAKbAWYbA==}
-    cpu: [arm64]
-    os: [android]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /esbuild-darwin-64/0.13.14:
-    resolution: {integrity: sha512-YmOhRns6QBNSjpVdTahi/yZ8dscx9ai7a6OY6z5ACgOuQuaQ2Qk2qgJ0/siZ6LgD0gJFMV8UINFV5oky5TFNQQ==}
-    cpu: [x64]
-    os: [darwin]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /esbuild-darwin-arm64/0.13.14:
-    resolution: {integrity: sha512-Lp00VTli2jqZghSa68fx3fEFCPsO1hK59RMo1PRap5RUjhf55OmaZTZYnCDI0FVlCtt+gBwX5qwFt4lc6tI1xg==}
-    cpu: [arm64]
-    os: [darwin]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /esbuild-freebsd-64/0.13.14:
-    resolution: {integrity: sha512-BKosI3jtvTfnmsCW37B1TyxMUjkRWKqopR0CE9AF2ratdpkxdR24Vpe3gLKNyWiZ7BE96/SO5/YfhbPUzY8wKw==}
-    cpu: [x64]
-    os: [freebsd]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /esbuild-freebsd-arm64/0.13.14:
-    resolution: {integrity: sha512-yd2uh0yf+fWv5114+SYTl4/1oDWtr4nN5Op+PGxAkMqHfYfLjFKpcxwCo/QOS/0NWqPVE8O41IYZlFhbEN2B8Q==}
-    cpu: [arm64]
-    os: [freebsd]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /esbuild-linux-32/0.13.14:
-    resolution: {integrity: sha512-a8rOnS1oWSfkkYWXoD2yXNV4BdbDKA7PNVQ1klqkY9SoSApL7io66w5H44mTLsfyw7G6Z2vLlaLI2nz9MMAowA==}
-    cpu: [ia32]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /esbuild-linux-64/0.13.14:
-    resolution: {integrity: sha512-yPZSoMs9W2MC3Dw+6kflKt5FfQm6Dicex9dGIr1OlHRsn3Hm7yGMUTctlkW53KknnZdOdcdd5upxvbxqymczVQ==}
-    cpu: [x64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /esbuild-linux-arm/0.13.14:
-    resolution: {integrity: sha512-8chZE4pkKRvJ/M/iwsNQ1KqsRg2RyU5eT/x2flNt/f8F2TVrDreR7I0HEeCR50wLla3B1C3wTIOzQBmjuc6uWg==}
-    cpu: [arm]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /esbuild-linux-arm64/0.13.14:
-    resolution: {integrity: sha512-Lvo391ln9PzC334e+jJ2S0Rt0cxP47eoH5gFyv/E8HhOnEJTvm7A+RRnMjjHnejELacTTfYgFGQYPjLsi/jObQ==}
-    cpu: [arm64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /esbuild-linux-mips64le/0.13.14:
-    resolution: {integrity: sha512-MZhgxbmrWbpY3TOE029O6l5tokG9+Yoj2hW7vdit/d/VnmneqeGrSHADuDL6qXM8L5jaCiaivb4VhsyVCpdAbQ==}
-    cpu: [mips64el]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /esbuild-linux-ppc64le/0.13.14:
-    resolution: {integrity: sha512-un7KMwS7fX1Un6BjfSZxTT8L5cV/8Uf4SAhM7WYy2XF8o8TI+uRxxD03svZnRNIPsN2J5cl6qV4n7Iwz+yhhVw==}
-    cpu: [ppc64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /esbuild-netbsd-64/0.13.14:
-    resolution: {integrity: sha512-5ekKx/YbOmmlTeNxBjh38Uh5TGn5C4uyqN17i67k18pS3J+U2hTVD7rCxcFcRS1AjNWumkVL3jWqYXadFwMS0Q==}
-    cpu: [x64]
-    os: [netbsd]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /esbuild-openbsd-64/0.13.14:
-    resolution: {integrity: sha512-9bzvwewHjct2Cv5XcVoE1yW5YTW12Sk838EYfA46abgnhxGoFSD1mFcaztp5HHC43AsF+hQxbSFG/RilONARUA==}
-    cpu: [x64]
-    os: [openbsd]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /esbuild-sunos-64/0.13.14:
-    resolution: {integrity: sha512-mjMrZB76M6FmoiTvj/RGWilrioR7gVwtFBRVugr9qLarXMIU1W/pQx+ieEOtflrW61xo8w1fcxyHsVVGRvoQ0w==}
-    cpu: [x64]
-    os: [sunos]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /esbuild-windows-32/0.13.14:
-    resolution: {integrity: sha512-GZa6mrx2rgfbH/5uHg0Rdw50TuOKbdoKCpEBitzmG5tsXBdce+cOL+iFO5joZc6fDVCLW3Y6tjxmSXRk/v20Hg==}
-    cpu: [ia32]
-    os: [win32]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /esbuild-windows-64/0.13.14:
-    resolution: {integrity: sha512-Lsgqah24bT7ClHjLp/Pj3A9wxjhIAJyWQcrOV4jqXAFikmrp2CspA8IkJgw7HFjx6QrJuhpcKVbCAe/xw0i2yw==}
-    cpu: [x64]
-    os: [win32]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /esbuild-windows-arm64/0.13.14:
-    resolution: {integrity: sha512-KP8FHVlWGhM7nzYtURsGnskXb/cBCPTfj0gOKfjKq2tHtYnhDZywsUG57nk7TKhhK0fL11LcejHG3LRW9RF/9A==}
-    cpu: [arm64]
-    os: [win32]
-    requiresBuild: true
-    dev: true
-    optional: true
-
   /esbuild/0.13.14:
     resolution: {integrity: sha512-xu4D+1ji9x53ocuomcY+KOrwAnWzhBu/wTEjpdgZ8I1c8i5vboYIeigMdzgY1UowYBKa2vZgVgUB32bu7gkxeg==}
     hasBin: true
     requiresBuild: true
     optionalDependencies:
-      esbuild-android-arm64: 0.13.14
-      esbuild-darwin-64: 0.13.14
-      esbuild-darwin-arm64: 0.13.14
-      esbuild-freebsd-64: 0.13.14
-      esbuild-freebsd-arm64: 0.13.14
-      esbuild-linux-32: 0.13.14
-      esbuild-linux-64: 0.13.14
-      esbuild-linux-arm: 0.13.14
-      esbuild-linux-arm64: 0.13.14
-      esbuild-linux-mips64le: 0.13.14
-      esbuild-linux-ppc64le: 0.13.14
-      esbuild-netbsd-64: 0.13.14
-      esbuild-openbsd-64: 0.13.14
-      esbuild-sunos-64: 0.13.14
-      esbuild-windows-32: 0.13.14
-      esbuild-windows-64: 0.13.14
-      esbuild-windows-arm64: 0.13.14
+      esbuild-android-arm64: artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-android-arm64/0.13.14
+      esbuild-darwin-64: artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-darwin-64/0.13.14
+      esbuild-darwin-arm64: artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-darwin-arm64/0.13.14
+      esbuild-freebsd-64: artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-freebsd-64/0.13.14
+      esbuild-freebsd-arm64: artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-freebsd-arm64/0.13.14
+      esbuild-linux-32: artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-linux-32/0.13.14
+      esbuild-linux-64: artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-linux-64/0.13.14
+      esbuild-linux-arm: artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-linux-arm/0.13.14
+      esbuild-linux-arm64: artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-linux-arm64/0.13.14
+      esbuild-linux-mips64le: artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-linux-mips64le/0.13.14
+      esbuild-linux-ppc64le: artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-linux-ppc64le/0.13.14
+      esbuild-netbsd-64: artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-netbsd-64/0.13.14
+      esbuild-openbsd-64: artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-openbsd-64/0.13.14
+      esbuild-sunos-64: artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-sunos-64/0.13.14
+      esbuild-windows-32: artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-windows-32/0.13.14
+      esbuild-windows-64: artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-windows-64/0.13.14
+      esbuild-windows-arm64: artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-windows-arm64/0.13.14
     dev: true
 
   /escalade/3.1.1:
@@ -2636,14 +2500,6 @@ packages:
   /fs.realpath/1.0.0:
     resolution: {integrity: sha1-FQStJSMVjKpA20onh8sBQRmU6k8=}
     dev: true
-
-  /fsevents/2.3.2:
-    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
-    engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
-    os: [darwin]
-    requiresBuild: true
-    dev: true
-    optional: true
 
   /function-bind/1.1.1:
     resolution: {integrity: sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==}
@@ -3074,7 +2930,7 @@ packages:
     dependencies:
       universalify: 2.0.0
     optionalDependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: artifactory.g.devqa.gcp.dev.paypalinc.com/graceful-fs/4.2.8
     dev: true
 
   /jsonpointer/5.0.0:
@@ -3721,7 +3577,7 @@ packages:
     engines: {node: '>=10.0.0'}
     hasBin: true
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: artifactory.g.devqa.gcp.dev.paypalinc.com/fsevents/2.3.2
     dev: true
 
   /run-parallel/1.2.0:
@@ -4131,21 +3987,6 @@ packages:
     resolution: {integrity: sha512-l8lCEmLcLYZh4nbunNZvQCJc5pv7+RCwa8q/LdUx8u7lsWvPDKmpodJAJNwkAhJC//dFY48KuIEmjtd4RViDrA==}
     dev: true
 
-  /vite-plugin-components/0.12.2_vite@2.6.14:
-    resolution: {integrity: sha512-ecGCqEQMEwPw556WfdbRwbDsdGtBWkjSkuOXw5sKbgaZzVSlybOfrXhGjiYEatR13KCUxTHzioU2eOLu1tpWVQ==}
-    deprecated: renamed to `unplugin-vue-components`, see https://github.com/antfu/unplugin-vue-components/releases/tag/v0.14.0
-    peerDependencies:
-      vite: ^2.0.0
-    dependencies:
-      debug: 4.3.2
-      fast-glob: 3.2.7
-      magic-string: 0.25.7
-      minimatch: 3.0.4
-      vite: 2.6.14
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
   /vite-plugin-pwa/0.11.5_vite@2.6.14:
     resolution: {integrity: sha512-qn79L7008ZMn9GS0ClxypOBRA3Ft8/a8saIQ03SC2R1QndbZVW+YQVHTlFno33Wp6fu5UJacoHWuZYCuKZKaOA==}
     peerDependencies:
@@ -4185,7 +4026,7 @@ packages:
       resolve: 1.20.0
       rollup: 2.60.0
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: artifactory.g.devqa.gcp.dev.paypalinc.com/fsevents/2.3.2
     dev: true
 
   /void-elements/3.1.0:
@@ -4361,7 +4202,7 @@ packages:
   /vue-global-api/0.2.4_vue@3.2.21:
     resolution: {integrity: sha512-Cm84AZiALt8f4CJZzPvbForTzAUYe41msnzUnRK6B7YkaDaN8g87ap8CpHWvTU0+XtyDeLLAeQoRr+uwamxfpQ==}
     dependencies:
-      vue-demi: 0.12.1_vue@3.2.21
+      vue-demi: artifactory.g.devqa.gcp.dev.paypalinc.com/vue-demi/0.12.1_vue@3.2.21
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -4764,4 +4605,536 @@ packages:
   /yocto-queue/0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/@nodelib/fs.scandir/2.1.5:
+    resolution: {integrity: sha1-dhnC6yGyVIP20WdUi0z9WnSIw9U=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz}
+    name: '@nodelib/fs.scandir'
+    version: 2.1.5
+    engines: {node: '>= 8'}
+    dependencies:
+      '@nodelib/fs.stat': artifactory.g.devqa.gcp.dev.paypalinc.com/@nodelib/fs.stat/2.0.5
+      run-parallel: artifactory.g.devqa.gcp.dev.paypalinc.com/run-parallel/1.2.0
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/@nodelib/fs.stat/2.0.5:
+    resolution: {integrity: sha1-W9Jir5Tp0lvR5xsF3u1Eh2oiLos=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/@nodelib/fs.stat/-/fs.stat-2.0.5.tgz}
+    name: '@nodelib/fs.stat'
+    version: 2.0.5
+    engines: {node: '>= 8'}
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/@nodelib/fs.walk/1.2.8:
+    resolution: {integrity: sha1-6Vc36LtnRt3t9pxVaVNJTxlv5po=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/@nodelib/fs.walk/-/fs.walk-1.2.8.tgz}
+    name: '@nodelib/fs.walk'
+    version: 1.2.8
+    engines: {node: '>= 8'}
+    dependencies:
+      '@nodelib/fs.scandir': artifactory.g.devqa.gcp.dev.paypalinc.com/@nodelib/fs.scandir/2.1.5
+      fastq: artifactory.g.devqa.gcp.dev.paypalinc.com/fastq/1.13.0
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/@rollup/pluginutils/4.1.2:
+    resolution: {integrity: sha1-7VghwV5eBeMoFvX7nsYHzfWnV1E=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/@rollup/pluginutils/-/pluginutils-4.1.2.tgz}
+    name: '@rollup/pluginutils'
+    version: 4.1.2
+    engines: {node: '>= 8.0.0'}
+    dependencies:
+      estree-walker: artifactory.g.devqa.gcp.dev.paypalinc.com/estree-walker/2.0.2
+      picomatch: artifactory.g.devqa.gcp.dev.paypalinc.com/picomatch/2.3.0
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/balanced-match/1.0.2:
+    resolution: {integrity: sha1-6D46fj8wCzTLnYf2FfoMvzV2kO4=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/balanced-match/-/balanced-match-1.0.2.tgz}
+    name: balanced-match
+    version: 1.0.2
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/brace-expansion/1.1.11:
+    resolution: {integrity: sha1-PH/L9SnYcibz0vUrlm/1Jx60Qd0=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/brace-expansion/-/brace-expansion-1.1.11.tgz}
+    name: brace-expansion
+    version: 1.1.11
+    dependencies:
+      balanced-match: artifactory.g.devqa.gcp.dev.paypalinc.com/balanced-match/1.0.2
+      concat-map: artifactory.g.devqa.gcp.dev.paypalinc.com/concat-map/0.0.1
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/braces/3.0.2:
+    resolution: {integrity: sha1-NFThpGLujVmeI23zNs2epPiv4Qc=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/braces/-/braces-3.0.2.tgz}
+    name: braces
+    version: 3.0.2
+    engines: {node: '>=8'}
+    dependencies:
+      fill-range: artifactory.g.devqa.gcp.dev.paypalinc.com/fill-range/7.0.1
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/concat-map/0.0.1:
+    resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/concat-map/-/concat-map-0.0.1.tgz}
+    name: concat-map
+    version: 0.0.1
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/debug/4.3.2:
+    resolution: {integrity: sha1-8KScGKyHeeMdSgxgKd+3aHPHQos=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/debug/-/debug-4.3.2.tgz}
+    name: debug
+    version: 4.3.2
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+    dependencies:
+      ms: artifactory.g.devqa.gcp.dev.paypalinc.com/ms/2.1.2
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-android-arm64/0.13.14:
+    resolution: {integrity: sha1-yFCD7OJr49Z+bHIOCIloqYQJ4CM=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/esbuild-android-arm64/-/esbuild-android-arm64-0.13.14.tgz}
+    name: esbuild-android-arm64
+    version: 0.13.14
+    cpu: [arm64]
+    os: [android]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-darwin-64/0.13.14:
+    resolution: {integrity: sha1-jk4jethHzFSh06XK7ianRrnwuB8=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/esbuild-darwin-64/-/esbuild-darwin-64-0.13.14.tgz}
+    name: esbuild-darwin-64
+    version: 0.13.14
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-darwin-arm64/0.13.14:
+    resolution: {integrity: sha1-s7Xr1AsssG7g9vs0LdS9zKVK0nM=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/esbuild-darwin-arm64/-/esbuild-darwin-arm64-0.13.14.tgz}
+    name: esbuild-darwin-arm64
+    version: 0.13.14
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-freebsd-64/0.13.14:
+    resolution: {integrity: sha1-F17LL6gUFCjPcOotX0wnU0utU+A=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/esbuild-freebsd-64/-/esbuild-freebsd-64-0.13.14.tgz}
+    name: esbuild-freebsd-64
+    version: 0.13.14
+    cpu: [x64]
+    os: [freebsd]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-freebsd-arm64/0.13.14:
+    resolution: {integrity: sha1-p9ZOQdH6WB+Nt3deUgDxjmfXDE0=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/esbuild-freebsd-arm64/-/esbuild-freebsd-arm64-0.13.14.tgz}
+    name: esbuild-freebsd-arm64
+    version: 0.13.14
+    cpu: [arm64]
+    os: [freebsd]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-linux-32/0.13.14:
+    resolution: {integrity: sha1-FL3U9rbP01xlyDWJRlG6M1whF9o=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/esbuild-linux-32/-/esbuild-linux-32-0.13.14.tgz}
+    name: esbuild-linux-32
+    version: 0.13.14
+    cpu: [ia32]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-linux-64/0.13.14:
+    resolution: {integrity: sha1-f9VoUbKYL90M2ER+6YWMLFcRcIo=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/esbuild-linux-64/-/esbuild-linux-64-0.13.14.tgz}
+    name: esbuild-linux-64
+    version: 0.13.14
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-linux-arm/0.13.14:
+    resolution: {integrity: sha1-u5aplnfmCLMf9h83VkMm046EbKI=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/esbuild-linux-arm/-/esbuild-linux-arm-0.13.14.tgz}
+    name: esbuild-linux-arm
+    version: 0.13.14
+    cpu: [arm]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-linux-arm64/0.13.14:
+    resolution: {integrity: sha1-pVY01wZ5ulCa3q/Wjuu5/R7Fr2w=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/esbuild-linux-arm64/-/esbuild-linux-arm64-0.13.14.tgz}
+    name: esbuild-linux-arm64
+    version: 0.13.14
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-linux-mips64le/0.13.14:
+    resolution: {integrity: sha1-alU2Ko/R5ZPeouzEGHe+7YuBhLk=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/esbuild-linux-mips64le/-/esbuild-linux-mips64le-0.13.14.tgz}
+    name: esbuild-linux-mips64le
+    version: 0.13.14
+    cpu: [mips64el]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-linux-ppc64le/0.13.14:
+    resolution: {integrity: sha1-ngBIWH7OCn8YSrFH8g0HcJgEXn8=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/esbuild-linux-ppc64le/-/esbuild-linux-ppc64le-0.13.14.tgz}
+    name: esbuild-linux-ppc64le
+    version: 0.13.14
+    cpu: [ppc64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-netbsd-64/0.13.14:
+    resolution: {integrity: sha1-3KsWpLvPoW4uhTXa3F9k/ciRxjs=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/esbuild-netbsd-64/-/esbuild-netbsd-64-0.13.14.tgz}
+    name: esbuild-netbsd-64
+    version: 0.13.14
+    cpu: [x64]
+    os: [netbsd]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-openbsd-64/0.13.14:
+    resolution: {integrity: sha1-PHRTsVXrto3DTVrsO9ZQUze92gg=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/esbuild-openbsd-64/-/esbuild-openbsd-64-0.13.14.tgz}
+    name: esbuild-openbsd-64
+    version: 0.13.14
+    cpu: [x64]
+    os: [openbsd]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-sunos-64/0.13.14:
+    resolution: {integrity: sha1-ha3fX+9rXbFUqVXU8uiJUzWddc4=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/esbuild-sunos-64/-/esbuild-sunos-64-0.13.14.tgz}
+    name: esbuild-sunos-64
+    version: 0.13.14
+    cpu: [x64]
+    os: [sunos]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-windows-32/0.13.14:
+    resolution: {integrity: sha1-93+Y8wpcY2xE2yQo7N+by7rtsac=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/esbuild-windows-32/-/esbuild-windows-32-0.13.14.tgz}
+    name: esbuild-windows-32
+    version: 0.13.14
+    cpu: [ia32]
+    os: [win32]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-windows-64/0.13.14:
+    resolution: {integrity: sha1-vHeGdMQNZRUNEjheDyPrOgutvQ0=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/esbuild-windows-64/-/esbuild-windows-64-0.13.14.tgz}
+    name: esbuild-windows-64
+    version: 0.13.14
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/esbuild-windows-arm64/0.13.14:
+    resolution: {integrity: sha1-kaja01qyxN0nzYOGB0KVWyWjVNc=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/esbuild-windows-arm64/-/esbuild-windows-arm64-0.13.14.tgz}
+    name: esbuild-windows-arm64
+    version: 0.13.14
+    cpu: [arm64]
+    os: [win32]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/estree-walker/2.0.2:
+    resolution: {integrity: sha1-UvAQF4wqTBF6d1fP6UKtt9LaTKw=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/estree-walker/-/estree-walker-2.0.2.tgz}
+    name: estree-walker
+    version: 2.0.2
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/fast-glob/3.2.7:
+    resolution: {integrity: sha1-/Wy3otfpqnp4RhEehaGW1rL3ZqE=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/fast-glob/-/fast-glob-3.2.7.tgz}
+    name: fast-glob
+    version: 3.2.7
+    engines: {node: '>=8'}
+    dependencies:
+      '@nodelib/fs.stat': artifactory.g.devqa.gcp.dev.paypalinc.com/@nodelib/fs.stat/2.0.5
+      '@nodelib/fs.walk': artifactory.g.devqa.gcp.dev.paypalinc.com/@nodelib/fs.walk/1.2.8
+      glob-parent: artifactory.g.devqa.gcp.dev.paypalinc.com/glob-parent/5.1.2
+      merge2: artifactory.g.devqa.gcp.dev.paypalinc.com/merge2/1.4.1
+      micromatch: artifactory.g.devqa.gcp.dev.paypalinc.com/micromatch/4.0.4
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/fastq/1.13.0:
+    resolution: {integrity: sha1-YWdg+Ip1Jr38WWt8q4wYk4w2uYw=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/fastq/-/fastq-1.13.0.tgz}
+    name: fastq
+    version: 1.13.0
+    dependencies:
+      reusify: artifactory.g.devqa.gcp.dev.paypalinc.com/reusify/1.0.4
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/fill-range/7.0.1:
+    resolution: {integrity: sha1-GRmmp8df44ssfHflGYU12prN2kA=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/fill-range/-/fill-range-7.0.1.tgz}
+    name: fill-range
+    version: 7.0.1
+    engines: {node: '>=8'}
+    dependencies:
+      to-regex-range: artifactory.g.devqa.gcp.dev.paypalinc.com/to-regex-range/5.0.1
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/fsevents/2.3.2:
+    resolution: {integrity: sha1-ilJveLj99GI7cJ4Ll1xSwkwC/Ro=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/fsevents/-/fsevents-2.3.2.tgz}
+    name: fsevents
+    version: 2.3.2
+    engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/function-bind/1.1.1:
+    resolution: {integrity: sha1-pWiZ0+o8m6uHS7l3O3xe3pL0iV0=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/function-bind/-/function-bind-1.1.1.tgz}
+    name: function-bind
+    version: 1.1.1
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/glob-parent/5.1.2:
+    resolution: {integrity: sha1-hpgyxYA0/mikCTwX3BXoNA2EAcQ=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/glob-parent/-/glob-parent-5.1.2.tgz}
+    name: glob-parent
+    version: 5.1.2
+    engines: {node: '>= 6'}
+    dependencies:
+      is-glob: artifactory.g.devqa.gcp.dev.paypalinc.com/is-glob/4.0.2
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/graceful-fs/4.2.8:
+    resolution: {integrity: sha1-5BK40z9eAGWTy9PO5t+fLOu+gCo=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/graceful-fs/-/graceful-fs-4.2.8.tgz}
+    name: graceful-fs
+    version: 4.2.8
+    dev: true
+    optional: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/has-pkg/0.0.1:
+    resolution: {integrity: sha1-+dkTntg+JIferl60rBMYKi6QOFc=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/has-pkg/-/has-pkg-0.0.1.tgz}
+    name: has-pkg
+    version: 0.0.1
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/has/1.0.3:
+    resolution: {integrity: sha1-ci18v8H2qoJB8W3YFOAR4fQeh5Y=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/has/-/has-1.0.3.tgz}
+    name: has
+    version: 1.0.3
+    engines: {node: '>= 0.4.0'}
+    dependencies:
+      function-bind: artifactory.g.devqa.gcp.dev.paypalinc.com/function-bind/1.1.1
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/is-core-module/2.6.0:
+    resolution: {integrity: sha1-11U7JSb+Wbkro+QMjfdX7Ipwnhk=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/is-core-module/-/is-core-module-2.6.0.tgz}
+    name: is-core-module
+    version: 2.6.0
+    dependencies:
+      has: artifactory.g.devqa.gcp.dev.paypalinc.com/has/1.0.3
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/is-extglob/2.1.1:
+    resolution: {integrity: sha1-qIwCU1eR8C7TfHahueqXc8gz+MI=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/is-extglob/-/is-extglob-2.1.1.tgz}
+    name: is-extglob
+    version: 2.1.1
+    engines: {node: '>=0.10.0'}
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/is-glob/4.0.2:
+    resolution: {integrity: sha1-hZ/C5zHljJAvmfyrzLdafdB9Kdg=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/is-glob/-/is-glob-4.0.2.tgz}
+    name: is-glob
+    version: 4.0.2
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      is-extglob: artifactory.g.devqa.gcp.dev.paypalinc.com/is-extglob/2.1.1
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/is-number/7.0.0:
+    resolution: {integrity: sha1-dTU0W4lnNNX4DE0GxQlVUnoU8Ss=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/is-number/-/is-number-7.0.0.tgz}
+    name: is-number
+    version: 7.0.0
+    engines: {node: '>=0.12.0'}
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/magic-string/0.25.7:
+    resolution: {integrity: sha1-P0l9b9NMZpxnmNy4IfLvMfVEUFE=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/magic-string/-/magic-string-0.25.7.tgz}
+    name: magic-string
+    version: 0.25.7
+    dependencies:
+      sourcemap-codec: artifactory.g.devqa.gcp.dev.paypalinc.com/sourcemap-codec/1.4.8
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/merge2/1.4.1:
+    resolution: {integrity: sha1-Q2iJL4hekHRVpv19xVwMnUBJkK4=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/merge2/-/merge2-1.4.1.tgz}
+    name: merge2
+    version: 1.4.1
+    engines: {node: '>= 8'}
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/micromatch/4.0.4:
+    resolution: {integrity: sha1-iW1Rnf6dsl/OlM63pQCRm/iB6/k=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/micromatch/-/micromatch-4.0.4.tgz}
+    name: micromatch
+    version: 4.0.4
+    engines: {node: '>=8.6'}
+    dependencies:
+      braces: artifactory.g.devqa.gcp.dev.paypalinc.com/braces/3.0.2
+      picomatch: artifactory.g.devqa.gcp.dev.paypalinc.com/picomatch/2.3.0
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/minimatch/3.0.4:
+    resolution: {integrity: sha1-UWbihkV/AzBgZL5Ul+jbsMPTIIM=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/minimatch/-/minimatch-3.0.4.tgz}
+    name: minimatch
+    version: 3.0.4
+    dependencies:
+      brace-expansion: artifactory.g.devqa.gcp.dev.paypalinc.com/brace-expansion/1.1.11
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/ms/2.1.2:
+    resolution: {integrity: sha1-0J0fNXtEP0kzgqjrPM0YOHKuYAk=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/ms/-/ms-2.1.2.tgz}
+    name: ms
+    version: 2.1.2
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/path-parse/1.0.7:
+    resolution: {integrity: sha1-+8EUtgykKzDZ2vWFjkvWi77bZzU=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/path-parse/-/path-parse-1.0.7.tgz}
+    name: path-parse
+    version: 1.0.7
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/picomatch/2.3.0:
+    resolution: {integrity: sha1-8fBh3o9qS/AiiS4tEoI0+5gwKXI=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/picomatch/-/picomatch-2.3.0.tgz}
+    name: picomatch
+    version: 2.3.0
+    engines: {node: '>=8.6'}
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/queue-microtask/1.2.3:
+    resolution: {integrity: sha1-SSkii7xyTfrEPg77BYyve2z7YkM=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/queue-microtask/-/queue-microtask-1.2.3.tgz}
+    name: queue-microtask
+    version: 1.2.3
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/resolve/1.20.0:
+    resolution: {integrity: sha1-YpoBP7P3B1XW8LeTXMHCxTeLGXU=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/resolve/-/resolve-1.20.0.tgz}
+    name: resolve
+    version: 1.20.0
+    dependencies:
+      is-core-module: artifactory.g.devqa.gcp.dev.paypalinc.com/is-core-module/2.6.0
+      path-parse: artifactory.g.devqa.gcp.dev.paypalinc.com/path-parse/1.0.7
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/reusify/1.0.4:
+    resolution: {integrity: sha1-kNo4Kx4SbvwCFG6QhFqI2xKSXXY=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/reusify/-/reusify-1.0.4.tgz}
+    name: reusify
+    version: 1.0.4
+    engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/run-parallel/1.2.0:
+    resolution: {integrity: sha1-ZtE2jae9+SHrnZW9GpIp5/IaQ+4=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/run-parallel/-/run-parallel-1.2.0.tgz}
+    name: run-parallel
+    version: 1.2.0
+    dependencies:
+      queue-microtask: artifactory.g.devqa.gcp.dev.paypalinc.com/queue-microtask/1.2.3
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/sourcemap-codec/1.4.8:
+    resolution: {integrity: sha1-6oBL2UhXQC5pktBaOO8a41qatMQ=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/sourcemap-codec/-/sourcemap-codec-1.4.8.tgz}
+    name: sourcemap-codec
+    version: 1.4.8
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/to-regex-range/5.0.1:
+    resolution: {integrity: sha1-FkjESq58jZiKMmAY7XL1tN0DkuQ=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/to-regex-range/-/to-regex-range-5.0.1.tgz}
+    name: to-regex-range
+    version: 5.0.1
+    engines: {node: '>=8.0'}
+    dependencies:
+      is-number: artifactory.g.devqa.gcp.dev.paypalinc.com/is-number/7.0.0
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/unplugin-vue-components/0.14.13_vite@2.6.14+vue@3.2.21:
+    resolution: {integrity: sha1-uMer520PjrGUBDqse5BF7u8XPH4=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/unplugin-vue-components/-/unplugin-vue-components-0.14.13.tgz}
+    id: artifactory.g.devqa.gcp.dev.paypalinc.com/unplugin-vue-components/0.14.13
+    name: unplugin-vue-components
+    version: 0.14.13
+    engines: {node: '>=14'}
+    peerDependencies:
+      vue: 2 || 3
+    dependencies:
+      '@rollup/pluginutils': artifactory.g.devqa.gcp.dev.paypalinc.com/@rollup/pluginutils/4.1.2
+      debug: artifactory.g.devqa.gcp.dev.paypalinc.com/debug/4.3.2
+      fast-glob: artifactory.g.devqa.gcp.dev.paypalinc.com/fast-glob/3.2.7
+      has-pkg: artifactory.g.devqa.gcp.dev.paypalinc.com/has-pkg/0.0.1
+      magic-string: artifactory.g.devqa.gcp.dev.paypalinc.com/magic-string/0.25.7
+      minimatch: artifactory.g.devqa.gcp.dev.paypalinc.com/minimatch/3.0.4
+      resolve: artifactory.g.devqa.gcp.dev.paypalinc.com/resolve/1.20.0
+      unplugin: artifactory.g.devqa.gcp.dev.paypalinc.com/unplugin/0.2.21_vite@2.6.14
+      vue: 3.2.21
+    transitivePeerDependencies:
+      - rollup
+      - supports-color
+      - vite
+      - webpack
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/unplugin/0.2.21_vite@2.6.14:
+    resolution: {integrity: sha1-eFLN3Z948LMogYEv0u/Vo53MZOU=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/unplugin/-/unplugin-0.2.21.tgz}
+    id: artifactory.g.devqa.gcp.dev.paypalinc.com/unplugin/0.2.21
+    name: unplugin
+    version: 0.2.21
+    peerDependencies:
+      rollup: ^2.50.0
+      vite: ^2.3.0
+      webpack: 4 || 5
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+      vite:
+        optional: true
+      webpack:
+        optional: true
+    dependencies:
+      vite: 2.6.14
+      webpack-virtual-modules: artifactory.g.devqa.gcp.dev.paypalinc.com/webpack-virtual-modules/0.4.3
+    dev: true
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/vue-demi/0.12.1_vue@3.2.21:
+    resolution: {integrity: sha1-9+GO++z/0RqwadFHLXoG4xm0F0w=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/vue-demi/-/vue-demi-0.12.1.tgz}
+    id: artifactory.g.devqa.gcp.dev.paypalinc.com/vue-demi/0.12.1
+    name: vue-demi
+    version: 0.12.1
+    engines: {node: '>=12'}
+    hasBin: true
+    requiresBuild: true
+    peerDependencies:
+      '@vue/composition-api': ^1.0.0-rc.1
+      vue: ^3.0.0-0 || ^2.6.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+    dependencies:
+      vue: 3.2.21
+    dev: false
+
+  artifactory.g.devqa.gcp.dev.paypalinc.com/webpack-virtual-modules/0.4.3:
+    resolution: {integrity: sha1-zVl8bVHVpey0c+6hmDpY+ooX3tk=, registry: https://npm.paypal.com/, tarball: https://artifactory.g.devqa.gcp.dev.paypalinc.com/artifactory/api/npm/npm-all/webpack-virtual-modules/-/webpack-virtual-modules-0.4.3.tgz}
+    name: webpack-virtual-modules
+    version: 0.4.3
     dev: true
