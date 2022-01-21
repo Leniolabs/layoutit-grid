@@ -14,6 +14,8 @@
       placeholder="Area Name"
       aria-label="area name"
       @keyup.enter="saveSelection"
+      @keyup.left="saveSelection"
+      @keyup.right="saveSelection"
       @pointerdown.stop
     />
     <button aria-label="Remove selection" class="btn-remove" title="Remove Selection" @click="closeSelection">
