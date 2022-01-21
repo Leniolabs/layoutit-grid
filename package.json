@@ -37,7 +37,7 @@
     "pnpm": "^6.15.2",
     "typescript": "^4.3.2",
     "vite": "^2.6.14",
-    "vite-plugin-components": "^0.12.2",
+    "unplugin-vue-components": "^0.14.0",
     "vite-plugin-pwa": "^0.11.5",
     "vue-eslint-parser": "^7.6.0",
     "vue-tsc": "^0.2.1",

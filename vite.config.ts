@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import type { ResolvedConfig, Plugin } from 'vite'
+import Components from 'unplugin-vue-components/vite'
 import vuePlugin from '@vitejs/plugin-vue'
-import viteComponentsPlugin from 'vite-plugin-components'
 import { VitePWA } from 'vite-plugin-pwa'
 import { OutputAsset, OutputChunk } from 'rollup'
 
@@ -95,7 +95,7 @@ export default defineConfig({
         propsDestructureTransform: true
       }
     }),
-    viteComponentsPlugin(),
+    Components(),
     LayouitPlugin(),
     VitePWA({
       base: '/',
