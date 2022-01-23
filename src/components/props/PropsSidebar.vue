@@ -1,14 +1,37 @@
 <template>
-  <div :class="['sidebar', { active: currentView === 'props' }]">
-    <div class="sidebar-logo"><BrandLogo /></div>
-    <AreaProps :area="currentArea" />
-  </div>
+  <vue-resizable :min-width="minWidth" :max-width="maxWidth" :width="width" :active="['r']">
+    <div :class="['sidebar', { active: currentView === 'props' }]">
+      <div class="sidebar-logo"><BrandLogo /></div>
+      <AreaProps :area="currentArea" />
+    </div>
+  </vue-resizable>
 </template>
 
 <script setup lang="ts">
+import VueResizable from 'vue-resizable'
 import { useAppState } from '../../store.js'
 
 let { currentArea, currentView } = $(useAppState())
+
+let maxWidth = $ref(0)
+let minWidth = $ref(0)
+let width = $ref(0)
+
+window.addEventListener('resize', handleResize)
+
+function handleResize() {
+  if (window.innerWidth < 768) {
+    maxWidth = 0
+    minWidth = 0
+    width = 0
+  } else {
+    maxWidth = 320
+    minWidth = 240
+    width = 240
+  }
+}
+
+handleResize()
 
 defineProps<{ area }>()
 </script>

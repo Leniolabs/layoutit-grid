@@ -56,7 +56,6 @@ function copyToClipBoard() {
   border: solid 1px var(--color-gray-darkest);
   overflow: auto;
   margin-bottom: 8px;
-  max-width: 350px;
   position: relative;
   padding-top: 30px;
   height: max-content;

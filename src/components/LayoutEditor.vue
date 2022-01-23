@@ -136,11 +136,7 @@ p {
   background: var(--color-purple-dark);
   background: var(--color-gray-darkest);
   height: 100%;
-  display: grid;
-  grid-template-columns: 275px 1fr 375px;
-  @media screen and (max-width: 768px) {
-    grid-template-columns: auto;
-  }
+  display: flex;
   &.darkmode {
     .grid {
       background: repeating-linear-gradient(
@@ -220,6 +216,7 @@ p {
 }
 
 .area-editor-container {
+  flex: 1;
   display: grid;
   overflow: auto;
   align-items: center;
