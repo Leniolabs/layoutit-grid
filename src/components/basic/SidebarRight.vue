@@ -22,21 +22,27 @@ import { useAppState } from '../../store.js'
 
 let { currentView } = $(useAppState())
 
-let maxWidth = $ref(0)
-let minWidth = $ref(0)
-let width = $ref(0)
+let maxWidth = ref(0)
+let minWidth = ref(0)
+let width = ref(0)
 
-window.addEventListener('resize', handleResize)
+onMounted(() => {
+  window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
 
 function handleResize() {
   if (window.innerWidth < 768) {
-    maxWidth = 0
-    minWidth = 0
-    width = 0
+    maxWidth.value = 0
+    minWidth.value = 0
+    width.value = 0
   } else {
-    maxWidth = 420
-    minWidth = 340
-    width = 340
+    maxWidth.value = 420
+    minWidth.value = 340
+    width.value = 340
   }
 }
 
