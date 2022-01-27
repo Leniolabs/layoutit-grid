@@ -178,8 +178,7 @@ export function getCodeGridTemplateAreas(area) {
 }
 
 export function toCssName(name) {
-  return name.replace(/[!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '')
-  //return name.replace(/[^a-zA-Z]/g, '')
+  return name.replace(/[!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '-')
 }
 
 export function onCodeInputKeydown(event, emit) {

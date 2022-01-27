@@ -153,7 +153,7 @@ function saveSelection() {
       overArea = sa
     } else {
       const newArea = createAreaState({
-        name: selection.name,
+        name: toCssName(selection.name),
         gridArea: selectionGridArea(selection),
         color: selection.color,
         parent: area,
