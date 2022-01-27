@@ -10,6 +10,7 @@
 <script setup lang="ts">
 import VueResizable from 'vue-resizable'
 import { useAppState } from '../../store.js'
+import { debounce } from '../../utils'
 
 let { currentArea, currentView } = $(useAppState())
 
@@ -18,11 +19,11 @@ let minWidth = ref(0)
 let width = ref(0)
 
 onMounted(() => {
-  window.addEventListener('resize', handleResize)
+  window.addEventListener('resize', debounce(handleResize))
 })
 
 onUnmounted(() => {
-  window.removeEventListener('resize', handleResize)
+  window.removeEventListener('resize', debounce(handleResize))
 })
 
 function handleResize() {
@@ -33,7 +34,7 @@ function handleResize() {
   } else {
     maxWidth.value = 320
     minWidth.value = 240
-    width.value = 240
+    width.value = 275
   }
 }
 
