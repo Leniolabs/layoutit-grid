@@ -1,23 +1,53 @@
 <template>
-  <div :class="['code-sidebar', { active: currentView === 'code' }]">
-    <a
-      class="btn-github"
-      rel="noopener"
-      target="_blank"
-      aria-label="View source on GitHub"
-      href="https://github.com/Leniolabs/layoutit-grid"
-    >
-      <IconGithub />
-    </a>
-    <slot name="body" />
-    <BrandBanner />
-  </div>
+  <vue-resizable :min-width="minWidth" :max-width="maxWidth" :width="width" :active="['l']" :disable-attributes="['l']">
+    <div :class="['code-sidebar', { active: currentView === 'code' }]">
+      <a
+        class="btn-github"
+        rel="noopener"
+        target="_blank"
+        aria-label="View source on GitHub"
+        href="https://github.com/Leniolabs/layoutit-grid"
+      >
+        <IconGithub />
+      </a>
+      <slot name="body" />
+      <BrandBanner />
+    </div>
+  </vue-resizable>
 </template>
 
 <script setup>
+import VueResizable from 'vue-resizable'
 import { useAppState } from '../../store.js'
+import { debounce } from '../../utils'
 
 let { currentView } = $(useAppState())
+
+let maxWidth = ref(0)
+let minWidth = ref(0)
+let width = ref(0)
+
+onMounted(() => {
+  window.addEventListener('resize', debounce(handleResize))
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', debounce(handleResize))
+})
+
+function handleResize() {
+  if (window.innerWidth < 768) {
+    maxWidth.value = 0
+    minWidth.value = 0
+    width.value = 0
+  } else {
+    maxWidth.value = 420
+    minWidth.value = 340
+    width.value = 375
+  }
+}
+
+handleResize()
 </script>
 
 <style scoped lang="postcss">
