@@ -27,6 +27,7 @@ specifiers:
   vue: ^3.2.21
   vue-eslint-parser: ^7.6.0
   vue-global-api: ^0.2.4
+  vue-resizable: ^2.0.5
   vue-tsc: ^0.2.1
   workbox-build: 6.4.0
   workbox-window: 6.4.0
@@ -39,6 +40,7 @@ dependencies:
   pepjs: 0.5.3
   vue: 3.2.29
   vue-global-api: 0.2.4_vue@3.2.29
+  vue-resizable: 2.0.5_vue@3.2.29
 
 devDependencies:
   '@typescript-eslint/eslint-plugin': 4.33.0_959502c0ea240e86d4d2ba8b8c0fee45
@@ -4404,6 +4406,14 @@ packages:
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
+    dev: false
+
+  /vue-resizable/2.0.5_vue@3.2.29:
+    resolution: {integrity: sha512-AasULoGLeg87VFS07QpoR8q+U0saSlLVBhZy5wPKBl9L7YhmHVJ5Vng8mFpfnBbF2B7SujwPRTcRooz7/ntpqA==}
+    peerDependencies:
+      vue: 3.x
+    dependencies:
+      vue: 3.2.29
     dev: false
 
   /vue-tsc/0.2.3_typescript@4.5.5:
