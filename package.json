@@ -7,7 +7,9 @@
     "start": "vite",
     "build": "vite build",
     "lint": "eslint --ext .js,.vue src",
-    "lint:fix": "eslint --ext .js,.vue src --fix"
+    "lint:fix": "eslint --ext .js,.vue src --fix",
+    "test:open": "cypress open",
+    "test": "cypress run"
   },
   "dependencies": {
     "@vueuse/core": "^4.0.0-beta.16",
@@ -17,8 +19,11 @@
     "vue-composable": "^1.0.0-beta.10"
   },
   "devDependencies": {
+    "@cypress/vue": "^3.1.1",
+    "@cypress/webpack-dev-server": "^1.8.1",
     "@vue/compiler-sfc": "^v3.0.0",
     "babel-eslint": "^10.1.0",
+    "cypress": "^9.4.1",
     "eslint": "^7.10.0",
     "eslint-config-prettier": "^6.12.0",
     "eslint-plugin-prettier": "^3.1.3",
