@@ -11,28 +11,27 @@
 
 <script setup>
 import { onMounted, watch } from 'vue'
-import { useLocalStorage } from 'vue-composable'
-export { default as IconDark } from '../icons/IconDark.vue'
-export { darkmode } from '../../store'
+import { useLocalStorage } from '@vueuse/core'
+import { darkmode } from '../../store'
 
-const { storage: themeStorage } = useLocalStorage('theme', null)
+let themeStorage = $(useLocalStorage('layoutit-grid-theme', null))
 
-export function toggleDarkmode() {
-  darkmode.value = !darkmode.value
-  themeStorage.value = darkmode.value ? 'dark' : 'light'
+function toggleDarkmode() {
+  darkmode = !darkmode
+  themeStorage = darkmode ? 'dark' : 'light'
 }
 
-export function switchToSystemTheme() {
-  darkmode.value = getSystemTheme() === 'dark'
-  themeStorage.value = null
+function switchToSystemTheme() {
+  darkmode = getSystemTheme() === 'dark'
+  themeStorage = null
 }
 
 onMounted(() => {
-  darkmode.value = (themeStorage.value || getSystemTheme()) === 'dark'
+  darkmode = (themeStorage || getSystemTheme()) === 'dark'
 })
 
-watch(darkmode, () => {
-  document.getElementById('app').classList[darkmode.value ? 'add' : 'remove']('darkmode')
+watch($$(darkmode), () => {
+  document.getElementById('app').classList[darkmode ? 'add' : 'remove']('darkmode')
 })
 
 function getSystemTheme() {
@@ -46,20 +45,24 @@ function getSystemTheme() {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 button.btn-dark {
   margin-bottom: 10px;
-  background: #23241f;
-  border: solid 1px #2a2a2a;  
-  color: #eee;
+  background: var(--color-black);
+  border: solid 1px var(--color-gray-darkest);
+  color: var(--color-white);
   border-radius: 25px;
   cursor: pointer;
   width: 42px;
   padding: 0px;
-  svg { width: 100%; }
+  svg {
+    width: 100%;
+  }
   &.active {
     background: var(--color-darkmode-active);
   }
 }
-.buttons button.btn-dark { padding: 10px; }
+.buttons button.btn-dark {
+  padding: 10px;
+}
 </style>

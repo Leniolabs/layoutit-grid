@@ -1,38 +1,37 @@
 <template>
-  <CodeEditor type="html" :code="code"><HtmlCodeArea :area="area" :options="options" /></CodeEditor>
+  <CodeEditor type="html" :get-code="getCode">
+    <HtmlCodeArea :area="area" :options="options" />
+  </CodeEditor>
 </template>
 
-<script setup>
-export { default as CodeEditor } from './CodeEditor.vue'
-export { default as HtmlCodeArea } from './HtmlCodeArea.vue'
+<script setup lang="ts">
+import { areaToHTML } from '../../generateCode.js'
 
-export default {
-  props: {
-    area: { type: Object, default: null },
-    options: { type: Object, default: null },
-    code: { type: String, required: true },
-  },
+const { area, options } = defineProps<{ area; options }>()
+
+function getCode() {
+  return areaToHTML(area)
 }
 </script>
 
 <style scoped>
 ::v-deep(span) {
-  color: #d4d4d4;
+  color: var(--color-gray-light);
 }
 
 ::v-deep(.token.punctuation) {
-  color: #d4d4d4;
+  color: var(--color-gray-light);
 }
 
 ::v-deep(.token.tag) {
-  color: #569cd6;
+  color: var(--color-blue-light);
 }
 
 ::v-deep(.token.attr-name) {
-  color: #9cdcfe;
+  color: var(--color-blue-lightest);
 }
 
 ::v-deep(.token.attr-value) {
-  color: #ce9178;
+  color: var(--color-orange);
 }
 </style>

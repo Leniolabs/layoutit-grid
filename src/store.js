@@ -1,139 +1,172 @@
-import { ref, computed, watch } from 'vue'
+import { useRefHistory, useLocalStorage } from '@vueuse/core'
 
-function createTemplateArr(number) {
-  return '1fr '.repeat(number).trim().split(' ')
-}
+export * from './store/grid.ts'
+export * from './store/flex.js'
+export * from './store/area.js'
 
-export function gridTemplateToArr(str) {
-  return str.split(/(?!\(.*)\s(?![^(]*?\))/g)
-}
+import {
+  createAreaState,
+  parseArea,
+  serializeArea,
+  getGridDimension,
+  gridLimitsToGridArea,
+  gridAreaToGridLimits,
+  getRandomColor,
+} from './store/area.js'
+import { createGridState, isValidTrackSize } from './store/grid.ts'
+import { gridRegionToGridArea } from './utils.js'
+import { asValidGridArea } from './utils/grid.js'
 
-// TODO: review if default parsed value is needed
-
-function internalParseValue(str) {
-  return str.startsWith('minmax') ? str.slice(7, -1) : parseFloat(str, 10)
-}
-export function parseValue(str) {
-  return str ? internalParseValue(str) : 0
-}
-
-function internalParseUnit(str) {
-  return str.startsWith('minmax') ? 'minmax' : str.match(/[\d.\-+]*\s*(.*)/)[1] || ''
-}
-
-export const validGridUnits = ['fr', 'px', '%', 'em', 'auto', 'min-content', 'max-content', 'minmax']
-
-export function parseUnit(str) {
-  return str ? internalParseUnit(str) : 'fr'
-}
-
-export function parseValueUnit(str) {
-  return {
-    value: parseValue(str),
-    unit: parseUnit(str),
-  }
-}
-
-export function isValidTrackSize(str) {
-  const unit = internalParseUnit(str)
-  return validGridUnits.includes(unit) && (unit === 'minmax' || str.replace(unit, '').match(/^[-+]?[0-9]*\.?[0-9]+$/))
-}
-
-export function isValidLineName(str) {
-  return true
-}
-
-export function valueUnitToString({ value, unit }) {
-  switch (unit) {
-    case 'minmax':
-      return `minmax(${value})`
-    case 'min-content':
-    case 'max-content':
-    case 'auto':
-      return unit
-    default:
-      return `${value}${unit}`
-  }
-}
-
-function newLineNames(n) {
-  return lineNamesToState(Array(n).fill(''))
-}
-export function lineNamesToState(names) {
-  return names.map((name) => {
-    return { active: name != '', name }
+function createMainAreaState() {
+  return createAreaState({
+    name: 'container',
+    type: 'div',
+    display: 'grid',
+    grid: createGridState(),
+    justifySelf: 'center',
+    alignSelf: 'center',
+    width: 'auto',
+    height: 'auto',
+    color: '#1e1e1e',
   })
 }
 
-function typeIndex(type) {
-  return type === 'row' ? 0 : 1
+export const mainArea = ref(createMainAreaState())
+export const currentArea = ref(mainArea.value)
+export const overArea = ref(null)
+export const dragging = ref(null)
+export const reordering = ref(null)
+export const currentFocus = ref(null)
+export const currentHover = ref(null)
+export const currentView = ref('editor')
+export const darkmode = ref(false)
+export const selection = ref(null)
+
+export const useMainArea = () => mainArea
+export const useCurrentArea = () => currentArea
+export const useOverArea = () => useOverArea
+export const useDragging = () => dragging
+export const useReordering = () => reordering
+export const useCurrentFocus = () => currentFocus
+export const useCurrentHover = () => currentHover
+export const useCurrentView = () => currentView
+export const useDarkmode = () => darkmode
+export const useSelection = () => selection
+
+export const preferredExport = useLocalStorage('layoutit-grid-preferred-export', 'codepen')
+
+const areaNameCounter = ref(1)
+
+function selectionDimension(type, start, end) {
+  return {
+    start: Math.min(start[type].start, end[type].start),
+    end: Math.max(start[type].end, end[type].end),
+  }
 }
 
-/*
-{
-  col {
-    sizes,
-    lineNames,
-    gap
+function selectionArea(selection) {
+  const { start, end } = selection
+  return {
+    row: selectionDimension('row', start, end),
+    col: selectionDimension('col', start, end),
+  }
+}
+
+export function selectionGridArea(selection) {
+  const gr = selectionArea(selection)
+  return asValidGridArea(gr.row.start, gr.col.start, gr.row.end, gr.col.end, selection.implicitGrid)
+}
+
+export function newAreaName() {
+  let name
+  do {
+    name = 'a' + areaNameCounter.value
+    areaNameCounter.value++
+  } while (!isValidAreaName(name))
+  return name
+}
+
+watch(mainArea, (area) => setCurrentArea(area))
+
+export const { undo, redo, clear, canUndo, canRedo, pause, resume, last } = useRefHistory(mainArea, {
+  capacity: 100,
+  parse: parseArea,
+  dump: serializeArea,
+  deep: true,
+})
+
+const stateStorage = useLocalStorage('layoutit-grid-app-state', serializeArea(mainArea.value))
+watch(
+  last,
+  () => {
+    stateStorage.value = last.value.snapshot
   },
-  row {
-    sizes,
-    lineNames
-    gap
-  }
-  areas
-}
-*/
-
-export function createGridDimension(n) {
-  return {
-    sizes: new Array(n).fill('1fr'),
-    lineNames: newLineNames(n + 1),
-    gap: '0px',
-  }
-}
-
-export function createGridState(r = 2, c = 3) {
-  return {
-    row: createGridDimension(r),
-    col: createGridDimension(c),
-    areas: [],
+  { deep: true }
+)
+export function loadFromStorage() {
+  if (stateStorage.value) {
+    try {
+      const area = parseArea(stateStorage.value)
+      area.alignSelf = 'center' // Some areas were saved with alignSelf start
+      mainArea.value = area
+      clear()
+    } catch (error) {
+      console.log(error)
+      stateStorage.value = undefined
+    }
   }
 }
 
-export function getRowValue(grid, n) {
-  return parseValue(grid.row.sizes[n])
+export function setCurrentArea(area) {
+  if (selection.value && selection.value.area && selection.value.area !== area) {
+    selection.value = null
+  }
+  currentArea.value = area
 }
 
-export function getRowUnit(grid, n) {
-  return parseUnit(grid.row.sizes[n])
+export function setMainArea(area) {
+  mainArea.value = area
 }
 
-export function getColValue(grid, n) {
-  return parseValue(grid.col.sizes[n])
+export function deselectCurrentArea() {
+  setCurrentArea(mainArea.value)
 }
 
-export function getColUnit(grid, n) {
-  return parseUnit(grid.col.sizes[n])
+// This function will be removed once we migrate to display types (block, flex, grid)
+export function clearArea(area) {
+  area.children = []
+
+  area.display = 'block'
+  area.grid = null
+  area.flex = null
 }
 
-export function setRowValueUnit(grid, n, x) {
-  grid.row.sizes[n] = valueUnitToString(x)
+export function removeArea(area) {
+  const parent = area.parent
+  const { children } = parent
+  children.splice(children.indexOf(area), 1)
+  currentArea.value = parent
 }
 
-export function setRowValue(grid, n, value) {
-  setRowValueUnit(grid, n, { value, unit: getRowUnit(grid, n) })
+export function restart() {
+  setMainArea(createMainAreaState())
+  // Commented, preserve history after a restart
+  // clear()
 }
 
-export function setColValueUnit(grid, n, x) {
-  grid.col.sizes[n] = valueUnitToString(x)
+export function isValidAreaName(newName, area = mainArea.value) {
+  const { name, grid } = area
+  return newName && name !== newName && !(grid && !area.children.every((a) => isValidAreaName(newName, a)))
 }
 
-export function setColValue(grid, n, value) {
-  setColValueUnit(grid, n, { value, unit: getColUnit(grid, n) })
-}
+export const isValidFlexBasis = isValidTrackSize
+
+export const isValidGapSize = isValidTrackSize
+
+// This should go in grid.js, we need to check again if we can use sync:pre in the history management before
 
 export function addToDimension(dimension, val) {
+  selection.value = null
   dimension.sizes.push(val)
   dimension.lineNames.push({ active: false, name: '' })
 }
@@ -146,163 +179,111 @@ export function addRow(grid, rowStr) {
   addToDimension(grid.row, rowStr)
 }
 
-export function removeFromDimension(grid, type, n) {
-  const { areas } = grid
-  for (let i = 0; i < areas.length; ) {
-    const { gridRegion } = areas[i]
-    if (n + 1 < gridRegion[type].start) {
-      --gridRegion[type].start
-      --gridRegion[type].end
-    } else if (n + 1 < gridRegion[type].end) {
-      --gridRegion[type].end
+function reduceLimit(l) {
+  if (l.limit) {
+    if (l.limit > 0) {
+      l.limit--
+    } else {
+      l.limit++
     }
-    if (gridRegion[type].end <= gridRegion[type].start) {
-      // delete area if it collapses
-      areas.splice(i, 1)
+  } else if (l.span) {
+    l.span--
+  }
+}
+
+export function removeFromDimension(area, type, n) {
+  selection.value = null
+  const { grid, children } = area
+  const toRemove = [],
+    toChange = []
+  for (let i = 0; i < children.length; ++i) {
+    const limits = gridAreaToGridLimits(children[i].gridArea)
+    const dim = getGridDimension(children[i], type, limits)
+    const { start, end } = limits[type]
+    if (limits.valid && !limits[type].auto) {
+      if (n + 1 < dim.start) {
+        reduceLimit(start)
+        reduceLimit(end)
+      } else if (n + 1 < dim.end) {
+        limits[type].span--
+        if (start.limit) {
+          reduceLimit(end)
+        } else {
+          reduceLimit(start)
+        }
+      } else if (n + 1 >= dim.end) {
+        if (start.limit && start.limit < -1) {
+          start.limit++
+        }
+        if (end.limit && end.limit < -1) {
+          end.limit++
+        }
+      }
+      if (limits[type].span === 0) {
+        // delete area if it collapses
+        toRemove.push(i)
+      } else {
+        toChange.push({ i, gridArea: gridLimitsToGridArea(limits) })
+      }
     } else {
       ++i
     }
+  }
+  for (let i = toChange.length - 1; i >= 0; i--) {
+    children[toChange[i].i].gridArea = toChange[i].gridArea
+  }
+  for (let i = toRemove.length - 1; i >= 0; i--) {
+    area.children.splice(toRemove[i], 1)
   }
   grid[type].sizes.splice(n, 1)
   grid[type].lineNames.splice(n, 1)
 }
 
-export function removeCol(grid, n) {
-  removeFromDimension(grid, 'col', n)
+export function removeCol(area, n) {
+  removeFromDimension(area, 'col', n)
 }
 
-export function removeRow(grid, n) {
-  removeFromDimension(grid, 'row', n)
+export function removeRow(area, n) {
+  removeFromDimension(area, 'row', n)
 }
 
-// FlexItem { name, color, grow, shrink, basis }
-
-export function createFlexItemState({
-  name = 'default',
-  color = 'rgba(253, 216, 53, 0.3)',
-  grow = 0,
-  shrink = 1,
-  basis = '100%',
-} = {}) {
-  return { name, color, grow, shrink, basis }
+const counter = ref(1)
+export function addImplicitArea(area) {
+  selection.value = null
+  area.children.push(
+    createAreaState({
+      name: 'i' + counter.value++,
+      parent: area,
+      color: getRandomColor(),
+    })
+  )
 }
 
-export function createFlexState({
-  direction = 'row',
-  wrap = 'nowrap',
-  defaultItem = createFlexItemState(),
-  items = [defaultItem, defaultItem, defaultItem, defaultItem],
-} = {}) {
-  return { direction, wrap, items, defaultItem }
-}
-
-const colors = [
-  'rgba(230, 25, 75, 0.8)',
-  'rgba(60, 180, 75, 0.8)',
-  'rgba(245, 130, 48, 0.8)',
-  'rgba(240, 50, 230, 0.8)',
-  'rgba(0, 128, 128, 0.8)',
-]
-
-export function createAreaState({
-  name = 'area',
-  color = colors[0],
-  grid = null,
-  flex = null,
-  gridRegion = null,
-  parent = null,
-}) {
-  return { name, color, grid, flex, gridRegion, parent }
-}
-
-function createMainAreaState() {
-  return createAreaState({
-    name: 'grid-container',
-    color: colors[0],
-    grid: createGridState(3, 4),
-  })
-}
-
-export const mainArea = ref(createMainAreaState())
-export const currentArea = ref(mainArea.value)
-export const currentItem = ref(null)
-export const dragging = ref(null)
-export const currentFocus = ref(null)
-export const currentHover = ref(null)
-export const currentView = ref('editor')
-export const darkmode = ref(false)
-
-function parentify(area, parent = null) {
-  area.parent = parent
-  if (area.grid) {
-    area.grid.areas.forEach((child) => parentify(child, area))
+export function subGrid(area) {
+  selection.value = null
+  clearArea(area)
+  if (!area.grid) {
+    area.type = 'div'
+    area.display = 'grid'
+    area.grid = createGridState()
   }
-  return area
-}
-
-const parentRemover = (key, value) => (key === 'parent' ? null : value)
-
-function serializeArea(area) {
-  return JSON.stringify({ area: area, version: 1 }, parentRemover)
-}
-function parseArea(area) {
-  return parentify(JSON.parse(area).area)
-}
-
-import { useRefHistory } from './composables/useRefHistory.js'
-
-export const { undo, redo, clear, canUndo, canRedo, startAtomicChange, endAtomicChange } = useRefHistory(mainArea, {
-  capacity: 20,
-  parse: parseArea,
-  serialize: serializeArea,
-  restore: setMainArea,
-})
-
-export function isValidAreaName(newName, area = mainArea.value) {
-  const { name, grid } = area
-  return name !== newName && !(grid && !grid.areas.every((a) => isValidAreaName(newName, a)))
-}
-
-export function getRandomColor() {
-  return colors[Math.floor(Math.random() * colors.length)]
-}
-
-export function setCurrentArea(area) {
-  currentArea.value = area
-}
-
-export function setMainArea(area) {
-  mainArea.value = area
   setCurrentArea(area)
 }
 
-export function deselectCurrentArea() {
-  setCurrentArea(mainArea.value)
+const appState = {
+  mainArea,
+  currentArea,
+  overArea,
+  dragging,
+  reordering,
+  currentFocus,
+  currentHover,
+  currentView,
+  darkmode,
+  selection,
+  preferredExport,
+  canUndo,
+  canRedo,
 }
 
-export function clearArea(area) {
-  area.grid = null
-  area.flex = null
-  deselectCurrentArea()
-}
-
-export function removeArea(area) {
-  const { areas } = area.parent.grid
-  areas.splice(areas.indexOf(area), 1)
-  deselectCurrentArea()
-}
-
-export function restart() {
-  setMainArea(createMainAreaState())
-  // Commented, preserve history after a restart
-  // clear()
-}
-
-export function getAreaDepth(area) {
-  const parent = area.parent
-  if (parent) {
-    return getAreaDepth(parent) + 1
-  } else {
-    return 0
-  }
-}
+export const useAppState = () => appState

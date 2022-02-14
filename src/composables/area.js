@@ -1,4 +1,3 @@
-import { computed } from 'vue'
 import { mainArea, currentArea } from '../store.js'
 
 export function useIsMainArea(area) {
@@ -10,7 +9,11 @@ export function useIsCurrentArea(area) {
 }
 
 function isActiveArea(area) {
-  return area === currentArea.value || (area.parent ? isActiveArea(area.parent) : false)
+  return (
+    area === currentArea.value ||
+    area.children.some((c) => c.children.length === 0 && c === currentArea.value) ||
+    (area.parent ? isActiveArea(area.parent) : false)
+  )
 }
 
 export function useIsActiveArea(area) {

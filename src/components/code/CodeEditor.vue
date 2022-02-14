@@ -1,77 +1,107 @@
 <template>
   <div class="code-container">
-    <span class="header"
-      >{{ type.toUpperCase() }}
-      <button class="copy-button" @click="copyToClipBoard">{{ copied === 0 ? 'Copy' : 'Copied!' }}</button>
+    <span class="header">
+      {{ type.toUpperCase() }}
+      <button class="copy-button" @click="copyToClipBoard">{{ copied === 0 ? 'Copy' : 'Copied' }}</button>
     </span>
-    <pre><code><slot/></code></pre>
+    <pre><code><slot /></code></pre>
   </div>
 </template>
 
-<script setup="props">
-import { ref } from 'vue'
-
+<script setup lang="ts">
 import { useClipboard } from '@vueuse/core'
 
 const { copy } = useClipboard()
 
-export default {
-  props: {
-    type: { type: String, required: true },
-    code: { type: String, required: true },
-  },
-}
+const { type, getCode } = defineProps<{
+  type: string
+  getCode: () => string
+}>()
 
-export const copied = ref(0)
+let copied = $ref(0)
 
-export function copyToClipBoard() {
-  copy(props.code)
-  copied.value++
+function copyToClipBoard() {
+  copy(getCode())
+  copied++
   setTimeout(() => {
-    copied.value--
+    copied--
   }, 2000)
 }
-
-export let codeCopied = false
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-gray-middle) var(--color-black);
+}
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar:horizontal {
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-black);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-gray-middle);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gray-middle);
+}
 .code-container {
-  background: #23241f;
-  border: solid 1px #2a2a2a;
-  height: max-content;
+  background: var(--color-black);
+  border: solid 1px var(--color-gray-darkest);
   overflow: auto;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
+  position: relative;
+  padding-top: 30px;
+  height: max-content;
+  max-height: 200px;
+  @media screen and (max-width: 768px) {
+    max-width: 100%;
+  }
 }
 
 .header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   display: block;
-  color: #bbb;
+  color: var(--color-gray);
   font-weight: 700;
   font-size: 12px;
-  padding: 3px 5px 2px;
-  //border-top-left-radius: 4px;
-  //border-top-right-radius: 4px;
+  padding: 8px;
+  /*border-top-left-radius: 4px;*/
+  /*border-top-right-radius: 4px;*/
   user-select: none;
 }
 
 .copy-button {
-  color: #bbb;
+  top: 6px;
+  right: 5px;
+  position: absolute;
+  color: var(--color-gray-lightest);
   background-color: Transparent;
   background-repeat: no-repeat;
-  float: right;
   font-weight: 700;
-  font-size: 12px;
-  padding: 3px 0 2px 5px;
+  font-size: 13px;
   border: none;
   cursor: pointer;
   overflow: hidden;
   outline: none;
+  opacity: 0.6;
+  &:hover {
+    opacity: 1;
+  }
 }
 
 pre,
 code {
-  color: #d4d4d4;
+  color: var(--color-gray-light);
   font-size: 13px;
   text-shadow: none;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
@@ -94,7 +124,7 @@ code {
 pre::selection,
 code::selection {
   text-shadow: none;
-  background: #b3d4fc;
+  background: var(--color-blue-lightest);
 }
 
 @media print {
@@ -105,14 +135,14 @@ code::selection {
 }
 
 pre {
-  padding: 0.5em 1em 1em;
+  padding: 0 0.2em 1em 1em;
   overflow: auto;
 }
 
 :not(pre) > code {
   padding: 0.1em 0.3em;
   border-radius: 0.3em;
-  color: #db4c69;
-  background: #f9f2f4;
+  color: var(--color-magenta-light);
+  background: var(--color-white);
 }
 </style>

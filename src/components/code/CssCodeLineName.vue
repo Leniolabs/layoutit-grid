@@ -7,7 +7,7 @@
       contenteditable
       spellcheck="false"
       :class="['input', type, { active: false }]"
-      @keydown="onCodeInputKeydown"
+      @keydown="onCodeInputKeydown($event, $emit)"
       @input="onInput"
       @focus="currentFocus = { on: 'line', grid, type, pos }"
       @blur="currentFocus = null"
@@ -16,54 +16,38 @@
   >
 </template>
 
-<script setup="props, { emit }">
-import { dragging, currentFocus, isValidLineName } from '../../store.js'
-import { computed } from 'vue'
+<script setup lang="ts">
+import { useAppState, isValidLineName, parseGridTemplate } from '../../store.js'
 
-import { namedTemplateColumns, namedTemplateRows, parseGridTemplate, onCodeInputKeydown } from '../../utils.js'
+let { dragging, currentFocus } = $(useAppState())
 
-export default {
-  props: {
-    grid: { type: Object, required: true },
-    type: { type: String, required: true },
-    pos: { type: Number, required: true },
-    el: { type: Object, required: true },
-  },
-}
+import { namedTemplateColumns, namedTemplateRows, onCodeInputKeydown, targetText } from '../../utils.js'
+import { useInputSetter } from '../../composables/index.js'
 
-export { currentFocus, onCodeInputKeydown }
+const { grid, type, pos, el } = defineProps<{
+  grid
+  type: string
+  pos: number
+  el
+}>()
 
-const line = computed(() => props.grid[props.type].lineNames[props.pos])
-export const lineName = computed({
-  get: () => line.value.name,
-  set: (str) => (line.value.name = str),
+let line = $computed(() => grid[type].lineNames[pos - 1])
+let lineName = $computed({
+  get: () => line.name,
+  set: (str) => (line.name = str),
 })
 
-function textFrom(event) {
-  const textNode = event.target.childNodes[0]
-  return textNode && textNode.data
-}
-
-export function onInput(event) {
-  lineNameChanged(event)
-}
-
-export const lineNameChanged = (event) => {
-  const text = textFrom(event)
-  if (isValidLineName(text)) {
-    lineName.value = text
-  }
-}
+const onInput = useInputSetter($$(lineName), isValidLineName, targetText)
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .col,
 .row {
   &:hover {
-    color: white;
+    color: var(--color-gray-lightest);
   }
   &:focus {
-    color: white;
+    color: var(--color-gray-lightest);
   }
 }
 </style>

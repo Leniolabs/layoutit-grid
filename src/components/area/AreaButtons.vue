@@ -1,124 +1,133 @@
 <template>
-  <button v-show="!hasDisplay" aria-label="Add sub grid" class="btn-subgrid" title="Add Sub Grid" @click="subGrid()">
-    <IconSubgrid />
-  </button>
-  <!--button v-show="!hasDisplay" aria-label="Add flex" class="btn-subgrid" @click="subFlex(area)">
-    <IconFlex />
-  </button-->
-  <button
-    v-show="!hasDisplay"
-    aria-label="Remove area"
-    class="btn-remove"
-    title="Remove Area"
-    @click="removeArea(area)"
+  <!--   <button
+    v-show="currentArea === area && !hasDisplay"
+    aria-label="Edit Area"
+    class="btn-edit"
+    title="Edit Area"
+    :style="{ background: `${area.color}` }"
+    @click="$emit('edit')"
   >
-    <IconRemove />
-  </button>
-  <button v-show="hasDisplay" aria-label="Clear area" class="btn-remove" title="Clear Area" @click="clearArea(area)">
-    <IconClear />
-  </button>
+    <IconEdit />
+  </button>-->
+  <template v-if="!dragging && (currentArea === area || overArea === area)">
+    <button
+      v-show="!hasDisplay"
+      aria-label="Add sub grid"
+      class="btn-subgrid"
+      title="Add subgrid"
+      :style="{ background: `var(--color-add)` }"
+      @click="subGrid(area)"
+    >
+      <IconSubgrid />
+    </button>
+    <!--button v-show="!hasDisplay" aria-label="Add flex" class="btn-subgrid" @click="subFlex(area)">
+      <IconFlex />
+    </button-->
+    <button
+      v-show="!hasDisplay"
+      aria-label="Remove area"
+      class="btn-remove"
+      title="Remove area"
+      @click="removeArea(area)"
+    >
+      <IconRemove />
+    </button>
+    <button
+      v-show="hasDisplay"
+      aria-label="Clear area"
+      class="btn-remove btn-clear"
+      title="Clear area"
+      @click="clearArea(area)"
+    >
+      <IconClear />
+    </button>
+  </template>
 </template>
 
-<script setup="props, { emit }">
-export { default as IconRemove } from '../icons/IconRemove.vue'
-export { default as IconClear } from '../icons/IconClear.vue'
-export { default as IconSubgrid } from '../icons/IconSubgrid.vue'
-export { default as IconFlex } from '../icons/IconFlex.vue'
+<script setup lang="ts">
+import {
+  useAppState,
+  setCurrentArea,
+  createGridState,
+  createFlexState,
+  deselectCurrentArea,
+  clearArea,
+  removeArea,
+  subGrid,
+} from '../../store.js'
 
-import { computed } from 'vue'
-import { mainArea, setCurrentArea, createGridState, createFlexState } from '../../store.js'
-export { deselectCurrentArea, clearArea, removeArea } from '../../store.js'
+let { mainArea, currentArea, overArea, dragging } = $(useAppState())
 
-export default {
-  props: {
-    area: { type: Object, required: true },
-  },
-}
+const { area } = defineProps<{ area }>()
 
-export const hasDisplay = computed(() => props.area.grid || props.area.flex)
+defineEmits(['edit'])
 
-export function subFlex() {
-  clearArea(props.area)
+let hasDisplay = $computed(() => area.grid || area.flex)
+
+function subFlex() {
+  clearArea(area)
   if (!area.flex) {
-    props.area.flex = createFlexState()
+    area.flex = createFlexState()
   }
-  setCurrentArea(props.area)
-}
-
-export function subGrid() {
-  clearArea(props.area)
-  if (!props.area.grid) {
-    props.area.grid = createGridState(2, 3)
-  }
-  setCurrentArea(props.area)
+  setCurrentArea(area)
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 button {
-  background: var(--color-add);
   border: 0;
-  height: 1.8rem;
-  line-height: 0.5rem;
-  margin-bottom: 5px;
-  color: #fff;
-  font-size: 0.875rem;
-  display: inline-block;
-  padding: 0.375em;
+  height: 30px;
+  width: 30px;
+  color: var(--color-white);
   cursor: pointer;
-
-  position: absolute;
-  z-index: 999;
-  top: 5px;
   pointer-events: all;
-  vertical-align: top;
-
+  align-items: center;
+  padding: 0;
+  justify-content: center;
+  position: relative;
+  border-radius: 2px;
+  margin-right: 3px;
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(var(--color-white-rgb), 0.15);
+    pointer-events: none;
+    display: none;
+  }
+  &:hover:before {
+    display: block;
+  }
   &.btn-save {
     border-radius: 2px 0 0 2px;
-    &:hover {
-      background: var(--color-add-active);
-    }
   }
   &.btn-subgrid {
-    background: var(--color-add);
-    padding-top: 4px;
-    &:hover {
-      background: var(--color-add-active);
-    }
+    padding-top: 3px;
     svg {
-      height: 1.125rem;
-      width: 1.125rem;
-      fill: #fff;
+      width: 12px;
     }
   }
   &.btn-remove {
-    width: 1.8rem;
-    background: var(--color-remove);
-    border-top-right-radius: 2px;
+    padding-top: 1px;
     border-bottom-right-radius: 2px;
-    &:hover {
-      background: var(--color-remove-active);
-    }
-    svg {
-      height: 0.688rem;
-      width: 0.688rem;
-      fill: #fff;
-    }
+    right: 0;
+    background: var(--color-remove);
   }
 
-  &.btn-save {
-    right: 38px;
-  }
+  &.btn-edit,
   &.btn-remove {
-    right: 5px;
+    svg {
+      width: 10px;
+      stroke: var(--color-gray-lightest);
+      stroke-width: 15px;
+    }
   }
-  &.btn-subgrid,
-  &.btn-remove {
-    position: relative;
-    float: left;
-    right: 0;
-    top: 0;
-    margin-right: 5px;
+  &.btn-remove.btn-clear svg {
+    stroke: transparent;
+    width: 13px;
   }
 }
 </style>

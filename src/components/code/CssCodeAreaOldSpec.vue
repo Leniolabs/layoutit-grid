@@ -10,36 +10,33 @@
     >;{{ '\n  ' }}<span class="token property">gap</span>:
     <span class="token string">{{ area.grid.row.gap + ' ' + area.grid.col.gap }}</span
     >;</template
-  ><template v-if="area.gridRegion"
-    ><span class="token property">-ms-grid-row</span>: <span class="token string">{{ area.gridRegion.row.start }}</span
+  ><template v-if="gridRegion"
+    ><span class="token property">-ms-grid-row</span>: <span class="token string">{{ gridRegion.row.start }}</span
     >;{{ '\n  ' }}<span class="token property">-ms-grid-row-span</span>:
-    <span class="token string">{{ area.gridRegion.row.end - area.gridRegion.row.start }}</span
+    <span class="token string">{{ gridRegion.row.end - gridRegion.row.start }}</span
     >;{{ '\n  ' }}<span class="token property">-ms-grid-column</span>:
-    <span class="token string">{{ area.gridRegion.col.start }}</span
+    <span class="token string">{{ gridRegion.col.start }}</span
     >;{{ '\n  ' }}<span class="token property">-ms-grid-column-span</span>:
-    <span class="token string">{{ area.gridRegion.col.end - area.gridRegion.row.start }}</span
+    <span class="token string">{{ gridRegion.col.end - gridRegion.row.start }}</span
     >;</template
   >{{ '\n}'
-  }}<template v-for="a in gridAreas" :key="a.name"
+  }}<template v-for="a in gridAreas" :key="a.id"
     >{{ '\n\n' }}<CssCodeAreaOldSpec :area="a" :options="options"
   /></template>
 </template>
 
-<script setup="props">
-import { computed } from 'vue'
-export { namedTemplateColumns, namedTemplateRows, toCssName } from '../../utils.js'
+<script setup lang="ts">
+import { getGridRegion } from '../../store.js'
+import { namedTemplateColumns, namedTemplateRows, toCssName } from '../../utils.js'
 
-export default {
-  name: 'CssCodeAreaOldSpec',
-  props: {
-    area: { type: Object, default: null },
-    options: { type: Object, default: null },
-  },
-}
+const { area, options } = defineProps<{ area; options }>()
 
-export const cssAreaName = computed(() => toCssName(props.area.name))
+let cssAreaName = $computed(() => toCssName(area.name))
 
-export const gridAreas = computed(() => (props.area.grid ? props.area.grid.areas : []))
+let gridAreas = $computed(() => (area.display === 'grid' ? area.children : []))
+
+// TODO:
+let gridRegion = $computed(() => getGridRegion(area))
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="postcss"></style>

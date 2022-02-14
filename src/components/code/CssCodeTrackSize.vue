@@ -6,79 +6,62 @@
     contenteditable
     spellcheck="false"
     :class="['input', type, { active: isDraggingTrackLine || isFocused }]"
-    @keydown="onCodeInputKeydown"
+    @keydown="onCodeInputKeydown($event, $emit)"
     @input="onInput"
     @focus="currentFocus = { on: 'track', grid, type, track }"
     @blur="currentFocus = null"
+    @mouseover="currentHover = { on: 'track', grid, type, track }"
+    @mouseleave="currentHover = null"
     >{{ trackSize }}</span
   >
 </template>
 
-<script setup="props, { emit }">
-import { dragging, currentFocus, isValidTrackSize } from '../../store.js'
-import { computed } from 'vue'
-import { debounce } from 'lodash-es'
+<script setup lang="ts">
+import { useAppState, isValidTrackSize, parseGridTemplate } from '../../store.js'
+import { useInputSetter } from '../../composables'
 
-import { namedTemplateColumns, namedTemplateRows, parseGridTemplate, onCodeInputKeydown } from '../../utils.js'
+import { namedTemplateColumns, namedTemplateRows, onCodeInputKeydown, targetText } from '../../utils.js'
 
-export default {
-  props: {
-    grid: { type: Object, required: true },
-    type: { type: String, required: true },
-    track: { type: Number, required: true },
-    el: { type: Object, required: true },
-  },
-}
+let { dragging, currentFocus, currentHover } = $(useAppState())
 
-export { currentFocus, onCodeInputKeydown }
+const { grid, type, track, el } = defineProps<{
+  grid
+  type: string
+  track: number
+  el
+}>()
 
-export const trackSize = computed({
-  get: () => props.grid[props.type].sizes[props.track - 1],
-  set: (value) => (props.grid[props.type].sizes[props.track - 1] = value),
+let trackSize = $computed({
+  get: () => grid[type].sizes[track - 1],
+  set: (value) => (grid[type].sizes[track - 1] = value),
 })
 
-export const isFocused = computed(() => {
-  const cf = currentFocus.value
-  return cf && cf.on === 'track' && cf.grid === props.grid && cf.type === props.type && cf.track === props.track
+let isFocused = $computed(() => {
+  const cf = currentFocus
+  return cf && cf.on === 'track' && cf.grid === grid && cf.type === type && cf.track === track
 })
 
-function textFrom(event) {
-  const textNode = event.target.childNodes[0]
-  return textNode && textNode.data
-}
+const onInput = useInputSetter($$(trackSize), isValidTrackSize, targetText)
 
-export function onInput(event) {
-  trackSizeChanged(event)
-}
+let isDraggingGrid = $computed(() => dragging && dragging.grid === grid)
 
-export const trackSizeChanged = debounce((event) => {
-  const text = textFrom(event)
-  if (isValidTrackSize(text)) {
-    trackSize.value = text
-  }
-}, 700)
-
-export const isDraggingGrid = computed(() => dragging.value && dragging.value.grid === props.grid)
-
-export const isDraggingTrackLine = computed(
-  () =>
-    isDraggingGrid.value &&
-    (props.track === dragging.value[props.type + 'Line'] || props.track === dragging.value[props.type + 'Line'] - 1)
+let isDraggingTrackLine = $computed(
+  () => isDraggingGrid && (track === dragging[type + 'Line'] || track === dragging[type + 'Line'] - 1)
 )
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .col,
 .row {
   &:hover {
-    color: white;
+    color: var(--color-gray-lightest);
   }
   &:focus {
-    color: white;
+    color: var(--color-gray-lightest);
     font-weight: 700;
   }
   &.active {
-    color: white;
+    color: var(--color-gray-lightest);
   }
 }
 </style>

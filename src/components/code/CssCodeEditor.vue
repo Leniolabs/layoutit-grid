@@ -1,5 +1,5 @@
 <template>
-  <CodeEditor type="css" :code="code"
+  <CodeEditor type="css" :get-code="getCode"
     ><CssCodeArea :area="area" :options="options" /><template v-if="options.oldSpec"
       >{{ '\n\n@media all and (-ms-high-contrast:none) {\n\n' }}<CssCodeAreaOldSpec :area="area" :options="options" />{{
         '\n\n}'
@@ -8,46 +8,42 @@
   >
 </template>
 
-<script setup>
-export { default as CodeEditor } from './CodeEditor.vue'
-export { default as CssCodeArea } from './CssCodeArea.vue'
-export { default as CssCodeAreaOldSpec } from './CssCodeAreaOldSpec.vue'
+<script setup lang="ts">
+import { areaToCSS } from '../../generateCode.js'
 
-export default {
-  props: {
-    area: { type: Object, default: null },
-    options: { type: Object, default: null },
-    code: { type: String, required: true },
-  },
+const { area, options } = defineProps<{ area; options }>()
+
+function getCode() {
+  return areaToCSS(area, options)
 }
 </script>
 
 <style scoped>
 ::v-deep(.token.punctuation) {
-  color: #d4d4d4;
+  color: var(--color-gray-light);
 }
 
 ::v-deep(.token.string) {
-  color: #ce9178;
+  color: var(--color-orange);
 }
 
 ::v-deep(.token.property) {
-  color: #9cdcfe;
+  color: var(--color-blue-lightest);
 }
 
 ::v-deep(.token.selector) {
-  color: #d7ba7d;
+  color: var(--color-golden);
 }
 
 ::v-deep(.token.tag) {
-  color: #569cd6;
+  color: var(--color-blue-light);
 }
 
 ::v-deep(.token.attr-name) {
-  color: #9cdcfe;
+  color: var(--color-blue-lightest);
 }
 
 ::v-deep(.token.attr-value) {
-  color: #ce9178;
+  color: var(--color-orange);
 }
 </style>

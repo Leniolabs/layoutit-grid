@@ -1,35 +1,60 @@
 <template>
-  <span class="token string">{{ templateAreas }}</span>
+  <span class="token string">
+    <template v-for="(row, r) in templateAreas" :key="r"
+      >{{ '"'
+      }}<span
+        v-for="(cell, c) in row"
+        :key="r + ' ' + c"
+        class="token string"
+        :style="{
+          color:
+            currentArea === cell && isCellHighligthed(cell)
+              ? '#e0d3b7'
+              : currentArea === cell
+              ? '#d7ba7d'
+              : isCellHighligthed(cell)
+              ? '#eee'
+              : undefined,
+        }"
+        @click="cell && (currentArea = cell)"
+        @mouseover="currentHover = { on: 'cell', area: cell, grid: area.grid, col: c + 1, row: r + 1 }"
+        @mouseleave="currentHover = null"
+        >{{ (c > 0 ? ' ' : '') + templateAreasCellName(cell) }}</span
+      >{{ r === templateAreas.length - 1 ? '"' : '"\n    ' }}
+    </template>
+  </span>
 </template>
 
-<script setup="props, { emit }">
-import { dragging, currentArea, isValidAreaName } from '../../store.js'
-import { computed } from 'vue'
-import { gridTemplateAreas } from '../../utils.js'
+<script setup lang="ts">
+import { useAppState } from '../../store.js'
+import { gridTemplateAreasMatrix, templateAreasCellName } from '../../utils.js'
 
-export default {
-  props: {
-    area: { type: Object, required: true },
-    options: { type: Object, required: true },
-  },
+let { dragging, currentArea, currentHover, overArea } = $(useAppState())
+
+const { area, options } = defineProps<{ area; options }>()
+
+function getGridTemplateAreas(area) {
+  return area.display === 'grid' ? gridTemplateAreasMatrix(area) : []
 }
 
-export { currentArea }
+let templateAreas = $computed(() => getGridTemplateAreas(area))
 
-function getGridTemplateAreas(grid) {
-  return grid ? gridTemplateAreas(grid, '\n    ') : undefined
+function isCellHighligthed(cell) {
+  return (
+    (currentHover && currentHover.on === 'cell' && currentHover.area && currentHover.area === cell) ||
+    (overArea && overArea === cell)
+  )
 }
-
-export const templateAreas = computed(() => getGridTemplateAreas(props.area.grid))
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 span {
   &:hover {
-    color: white;
+    color: var(--color-gray-lightest);
+    cursor: crosshair;
   }
   &:focus {
-    color: white;
+    color: var(--color-gray-lightest);
   }
 }
 </style>

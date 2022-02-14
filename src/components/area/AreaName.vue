@@ -1,29 +1,25 @@
 <template>
-  <span :style="{ 'border-color': area.color }" class="area-name" title="Area Name" @click="$emit('edit')">{{
-    area.name
-  }}</span>
+  <span :style="{ 'border-color': area.color }" class="area-name" title="Area Name" @click="$emit('edit')">
+    {{ area.name }}
+  </span>
 </template>
 
-<script setup>
-export default {
-  props: {
-    area: { type: Object, required: true },
-  },
-  emits: ['edit'],
-}
+<script setup lang="ts">
+defineProps<{ area }>()
+defineEmits(['edit'])
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .area-name {
   position: relative;
-  background: #ddd;
+  background: var(--color-gray-light);
   padding: 5px 10px;
   border-left: 2px solid green;
   border-radius: 2px 0 0 2px;
   font-size: 16px;
   float: left;
   font-family: 'Alegreya Sans', 'Helvetica Neue', Arial, sans-serif;
-  margin-right: 5px;
+  margin-right: 4px;
   pointer-events: all;
 }
 

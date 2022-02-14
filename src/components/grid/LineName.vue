@@ -3,71 +3,124 @@
     v-show="line.active"
     ref="inputElement"
     :value="line.name"
-    :style="`width:${lineNameWidth}px`"
-    :class="type"
+    :style="style"
+    :class="[type, { first: pos === 1, last: pos === grid[type].lineNames.length }]"
     aria-label="line name"
+    maxlength="20"
     @input="line.name = $event.target.value"
+    @keydown="onKeydown"
     @pointerdown.stop
+    @focus="currentFocus = { on: 'line', grid, type, pos }"
+    @blur="currentFocus = null"
   />
 </template>
 
-<script setup="props">
+<script setup lang="ts">
 import { useLineNameWidth } from '../../composables/lineName.js'
+import { useAppState, parseValue } from '../../store.js'
 
-export default {
-  props: {
-    grid: { type: Object, required: true },
-    type: { type: String, required: true }, // 'col' or 'row'
-    pos: { type: Number, required: true },
-  },
-}
+let { currentFocus } = $(useAppState())
 
-import { ref, computed, nextTick } from 'vue'
+const {
+  grid,
+  type,
+  pos,
+  gap = '0px',
+} = defineProps<{
+  grid
+  type: string
+  pos: number
+  gap?: string
+}>()
 
-export const line = computed(() => props.grid[props.type].lineNames[props.pos - 1])
+let line = $computed(() => grid[type].lineNames[pos - 1])
 
-export const lineNameWidth = useLineNameWidth(line, '14px arial', 30)
+let lineNameWidth = $(useLineNameWidth($$(line), '14px arial', 30))
 
-export const inputElement = ref(null)
+let style = $computed(() => {
+  const g = parseValue(gap)
+  const s = { width: lineNameWidth + 'px' }
+  if (pos > 1 && pos < grid[type].lineNames.length) {
+    return { ...s, ...(type === 'row' ? { bottom: -11 - g / 2 + 'px' } : { right: -2 - g / 2 + 'px' }) }
+  }
+  return s
+})
+
+let inputElement = $ref(null)
 
 function focus() {
-  inputElement.value.focus()
+  inputElement.focus()
 }
 
-export function toggle() {
-  if ((line.value.active = !line.value.active)) {
+function toggle() {
+  if ((line.active = !line.active)) {
     nextTick(focus)
   }
 }
-</script>
 
-<style scoped lang="scss">
-.row,
-.col {
-  touch-action: none;
-  position: absolute;
-  background: #bbe5b3;
-  z-index: 9;
-  top: -12px;
-  right: 0;
-  padding: 2px 10px;
-  height: max-content;
-  border: 1px solid green;
-  border-right: 0;
-  border-top-left-radius: 6px;
-  border-bottom-left-radius: 6px;
-  font: 14px arial;
-  z-index: 199;
-  opacity: 1;
-  user-select: none;
+function onKeydown(event) {
+  const { code } = event
+  if (code === 'Enter' || code === 'NumpadEnter' || code === 'Escape') {
+    event.preventDefault()
+    inputElement.blur()
+    return
+  }
 }
 
+defineExpose({ focus, toggle })
+</script>
+
+<style scoped lang="postcss">
+.row,
 .col {
-  right: initial;
-  top: initial;
-  left: -1px;
-  bottom: 2px;
-  transform: translateY(12px) rotate(90deg) translateX(-100%);
+  z-index: 1;
+  pointer-events: initial;
+  background: var(--color-green-ligth);
+  border: 1px solid var(--color-green);
+  font: 0.85rem arial;
+  height: max-content;
+  opacity: 1;
+  padding: 2px 10px;
+  overflow: visible;
+  position: absolute;
+  touch-action: none;
+  user-select: none;
+}
+.row {
+  border-right: 0;
+  &:not(.first) {
+    border-top-left-radius: 6px;
+  }
+  &:not(.last) {
+    border-bottom-left-radius: 6px;
+  }
+  right: 0;
+  bottom: -12px;
+  &.first {
+    top: 0px;
+  }
+  &.last {
+    bottom: 0px;
+  }
+}
+.col {
+  border-left: 0;
+  &:not(.first) {
+    border-top-right-radius: 6px;
+  }
+  &:not(.last) {
+    border-bottom-right-radius: 6px;
+  }
+  bottom: 1px;
+  right: -2px;
   transform-origin: 0 12px;
+  transform: translateX(100%) translateY(10px) rotate(-90deg);
+  &.first {
+    left: 11px;
+    transform: translateY(10px) rotate(-90deg);
+  }
+  &.last {
+    transform: translateX(calc(100% - 11px)) translateY(10px) rotate(-90deg);
+  }
 }
 </style>

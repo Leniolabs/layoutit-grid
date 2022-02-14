@@ -1,51 +1,26 @@
 <template>
-  <span class="token string">{{ gridArea }};</span>
+  <span class="token string">{{ gridArea }}</span>
 </template>
 
-<script setup="props, { emit }">
-import { dragging, currentArea, isValidAreaName } from '../../store.js'
-import { computed } from 'vue'
-import { getGridArea, gridTemplateAreas, toCssName } from '../../utils.js'
+<script setup lang="ts">
+import { getCodeGridArea, getCodeGridTemplateAreas } from '../../utils.js'
 
-export default {
-  props: {
-    area: { type: Object, required: true },
-    options: { type: Object, required: true },
-  },
-}
+const { area, options } = defineProps<{ area; options }>()
 
-export { currentArea }
+let templateAreas = $computed(() => getCodeGridTemplateAreas(area))
 
-export const cssAreaName = computed(() => toCssName(props.area.name))
+let includeTemplateAreas = $computed(() => options.templateAreas && templateAreas !== undefined)
 
-function getGridTemplateAreas(grid) {
-  return grid ? gridTemplateAreas(grid, '\n    ') : undefined
-}
-
-export const templateAreas = computed(() => getGridTemplateAreas(props.area.grid))
-
-export const includeTemplateAreas = computed(() => props.options.templateAreas && templateAreas.value !== undefined)
-
-export const gridArea = computed(() => {
-  const { parent } = props.area
-
-  if (parent) {
-    return props.options.templateAreas && getGridTemplateAreas(parent.grid)
-      ? cssAreaName.value
-      : getGridArea(props.area, parent.grid)
-  } else {
-    return getGridArea(props.area)
-  }
-})
+let gridArea = $computed(() => getCodeGridArea(area, options.templateAreas))
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 span {
   &:hover {
-    color: white;
+    color: var(--color-gray-lightest);
   }
   &:focus {
-    color: white;
+    color: var(--color-gray-lightest);
   }
 }
 </style>

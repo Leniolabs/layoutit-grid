@@ -1,5 +1,3 @@
-import { computed } from 'vue'
-
 let textWidthCanvas = null
 function getTextWidth(text, font) {
   if (!textWidthCanvas) {

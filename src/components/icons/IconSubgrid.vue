@@ -1,15 +1,18 @@
 <template>
   <svg
-    version="1.1"
-    x="0px"
-    y="0px"
-    viewBox="0 0 20 20"
-    enable-background="new 0 0 20 20"
-    xml:space="preserve"
+    fill="none"
+    stroke="none"
+    stroke-width="0"
+    stroke-dashoffset="0"
+    stroke-dasharray="0"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 100 100"
   >
-    <path
-      fill="#FFFFFF"
-      d="M8,4H5C4.447,4,4,4.447,4,5v3c0,0.552,0.447,1,1,1h3c0.553,0,1-0.448,1-1V5C9,4.448,8.553,4,8,4z M15,4h-3  c-0.553,0-1,0.447-1,1v3c0,0.552,0.447,1,1,1h3c0.553,0,1-0.448,1-1V5C16,4.448,15.553,4,15,4z M8,11H5c-0.553,0-1,0.447-1,1v3  c0,0.552,0.447,1,1,1h3c0.553,0,1-0.448,1-1v-3C9,11.448,8.553,11,8,11z M15,11h-3c-0.553,0-1,0.447-1,1v3c0,0.552,0.447,1,1,1h3  c0.553,0,1-0.448,1-1v-3C16,11.448,15.553,11,15,11z"
-    />
+    <rect fill="#fff" x="10" y="10" width="32" height="32" />
+    <rect fill="#fff" x="10" y="57" width="32" height="32" />
+    <rect fill="#fff" x="57" y="10" width="32" height="32" />
+    <rect fill="#fff" x="57" y="57" width="32" height="32" />
   </svg>
 </template>

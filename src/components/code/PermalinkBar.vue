@@ -1,62 +1,55 @@
 <template>
   <div>
     <span>Your grid has been saved!</span>
-    <a :href="fullPath" rel="noreferrer" target="_blank">{{ path }}</a>
+    <span>{{ ' ' }}</span>
+    <a :href="fullPath" rel="noopener" target="_blank">{{ path }}</a>
     <button @click="$emit('close')">×</button>
   </div>
 </template>
 
-<script setup="props">
-import { computed } from 'vue'
+<script setup lang="ts">
+const { path } = defineProps<{
+  path
+}>()
 
-export default {
-  props: {
-    path: { type: String, required: true },
-  },
-  emits: ['close'],
-}
+defineEmits(['close'])
 
-export const fullPath = computed(() => 'https://' + props.path)
+let fullPath = $computed(() => 'https://' + path)
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 div {
   position: fixed;
-  top: 10px;
-  background: #fdd835;
-  left: calc(14em + 15px);
-  right: 10px;
-  padding: 12px 30px 10px;
-  color: #333;
-  border-bottom: 1px solid #ccc;
-  z-index: 999;
+  top: 0px;
+  background: var(--color-yellow);
+  left: 0;
+  right: 0px;
+  padding: 12px 20px 10px;
+  color: var(--color-gray-dark);
+  border-bottom: 1px solid var(--color-gray);
+  z-index: 30000;
   word-break: break-all;
-  @media screen and (max-width: 768px) {
-    left: 0;
-    right: 0;
-    top: 45px;
-  }
   button {
     position: absolute;
     border: 0;
     background: none;
-    right: 0;
+    right: 8px;
     font-size: 20px;
     top: 8px;
-    color: #666;
+    color: var(--color-gray-middle);
     cursor: pointer;
     &:hover {
-      color: #222;
+      color: var(--color-black);
     }
     &:after {
       content: '';
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(var(--color-black-rgb), 0.4);
       position: fixed;
-      left: 239px;
-      z-index: 9;
-      right: 10px;
-      top: 51px;
-      bottom: 10px;
+      left: 0px;
+      z-index: 100000;
+      right: 0px;
+      top: 38px;
+      bottom: 0px;
     }
   }
 }

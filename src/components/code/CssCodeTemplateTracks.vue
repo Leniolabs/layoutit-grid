@@ -24,48 +24,45 @@
   }}</span>
 </template>
 
-<script setup="props, { emit }">
-export { default as CssCodeTrackSize } from './CssCodeTrackSize.vue'
-export { default as CssCodeLineName } from './CssCodeLineName.vue'
-import { isValidTrackSize } from '../../store.js'
-import { ref, computed } from 'vue'
-import { debounce } from 'lodash-es'
+<script setup lang="ts">
+import { isValidTrackSize, parseGridTemplate } from '../../store.js'
 
-export { namedTemplateColumns, namedTemplateRows, parseGridTemplate } from '../../utils.js'
+import { namedTemplateColumns, namedTemplateRows } from '../../utils.js'
 
-export default {
-  props: {
-    grid: { type: Object, required: true },
-    type: { type: String, required: true },
-    repeat: { type: Boolean, default: false },
-  },
-}
+const {
+  grid,
+  type,
+  repeat = false,
+} = defineProps<{
+  grid
+  type: string
+  repeat?: boolean
+}>()
 
-export const isInteractive = computed(() => {
-  console.log(!(props.repeat && props.grid[props.type].lineNames.every((l) => !l.active)))
-  return !(props.repeat && props.grid[props.type].lineNames.every((l) => !l.active))
+let isInteractive = $computed(() => {
+  return !(repeat && grid[type].lineNames.every((l) => !l.active))
 })
 
-export const multiline = computed(() => {
-  const { lineNames } = props.grid[props.type]
+let multiline = $computed(() => {
+  const { lineNames } = grid[type]
   return lineNames.some((line) => line.name !== '' && line.active === true)
 })
 
-export function separatorBeforeItem(i) {
+function separatorBeforeItem(i) {
   return multiline.value && i === 0 ? '\n    ' : ''
 }
-export function separatorAfterItem(i) {
-  const isLast = i === trackSizesAndLineNames.value.length - 1
-  return trackSizesAndLineNames.value[i].type === 'size' && !isLast && multiline.value ? '\n    ' : isLast ? '' : ' '
+function separatorAfterItem(i) {
+  const isLast = i === trackSizesAndLineNames.length - 1
+  return trackSizesAndLineNames[i].type === 'size' && !isLast && multiline.value ? '\n    ' : isLast ? '' : ' '
 }
 
-export const trackSizesAndLineNames = computed(() => {
-  const { sizes, lineNames } = props.grid[props.type]
+let trackSizesAndLineNames = $computed(() => {
+  const { sizes, lineNames } = grid[type]
   const items = []
   for (var i = 0; i < lineNames.length; i++) {
     const { active, name } = lineNames[i]
     if (active && name) {
-      items.push({ type: 'line', pos: i, el: ref(null) })
+      items.push({ type: 'line', pos: i + 1, el: ref(null) })
     }
     if (i < sizes.length) {
       items.push({ type: 'size', track: i + 1, el: ref(null) })
@@ -74,11 +71,11 @@ export const trackSizesAndLineNames = computed(() => {
   return items
 })
 
-export function onMove(event, i) {
+function onMove(event, i) {
   switch (event.action) {
     case 'right':
-      if (i + 1 < trackSizesAndLineNames.value.length) {
-        trackSizesAndLineNames.value[i + 1].el.value.focus()
+      if (i + 1 < trackSizesAndLineNames.length) {
+        trackSizesAndLineNames[i + 1].el.value.focus()
       } else {
         if (document.activeElement) {
           document.activeElement.blur()
@@ -87,7 +84,7 @@ export function onMove(event, i) {
       break
     case 'left':
       if (i - 1 >= 0) {
-        trackSizesAndLineNames.value[i - 1].el.value.focus()
+        trackSizesAndLineNames[i - 1].el.value.focus()
       } else {
         if (document.activeElement) {
           document.activeElement.blur()
@@ -98,4 +95,4 @@ export function onMove(event, i) {
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="postcss"></style>

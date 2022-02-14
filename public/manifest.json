@@ -1,15 +1,68 @@
 {
-  "name": "layoutit-grid",
-  "short_name": "layoutit-grid",
+  "name": "LayoutIt Grid",
+  "short_name": "LayoutIt Grid",
   "icons": [
     {
       "src": "/img/icons/icon-128x128.png",
       "sizes": "128x128",
+      "purpose": "maskable",
       "type": "image/png"
+    },
+    {
+     "src": "/img/icons/android-icon-36x36.png",
+     "sizes": "36x36",
+     "type": "image/png",
+     "purpose": "maskable",
+     "density": "0.75"
+    },
+    {
+     "src": "/img/icons/android-icon-48x48.png",
+     "sizes": "48x48",
+     "type": "image/png",
+     "purpose": "maskable",
+     "density": "1.0"
+    },
+    {
+     "src": "/img/icons/android-icon-72x72.png",
+     "sizes": "72x72",
+     "type": "image/png",
+     "purpose": "maskable",
+     "density": "1.5"
+    },
+    {
+     "src": "/img/icons/android-icon-96x96.png",
+     "sizes": "96x96",
+     "type": "image/png",
+     "purpose": "maskable",
+     "density": "2.0"
+    },
+    {
+     "src": "/img/icons/android-icon-144x144.png",
+     "sizes": "144x144",
+     "type": "image/png",
+     "density": "3.0"
+    },
+    {
+     "src": "/img/icons/android-icon-192x192.png",
+     "sizes": "192x192",
+     "type": "image/png",
+     "purpose": "maskable",
+     "density": "4.0"
     }
   ],
   "start_url": "/index.html",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#4DBA87"
+  "orientation":"portrait-primary",
+  "background_color": "#1d032d",
+  "theme_color": "#1d032d",
+  "lang": "English",
+  "screenshots": [
+      {
+          "src": "img/screenshot.png",
+          "sizes": "1280x800",
+          "type": "image/png"
+      }
+  ],
+  "description": " Layoutit Grid is an interactive open source CSS Grid generator.",
+  "categories": ["education", "personalization", "productivity", "utilities"]
 }

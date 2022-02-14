@@ -1,17 +1,48 @@
+import { getGridRegion, gridAreaToGridLimits } from './utils/grid.js'
+import { generateNamedTemplate } from './store/area.js'
+import { customAlphabet } from 'nanoid'
+const idAlphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+const idSize = 7
+export const generateId = customAlphabet(idAlphabet, idSize)
+
 export const unitMeasureMap = {
-  'px': 300,
-  'fr': 1,
-  'em': 4,
-  '%': 10,
-  'minmax': '20px, 60px',
-  'auto': '',
+  px: 300,
+  fr: 1,
+  em: 4,
+  '%': 50,
+  minmax: '20px, 60px',
+  auto: '',
   'min-content': '',
   'max-content': '',
+  initial: '',
 }
 
-export const nextViewMap = {
-  editor: 'code',
-  code: 'props',
+export function getElementTag(area) {
+  switch (area.type) {
+    case 'p':
+      return 'p'
+    case 'image': // TODO: Should we keep it as div in the code?
+      return 'img'
+    default:
+      return 'div'
+    // TODO: Should we add a comment if component is used?
+  }
+}
+
+export function areaIsSingleLineInCSS(area) {
+  return (
+    area.display !== 'grid' &&
+    area.justifySelf === 'initial' &&
+    area.alignSelf === 'initial' &&
+    area.margin === '0' &&
+    area.padding === '0' &&
+    area.width === 'auto' &&
+    area.height === 'auto'
+  )
+}
+
+export function includeAreaInCSS(area) {
+  return !(areaIsSingleLineInCSS(area) && area.gridArea === 'auto')
 }
 
 export function templateRows(grid) {
@@ -37,40 +68,32 @@ export function createSection({ col, row }) {
   }
 }
 
-export function gridSections(grid) {
-  const colsNumber = grid.col.sizes.length
-  const rowsNumber = grid.row.sizes.length
-  const sectionsNumber = colsNumber * rowsNumber
-
-  const sections = []
-  for (let i = 0; i < sectionsNumber; ++i) {
-    const colStart = (i % colsNumber) + 1
-    const rowStart = Math.floor(i / colsNumber) + 1
-    sections.push(createSection({ col: colStart, row: rowStart }))
-  }
-
-  return sections
-}
-
-function gridTemplateAreasMatrix(grid) {
+export function gridTemplateAreasMatrix({ grid, children }) {
   const colsNumber = grid.col.sizes.length
   const rowsNumber = grid.row.sizes.length
 
   const chunkAreas = []
   for (let i = 0; i < rowsNumber; i++) {
-    chunkAreas[i] = Array(colsNumber).fill('.')
+    chunkAreas[i] = Array(colsNumber).fill(null)
   }
 
   let validTemplate = true
 
-  grid.areas.forEach(({ name, gridRegion }) => {
-    const { row, col } = gridRegion
-    for (let r = row.start; r < row.end; ++r) {
-      for (let c = col.start; c < col.end; ++c) {
-        if (chunkAreas[r - 1][c - 1] !== '.') {
-          validTemplate = false
+  children.forEach((area) => {
+    const gridRegion = getGridRegion(area)
+    if (gridRegion) {
+      const { row, col } = gridRegion
+      if (row.start < 1 || row.end > rowsNumber + 1 || col.start < 1 || col.end > colsNumber + 1) {
+        validTemplate = false
+      } else {
+        for (let r = row.start; r < row.end; ++r) {
+          for (let c = col.start; c < col.end; ++c) {
+            if (chunkAreas[r - 1][c - 1]) {
+              validTemplate = false
+            }
+            chunkAreas[r - 1][c - 1] = area
+          }
         }
-        chunkAreas[r - 1][c - 1] = toCssName(name)
       }
     }
   })
@@ -78,31 +101,28 @@ function gridTemplateAreasMatrix(grid) {
   return validTemplate ? chunkAreas : undefined
 }
 
-function matrixToTemplateAreas(matrix, separator) {
-  return matrix.reduce((prev, item) => prev + `"${item.join(' ')}"${separator}`, '').trim()
+export function templateAreasCellName(area) {
+  return area ? toCssName(area.name) : '.'
 }
 
-export function gridTemplateAreas(grid, separator = ' ') {
-  const matrix = gridTemplateAreasMatrix(grid)
+function matrixToTemplateAreas(matrix, separator) {
+  return matrix.reduce((prev, item) => prev + `"${item.map(templateAreasCellName).join(' ')}"${separator}`, '').trim()
+}
+
+export function gridTemplateAreas(area, separator = ' ') {
+  const matrix = gridTemplateAreasMatrix(area)
   return matrix && matrixToTemplateAreas(matrix, separator)
 }
 
 export function gridRegionToGridArea(gridRegion) {
+  // TODO:
   const { row, col } = gridRegion
   return `${row.start} / ${col.start} / ${row.end} / ${col.end}`
 }
 
-export function gridAreaToGridRegion(gridArea) {
-  const p = gridArea.split('/')
-  return {
-    row: { start: parseInt(p[0]), end: parseInt(p[2]) },
-    col: { start: parseInt(p[1]), end: parseInt(p[3]) },
-  }
-}
-
 function namedRegionSide(gridRegion, parentGrid, type, side) {
   let result = gridRegion[type][side]
-  if (parentGrid) {
+  if (parentGrid && result > 0 && result <= parentGrid[type].lineNames.length) {
     const lineNameState = parentGrid[type].lineNames[result - 1]
     if (lineNameState.active) {
       const name = lineNameState.name
@@ -114,131 +134,65 @@ function namedRegionSide(gridRegion, parentGrid, type, side) {
   return result
 }
 
-export function getGridArea(area, parentGrid) {
-  if (area && area.gridRegion) {
-    const rowStart = namedRegionSide(area.gridRegion, parentGrid, 'row', 'start')
-    const colStart = namedRegionSide(area.gridRegion, parentGrid, 'col', 'start')
-    const rowEnd = namedRegionSide(area.gridRegion, parentGrid, 'row', 'end')
-    const colEnd = namedRegionSide(area.gridRegion, parentGrid, 'col', 'end')
-    return `${rowStart} / ${colStart} / ${rowEnd} / ${colEnd}`
-  } else return ''
+function isSimpleExplicit({ start, end }) {
+  return start.limit > 0 && end.limit > 0 && !(start.limit === end.limit)
 }
 
-function parseLineName(item) {
-  return item.includes('[') ? item.match(/\[(.*)\]/)[1].trim() : null
+// TODO: we are not using line names in complex cases (negative indexes, span, etc)
+// It could be surprising for the user not to see the same numbers as in the grid-area input
+// in the sidebar, but there may be cases where we could still show the line names
+export function getGridAreaWithNamedLines(area) {
+  const parentGrid = area.parent.grid
+  const limits = gridAreaToGridLimits(area.gridArea)
+  if (!limits.valid || limits.auto || !isSimpleExplicit(limits.row) || !isSimpleExplicit(limits.col)) {
+    return area.gridArea
+  }
+  const gridRegion = getGridRegion(area, limits)
+  if (gridRegion) {
+    const rowStart = namedRegionSide(gridRegion, parentGrid, 'row', 'start')
+    const colStart = namedRegionSide(gridRegion, parentGrid, 'col', 'start')
+    const rowEnd = namedRegionSide(gridRegion, parentGrid, 'row', 'end')
+    const colEnd = namedRegionSide(gridRegion, parentGrid, 'col', 'end')
+    return `${rowStart} / ${colStart} / ${rowEnd} / ${colEnd}`
+  }
+}
+
+export function getCodeGridArea(area, useTemplateAreas) {
+  const gridRegion = getGridRegion(area)
+  if (!gridRegion) {
+    // Auto placed areas
+    return area.gridArea
+  }
+  const { parent } = area
+  if (parent) {
+    return useTemplateAreas && getCodeGridTemplateAreas(parent) ? toCssName(area.name) : getGridAreaWithNamedLines(area)
+  } else {
+    return getGridAreaWithNamedLines(area)
+  }
+}
+
+export function getCodeGridTemplateAreas(area) {
+  return area.display === 'grid' && area.grid.col.sizes.length && area.grid.row.sizes.length
+    ? gridTemplateAreas(area, '\n    ')
+    : undefined
 }
 
 export function toCssName(name) {
-  return CSS.escape(name.replace(/\s/g, '-'))
+  return name.replace(/[!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '-')
 }
 
-export function generateNamedTemplate(templateArr, lineNames, css = true, repeat) {
-  let str = ''
-  for (var i = 0; i < lineNames.length; i++) {
-    const { active, name } = lineNames[i]
-    if (active && name) {
-      str += `[${css ? toCssName(name) : name}] `
-    }
-    if (i < templateArr.length) {
-      if (repeat) {
-        str += repeatify(templateArr.slice(' '))
-        break
-      } else {
-        str += templateArr[i] + ' '
-      }
-    }
-  }
-  return str.trim()
-}
-
-function repeatify(tokens) {
-  for (; ;) {
-    const longestSequence = findRepeatingSequnce(tokens)
-    if (!longestSequence) {
-      break
-    }
-    tokens.splice(
-      longestSequence.start,
-      longestSequence.tokens.length * longestSequence.times,
-      `repeat(${longestSequence.times}, ${longestSequence.tokens.join(' ')})`
-    )
-  }
-  return tokens.join(' ')
-}
-
-function findRepeatingSequnce(tokens) {
-  let data
-  let longest = 0
-
-  for (let start = 0; start < tokens.length - 1 - longest * 2; start++) {
-    for (let size = 1; start + 2 * size <= tokens.length; size++) {
-      const count = matchSequence(tokens, start, size)
-      const times = count + 1
-      if (count > 0 && times * size > longest) {
-        data = { start, times, size }
-        longest = times * size
-      }
-    }
-  }
-  return (
-    data && {
-      ...data,
-      tokens: tokens.slice(data.start, data.start + data.size),
-    }
-  )
-}
-
-function matchSequence(tokens, start, size) {
-  if (start + 2 * size > tokens.length) {
-    return 0
-  }
-  for (let pos = 0, j = start, k = start + size; pos < size; pos++, j++, k++) {
-    if (tokens[j] !== tokens[k]) {
-      return 0
-    }
-  }
-  return 1 + matchSequence(tokens, start + size, size)
-}
-
-// TODO:
-
-export function parseGridTemplate(templateStr) {
-  // splits at and space that isn't between two [ ] brackets
-  const parsedArr = templateStr.split(/\s(?![^[]*])/)
-  const lineNames = []
-  const templateArr = []
-  let position = 0
-  parsedArr.forEach((item) => {
-    const lineName = parseLineName(item)
-    if (lineName) {
-      while (lineNames.length < position) {
-        lineNames.push('')
-      }
-      lineNames.push(lineName)
-    } else {
-      templateArr.push(item)
-      ++position
-    }
-  })
-  while (lineNames.length <= templateArr.length) {
-    lineNames.push('')
-  }
-
-  return [templateArr, lineNames]
-}
-
-export function onCodeInputKeydown(event) {
+export function onCodeInputKeydown(event, emit) {
   if (event.code === 'Space') {
     event.preventDefault()
     return
   }
-  if (event.code === 'Enter' || event.code === 'NumpadEnter') {
+  if (event.code === 'Enter' || event.code === 'NumpadEnter' || event.code === 'Escape') {
     event.preventDefault()
     emit('move', { action: 'right' })
     return
   }
   if (event.code === 'ArrowRight') {
-    if (getCaretCharacterOffsetWithin(event.target) === textFrom(event).length) {
+    if (getCaretCharacterOffsetWithin(event.target) === targetText(event).length) {
       emit('move', { action: 'right' })
       return
     }
@@ -251,7 +205,7 @@ export function onCodeInputKeydown(event) {
   }
 }
 
-function textFrom(event) {
+export function targetText(event) {
   const textNode = event.target.childNodes[0]
   return textNode && textNode.data
 }
@@ -278,4 +232,65 @@ function getCaretCharacterOffsetWithin(element) {
     caretOffset = preCaretTextRange.text.length
   }
   return caretOffset
+}
+
+function farEnough(a, b, delta = 5) {
+  return Math.abs(a.x - b.x) > delta || Math.abs(a.y - b.y) > delta
+}
+
+export function handlePointerEventsInteraction(event, { onmove, onup, onclick }) {
+  const initialPos = { x: event.clientX, y: event.clientY }
+  const initialTime = new Date().getTime()
+
+  let movingAnimation = null
+  const animatedMove = () => {
+    if (movingAnimation && !movingAnimation.done) {
+      // update state
+      onmove(movingAnimation.event)
+
+      movingAnimation.done = true
+    }
+    if (movingAnimation) {
+      requestAnimationFrame(animatedMove)
+    } else {
+      onup()
+    }
+  }
+
+  const handleMove = (event) => {
+    if (
+      !movingAnimation &&
+      new Date().getTime() - initialTime < 500 &&
+      !farEnough(initialPos, { x: event.clientX, y: event.clientY })
+    ) {
+      return
+    }
+    const startAnimation = !movingAnimation
+    movingAnimation = { done: false, event }
+    if (startAnimation) {
+      animatedMove()
+    }
+  }
+
+  const handleUp = () => {
+    if (!movingAnimation && new Date().getTime() - initialTime < 500) {
+      onclick()
+    }
+    movingAnimation = null
+
+    window.removeEventListener('pointermove', handleMove)
+    window.removeEventListener('pointerup', handleUp)
+  }
+  window.addEventListener('pointermove', handleMove)
+  window.addEventListener('pointerup', handleUp)
+}
+
+export function debounce(func, timeout = 300) {
+  let timer
+  return (...args) => {
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      func.apply(this, args)
+    }, timeout)
+  }
 }

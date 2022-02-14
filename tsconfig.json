@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "strict": false,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./src/",
+    "paths": {
+      "/@/*": ["src/*"]
+    },
+    "lib": ["esnext", "dom"],
+    "types": [
+      "vite/client",
+      "vite-plugin-pwa/client"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    // "src/**/*.vue",
+    "src/components/common/*.vue",
+    "src/store.js"
+  ],
+  "exclude": ["node_modules"]
+}

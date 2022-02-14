@@ -1,123 +1,83 @@
 <template>
-  <div :class="['sidebar', { active: currentView === 'props' }]">
-    <BrandLogo />
-
-    <div v-if="currentArea !== area" class="area-name">{{ currentArea.name }}</div>
-
-    <FlexOptions v-if="currentFlex" :flex="currentFlex" />
-    <GridOptions v-if="currentGrid" :grid="currentGrid" />
-    <a class="btn-github" target="_blank" aria-label="View source on GitHub" href="https://github.com/Leniolabs/layoutit-grid">
-      <IconGithub/>
-    </a>
-    <HireUs />
-    <VersionLabel />
-  </div>
+  <vue-resizable :min-width="minWidth" :max-width="maxWidth" :width="width" :active="['r']">
+    <div :class="['sidebar', { active: currentView === 'props' }]">
+      <div class="sidebar-logo"><BrandLogo /></div>
+      <AreaProps :area="currentArea" />
+    </div>
+  </vue-resizable>
 </template>
 
-<script setup="props">
-export { default as VersionLabel } from './VersionLabel.vue'
-export { default as BrandLogo } from './BrandLogo.vue'
-export { default as HireUs } from './HireUs.vue'
-export { default as IconGithub } from '../icons/IconGithub.vue'
-export { default as FlexOptions } from './FlexOptions.vue'
-export { default as GridOptions } from './GridOptions.vue'
+<script setup lang="ts">
+import VueResizable from 'vue-resizable'
+import { useAppState } from '../../store.js'
+import { debounce } from '../../utils'
 
-import { computed } from 'vue'
-export { currentArea, currentView } from '../../store.js'
+let { currentArea, currentView } = $(useAppState())
 
-export default {
-  props: {
-    area: { type: Object, required: true },
-  },
+let maxWidth = ref(0)
+let minWidth = ref(0)
+let width = ref(0)
+
+onMounted(() => {
+  window.addEventListener('resize', debounce(handleResize))
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', debounce(handleResize))
+})
+
+function handleResize() {
+  if (window.innerWidth < 768) {
+    maxWidth.value = 0
+    minWidth.value = 0
+    width.value = 0
+  } else {
+    maxWidth.value = 320
+    minWidth.value = 240
+    width.value = 275
+  }
 }
 
-export const currentGrid = computed(() => currentArea.value.grid)
-export const currentFlex = computed(() => currentArea.value.flex)
+handleResize()
+
+defineProps<{ area }>()
 </script>
 
-<style scoped lang="scss">
-.area-name {
-  background: #fdd835;
-  color: #333;
-  padding: 8px 10px;
-  top: 0;
-  left: 0;
-  width: 100%;
-  word-break: break-all;
-  position: relative;
-  border-radius: 2px;
-  font-weight: bold;
-  &:after {
-    content: '';
-    bottom: -24px;
-    right: 10px;
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 12px 10px;
-    border-color: #fdd835 transparent transparent;
-  }
-  &:before {
-    content: 'Editing area: ';
-    font-weight: normal;
-  }
-}
-
+<style scoped lang="postcss">
 .sidebar {
-  padding: 0 10px;
-  color: #fff;
-  text-align: left;
-  z-index: 9;
-  transition: transform 0.2s ease-in;
+  z-index: 20000;
+  color: var(--color-white);
   overflow: auto;
+  padding: 0;
+  text-align: left;
+  transition: transform 0.2s ease-in;
   user-select: none;
+  display: flex;
+  flex-direction: column;
   @media screen and (max-width: 768px) {
-    transform: translateX(-15em);
+    transform: translateX(-100%);
     position: fixed;
     bottom: 0;
-    top: 0;
-    background: #300748;
+    top: 48px;
+    width: 100%;
+    background: var(--color-gray-darkest);
     a.brand {
       display: none;
     }
     &.active {
       transform: translateX(0);
     }
+    .sidebar-logo {
+      display: none;
+    }
   }
 }
 
 @media screen and (max-width: 768px) {
-  .hire-us,
-  .version,
   .btn-undo,
-  .btn-redo {
+  .btn-redo,
+  .btn-github {
     display: none;
   }
 }
-
-.hire-us {
-  position: fixed;
-  bottom: 10px;
-  left: 10px;
-}
-
-.version {
-  position: fixed;
-  bottom: 10px;
-  left: 85px;
-}
-
-.btn-github {
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 9;
-  opacity: 0.8;
-  transition: opacity 0.1s linear;
-  &:hover {
-    opacity: 0.9;
-  }
-}
-
 </style>

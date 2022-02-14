@@ -4,70 +4,48 @@
       :style="{ 'flex-direction': flex.direction, 'flex-wrap': flex.wrap, display: 'flex', height: '100%' }"
       class="flex-container"
     >
-      <div
-        v-for="(item, i) in flex.items"
-        :key="`section-${i}`"
-        :class="{ selected: i + 1 === currentItem, grayed: !isActive }"
-        :style="{
-          'flex-grow': item.grow,
-          'flex-shrink': item.shrink,
-          'flex-basis': item.basis
-        }"
-        @pointerdown.stop="toggleFlexItem(i + 1)"
-      >{{ i + 1 }}</div>
+      <AreaEditor v-for="a in area.children" :key="`area-${a.id}`" :area="a" />
     </section>
   </div>
 </template>
 
-<script setup="props">
-import { computed, toRefs } from 'vue'
-import { mainArea, currentArea, currentItem } from '../../store.js'
-export { deselectCurrentArea } from '../../store.js'
+<script setup lang="ts">
+import { useAppState, deselectCurrentArea } from '../../store.js'
 import { useIsActiveArea } from '../../composables/area.js'
 
-export { currentItem }
+let { mainArea, currentArea } = $(useAppState())
 
-export default {
-  props: {
-    area: { type: Object, required: true },
-  },
-}
+const { area } = defineProps<{ area }>()
 
-export const flex = computed(() => props.area.flex)
+let flex = $computed(() => area.flex)
 
-const { area } = toRefs(props)
-export const isActive = useIsActiveArea(area)
-
-export function toggleFlexItem(item) {
-  currentArea.value = props.area
-  currentItem.value = item === props.currentItem ? null : item
-}
+let isActive = $(useIsActiveArea(toRef(props, 'area')))
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .grid section.flex-container {
   overflow: auto;
-  background: #fff3c4;
+  background: var(--color-yellow-light);
   &:hover {
-    background: #fff3c4;
+    background: var(--color-yellow-light);
   }
   &.grayed {
-    background: #a79f7f;
+    background: var(--color-yellow-dark);
   }
   div {
-    border-right: 1px dashed #999;
-    border-bottom: 1px dashed #999;
+    border-right: 1px dashed var(--color-gray);
+    border-bottom: 1px dashed var(--color-gray);
     display: grid;
     align-content: center;
     width: 100%;
     &:hover {
-      background: #fff3c4;
+      background: var(--color-yellow-light);
     }
     &.selected {
-      background: #c0dfa0;
+      background: var(--color-green-ligth);
     }
     &.grayed {
-      background: #a79f7f;
+      background: var(--color-yellow-dark);
     }
   }
 }

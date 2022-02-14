@@ -1,24 +1,50 @@
-import { getGridArea, toCssName, gridTemplateAreas, namedTemplateColumns, namedTemplateRows } from './utils.js'
+import { getGridRegion } from './store.js'
+import {
+  toCssName,
+  gridTemplateAreas,
+  namedTemplateColumns,
+  namedTemplateRows,
+  getCodeGridArea,
+  areaIsSingleLineInCSS,
+  includeAreaInCSS,
+  getElementTag,
+} from './utils.js'
 
-export function areaToCSS(area, { parentGrid, useTemplateAreas = true, validTemplateAreas = true, repeat, oldSpec }) {
+function declaration(name, value, def) {
+  return value !== def ? `\n  ${name}: ${value};` : ''
+}
+
+export function areaToCSS(area, { parentGrid, templateAreas = true, repeat, oldSpec }) {
   const { name, grid } = area
-  const singleLine = grid == null
+  const singleLine = areaIsSingleLineInCSS(area)
   const cssName = toCssName(name)
-  let css = `.${cssName} {${singleLine ? '' : '\n'}`
+  let css = `.${cssName} {`
   if (grid) {
-    css += gridToCSS(name, grid, { useTemplateAreas, repeat })
+    css += gridToCSS(area, { templateAreas, repeat })
   }
 
-  const gridArea = getGridArea(area, parentGrid)
-  if (gridArea) {
-    css += `${singleLine ? ' ' : '\n  '}grid-area: ${useTemplateAreas && validTemplateAreas ? cssName : gridArea};`
+  if (area.parent && area.parent.display === 'grid') {
+    css += declaration('justify-self', area.justifySelf, 'initial')
+    css += declaration('align-self', area.alignSelf, 'initial')
+    if (area.gridArea !== 'auto') {
+      css += `${singleLine ? ' ' : '\n  '}grid-area: ${getCodeGridArea(area, templateAreas)};`
+    }
   }
+
+  if (!(!area.parent && area.width === 'auto' && area.height === 'auto')) {
+    css += declaration('width', area.width, 'auto')
+    css += declaration('height', area.height, 'auto')
+  }
+  css += declaration('margin', area.margin, '0')
+  css += declaration('padding', area.padding, '0')
+
   css += `${singleLine ? ' ' : '\n'}}\n`
 
   if (grid) {
-    const validTemplateAreas = gridTemplateAreas(grid) !== undefined
-    grid.areas.forEach((area) => {
-      css += '\n' + areaToCSS(area, { parentGrid: grid, useTemplateAreas, validTemplateAreas, repeat })
+    area.children.forEach((area) => {
+      if (includeAreaInCSS(area)) {
+        css += '\n' + areaToCSS(area, { parentGrid: grid, templateAreas, repeat })
+      }
     })
   }
 
@@ -29,17 +55,32 @@ export function areaToCSS(area, { parentGrid, useTemplateAreas = true, validTemp
   return css
 }
 
-export function gridToCSS(name, grid, { useTemplateAreas = true, repeat }) {
-  let css = `
-    display: grid;
-    grid-template-columns: ${namedTemplateColumns(grid, repeat)};
-    grid-template-rows: ${namedTemplateRows(grid, repeat)};
-    gap: ${grid.row.gap} ${grid.col.gap};` // TODO: cssGridGap(grid)
+export function gridToCSS(area, { templateAreas = true, repeat }) {
+  const { grid } = area
+  let css = `  display: grid;`
+  if (grid.col.sizes.length) {
+    css += `\n  grid-template-columns: ${namedTemplateColumns(grid, repeat)};`
+  }
+  if (grid.row.sizes.length) {
+    css += `\n  grid-template-rows: ${namedTemplateRows(grid, repeat)};`
+  }
+  if (grid.col.auto.length) {
+    css += `\n  grid-auto-columns: ${grid.col.auto.join(' ')};`
+  }
+  if (grid.row.auto.length) {
+    css += `\n  grid-auto-rows: ${grid.row.auto.join(' ')};`
+  }
+  css += `\n  gap: ${grid.row.gap} ${grid.col.gap};` // TODO: cssGridGap(grid)
 
-  if (useTemplateAreas) {
-    const templateAreas = gridTemplateAreas(grid, '\n    ')
-    if (templateAreas) {
-      css += `\n  grid-template-areas:\n    ${templateAreas};`
+  css += declaration('grid-auto-flow', grid.autoFlow, 'initial')
+  css += declaration('justify-content', grid.justifyContent, 'initial')
+  css += declaration('align-content', grid.alignContent, 'initial')
+  css += declaration('justify-items', grid.justifyItems, 'initial')
+  css += declaration('align-items', grid.alignItems, 'initial')
+  if (templateAreas) {
+    const templateAreasCode = gridTemplateAreas(area, '\n    ')
+    if (templateAreasCode) {
+      css += `\n  grid-template-areas:\n    ${templateAreasCode};`
     }
   }
   return css
@@ -54,10 +95,10 @@ function ie_areaToCSS_i(area, { repeat }) {
 
   let css = `  .${toCssName(name)} {\n`
   if (grid) {
-    css += ie_gridToCSS(grid, repeat) + '\n'
+    css += ie_gridToCSS(area, repeat) + '\n'
   }
 
-  const { gridRegion } = area
+  const gridRegion = getGridRegion(area)
   if (gridRegion) {
     const { row, col } = gridRegion
     css += `    -ms-grid-row: ${row.start};\n`
@@ -69,7 +110,7 @@ function ie_areaToCSS_i(area, { repeat }) {
   css += '  }\n'
 
   if (grid) {
-    grid.areas.forEach((area) => {
+    area.children.forEach((area) => {
       css += '\n' + ie_areaToCSS_i(area, { repeat })
     })
   }
@@ -77,10 +118,10 @@ function ie_areaToCSS_i(area, { repeat }) {
   return css
 }
 
-export function ie_gridToCSS(grid, repeat) {
+export function ie_gridToCSS(area, repeat) {
   let css = `    display: -ms-grid;
-    -ms-grid-columns: ${namedTemplateColumns(grid, repeat)};
-    -ms-grid-rows: ${namedTemplateRows(grid, repeat)};`
+    -ms-grid-columns: ${namedTemplateColumns(area.grid, repeat)};
+    -ms-grid-rows: ${namedTemplateRows(area.grid, repeat)};`
   return css
 }
 
@@ -88,21 +129,57 @@ export function identString(ident) {
   return '  '.repeat(ident)
 }
 
-export function areaToHTML(area) {
-  return gridToHTML(area.grid, 'grid-container', 0)
-}
-
-function areasToHTML(grid, ident = 0) {
+function areasToHTML(area, ident = 0) {
   let html = ''
-  grid.areas.forEach((area) => {
-    html += '\n' + identString(ident) + gridToHTML(area.grid, area.name, ident)
+  area.children.forEach((child) => {
+    html += '\n' + identString(ident) + areaToHTML(child, ident)
   })
-  if (grid.areas.length > 0) {
+  if (area.children.length > 0) {
     html += '\n' + identString(ident - 1) // ident for parent </div>
   }
   return html
 }
 
-export function gridToHTML(grid, name, ident) {
-  return `<div class="${toCssName(name)}">${grid ? areasToHTML(grid, ident + 1) : ''}</div>`
+export function areaToHTML(area, ident = 0) {
+  const tag = getElementTag(area)
+  return `<${tag} ${includeAreaInCSS(area) ? `class="${toCssName(area.name)}"` : ''}>${areasToHTML(
+    area,
+    ident + 1
+  )}</${tag}>`
+}
+
+export function presentationCSS(area) {
+  const cssName = toCssName(area.name)
+  const needsHeight = area.height === 'auto'
+  return `html, body ${needsHeight ? `, .${cssName} ` : ''}{
+  height: 100%;
+  margin: 0;
+}
+
+/* For presentation only, no need to copy the code below */
+
+.${cssName} * {
+  border: 1px solid red;
+  position: relative;
+}
+
+.${cssName} *:after {
+  content:attr(class);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+`
+}
+
+export function areaToIndexCSS(area, options) {
+  return `${areaToCSS(area, options)}
+
+${presentationCSS(area)}
+`
 }

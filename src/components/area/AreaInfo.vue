@@ -1,45 +1,53 @@
 <template>
-  <div
-    v-if="!isMain"
-    :style="{ top: 5 + toolbarStart * 32 + 'px', left: toolbarStart ? toolbarStart * 20 + 'px' : '5px' }"
-    class="area-info"
+  <section
+    class="area-box"
+    :style="{
+      position: 'relative',
+      'pointer-events': 'none',
+      'touch-action': 'none',
+      'grid-area': area.gridArea,
+      'border-color': area.color,
+      'flex-grow': area.flexGrow,
+      'flex-shrink': area.flexShrink,
+      'flex-basis': area.flexBasis,
+      width: '100%',
+      height: '100%',
+      overflow: 'hidden',
+    }"
   >
-    <AreaName :area="area" @edit="$emit('edit')" />
-    <AreaButtons :area="area" />
-  </div>
+    <div
+      v-if="!isMain"
+      :style="{ top: 5 + toolbarStart * 32 + 'px', left: toolbarStart ? toolbarStart * 20 + 'px' : '5px' }"
+      class="area-info"
+    >
+      <AreaName :area="area" @edit="$emit('edit')" />
+      <AreaButtons :area="area" />
+    </div>
+  </section>
 </template>
 
-<script setup="props">
-export { default as AreaName } from './AreaName.vue'
-export { default as AreaButtons } from './AreaButtons.vue'
-
-import { computed, toRefs } from 'vue'
-import { getAreaDepth } from '../../store.js'
+<script setup lang="ts">
+import { getAreaDepth, getGridRegion } from '../../store.js'
 import { useIsMainArea } from '../../composables/area.js'
 
-export default {
-  props: {
-    area: { type: Object, required: true },
-  },
-  emits: ['edit'],
-}
+const { area } = defineProps<{ area }>()
 
-const { area } = toRefs(props)
-export const isMain = useIsMainArea(area)
+defineEmits(['edit'])
 
-export const toolbarStart = computed(() => {
-  const { gridRegion } = props.area
-  return gridRegion ? (gridRegion.col.start === 1 && gridRegion.row.start === 1 ? getAreaDepth(props.area) - 1 : 0) : 0
+let isMain = $(useIsMainArea(computed(() => area)))
+
+let toolbarStart = $computed(() => {
+  const gridRegion = getGridRegion(area)
+  return gridRegion ? (gridRegion.col.start === 1 && gridRegion.row.start === 1 ? getAreaDepth(area) - 1 : 0) : 0
 })
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .area-info {
   position: absolute;
   top: 5px;
   left: 5px;
   width: auto;
-  z-index: 9;
   &:after {
     display: table;
     content: '';
