@@ -8,3 +8,5 @@ package-lock.json
 yarn.lock
 # intellij stuff
 .idea/
+cypress/videos
+cypress/screenshots

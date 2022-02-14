@@ -9,7 +9,9 @@
     "build-no-typing": "vite build",
     "build-serve": "npm run build && vite preview --open",
     "lint": "eslint --ext .js,.vue src",
-    "lint:fix": "eslint --ext .js,.vue src --fix"
+    "lint:fix": "eslint --ext .js,.vue src --fix",
+    "test:open": "cypress open",
+    "test": "cypress run"
   },
   "dependencies": {
     "@stackblitz/sdk": "^1.5.3",
@@ -22,6 +24,9 @@
     "vue-resizable": "^2.0.5"
   },
   "devDependencies": {
+    "@cypress/vue": "^3.1.1",
+    "@cypress/webpack-dev-server": "^1.8.1",
+    "cypress": "^9.4.1",
     "@typescript-eslint/eslint-plugin": "^4.26.0",
     "@typescript-eslint/parser": "^4.26.0",
     "@vitejs/plugin-vue": "^1.9.4",

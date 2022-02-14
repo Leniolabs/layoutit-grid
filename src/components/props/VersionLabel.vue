@@ -1,6 +1,6 @@
 <template>
   <div class="version">
-    <select @change="onChange">
+    <select data-testid="version-selector" @change="onChange">
       <option selected>v2</option>
       <option>v1</option>
     </select>
